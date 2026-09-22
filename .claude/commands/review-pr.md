@@ -32,7 +32,11 @@ pnpm forgeprint similarity <slug>
 
 `validate` covers the whole catalog and takes no argument; the other two take the slug, not a path.
 
-If `validate` or `lint-setup` is red, do not continue the review; put the output in a `CHANGES` comment and stop.
+**Read `validate`'s output before deciding what its redness means.** One of its problems is not a fix list:
+
+- `same stack + project_type + requirements combination as "<slug>" (rule 9)` → verdict `DUPLICATE`, immediately, whatever else is red. It is the same finding `similarity` reports as REJECTED, and it is a different conversation from "fix these things": the contributor is redirected to an existing blueprint, not asked to patch this one.
+
+Otherwise: if `validate` or `lint-setup` is red, do not continue the review; put the output in a `CHANGES` comment and stop.
 
 `similarity` is not a pass/fail gate. It fails the command only when the blueprint claims the same `stack + project_type + requirements` triple as an existing one (rule 9) — that is a `DUPLICATE` verdict, immediately. A `RED FLAG` line means "above the threshold, different triple": the command still succeeds, and answering it is section 3's job. Keep the whole report — the three scores and the tag diff — for the comment.
 
