@@ -803,10 +803,13 @@ Requires the .NET SDK 10 and Docker.
 29. Build the container image: `docker build --tag saas-api:dev .`
     Verify: `docker image inspect saas-api:dev`
 
-30. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string, so one is supplied here; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -p 127.0.0.1::8080 saas-api:dev`
-    Verify: `curl -fsS --retry 10 --retry-delay 1 --retry-connrefused "http://$(docker port saas-api-check 8080)/health"`
+30. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force saas-api-check 2>/dev/null || true`
+    Verify: `test -z "$(docker ps --all --filter name=saas-api-check --quiet)"`
 
-31. Stop the check container: `docker rm -f saas-api-check`
+31. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string, so one is supplied here; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -p 127.0.0.1::8080 saas-api:dev`
+    Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port saas-api-check 8080)/health"`
+
+32. Stop the check container: `docker rm --force saas-api-check`
     Verify: `docker ps --filter name=saas-api-check --quiet`
 
 ## After setup

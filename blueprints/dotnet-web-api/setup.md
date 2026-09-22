@@ -454,10 +454,13 @@ Requires the .NET SDK 10 and Docker.
 26. Build the container image: `docker build --tag app-api:dev .`
     Verify: `docker image inspect app-api:dev`
 
-27. Start the container and check that it answers: `docker run -d --name app-api-check -p 127.0.0.1::8080 app-api:dev`
-    Verify: `curl -fsS --retry 10 --retry-delay 1 --retry-connrefused "http://$(docker port app-api-check 8080)/health"`
+27. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force app-api-check 2>/dev/null || true`
+    Verify: `test -z "$(docker ps --all --filter name=app-api-check --quiet)"`
 
-28. Stop the check container: `docker rm -f app-api-check`
+28. Start the container and check that it answers. The retry is not politeness: the published port accepts a connection as soon as the container exists, seconds before the application listens on it: `docker run -d --name app-api-check -p 127.0.0.1::8080 app-api:dev`
+    Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port app-api-check 8080)/health"`
+
+29. Stop the check container: `docker rm --force app-api-check`
     Verify: `docker ps --filter name=app-api-check --quiet`
 
 ## After setup

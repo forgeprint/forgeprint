@@ -3,6 +3,25 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.2 — 2026-09-22
+
+The recipe now passes on a GitHub runner, which is where it first failed. Both
+problems were real, and neither was visible on a developer machine.
+
+- The health check gave up too early. `docker run -d` returns as soon as the
+  container exists, and the published port accepts a connection from that
+  moment — seconds before the application listens on it, so `curl` was answered
+  with a connection reset rather than a refusal. `--retry-connrefused` does not
+  retry a reset, so the check failed against a container that was starting
+  normally. It now retries any error, for up to thirty seconds.
+- A failed check left its container behind, and every later run hit the name.
+  The recipe removes a leftover check container before it starts one, so it no
+  longer assumes a clean machine — which is also true for the second time a
+  reader runs it.
+
+Verified on Ubuntu (GitHub runner) and on Windows with .NET SDK 10.0.103 and
+Docker 29.7.2, for each option combination, twice in a row.
+
 ## 1.0.1 — 2026-09-22
 
 The recipe is now executed by `forgeprint test-setup` rather than followed by
