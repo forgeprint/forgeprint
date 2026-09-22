@@ -34,6 +34,10 @@ connect.
 claude mcp add forgeprint -- npx -y forgeprint-mcp
 ```
 
+(On Windows PowerShell: `claude mcp add forgeprint "--" npx -y forgeprint-mcp`.
+Record whichever one your shell actually takes — a demo that shows a command
+the viewer's shell rejects is worse than no demo.)
+
 Hold two seconds on the line that says the server is connected. This is the
 only setup anyone has to do, and showing it is the point.
 

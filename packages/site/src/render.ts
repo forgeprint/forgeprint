@@ -72,6 +72,7 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
           and a setup recipe it can execute.
         </p>
         <pre class="install"><code>claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
+        <p class="muted small">On Windows PowerShell, quote the separator: <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
       </header>
 
       <section class="points">
@@ -492,6 +493,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .options dd { margin: 0 0 0.6rem; color: var(--muted); }
 .files { list-style: none; padding: 0; columns: 2; }
 .files li { margin: 0.2rem 0; break-inside: avoid; }
+.small { font-size: 0.85rem; }
 .byline { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; color: var(--muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
 .person { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--fg); }
 .person:hover span { text-decoration: underline; }

@@ -15,6 +15,9 @@ setup recipe the agent can execute.
 > claude mcp add forgeprint -- npx -y forgeprint-mcp
 > ```
 >
+> On Windows PowerShell, quote the separator:
+> `claude mcp add forgeprint "--" npx -y forgeprint-mcp`.
+>
 > The catalog is browsable at <https://forgeprint.github.io/forgeprint>.
 > [Roadmap](#roadmap) has the rest.
 

@@ -50,6 +50,16 @@ agent presents. See [ADR 0004](decisions/0004-english-only-catalog.md).
 claude mcp add forgeprint -- npx -y forgeprint-mcp
 ```
 
+On **Windows PowerShell**, quote the separator:
+
+```powershell
+claude mcp add forgeprint "--" npx -y forgeprint-mcp
+```
+
+PowerShell consumes a bare `--` before `claude` sees it, and `claude` then
+reads `-y` as one of its own options and refuses. `--%` does not help; it
+arrives as an argument and is refused in turn.
+
 From a checkout instead, which is what you want when you are working on the
 catalog or a blueprint that is not merged yet:
 

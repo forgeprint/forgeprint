@@ -31,6 +31,13 @@ Connect the published server — the same command a stranger would run:
 claude mcp add forgeprint -- npx -y forgeprint-mcp
 ```
 
+On Windows PowerShell the separator has to be quoted, or `claude` reads `-y` as
+its own option:
+
+```powershell
+claude mcp add forgeprint "--" npx -y forgeprint-mcp
+```
+
 Check that it is the only one, and that all six tools are there:
 
 ```
