@@ -245,36 +245,41 @@ A blueprint is a design somebody else will build on. It is reviewed as a design,
 
 ## 6. Roadmap
 
+A box is ticked when the thing works and is committed, not when it is written.
+An item that will not be done carries the reason, because a roadmap that hides
+a decision behind an empty box is how the decision gets made again.
+
 ### Phase 0 — Skeleton (first session)
-- [ ] pnpm workspace, three packages, lint/test setup
-- [ ] `schema/manifest.schema.json` + `schema/taxonomy.yaml`
-- [ ] `forgeprint validate` and `forgeprint build-index`
-- [ ] README (leads with §2 differentiators), CONTRIBUTING, GOVERNANCE
-- [ ] License files (§8): `LICENSE` (tooling), `blueprints/LICENSE` (content), `TRADEMARK.md`, DCO
-- [ ] PR template, blueprint-request issue template, CODEOWNERS generation
+- [x] pnpm workspace, three packages, lint/test setup
+- [x] `schema/manifest.schema.json` + `schema/taxonomy.yaml`
+- [x] `forgeprint validate` and `forgeprint build-index`
+- [x] README (leads with §2 differentiators), CONTRIBUTING, GOVERNANCE
+- [x] License files (§8): `LICENSE` (tooling), `blueprints/LICENSE` (content), `TRADEMARK.md`, DCO
+- [x] PR template, blueprint-request issue template, CODEOWNERS generation
 
 ### Phase 1 — First content
-- [ ] 3 blueprints from the repo owner's daily stack (`tier: official`)
-- [ ] `blueprint-author` skill (generate from an existing project → validate → prepare PR)
-- [ ] `forgeprint similarity` + `blueprint-review` skill
-- [ ] `.claude/commands/review-pr.md` — PR review command (decides; never merges or approves; see §7)
+- [x] 3 blueprints from the repo owner's daily stack (`tier: official`) — five now, all reviewed under §5c
+- [x] `blueprint-author` skill (generate from an existing project → validate → prepare PR)
+- [x] `forgeprint similarity` + `blueprint-review` skill
+- [x] `.claude/commands/review-pr.md` — PR review command (decides; never merges or approves; see §7)
 
 ### Phase 2 — MCP
-- [ ] `search_blueprints`, `get_blueprint`, `resolve` (incl. `questions[]`), `compare_blueprints`, `validate_blueprint`, `request_blueprint`
-- [ ] `npx forgeprint-mcp` over stdio; install docs for Claude Code / Codex / Copilot CLI
-- [ ] Options resolver (`setup.md` blocks)
+- [x] `search_blueprints`, `get_blueprint`, `resolve` (incl. `questions[]`), `compare_blueprints`, `validate_blueprint`, `request_blueprint`
+- [x] `npx forgeprint-mcp` over stdio; install docs for Claude Code / Codex / Copilot CLI
+- [x] Options resolver (`setup.md` blocks)
 
 ### Phase 3 — Publishing
-- [ ] Pages site (`docs/`, branch deploy, no Actions required)
-- [ ] Workflows (active once Actions is available): validate, similarity, setup-test matrix, build-pages
-- [ ] Compatibility tests for `npx skills add` / `gh skills install`
-- [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand
-- [ ] Re-check `docs/review-standards.md` every 90 days: each reference's current version, and whether a new one belongs on the list (§5c)
+- [x] Pages site (`docs/`, branch deploy, no Actions required)
+- [x] Workflows (active once Actions is available): validate, similarity, setup-test matrix, build-pages
+- [x] Compatibility tests for `npx skills add` / `gh skills install` (ADR 0006)
+- [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand. `forgeprint release` cut the manual work down; the token on the maintainer's machine is what is left
+- [ ] Re-check `docs/review-standards.md` every 90 days: each reference's current version, and whether a new one belongs on the list (§5c). First one due 2026-12-21
 
 ### Phase 4 — Community
-- [ ] Orphan/stale bot, co-maintainer bot
-- [ ] Anonymous resolve counter, contributor visibility on blueprint pages
-- [ ] Optional community translations of `overview.md` (§9)
+- [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
+- [ ] Orphan/stale bot, co-maintainer bot. The rules are in GOVERNANCE.md and are applied by hand; a bot needs a second maintainer to be worth writing
+- [ ] Optional community translations of `overview.md` (§9), when somebody wants to write one
+- [ ] ~~Anonymous resolve counter~~ — **not planned.** It means the server learning something about the people who use it, and PRIVACY.md says it collects nothing. If it is ever revisited it is anonymous and opt-in, and that file already says so
 
 ---
 
