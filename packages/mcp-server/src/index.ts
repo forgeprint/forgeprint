@@ -4,7 +4,7 @@ import { CONTENT_IS_DATA } from './notes.js';
 import { registerTools } from './tools.js';
 
 export const SERVER_NAME = 'forgeprint';
-export const SERVER_VERSION = '0.2.4';
+export const SERVER_VERSION = '0.2.5';
 
 export * from './catalog.js';
 export * from './notes.js';

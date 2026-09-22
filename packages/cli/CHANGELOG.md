@@ -3,6 +3,14 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.5 — 2026-09-22
+
+- `no-system-paths` no longer fires inside a fenced `dockerfile` block. The
+  image's filesystem is not the reader's: `/usr/local` is where a container
+  puts what it installs, and the rule is about the machine running the recipe.
+  Every other rule still applies inside that block, and a system path in a
+  shell block is still refused.
+
 ## 0.2.4 — 2026-09-22
 
 - `docs/index.json` carries a blueprint's `provenance`, so the site can show
