@@ -2,6 +2,7 @@ export * from './build-codeowners.js';
 export * from './build-index.js';
 export * from './build-schema.js';
 export * from './catalog.js';
+export * from './changed.js';
 export * from './cli.js';
 export * from './config.js';
 export * from './json.js';

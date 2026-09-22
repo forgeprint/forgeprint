@@ -173,6 +173,7 @@ pnpm forgeprint validate
 | `pnpm forgeprint lint-setup --all`  | the same, for every blueprint                   | now       |
 | `pnpm forgeprint test-setup <slug>` | run the recipe for real and verify every step   | now       |
 | `pnpm forgeprint test-setup --all`  | the same, one option combination per blueprint  | now       |
+| `... --changed-since main`          | only the blueprints your branch changed         | now       |
 
 `docs/index.json`, `schema/manifest.schema.json` and the site under `docs/`
 are generated **and committed**. After changing a blueprint or the taxonomy, run the matching
@@ -185,7 +186,13 @@ that finds what reading cannot:
 ```bash
 pnpm forgeprint test-setup <slug>            # one combination
 pnpm forgeprint test-setup <slug> --all-options
+pnpm forgeprint test-setup --all --changed-since main   # what your branch touched
 ```
+
+`--changed-since` compares commits, not your working tree, so commit first. It
+is what a pull request runs: the blueprints the branch changed, and every
+blueprint when the runner itself changed. When a branch changes no blueprint it
+says so and passes.
 
 It works in a fresh temporary directory, checks the tools your manifest declares
 before it starts, runs every step followed by its verification, and stops at the

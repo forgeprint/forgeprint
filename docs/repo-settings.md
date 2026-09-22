@@ -70,10 +70,21 @@ Ruleset **`protect-main`** (Active) on `main`:
 - All conversations must be resolved.
 - Linear history required — consistent with squash-only merging.
 - Branch deletion and force pushes are blocked.
-- No required status checks **yet**. The `validate` workflow now exists and is
-  green, so it can be added as one; `setup-test` runs on pull requests that
-  touch a blueprint and takes long enough that requiring it is a deliberate
-  trade.
+- Required status checks: `validate`, `lint-setup`, `similarity`, `setup-test`.
+  A working setup is the catalog's central promise, so the check that runs the
+  recipes is required like the rest; on a pull request it runs only the
+  blueprints that pull request changes, one option combination each. The full
+  matrix is not required — it runs Monday mornings and on demand.
+- **Do not** turn on "require branches to be up to date before merging". With
+  squash merging and auto-merge it only forces a rebase-and-wait cycle on every
+  pull request that main moves under, and the checks above do not depend on
+  what else landed.
+
+Two things make that list safe to require. Each check is its own job, so it has
+its own name and its own red cross. And no check is filtered away by paths:
+`setup-test` runs on every pull request and reports `no blueprint changed`
+when there is nothing to run, because a required check that never reports
+leaves the pull request waiting forever.
 
 **Bypass:** the repository admin role. In practice that is the core
 maintainer, which is why phase 0 work is committed to `main` directly. The pull

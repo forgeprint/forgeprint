@@ -11,6 +11,7 @@ import {
   readBlueprintFolder,
   readManifest,
 } from './catalog.js';
+import { affectedBlueprints, changedFiles } from './changed.js';
 import { CONFIG_FILE, loadConfig } from './config.js';
 import { lintSetup } from './lint-setup.js';
 import type { Manifest } from './manifest.js';
@@ -22,7 +23,7 @@ import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy } from './taxonomy.js';
 import { validateCatalog } from './validate.js';
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 interface GlobalOptions {
   root?: string;
@@ -143,18 +144,39 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     .option('--all', 'run every blueprint in the catalog')
     .option('--options <pairs>', 'option values, for example database=postgres,auth=jwt')
     .option('--all-options', 'run every combination of the declared options')
+    .option('--changed-since <ref>', 'only the blueprints changed since this git reference')
     .option('--keep', 'keep the working directory instead of deleting it')
     .description('run a setup recipe in a fresh directory and verify every step')
     .action(
       async (
         slug: string | undefined,
-        flags: { all?: boolean; options?: string; allOptions?: boolean; keep?: boolean },
+        flags: {
+          all?: boolean;
+          options?: string;
+          allOptions?: boolean;
+          changedSince?: string;
+          keep?: boolean;
+        },
       ) => {
         const root = rootOf();
         const taxonomy = loadTaxonomy(root);
         let failures = 0;
 
-        for (const target of targets(root, slug, flags.all === true)) {
+        let selected = targets(root, slug, flags.all === true);
+        if (flags.changedSince !== undefined) {
+          const ref = flags.changedSince;
+          selected = affectedBlueprints(changedFiles(root, ref), selected);
+          if (selected.length === 0) {
+            // Not a skip and not a failure: the question was asked and the
+            // answer is nothing to run. A required check has to say that out
+            // loud, or the pull request waits forever.
+            console.log(`ok  no blueprint changed since ${ref}; no recipe to run`);
+            return;
+          }
+          console.log(`Changed since ${ref}: ${selected.join(', ')}`);
+        }
+
+        for (const target of selected) {
           const folder = readBlueprintFolder(root, target);
           const manifest = readManifest(taxonomy, folder);
 

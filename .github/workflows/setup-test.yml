@@ -11,6 +11,12 @@
 # blueprint declares in `requires_tools` and refuses to run if something is
 # missing, naming it. So a blueprint in a language this job does not install
 # fails with a readable message, and the fix is a step here.
+#
+# There is no `paths:` filter on pull requests, on purpose. This is a required
+# status check, and a check that is filtered away never reports at all, which
+# leaves the pull request waiting for something that will never arrive. Instead
+# the job always runs and `--changed-since` decides what there is to do; a pull
+# request that touches no blueprint says so and passes in under a minute.
 
 name: setup-test
 
@@ -24,10 +30,6 @@ on:
       - 'packages/cli/**'
       - '.github/workflows/setup-test.yml'
   pull_request:
-    paths:
-      - 'blueprints/**'
-      - 'packages/cli/**'
-      - '.github/workflows/setup-test.yml'
   workflow_dispatch:
     inputs:
       all-options:
@@ -47,12 +49,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-recipes:
+  setup-test:
     runs-on: ubuntu-latest
     # A recipe builds projects and images; the default is far too tight.
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # `--changed-since` diffs against the base branch, which has to be
+          # in the clone for that to be possible.
+          fetch-depth: 0
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -72,13 +78,17 @@ jobs:
       - name: Build the tooling
         run: pnpm run build
 
-      # A pull request tests one combination per blueprint: the first value of
-      # each option, deterministically. The full matrix is slow enough that
-      # making it the default would mean nobody waits for it, so it runs on
-      # Mondays and on demand.
-      - name: Run one combination per blueprint
+      # A pull request runs the blueprints it changed, in one combination each:
+      # the first value of every option, deterministically. The full matrix is
+      # slow enough that making it the default would mean nobody waits for it,
+      # so it runs on Mondays and on demand.
+      - name: Run the recipes this pull request changes
         if: github.event_name == 'pull_request'
-        run: pnpm forgeprint test-setup --all
+        env:
+          # Through the environment rather than into the command line: the base
+          # branch is a name from the repository, and this keeps it a value.
+          BASE_REF: ${{ github.base_ref }}
+        run: pnpm forgeprint test-setup --all --changed-since "origin/$BASE_REF"
 
       - name: Run every option combination
         if: github.event_name != 'pull_request'

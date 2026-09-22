@@ -4,6 +4,11 @@
 # logic of its own, so a contributor gets the same answer locally that a pull
 # request gets here — that is the rule, not a coincidence (ADR 0002).
 #
+# Three jobs rather than one, because a required status check is named after a
+# job: separate jobs give the branch ruleset three separate names to require,
+# and a red cross on a pull request says which gate failed before anyone opens
+# the log. They are independent, so they also run at the same time.
+#
 # Actions are pinned to full commit SHAs because a tag can be moved and a SHA
 # cannot; the repository requires it. See docs/repo-settings.md.
 
@@ -22,6 +27,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Formatting, lint, types, the test suites, and the catalog: schema,
+  # taxonomy, required files, one blueprint per stack + project_type +
+  # requirements, a CHANGELOG entry per version, and generated files that are
+  # committed and current.
   validate:
     runs-on: ubuntu-latest
     steps:
@@ -37,19 +46,54 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Formatting, lint, types, the test suites, and the catalog: schema,
-      # taxonomy, required files, one blueprint per stack + project_type +
-      # requirements, a CHANGELOG entry per version, and generated files that
-      # are committed and current.
       - name: Check
         run: pnpm run check
+
+  # Structure and safety of every setup recipe: numbered steps, one action per
+  # step, a verification per step, pinned versions, and no sudo, no pipe to a
+  # shell, no recursive delete, no system paths (rule 20).
+  lint-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the tooling
+        run: pnpm run build
 
       - name: Lint setup recipes
         run: pnpm forgeprint lint-setup --all
 
-      # Prints the duplicate report for every blueprint. It fails only on the
-      # objective rule — a second blueprint claiming an existing stack +
-      # project_type + requirements. A red flag is a question the pull request
-      # template makes the author answer, not a build failure (rules 10 and 11).
+  # The duplicate report for every blueprint. It fails only on the objective
+  # rule — a second blueprint claiming an existing stack + project_type +
+  # requirements. A red flag is a question the pull request template makes the
+  # author answer, not a build failure (rules 10 and 11).
+  similarity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the tooling
+        run: pnpm run build
+
       - name: Duplicate report
         run: pnpm forgeprint similarity --all
