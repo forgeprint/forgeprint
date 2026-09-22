@@ -1,7 +1,9 @@
 # Trademark policy
 
 "Forgeprint", the Forgeprint logo, and the package names published by this
-project are trademarks of the Forgeprint project maintainers. They are **not**
+project are trademarks of the Forgeprint project
+(<https://github.com/forgeprint>), maintained by
+[@aliosmanmho](https://github.com/aliosmanmho). They are **not**
 covered by the licences in [LICENSE](LICENSE) or
 [blueprints/LICENSE](blueprints/LICENSE): a licence to use the code and the
 content is not a licence to use the name.
@@ -47,9 +49,9 @@ a trademark use.
 
 ## Official distributions
 
-Only releases published from this repository by its maintainers are official.
-At the time of writing, that is this repository and the packages published from
-it. Anything else calling itself Forgeprint is not.
+Only releases published from the `forgeprint` GitHub organization by its
+maintainers are official: <https://github.com/forgeprint/forgeprint> and the
+packages published from it. Anything else calling itself Forgeprint is not.
 
 ## Questions
 
