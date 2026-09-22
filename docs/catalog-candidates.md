@@ -54,9 +54,10 @@ We have exactly one of those features, in one language.
 Five, in the order I would take them. Each states the risk, because a candidate
 without one has not been thought about.
 
-### 1. `ts-mcp-server` — MCP server in TypeScript
+### 1. `ts-mcp-server` — MCP server in TypeScript — **written, 2026-09-22**
 
-**Triple:** `[node, typescript-sdk]` + `agent` + `[ci, testing]`
+**Triple:** `[node, mcp]` + `agent` + `[ci, testing]` — distinct from
+`dotnet-mcp-server`'s `[dotnet, mcp]` on stack, which is what rule 9 compares.
 **Demand:** signal 3. Twenty of the twenty-one packaged servers in the official
 registry are npm. This is the single most common thing being built in the
 ecosystem Forgeprint itself lives in.
@@ -68,6 +69,10 @@ recipe costs seconds in CI rather than minutes.
 shape of an MCP server is the same in any language. Expect a similarity RED
 FLAG on the recipe and answer it in the pull request; the triple differs on
 stack, which is what rule 9 actually asks.
+**Outcome:** the risk did not materialise — 69% on tags, 35% on `AGENTS.md`,
+43% on `setup.md`, all under the threshold. The two blueprints share a shape
+and almost no words. Both option combinations run in CI in under twenty
+seconds.
 
 ### 2. `fastapi-service` — Python API with Postgres
 
@@ -137,11 +142,15 @@ cross-compilation in CI.
 - **A second .NET blueprint.** The three we have cover the maintainer's stack;
   a fourth would deepen the catalog where it is already deepest.
 - **Anything needing a taxonomy change.** Every triple above uses values that
-  already exist. `go-stdlib` and `typescript-sdk` do not — see the note below.
+  already exist, except one — see the note below.
 - **Mobile, game, data.** All empty `project_type`s, all requiring a toolchain
   or a device CI cannot provide today. They wait for a contributor who has one.
 
-> **Two of the triples above are approximate.** `stack` has no value for the Go
-> standard library or for the MCP TypeScript SDK, so those candidates need a
-> taxonomy pull request first, on its own, before the blueprint. That is the
+> **One triple above is approximate.** `stack` has no value for a Go
+> command-line tool written against the standard library, so candidate 5 needs
+> a taxonomy pull request first, on its own, before the blueprint. That is the
 > rule and this document is not an exception to it.
+>
+> Candidate 1 does not: `mcp` is already in the vocabulary, and
+> `[node, mcp]` differs from `[dotnet, mcp]` on stack, which is what rule 9
+> compares. An earlier draft of this document said otherwise and was wrong.

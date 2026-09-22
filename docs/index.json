@@ -430,6 +430,67 @@
         "skills/efcore-migrations/SKILL.md"
       ],
       "i18n": []
+    },
+    {
+      "slug": "ts-mcp-server",
+      "name": "TypeScript MCP Server",
+      "version": "1.0.0",
+      "tier": "official",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "MCP server in TypeScript on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol.",
+      "stack": [
+        "node",
+        "mcp"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {
+        "transport": [
+          "stdio",
+          "http"
+        ]
+      },
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=20",
+        "curl"
+      ],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
     }
   ]
 }
