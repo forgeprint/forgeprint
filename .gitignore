@@ -2,6 +2,19 @@ node_modules/
 dist/
 *.tsbuildinfo
 .DS_Store
+
+# Secrets never reach a public repository, and git does not forget (ADR 0009).
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+appsettings.*.json
+!appsettings.Development.template.json
+id_rsa
+id_ed25519
+
+# Per-machine Claude Code settings: paths and permissions, not project state.
+.claude/settings.local.json

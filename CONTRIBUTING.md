@@ -248,6 +248,21 @@ Before pushing:
 pnpm run check
 ```
 
+### One-time setup
+
+Turn on the pre-commit hook. It scans staged changes with
+[gitleaks](https://github.com/gitleaks/gitleaks), because git does not forget:
+a secret that reaches a commit is compromised even if the next commit removes
+it ([ADR 0009](docs/decisions/0009-trust-and-disclosure.md)).
+
+```bash
+git config core.hooksPath .githooks
+```
+
+No dependency is added to the project for this — `gitleaks` is a binary you
+install yourself, and without it the hook says so and lets the commit through.
+A hook that blocks work it cannot do is a hook people delete.
+
 ---
 
 ## Writing a skill

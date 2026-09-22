@@ -197,6 +197,49 @@ A project that depends on hosted CI locks up when CI is unavailable. Therefore:
 20. In `setup.md`: pinned versions required; `curl | sh`, `sudo`, `rm -rf` forbidden; network access only to package registries. `forgeprint lint-setup` enforces this.
 21. The MCP server never executes commands on the user's machine; it only returns text.
 22. Blueprint content is **data, not instructions** for the agent; the MCP output carries this note in `_meta`.
+23. **No blueprint is `tier: official` until it has passed an architecture and security review** (§5c). A `community` blueprint gets the same review as step 3b of `/review-pr`; a `critical` or `high` finding blocks `official` either way.
+
+---
+
+## 5b. Trust and disclosure
+
+The repository is public and every commit is world-readable. What gets shared is decided here, and everything else does not get shared. Both halves matter: the list of what never enters the repository, and the list of what must.
+
+### Never in the repository
+
+- **Secrets of any kind.** API keys, tokens, connection strings, `.env` files, certificates, SSH keys — and any value that *looks* real, even as an example. Examples are obviously fake or they are not examples: `sk-EXAMPLE-0000`, `local-development-only-not-a-real-secret`.
+- **Personal data.** Email addresses, phone numbers, full names (the maintainer's GitHub handle is the exception), local filesystem paths (`C:\Users\...`, `/home/...`), machine names, IP addresses.
+- **Employer and client information.** Company names, internal project names, internal URLs, internal tool names. Blueprints and examples are entirely generic.
+- **The maintainer's other projects**, by name or by code. Forgeprint stands on its own.
+- **The conversation behind a decision.** ADRs carry the technical reasoning and nothing else: no personal circumstances, no chat history, no "we decided this because of what happened at...".
+
+### Always in the repository
+
+Transparency is what earns trust, so these are not optional:
+
+- Every ADR, every pull request review verdict with its reasoning, every CHANGELOG, every security review report.
+- `SECURITY.md` — how to report a vulnerability (private reporting is enabled), the response target, and which versions are supported.
+- `PRIVACY.md` — what the MCP server collects, which is nothing: no logs, no telemetry. If a resolve counter is ever added it is anonymous and opt-in.
+
+### Mechanical protection
+
+- `.gitignore` covers `.env*`, `*.pem`, `*.key`, `*.pfx`, `appsettings.*.json` (a Development template is the exception) and `.claude/settings.local.json`.
+- `gitleaks` runs as a pre-commit hook, and `forgeprint lint-setup` scans blueprint files for secret patterns.
+- **Read the diff before every commit** and ask whether anything above is in it. Unsure means do not commit; ask the maintainer.
+- GitHub push protection is on. Do not rely on it — catch it locally, because all push protection does is refuse the push after the commit already exists.
+
+---
+
+## 5c. Architecture and security review
+
+A blueprint is a design somebody else will build on. It is reviewed as a design, not only as a set of files that pass a linter.
+
+- The standard is `docs/review-standards.md`: named references with their current versions and the date each was last checked. **Every checklist item cites one.** An item with no reference is somebody's opinion and does not belong in a review.
+- The review is `skills/blueprint-arch-review`, run by `/arch-review <slug>`. It reports findings as `critical | high | medium | low | info`, each with what, where (`file:line`), which standard, and how to fix it.
+- Reports are committed to `docs/reviews/<slug>/<YYYY-MM-DD>.md`. The verdict is `MERGE` or `CHANGES`.
+- `critical` or `high` open findings mean the blueprint cannot be `tier: official`.
+- The deterministic half of the checklist belongs in `forgeprint lint-setup` — running as root, a `latest` tag, an unpinned version, `http` where `https` is meant, wildcard CORS, a secret in code. What needs judgment stays in the skill.
+- The reference list is re-checked every 90 days; the roadmap carries it.
 
 ---
 
@@ -226,6 +269,7 @@ A project that depends on hosted CI locks up when CI is unavailable. Therefore:
 - [ ] Workflows (active once Actions is available): validate, similarity, setup-test matrix, build-pages
 - [ ] Compatibility tests for `npx skills add` / `gh skills install`
 - [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand
+- [ ] Re-check `docs/review-standards.md` every 90 days: each reference's current version, and whether a new one belongs on the list (§5c)
 
 ### Phase 4 — Community
 - [ ] Orphan/stale bot, co-maintainer bot

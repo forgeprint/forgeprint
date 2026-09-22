@@ -1,0 +1,23 @@
+# gitleaks configuration for Forgeprint.
+#
+# The default rules do the work. What is here is the small number of values
+# this repository deliberately contains: examples that are obviously fake, and
+# local-development passwords that exist so a recipe can start a database
+# container (CLAUDE.md §5b).
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Example values that are obviously not real, by construction"
+regexTarget = "match"
+regexes = [
+  '''(?i)sk-EXAMPLE-0+''',
+  '''(?i)local-development-only[a-z0-9-]*''',
+  '''(?i)test-secret-not-used-anywhere-real[a-z0-9-]*''',
+  '''(?i)a-different-secret-that-is-also-long-enough[a-z0-9-]*''',
+]
+
+[[allowlists]]
+description = "Committed lockfile: integrity hashes are not secrets"
+paths = ['''pnpm-lock\.yaml''']

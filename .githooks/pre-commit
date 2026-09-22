@@ -1,0 +1,30 @@
+#!/bin/sh
+# Catch a secret before it becomes history.
+#
+# git does not forget: a secret that reaches a commit is compromised even if
+# the next commit removes it, and GitHub's push protection only refuses the
+# push after the commit already exists locally (ADR 0009). This runs earlier.
+#
+# Enable it once, per clone:
+#
+#     git config core.hooksPath .githooks
+#
+# No dependency is added to the project for this. `gitleaks` is a binary you
+# install yourself; without it the hook says so and lets the commit through,
+# because a hook that blocks work it cannot do is a hook people delete.
+
+set -e
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed; staged changes were not scanned."
+  echo "            https://github.com/gitleaks/gitleaks — then: git config core.hooksPath .githooks"
+  exit 0
+fi
+
+if ! gitleaks protect --staged --redact --no-banner; then
+  echo
+  echo "pre-commit: gitleaks found a secret in the staged changes."
+  echo "            Remove it. If it is a false positive, add a rule to"
+  echo "            .gitleaks.toml rather than skipping the hook."
+  exit 1
+fi
