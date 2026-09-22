@@ -222,7 +222,7 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
             if (result.ok) {
               console.log(`ok  ${recipe.steps.length} step(s) in ${seconds(started)}`);
               if (flags.keep === true) console.log(`  working directory: ${dir}`);
-              else rmSync(dir, { recursive: true, force: true });
+              else discard(dir);
             } else {
               const failure = result.failure;
               console.error(
@@ -348,6 +348,23 @@ function failedCommand(failure: StepOutcome | undefined): string {
   return failure.step.action.kind === 'run'
     ? failure.step.action.command
     : `write ${failure.step.action.path}`;
+}
+
+/**
+ * Remove the working directory of a run that passed.
+ *
+ * A recipe starts processes, and on Windows a handle can outlive the process
+ * that held it — the last run reported `EBUSY` on a directory it had just
+ * finished with, which reads as a failure after fourteen green steps. Retry
+ * briefly, and if the directory still will not go, say where it is instead of
+ * calling a successful run an error.
+ */
+function discard(dir: string): void {
+  try {
+    rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+  } catch {
+    console.log(`  could not remove the working directory; it is at ${dir}`);
+  }
 }
 
 function seconds(started: number): string {
