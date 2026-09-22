@@ -5,6 +5,38 @@ that runs on a laptop; nothing waits on Actions (ADR 0002).
 
 ---
 
+## The short version
+
+```bash
+pnpm forgeprint release 0.3.0
+```
+
+That is the whole release. It checks the repository, the versions and the
+changelogs, asks GitHub whether CI is green on the commit being tagged, writes
+a draft of the release notes the first time and stops so a human can rewrite
+them, prints what it is about to do, asks once, and then tags, releases and
+publishes each package — verifying every publish against the registry rather
+than trusting what the publish command said.
+
+It is safe to run again. Anything already done is skipped, so a release that
+stopped halfway finishes by running the same command.
+
+| Flag           | When                                                     |
+| -------------- | -------------------------------------------------------- |
+| `--dry-run`    | print the plan and stop                                  |
+| `--skip-check` | CI already ran `pnpm run check` on this commit           |
+| `--skip-ci`    | Actions is unavailable and you verified it yourself (§4) |
+| `-y`           | do not ask; for a plan you have already read             |
+
+Two things stay outside it, because both are someone else's registry and
+neither is reversible: `mcp-publisher publish server.json`, and the
+[dogfood test](dogfood.md). It prints both when it finishes.
+
+The rest of this file is what the command does, in case it is unavailable or
+you want to do a step by hand.
+
+---
+
 ## 1. The catalog is correct
 
 ```bash

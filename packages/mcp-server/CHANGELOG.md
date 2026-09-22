@@ -4,6 +4,11 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.6 — 2026-09-22
+
+- No change to the server. The release is `forgeprint release`, and the version
+  follows the workspace.
+
 ## 0.2.5 — 2026-09-22
 
 - No change to the server. The catalog it serves gained `fastapi-service`, its

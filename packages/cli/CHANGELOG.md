@@ -3,6 +3,28 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.6 — 2026-09-22
+
+- **`forgeprint release <version>`.** Cutting 0.2.5 by hand took six commands
+  and produced three wrong diagnoses: a rejected token that npm reports as
+  `404 Not Found`, a publish that succeeded and then reported `409 Cannot
+publish over previously staged version`, and `npm view --prefer-online`
+  serving the previous version for minutes after the package page showed the
+  new one. The last one nearly cost a version number that was never stuck.
+
+  So the command does not believe the publish. It publishes one package at a
+  time and then asks the registry what happened, retrying because the registry
+  lags, and an error is only an error if the registry agrees. It also checks
+  the working tree, that every published package is at the version and has a
+  changelog entry for it, and — when `gh` can reach GitHub — that CI is green
+  on the commit about to be tagged, because tags are protected and releases
+  cannot be edited. Without Actions it says the CI state is unknown and lets
+  the maintainer decide (ADR 0002); it never requires Actions to work.
+
+  The first run writes a draft of the release notes from the changelogs and
+  stops, so a human rewrites them before anything immutable exists. Running it
+  again after a failure is safe: whatever is already done is skipped.
+
 ## 0.2.5 — 2026-09-22
 
 - `no-system-paths` no longer fires inside a fenced `dockerfile` block. The

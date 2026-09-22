@@ -17,6 +17,7 @@ import { lintSetup } from './lint-setup.js';
 import type { Manifest } from './manifest.js';
 import { checkOptions, resolveSetupOptions } from './options.js';
 import { parseRecipe } from './recipe.js';
+import { release } from './release-run.js';
 import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
 import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
 import { compareBlueprints, DEFAULT_THRESHOLD, renderReport } from './similarity.js';
@@ -24,7 +25,7 @@ import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy } from './taxonomy.js';
 import { validateCatalog } from './validate.js';
 
-export const VERSION = '0.2.5';
+export const VERSION = '0.2.6';
 
 interface GlobalOptions {
   root?: string;
@@ -298,6 +299,23 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
       const taxonomy = loadTaxonomy(root);
       write(repoPaths.codeowners(root), renderCodeowners(loadBlueprints(root, taxonomy), owner));
     });
+
+  program
+    .command('release')
+    .description('cut a release: check, tag, GitHub release, npm publish')
+    .argument('<version>', 'the version every published package is at, e.g. 0.3.0')
+    .option('--skip-check', 'do not run pnpm run check (CI ran it)')
+    .option('--skip-ci', 'do not ask GitHub whether CI is green on HEAD')
+    .option('--dry-run', 'print the plan and stop')
+    .option('-y, --yes', 'do not ask for confirmation')
+    .action(
+      async (
+        version: string,
+        options: { skipCheck?: boolean; skipCi?: boolean; dryRun?: boolean; yes?: boolean },
+      ) => {
+        await release(rootOf(), { version, ...options });
+      },
+    );
 
   return program;
 }
