@@ -39,12 +39,12 @@ the maintainer, the listing is a liability.
 
 _Source: `modelcontextprotocol/registry` — `docs/modelcontextprotocol-io/quickstart.mdx`, `authentication.mdx`, `package-types.mdx`._
 
-| Requirement                                                | Forgeprint today                                                                                                                                        |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.2.0`; 0.2.1 pending                                                                                                                |
-| `mcpName` in `package.json`, matching `server.json` `name` | ✅ added; publish 0.2.1 to npm before registering                                                                                                       |
-| Namespace proven by GitHub OAuth                           | ✅ `io.github.forgeprint/*` — **@aliosmanmho must be an Owner of the org**, not merely a member. Ordinary membership no longer grants the org namespace |
-| `server.json` at the repository root                       | ✅ committed                                                                                                                                            |
+| Requirement                                                | Forgeprint today                                                                                                                                                                          |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.2.0`; 0.2.1 pending                                                                                                                                                  |
+| `mcpName` in `package.json`, matching `server.json` `name` | ✅ added; publish 0.2.1 to npm before registering                                                                                                                                         |
+| Namespace proven by GitHub OAuth                           | `io.github.forgeprint/*` needs **two** things from @aliosmanmho: the **Owner** role in the org, and a **public** membership. Both, or the registry hands out `io.github.<user>/*` instead |
+| `server.json` at the repository root                       | ✅ committed                                                                                                                                                                              |
 
 Install the publisher. There is no npm package for it: a prebuilt binary, or
 Homebrew on macOS.
@@ -73,6 +73,27 @@ Then, **from the repository root**, because `publish` reads `./server.json`:
 
 `mcp-publisher init` writes a `server.json` template; this repository already
 has one, so it is not needed.
+
+**The 403 that catches everyone.** `You have permission to publish:
+io.github.<user>/*. Attempting to publish: io.github.<org>/...` means the
+registry could not see that you belong to the organization. The Owner role is
+not enough on its own: GitHub hides organization membership by default, and
+what is hidden is not there as far as the registry is concerned.
+
+```bash
+gh api orgs/forgeprint/public_members --jq '[.[].login]'   # empty = hidden
+gh auth refresh -h github.com -s write:org
+gh api --method PUT orgs/forgeprint/public_members/aliosmanmho
+```
+
+Or on github.com: **Organization → People → your row → Private → Public**.
+Then log out and in again, because the publisher holds the namespaces it was
+granted at login:
+
+```powershell
+& "$env:USERPROFILEin\mcp-publisher.exe" logout
+& "$env:USERPROFILEin\mcp-publisher.exe" login github
+```
 
 `server.json` to commit:
 
