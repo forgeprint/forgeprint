@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { loadTaxonomy } from 'forgeprint';
 import { makeRepo } from 'forgeprint/testing';
-import { normalizeProfile } from './profile.js';
+import { normalizeProfile, requirementsIn } from './profile.js';
 
 const taxonomy = loadTaxonomy(makeRepo([]));
 
@@ -62,6 +62,48 @@ describe('normalizeProfile', () => {
   });
 
   it('passes a profile with nothing stated straight through', () => {
-    assert.deepEqual(normalizeProfile({}, taxonomy), { profile: {}, unrecognised: [] });
+    assert.deepEqual(normalizeProfile({}, taxonomy), {
+      profile: {},
+      unrecognised: [],
+      inferred: [],
+    });
+  });
+});
+
+describe('requirementsIn', () => {
+  it('reads a requirement the sentence names', () => {
+    // "I'm building a multi-tenant SaaS API" put the decisive word in free
+    // text, worth four points against forty for a language, and the resolver
+    // asked the user to choose between two blueprints over a word they had
+    // already said.
+    assert.deepEqual(requirementsIn('an API with auth', taxonomy), ['auth']);
+  });
+
+  it('reads a label written as several words', () => {
+    assert.deepEqual(requirementsIn('an API with continuous integration', taxonomy), ['ci']);
+  });
+
+  it('folds the separators people vary on', () => {
+    assert.deepEqual(requirementsIn('set up continuous-integration please', taxonomy), ['ci']);
+  });
+
+  it('does not read a requirement the sentence rules out', () => {
+    assert.deepEqual(requirementsIn('an API, no authentication', taxonomy), []);
+    assert.deepEqual(requirementsIn('I do not want authentication', taxonomy), []);
+  });
+
+  it('finds nothing in a sentence that names nothing', () => {
+    assert.deepEqual(requirementsIn('a small JSON service', taxonomy), []);
+    assert.deepEqual(requirementsIn(undefined, taxonomy), []);
+  });
+
+  it('merges into the profile without repeating what was stated', () => {
+    const { profile, inferred } = normalizeProfile(
+      { goal: 'an API with auth and ci', requirements: ['auth'] },
+      taxonomy,
+    );
+    assert.deepEqual(profile.requirements, ['auth', 'ci']);
+    // Only what the sentence added, so the caller can see what it did not type.
+    assert.deepEqual(inferred, ['ci']);
   });
 });

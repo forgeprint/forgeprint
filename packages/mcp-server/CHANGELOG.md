@@ -21,6 +21,16 @@ Found by the dogfood test, on the first sentence a first-time user types.
   being scored as a silent zero, and the `no_match` instruction tells the agent
   to check it before reporting that the catalog has nothing.
 - The input schemas say so: ids or labels, `["csharp"]` and `["C#"]` alike.
+- **The resolver reads the requirements out of the goal sentence.** "I'm
+  building a multi-tenant SaaS API" put the decisive word in the weakest field
+  — free text is worth four points against forty for a language — so two
+  blueprints landed within three points of each other and the user was asked to
+  choose between them over a word they had already said. A requirement named in
+  the sentence now counts as stated, and `read_from_your_description` says
+  which ones, so a wrong reading is visible rather than silent. "not
+  multi-tenant" and "no authentication" are not requirements: a negation within
+  four words suppresses the match. Only requirements are read this way;
+  guessing a language or a platform from prose would be guessing.
 
 ## 0.2.1 — 2026-09-22
 

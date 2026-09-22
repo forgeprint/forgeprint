@@ -192,8 +192,11 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         // "C#" is the right answer in the wrong alphabet; the catalog stores
         // `csharp`. Scoring it as a language the user does not know turned a
         // match into no_match, so both spellings are accepted here.
-        const { profile, unrecognised } = normalizeProfile(stated, index.taxonomy);
+        const { profile, unrecognised, inferred } = normalizeProfile(stated, index.taxonomy);
         const ignored = unrecognised.length === 0 ? undefined : unrecognised;
+        // What the sentence said that the fields did not. Reported, because a
+        // requirement nobody typed should be visible enough to correct.
+        const read = inferred.length === 0 ? undefined : inferred;
 
         const questions = questionsFor(index, profile);
         if (questions.length > 0) {
@@ -202,6 +205,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
               status: 'questions',
               questions,
               unrecognised_values: ignored,
+              read_from_your_description: read,
               instruction:
                 'Ask the user these questions before recommending anything. Then call `resolve` again with their answers.',
             },
@@ -216,6 +220,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             {
               status: 'no_match',
               unrecognised_values: ignored,
+              read_from_your_description: read,
               closest:
                 best === undefined
                   ? undefined
@@ -233,6 +238,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             {
               status: 'choose',
               unrecognised_values: ignored,
+              read_from_your_description: read,
               question:
                 'Two blueprints fit almost equally well. Which one matches what you are building?',
               candidates: [best, runnerUp].map((score) => ({
@@ -251,6 +257,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
           {
             status: 'resolved',
             unrecognised_values: ignored,
+            read_from_your_description: read,
             blueprint: best.entry,
             score: round(best.total),
             why_it_fits: best.reasons,
