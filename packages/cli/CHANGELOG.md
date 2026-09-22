@@ -3,6 +3,14 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.3 — 2026-09-22
+
+- `schema/taxonomy.yaml` accepts an `aliases` section: spellings that mean a
+  value already in a vocabulary, checked when the taxonomy is parsed. An alias
+  pointing at an identifier that does not exist, at a vocabulary that does not
+  exist, or shadowing an identifier is refused — the vocabularies stay closed
+  (rule 8), this only widens how they can be written.
+
 ## 0.2.2 — 2026-09-22
 
 - No change. The version follows the workspace, which moved for a fix in

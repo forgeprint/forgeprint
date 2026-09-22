@@ -14,6 +14,8 @@ version: 1
 languages:
   csharp: C#
   typescript: TypeScript
+  go: Go
+  python: Python
 stack:
   aspnetcore: ASP.NET Core
   postgres: PostgreSQL
@@ -24,6 +26,7 @@ platforms:
 distribution:
   saas: SaaS
   free: Free
+  open-source: Open source
 project_type:
   api: API service
   cli: Command-line tool
@@ -32,11 +35,18 @@ audience:
 requirements:
   auth: Authentication
   ci: Continuous integration
+  multi-tenant: Multi-tenancy
 agents:
   claude-code: Claude Code
 tier:
   community: Community
   official: Official
+aliases:
+  languages:
+    golang: go
+    ts: typescript
+  requirements:
+    multitenancy: multi-tenant
 `;
 
 export interface ManifestFields {

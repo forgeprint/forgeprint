@@ -1,6 +1,6 @@
 {
   "name": "@forgeprint/site",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Static GitHub Pages site generated from docs/index.json. No build service required.",
   "license": "SEE LICENSE IN LICENSE",
   "private": true,

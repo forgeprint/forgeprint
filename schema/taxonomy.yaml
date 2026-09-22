@@ -188,3 +188,86 @@ tier:
   community: Community
   verified: Verified
   official: Official
+
+# Spellings that mean a value that is already here.
+#
+# Not new values: the vocabularies above are closed (rule 8). These are the
+# words people actually write — "golang" for `go`, "k8s" for `kubernetes` — so
+# that a profile written the way a person speaks still matches. Identifiers and
+# labels are already understood without an entry here, ignoring case and the
+# separators people vary on, so only genuinely different spellings belong.
+aliases:
+  languages:
+    golang: go
+    js: javascript
+    ts: typescript
+    py: python
+    c-sharp: csharp
+    dotnet: csharp
+    .net: csharp
+    node: javascript
+    nodejs: javascript
+    node-js: javascript
+  stack:
+    asp.net: aspnetcore
+    aspnet: aspnetcore
+    asp.net-core: aspnetcore
+    entity-framework: efcore
+    entity-framework-core: efcore
+    ef: efcore
+    psql: postgres
+    mssql: sqlserver
+    k8s: kubernetes
+    gha: github-actions
+    actions: github-actions
+    next: nextjs
+    nest: nestjs
+    rn: react-native
+    ue: unreal
+  project_type:
+    rest-api: api
+    backend: api
+    service: api
+    website: web
+    frontend: web
+    library: lib
+    package: lib
+    tool: cli
+    command-line: cli
+    mcp-server: agent
+    mcp: agent
+  distribution:
+    oss: open-source
+    opensource: open-source
+    subscription: saas
+    b2b: saas
+    in-app-purchase: iap
+  requirements:
+    authentication: auth
+    authn: auth
+    login: auth
+    authz: rbac
+    roles: rbac
+    permissions: rbac
+    multitenancy: multi-tenant
+    multi-tenancy: multi-tenant
+    tenancy: multi-tenant
+    websockets: realtime
+    real-time: realtime
+    queues: background-jobs
+    workers: background-jobs
+    cron: background-jobs
+    uploads: file-upload
+    storage: file-upload
+    smtp: email
+    localization: i18n
+    a11y: accessibility
+    telemetry: observability
+    logging: observability
+    metrics: observability
+    tracing: observability
+    tests: testing
+    docker: containerization
+    containers: containerization
+    infrastructure-as-code: iac
+    terraform: iac

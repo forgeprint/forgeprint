@@ -87,12 +87,16 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
       guard(async () => {
         const index = await source.loadIndex();
         const stated: Profile = { ...input, goal: input.text ?? undefined };
-        const { profile, unrecognised } = normalizeProfile(stated, index.taxonomy);
+        const { profile, unrecognised, corrections } = normalizeProfile(stated, index.taxonomy);
         const scored = scoreCatalog(index, profile).slice(0, input.limit ?? 10);
         return reply({
           matches: scored.map(summarize),
           catalog_size: index.blueprints.length,
           unrecognised_values: unrecognised.length === 0 ? undefined : unrecognised,
+          moved_to_the_right_field:
+            corrections.length === 0
+              ? undefined
+              : corrections.map((c) => `${c.from} → did you mean ${c.to}?`),
           note:
             scored.length === 0
               ? 'Nothing matched. Do not invent a blueprint; `request_blueprint` records the demand.'
@@ -177,6 +181,12 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
           ),
         goal: z.string().optional().describe('What they are building, in their words.'),
         skills: z.array(z.string()).optional(),
+        stack: z
+          .array(z.string())
+          .optional()
+          .describe(
+            'Frameworks, runtimes or databases the user named. Ids or labels: ["aspnetcore"] or ["ASP.NET Core"]. A field this tool does not accept is dropped before it is scored, so put a stack here rather than in the goal.',
+          ),
         project_type: z.string().optional(),
         platforms: z.array(z.string()).optional(),
         distribution: z.array(z.string()).optional(),
@@ -192,8 +202,19 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         // "C#" is the right answer in the wrong alphabet; the catalog stores
         // `csharp`. Scoring it as a language the user does not know turned a
         // match into no_match, so both spellings are accepted here.
-        const { profile, unrecognised, inferred } = normalizeProfile(stated, index.taxonomy);
+        const { profile, unrecognised, inferred, corrections } = normalizeProfile(
+          stated,
+          index.taxonomy,
+        );
         const ignored = unrecognised.length === 0 ? undefined : unrecognised;
+        // A value in the wrong field is scored from the right one, and said
+        // out loud so the agent can ask about it rather than silently absorb it.
+        const moved =
+          corrections.length === 0
+            ? undefined
+            : corrections.map(
+                (correction) => `${correction.from} → did you mean ${correction.to}?`,
+              );
         // What the sentence said that the fields did not. Reported, because a
         // requirement nobody typed should be visible enough to correct.
         const read = inferred.length === 0 ? undefined : inferred;
@@ -206,6 +227,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
               questions,
               unrecognised_values: ignored,
               read_from_your_description: read,
+              moved_to_the_right_field: moved,
               instruction:
                 'Ask the user these questions before recommending anything. Then call `resolve` again with their answers.',
             },
@@ -221,6 +243,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
               status: 'no_match',
               unrecognised_values: ignored,
               read_from_your_description: read,
+              moved_to_the_right_field: moved,
               closest:
                 best === undefined
                   ? undefined
@@ -239,6 +262,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
               status: 'choose',
               unrecognised_values: ignored,
               read_from_your_description: read,
+              moved_to_the_right_field: moved,
               question:
                 'Two blueprints fit almost equally well. Which one matches what you are building?',
               candidates: [best, runnerUp].map((score) => ({
@@ -258,6 +282,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             status: 'resolved',
             unrecognised_values: ignored,
             read_from_your_description: read,
+            moved_to_the_right_field: moved,
             blueprint: best.entry,
             score: round(best.total),
             why_it_fits: best.reasons,

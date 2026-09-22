@@ -66,6 +66,7 @@ describe('normalizeProfile', () => {
       profile: {},
       unrecognised: [],
       inferred: [],
+      corrections: [],
     });
   });
 });

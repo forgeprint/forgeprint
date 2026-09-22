@@ -32,6 +32,43 @@ Found by the dogfood test, on the first sentence a first-time user types.
   four words suppresses the match. Only requirements are read this way;
   guessing a language or a platform from prose would be guessing.
 
+## 0.2.3 — 2026-09-22
+
+Hardening the resolver along the two failure classes the dogfood run exposed,
+rather than the two instances of them.
+
+- **A value in the wrong field is scored from the right one.** "SaaS" arrived
+  as a requirement — a reasonable mistake, it is a distribution model — and was
+  scored as a requirement nothing covers, so a multi-tenant SaaS blueprint was
+  reported as not covering SaaS. A value the caller's field does not know but
+  exactly one other vocabulary does is moved there, scored there, and reported
+  as `moved_to_the_right_field`: "requirements: SaaS → did you mean
+  distribution: saas?". A spelling two vocabularies both claim is left alone,
+  because moving it would be a guess.
+- **Spellings.** `schema/taxonomy.yaml` gains an `aliases` section: `golang`
+  for `go`, `k8s` for `kubernetes`, `multi-tenancy` for `multi-tenant`,
+  `authentication` for `auth`. Not new values — the vocabularies stay closed
+  (rule 8) and an alias pointing at a missing id is refused. Separator folding
+  now covers the dot as well, so `Node.js`, `node-js` and `nodejs` are one
+  thing, and `.NET` reaches `dotnet`.
+- **`resolve` accepts a `stack`.** It was in the scoring weights and in the
+  profile type but not in the tool's input schema, so a stack an agent sent was
+  dropped before anything could score it.
+- **A goal that says nothing is a question again.** "hi" was treated as a
+  stated goal, which let the resolver normalise a score over one criterion and
+  return whatever blueprint was written in the right language. A goal of fewer
+  than three words now counts only when one of them is a term the catalog
+  knows, so "a CLI" is an answer and "hi" is not.
+- **No more questions that cannot change the answer.** When the catalog holds
+  nothing in a language the user stated, the resolver said so only after asking
+  about platforms and distribution first. It now goes straight to `no_match`:
+  language is the heaviest criterion, and no answer to any other question can
+  move it.
+
+The table in `resolve.test.ts` is the specification for all of this: fifteen
+profiles, each with the answer it must produce, and the rule they all share —
+one blueprint, or a question, never an invented match.
+
 ## 0.2.1 — 2026-09-22
 
 - `mcpName` in the package manifest, which is how the official MCP registry

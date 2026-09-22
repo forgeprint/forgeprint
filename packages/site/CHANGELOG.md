@@ -4,6 +4,10 @@ The static site generator behind https://forgeprint.github.io/forgeprint. It is
 private: the site is generated into `docs/` and committed, so Pages deploys
 from the branch and needs no build service (ADR 0002).
 
+## 0.2.3 — 2026-09-22
+
+- No change. The version follows the workspace.
+
 ## 0.2.2 — 2026-09-22
 
 - The install line carries the Windows PowerShell form, where a bare `--` is

@@ -11,6 +11,7 @@
  */
 
 import type { CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
+import { goalSaysSomething } from './profile.js';
 
 export interface Profile {
   // `| undefined` is explicit because the server runs with
@@ -202,7 +203,8 @@ const REQUIRED_FIRST: readonly Question[] = [
 export function questionsFor(index: CatalogIndex, profile: Profile): Question[] {
   const required: Question[] = [];
   if (!nonEmpty(profile.languages)) required.push(REQUIRED_FIRST[0] as Question);
-  if (!isSet(profile.project_type) && !isSet(profile.goal)) {
+  // A goal of "hi" is an unanswered question wearing an answer's clothes.
+  if (!isSet(profile.project_type) && !goalSaysSomething(profile.goal, index.taxonomy)) {
     required.push(REQUIRED_FIRST[1] as Question);
   }
   if (required.length > 0) return required;
@@ -211,6 +213,15 @@ export function questionsFor(index: CatalogIndex, profile: Profile): Question[] 
   const scored = scoreCatalog(index, profile);
   const best = scored[0];
   if (best === undefined) return questions;
+
+  // Nothing here is written in a language they know, and that is the heaviest
+  // criterion there is: no answer to any further question can change it. Ask
+  // anyway and the user spends turns on a conversation whose end is already
+  // decided — say so instead, which is what the no_match path is for.
+  if (nonEmpty(profile.languages) && scored.every((score) => score.parts.languages === 0)) {
+    return questions;
+  }
+
   const candidates = scored.filter((score) => score === best || isGenuineTie(best, score));
   if (candidates.length < 2) return questions;
 

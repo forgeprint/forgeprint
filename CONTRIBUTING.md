@@ -41,6 +41,13 @@ blueprints/<slug>/
 The folder name is the slug, and the slug is also the `slug` field in
 `manifest.yaml`. Slugs are lower kebab-case.
 
+Every controlled value has an identifier and a label — `csharp` and "C#",
+`multi-tenant` and "Multi-tenancy" — and manifests are written in identifiers.
+`schema/taxonomy.yaml` also carries an `aliases` section for the spellings
+people write instead: `golang`, `k8s`, `authentication`. Those are not new
+values and cannot become one: an alias has to point at an identifier that is
+already in that vocabulary, and adding a value is still its own pull request.
+
 ---
 
 ## Before you write anything
