@@ -3,6 +3,14 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.3 — 2026-09-22
+
+- `requires_tools` declares `curl`. Step 31 reads `/health` back from the
+  running container with it, so a machine without `curl` failed thirty steps
+  in, with a shell error rather than the refusal `test-setup` gives before it
+  starts anything. The same gap `dotnet-web-api` had, found while fixing that
+  one. No change to the recipe or the project it produces.
+
 ## 1.0.2 — 2026-09-22
 
 The recipe now passes on a GitHub runner, which is where it first failed. Both

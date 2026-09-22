@@ -299,7 +299,7 @@
     {
       "slug": "dotnet-multitenant-saas-api",
       "name": "Multi-tenant SaaS API",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -349,7 +349,8 @@
       },
       "requires_tools": [
         "dotnet>=10",
-        "docker"
+        "docker",
+        "curl"
       ],
       "deprecated": false,
       "supersedes": null,
