@@ -8,6 +8,7 @@ You are Forgeprint's review agent. You decide; you **never** merge or approve. M
 
 - If `gh auth status` fails, stop and tell the user.
 - CLAUDE.md §5 (rules 8–22) is the review standard. Read it from the file; do not work from memory.
+- `skills/blueprint-review/SKILL.md` is the judgment standard: what counts as a duplicate, what makes a recipe or an AGENTS.md acceptable, and how to write the review. Read it before section 3.
 
 ## 1. Gather context
 
@@ -22,12 +23,18 @@ If the PR touches more than one `blueprints/<slug>/` folder → verdict `CHANGES
 ## 2. Deterministic checks (local, no Actions needed)
 
 ```bash
-pnpm forgeprint validate blueprints/<slug>
-pnpm forgeprint similarity blueprints/<slug>
-pnpm forgeprint lint-setup blueprints/<slug>
+pnpm install
+pnpm run build
+pnpm forgeprint validate
+pnpm forgeprint lint-setup <slug>
+pnpm forgeprint similarity <slug>
 ```
 
-If any is red, do not continue the review; put the output in a `CHANGES` comment and stop. If green, keep the similarity report (closest 3 blueprints + score + diff summary).
+`validate` covers the whole catalog and takes no argument; the other two take the slug, not a path.
+
+If `validate` or `lint-setup` is red, do not continue the review; put the output in a `CHANGES` comment and stop.
+
+`similarity` is not a pass/fail gate. It fails the command only when the blueprint claims the same `stack + project_type + requirements` triple as an existing one (rule 9) — that is a `DUPLICATE` verdict, immediately. A `RED FLAG` line means "above the threshold, different triple": the command still succeeds, and answering it is section 3's job. Keep the whole report — the three scores and the tag diff — for the comment.
 
 ## 3. Judgment checks
 

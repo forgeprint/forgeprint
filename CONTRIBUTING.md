@@ -11,6 +11,11 @@ Everything in this repository is written in **English** — code, comments,
 commits, issues, blueprints. Translations have exactly one home, described in
 [Translations](#translations).
 
+Working with a coding agent? Point it at
+[`skills/blueprint-author/SKILL.md`](skills/blueprint-author/SKILL.md). It is
+this document turned into a procedure, including the parts that usually go
+wrong.
+
 ---
 
 ## What a blueprint is

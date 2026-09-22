@@ -145,6 +145,7 @@ See [ADR 0002](docs/decisions/0002-actions-optional.md).
 
 ```
 blueprints/<slug>/     one folder per blueprint — the unit of contribution
+skills/                blueprint-author and blueprint-review
 schema/                manifest schema and the controlled taxonomy
 packages/cli/          forgeprint validate / build-* / similarity / lint-setup
 packages/mcp-server/   the MCP server (npx forgeprint-mcp)
@@ -158,7 +159,7 @@ docs/                  index.json, the ADRs, and the published site
 
 - [x] **Phase 0 — Skeleton.** Workspace, schema, taxonomy, validation and
       generators, licensing, contribution and governance rules.
-- [ ] **Phase 1 — First content.** The first blueprints, the
+- [x] **Phase 1 — First content.** Three `official` blueprints, the
       `blueprint-author` and `blueprint-review` skills, the similarity report
       and the setup lint.
 - [ ] **Phase 2 — MCP.** The six tools, `npx forgeprint-mcp` over stdio, and
@@ -175,6 +176,12 @@ docs/                  index.json, the ADRs, and the published site
 Read [CONTRIBUTING.md](CONTRIBUTING.md) first — especially the part about
 checking whether the blueprint you want to write already exists. The fastest
 merge is usually a pull request against a blueprint that is already there.
+
+Two skills carry the procedure, for you or for your agent:
+[`blueprint-author`](skills/blueprint-author/SKILL.md) turns a working project
+into a blueprint that passes the gate, and
+[`blueprint-review`](skills/blueprint-review/SKILL.md) is the standard it is
+judged against.
 
 Want a blueprint you cannot write yourself? File a
 [blueprint request](https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml).
