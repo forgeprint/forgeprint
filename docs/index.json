@@ -41,6 +41,7 @@
       "astro": "Astro",
       "tailwind": "Tailwind CSS",
       "vite": "Vite",
+      "python": "Python",
       "django": "Django",
       "fastapi": "FastAPI",
       "flask": "Flask",
