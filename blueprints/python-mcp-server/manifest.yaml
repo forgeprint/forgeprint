@@ -1,0 +1,21 @@
+schema: 1
+slug: python-mcp-server
+name: 'Python MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'MCP server in Python on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol in-process.'
+stack: [python, mcp]
+languages: [python]
+platforms: [windows, linux, macos]
+distribution: [open-source, internal]
+project_type: agent
+audience: [intermediate]
+requirements: [ci, testing]
+agents: [claude-code]
+options:
+  transport: [stdio, http]
+requires_tools: [python>=3.10, curl]
+deprecated: false
+supersedes: null

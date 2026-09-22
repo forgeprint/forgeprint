@@ -501,6 +501,68 @@
       "i18n": []
     },
     {
+      "slug": "python-mcp-server",
+      "name": "Python MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "MCP server in Python on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol in-process.",
+      "stack": [
+        "python",
+        "mcp"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {
+        "transport": [
+          "stdio",
+          "http"
+        ]
+      },
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.10",
+        "curl"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "ts-mcp-server",
       "name": "TypeScript MCP Server",
       "version": "1.1.0",
