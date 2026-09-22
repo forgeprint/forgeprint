@@ -75,52 +75,44 @@ Then, **from the repository root**, because `publish` reads `./server.json`:
 has one, so it is not needed.
 
 **The 403 that catches everyone.** `You have permission to publish:
-io.github.<user>/*. Attempting to publish: io.github.<org>/...` means the
-registry could not see that you belong to the organization. The Owner role is
-not enough on its own: GitHub hides organization membership by default, and
-what is hidden is not there as far as the registry is concerned.
+io.github.<user>/*. Attempting to publish: io.github.<org>/...`
 
-```bash
-gh api orgs/forgeprint/public_members --jq '[.[].login]'   # empty = hidden
-gh auth refresh -h github.com -s write:org
-gh api --method PUT orgs/forgeprint/public_members/aliosmanmho
-```
+The error suggests making your organization membership public. That is a red
+herring: the registry does not read public membership. Its code calls
+`GET /user/memberships/orgs?state=active` and grants the organization
+namespace only where your role is `admin` — and it needs a token that is
+allowed to read that endpoint at all.
 
-Or on github.com: **Organization → People → your row → Private → Public**.
-Then log out and in again, because the publisher holds the namespaces it was
-granted at login:
+On a **new organization, GitHub enables OAuth App access restrictions by
+default**, so the registry's OAuth app cannot see your membership no matter
+what your role is or how public it is. That is what produced this 403 for
+`forgeprint`, which was a day old at the time.
+
+Fix it in the organization, then take a new token:
+
+1. **Organization → Settings → Third-party Access → OAuth app policy**
+   (`https://github.com/organizations/<org>/settings/oauth_application_policy`)
+   and approve the registry's app. A login attempt leaves a pending request
+   there; an Owner can grant it directly.
+2. Log out and in again. The publisher stores the namespaces it was granted at
+   login, so an approval does not reach a token that already exists.
 
 ```powershell
 & "$env:USERPROFILEin\mcp-publisher.exe" logout
 & "$env:USERPROFILEin\mcp-publisher.exe" login github
 ```
 
-`server.json` to commit:
+The alternative, if the approval route is blocked, is a **classic personal
+access token with `read:org` and nothing else** — the registry never reads
+your code:
 
-```json
-{
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.forgeprint/forgeprint",
-  "title": "Forgeprint",
-  "description": "Resolve a developer profile to exactly one project blueprint and return its CI-tested setup recipe.",
-  "version": "0.2.1",
-  "repository": {
-    "url": "https://github.com/forgeprint/forgeprint",
-    "source": "github"
-  },
-  "packages": [
-    {
-      "registryType": "npm",
-      "identifier": "forgeprint-mcp",
-      "version": "0.2.1",
-      "transport": { "type": "stdio" }
-    }
-  ]
-}
+```powershell
+& "$env:USERPROFILEin\mcp-publisher.exe" login github --token <PAT>
 ```
 
-Publishing from CI later is the roadmap item already recorded: GitHub OIDC,
-alongside npm trusted publishing.
+To see what a token actually grants, decode the `permissions` claim in
+`~/.config/mcp-publisher/token.json`. Before the fix it reads
+`io.github.<user>/*`; after it, the organization is there too.
 
 ---
 
