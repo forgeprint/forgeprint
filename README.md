@@ -8,9 +8,10 @@ coding agent bootstrap a new project with the right context in one shot: the
 `AGENTS.md`, the skills, the MCP and plugin configuration, and a deterministic
 setup recipe the agent can execute.
 
-> **Status: pre-release.** The catalog is empty, the MCP server has no tools
-> yet, and the site is not published. What works today is the catalog schema and
-> the local tooling. See [Roadmap](#roadmap) for what lands when.
+> **Status: pre-release.** Three blueprints, working tooling, and an MCP server
+> with all six tools. Not published to npm yet, and the site is not live, so
+> connecting the server means running it from a checkout — see
+> [docs/mcp.md](docs/mcp.md). [Roadmap](#roadmap) has the rest.
 
 ---
 
@@ -94,10 +95,10 @@ them.
 
 ---
 
-## How it will work
+## How it works
 
-Once the MCP server ships (phase 2), you point your agent at it and talk
-normally:
+You point your agent at the MCP server and talk normally.
+[docs/mcp.md](docs/mcp.md) has the connection details and a worked exchange.
 
 | Tool                 | What you get                                                                                       |
 | -------------------- | -------------------------------------------------------------------------------------------------- |
@@ -162,8 +163,9 @@ docs/                  index.json, the ADRs, and the published site
 - [x] **Phase 1 — First content.** Three `official` blueprints, the
       `blueprint-author` and `blueprint-review` skills, the similarity report
       and the setup lint.
-- [ ] **Phase 2 — MCP.** The six tools, `npx forgeprint-mcp` over stdio, and
-      the option resolver.
+- [x] **Phase 2 — MCP.** The six tools, the option resolver, and the server
+      over stdio. Publishing to npm so that `npx forgeprint-mcp` resolves is
+      the one piece still outstanding.
 - [ ] **Phase 3 — Publishing.** The Pages site, the workflows, and
       compatibility with the skill installers.
 - [ ] **Phase 4 — Community.** Adoption and staleness handling, resolve

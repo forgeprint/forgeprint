@@ -8,7 +8,41 @@
  */
 
 import { readBlueprintFile, type Blueprint } from './catalog.js';
-import type { Manifest } from './manifest.js';
+
+/**
+ * What comparing needs: the tag fields, and the text of the two files whose
+ * wording gives a copy away. Decoupled from the file system so that the MCP
+ * server can compare a contributor's draft it has never seen on disk.
+ */
+export interface SimilaritySubject {
+  readonly slug: string;
+  readonly name: string;
+  readonly project_type: string;
+  readonly stack: readonly string[];
+  readonly languages: readonly string[];
+  readonly platforms: readonly string[];
+  readonly distribution: readonly string[];
+  readonly requirements: readonly string[];
+  readonly agentsMarkdown: string;
+  readonly setupMarkdown: string;
+}
+
+/** Read a blueprint on disk into a comparable subject. */
+export function subjectFromBlueprint(blueprint: Blueprint): SimilaritySubject {
+  const m = blueprint.manifest;
+  return {
+    slug: blueprint.slug,
+    name: m.name,
+    project_type: m.project_type,
+    stack: m.stack,
+    languages: m.languages,
+    platforms: m.platforms,
+    distribution: m.distribution,
+    requirements: m.requirements,
+    agentsMarkdown: fileOf(blueprint, 'AGENTS.md'),
+    setupMarkdown: fileOf(blueprint, 'setup.md'),
+  };
+}
 
 /** Above this, a reviewer is asked to justify the blueprint's existence. */
 export const DEFAULT_THRESHOLD = 0.7;
@@ -46,30 +80,42 @@ export function compareBlueprints(
   others: readonly Blueprint[],
   threshold: number = DEFAULT_THRESHOLD,
 ): SimilarityReport {
-  const corpus = [subject, ...others];
-  const agentsIdf = inverseDocumentFrequency(corpus.map((b) => tokens(fileOf(b, 'AGENTS.md'))));
-  const setupIdf = inverseDocumentFrequency(corpus.map((b) => tokens(fileOf(b, 'setup.md'))));
+  return compareSubjects(
+    subjectFromBlueprint(subject),
+    others.map(subjectFromBlueprint),
+    threshold,
+  );
+}
 
-  const subjectAgents = vector(tokens(fileOf(subject, 'AGENTS.md')), agentsIdf);
-  const subjectSetup = vector(tokens(fileOf(subject, 'setup.md')), setupIdf);
-  const subjectTags = tagSet(subject.manifest);
+export function compareSubjects(
+  subject: SimilaritySubject,
+  others: readonly SimilaritySubject[],
+  threshold: number = DEFAULT_THRESHOLD,
+): SimilarityReport {
+  const corpus = [subject, ...others];
+  const agentsIdf = inverseDocumentFrequency(corpus.map((b) => tokens(b.agentsMarkdown)));
+  const setupIdf = inverseDocumentFrequency(corpus.map((b) => tokens(b.setupMarkdown)));
+
+  const subjectAgents = vector(tokens(subject.agentsMarkdown), agentsIdf);
+  const subjectSetup = vector(tokens(subject.setupMarkdown), setupIdf);
+  const subjectTags = tagSet(subject);
 
   const scores = others
     .map((other): SimilarityScore => {
-      const otherTags = tagSet(other.manifest);
+      const otherTags = tagSet(other);
       const tags = jaccard(subjectTags, otherTags);
-      const agents = cosine(subjectAgents, vector(tokens(fileOf(other, 'AGENTS.md')), agentsIdf));
-      const setup = cosine(subjectSetup, vector(tokens(fileOf(other, 'setup.md')), setupIdf));
+      const agents = cosine(subjectAgents, vector(tokens(other.agentsMarkdown), agentsIdf));
+      const setup = cosine(subjectSetup, vector(tokens(other.setupMarkdown), setupIdf));
       return {
         slug: other.slug,
-        name: other.manifest.name,
+        name: other.name,
         tags,
         agents,
         setup,
         highest: Math.max(tags, agents, setup),
         onlyHere: [...subjectTags].filter((tag) => !otherTags.has(tag)).sort(),
         onlyThere: [...otherTags].filter((tag) => !subjectTags.has(tag)).sort(),
-        sameCombination: combination(subject.manifest) === combination(other.manifest),
+        sameCombination: combination(subject) === combination(other),
       };
     })
     .sort((a, b) => b.highest - a.highest || a.slug.localeCompare(b.slug));
@@ -137,25 +183,25 @@ function fileOf(blueprint: Blueprint, file: string): string {
   return blueprint.files.includes(file) ? readBlueprintFile(blueprint, file) : '';
 }
 
-function combination(manifest: Manifest): string {
+function combination(subject: SimilaritySubject): string {
   return [
-    [...manifest.stack].sort().join(','),
-    manifest.project_type,
-    [...manifest.requirements].sort().join(','),
+    [...subject.stack].sort().join(','),
+    subject.project_type,
+    [...subject.requirements].sort().join(','),
   ].join('|');
 }
 
 /** Every tag, namespaced so that `docker` as a platform and as a stack differ. */
-function tagSet(manifest: Manifest): Set<string> {
-  const tags = new Set<string>([`type:${manifest.project_type}`]);
+function tagSet(subject: SimilaritySubject): Set<string> {
+  const tags = new Set<string>([`type:${subject.project_type}`]);
   const add = (prefix: string, values: readonly string[]): void => {
     for (const value of values) tags.add(`${prefix}:${value}`);
   };
-  add('stack', manifest.stack);
-  add('lang', manifest.languages);
-  add('platform', manifest.platforms);
-  add('dist', manifest.distribution);
-  add('req', manifest.requirements);
+  add('stack', subject.stack);
+  add('lang', subject.languages);
+  add('platform', subject.platforms);
+  add('dist', subject.distribution);
+  add('req', subject.requirements);
   return tags;
 }
 

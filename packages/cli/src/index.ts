@@ -7,6 +7,7 @@ export * from './config.js';
 export * from './json.js';
 export * from './lint-setup.js';
 export * from './manifest.js';
+export * from './options.js';
 export * from './paths.js';
 export * from './similarity.js';
 export * from './taxonomy.js';
