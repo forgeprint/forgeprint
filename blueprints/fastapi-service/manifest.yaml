@@ -1,7 +1,7 @@
 schema: 1
 slug: fastapi-service
 name: 'FastAPI Service'
-version: 1.0.0
+version: 1.0.1
 tier: official
 maintainers: [aliosmanmho]
 summary: 'FastAPI service with SQLAlchemy, bearer token verification, a container image and CI.'

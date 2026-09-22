@@ -51,6 +51,14 @@ wrong.
 
 ## Transports
 
+**`stdio` is the safer default, not merely the simpler one.** The client starts
+the process and nothing else can reach it; the process boundary is the access
+control. Under `http` the server listens on a port, so every process on the
+machine can call these tools and a web page can try to through DNS rebinding —
+which is why the entry point refuses an unexpected `Origin`. That guard is not
+authentication. **Adding a tool that touches the filesystem, the network or a
+credential means adding authentication in the same change.**
+
 `stdio` is for a server the user runs locally; the client starts the process.
 `http` is streamable HTTP, stateless, bound to `127.0.0.1`. Statelessness is a
 decision: no session identifiers, so nothing has to be kept between requests.

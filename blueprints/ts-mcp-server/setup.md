@@ -79,6 +79,9 @@ Requires Node.js 20 or newer.
    import { z } from 'zod';
 
    export const SERVER_NAME = 'mcp-server';
+   // Keep this equal to the version in package.json: it is what a client reads
+   // in the handshake, and a bug report quotes. Nothing enforces it, so a test
+   // that asserts the two match is worth writing the day it first matters.
    export const SERVER_VERSION = '0.1.0';
 
    /**
@@ -150,7 +153,25 @@ Requires Node.js 20 or newer.
    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
    await createServer().connect(transport);
 
+   // A browser can be made to resolve an attacker's domain to 127.0.0.1 and
+   // then post to this port as same-origin — DNS rebinding, which the MCP
+   // specification names as the way an insecure local server is reached. A
+   // browser always sends Origin on a cross-site request, and no MCP client
+   // sends one at all, so refusing anything unexpected costs nothing and
+   // closes the hole.
+   const ALLOWED_ORIGINS = new Set(
+     (process.env['ALLOWED_ORIGINS'] ?? '')
+       .split(',')
+       .map((value) => value.trim())
+       .filter(Boolean),
+   );
+
    const http = createHttpServer((request, response) => {
+     const origin = request.headers.origin;
+     if (origin !== undefined && !ALLOWED_ORIGINS.has(origin)) {
+       response.writeHead(403).end('Origin not allowed');
+       return;
+     }
      void transport.handleRequest(request, response);
    });
 
@@ -305,13 +326,16 @@ Requires Node.js 20 or newer.
 11. Start the built server on a port the operating system chooses, and keep its process id. A fixed port can already be taken, and then the check either fails or — worse — answers from somebody else's server: `node dist/bin.js > server.log 2>&1 & echo $! > server.pid`
     Verify: `test -s server.pid`
 
-12. Read the address it chose out of its own log: `for attempt in $(seq 30); do grep -oE "http://127\.0\.0\.1:[0-9]+" server.log | head -1 > server.url && test -s server.url && break; sleep 1; done`
+12. Read the address it chose out of its own log: `for attempt in $(seq 60); do grep -oE "http://127\.0\.0\.1:[0-9]+" server.log | head -1 > server.url && test -s server.url && break; sleep 1; done`
     Verify: `test -s server.url`
 
 13. Ask it to initialize, and keep the answer: `curl -fsS -o initialize.json -X POST "$(cat server.url)/" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1.0.0"}}}'`
     Verify: `grep -q protocolVersion initialize.json`
 
-14. Stop the server: `kill "$(cat server.pid)"`
+14. Confirm a request claiming to come from a web page is refused. This is the check that proves the rebinding guard, and it fails loudly if somebody removes it: `curl -sS -o rejected.txt -w "%{http_code}" -X POST "$(cat server.url)/" -H "Origin: https://example.com" -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' > rejected.code`
+    Verify: `grep -q 403 rejected.code`
+
+15. Stop the server: `kill "$(cat server.pid)"`
     Verify: `test -f server.pid`
 
 <!-- endif -->
@@ -326,6 +350,14 @@ Requires Node.js 20 or newer.
 - `AGENTS.md` describes what makes a good tool boundary, and the one rule that
   is not a style preference: nothing writes to stdout. Read it before adding the
   second tool, not after the fifth.
+- **Commit `package-lock.json`.** `npm install` wrote it in step 3, and the CI
+  workflow runs `npm ci`, which fails without it. It is also the only thing
+  that pins what your dependencies pull in — `package.json` pins the direct
+  ones. Never add it to `.gitignore`.
+- Under the `http` option, `ALLOWED_ORIGINS` is empty by default, which refuses
+  every request that carries an `Origin` header. MCP clients do not send one;
+  browsers always do. Set it only if something in a browser genuinely has to
+  reach this server, and list exact origins.
 - To publish: set a real `name`, drop `private`, and build before `npm publish`
   — `dist` is the package, `src` is not. To be listed in the official registry,
   add an `mcpName` field and a `server.json` beside it.

@@ -481,25 +481,46 @@ Requires the .NET SDK 10 and Docker.
 
     builder.Services.AddTenantDatabase(builder.Configuration);
 
+    // Read and check here, not inside the options delegate: that delegate runs
+    // when the options are first resolved, which is on a request, so a missing
+    // setting would be a 500 on every call instead of a service that refuses to
+    // start.
+    //
+    // Both are required. Deriving ValidateAudience from whether the audience
+    // happens to be set turns a missing setting into silently accepting any
+    // token this authority issued — including one minted for a different
+    // application, carrying a tenant_id claim of its own. This service decides
+    // whose data you see from that claim.
+    var authority = builder.Configuration["Oidc:Authority"]
+        ?? throw new InvalidOperationException("Oidc:Authority is required.");
+    var audience = builder.Configuration["Oidc:Audience"]
+        ?? throw new InvalidOperationException("Oidc:Audience is required.");
+
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            options.Authority = builder.Configuration["Oidc:Authority"];
-            options.Audience = builder.Configuration["Oidc:Audience"];
-            options.TokenValidationParameters.ValidateAudience =
-                !string.IsNullOrEmpty(options.Audience);
+            options.Authority = authority;
+            options.Audience = audience;
         });
 
     // A request without a tenant claim is rejected before it reaches an
     // endpoint, so no endpoint has to remember to check.
+    //
+    // Fallback, not only default: the default policy applies to endpoints that
+    // ask for authorization without naming a policy, and does nothing for an
+    // endpoint that asks for none. The fallback is what covers the endpoint
+    // somebody adds without thinking about it. Both are set so that a bare
+    // .RequireAuthorization() means the same thing.
+    var tenantPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .RequireClaim(TenantResolutionMiddleware.ClaimType)
+        .Build();
+
     builder.Services
         .AddAuthorizationBuilder()
-        .SetDefaultPolicy(
-            new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .RequireClaim(TenantResolutionMiddleware.ClaimType)
-                .Build());
+        .SetDefaultPolicy(tenantPolicy)
+        .SetFallbackPolicy(tenantPolicy);
 
     var app = builder.Build();
 
@@ -677,7 +698,62 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- endif -->
 
-23. Create `Dockerfile` with:
+23. Add the in-memory test host, so a test can make a real request: `dotnet add tests/Saas.Api.Tests package Microsoft.AspNetCore.Mvc.Testing --version 10.0.12`
+    Verify: `dotnet build tests/Saas.Api.Tests`
+
+24. Create `tests/Saas.Api.Tests/AuthorizationTests.cs` with:
+
+    ```csharp
+    using System.Net;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Testing;
+
+    namespace Saas.Api.Tests;
+
+    // The application refuses to start without its authentication settings, so
+    // the test host supplies them — with values nothing ever contacts. These
+    // tests never present a token, and an unauthenticated request is refused
+    // before any token is validated or any metadata is fetched.
+    public sealed class ApiFactory : WebApplicationFactory<Program>
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder) =>
+            builder
+                .UseSetting("Oidc:Authority", "https://localhost/issuer")
+                .UseSetting("Oidc:Audience", "saas-api-tests")
+                .UseSetting("ConnectionStrings:Default", "Host=localhost;Database=app;Username=app;Password=not-used-in-these-tests");
+    }
+
+    public sealed class AuthorizationTests(ApiFactory factory) : IClassFixture<ApiFactory>
+    {
+        [Fact]
+        public async Task An_endpoint_that_declares_nothing_is_still_refused()
+        {
+            // /customers declares no authorization of its own. A 401 here can
+            // only come from the fallback policy, so this test guards the
+            // default rather than the endpoint — and it fails the day somebody
+            // writes SetDefaultPolicy without SetFallbackPolicy again.
+            using var client = factory.CreateClient();
+
+            using var response = await client.GetAsync("/customers");
+
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Health_is_the_one_endpoint_that_opts_out()
+        {
+            using var client = factory.CreateClient();
+
+            using var response = await client.GetAsync("/health");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+    }
+    ```
+
+    Verify: `dotnet build tests/Saas.Api.Tests`
+
+25. Create `Dockerfile` with:
 
     ```dockerfile
     # Build stage: restore first, so a code change does not re-download packages.
@@ -702,7 +778,7 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f Dockerfile`
 
-24. Create `.dockerignore` with:
+26. Create `.dockerignore` with:
 
     ```gitignore
     **/bin/
@@ -720,7 +796,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == postgres -->
 
-25. Create `compose.yaml` for the local database with:
+27. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -746,7 +822,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == sqlserver -->
 
-25. Create `compose.yaml` for the local database with:
+27. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -765,7 +841,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- endif -->
 
-26. Create `.github/workflows/ci.yml` with:
+28. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: CI
@@ -794,22 +870,22 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-27. Build the solution: `dotnet build`
+29. Build the solution: `dotnet build`
     Verify: `dotnet build --configuration Release`
 
-28. Run the tests, which is where tenant isolation is actually checked: `dotnet test`
+30. Run the tests, which is where tenant isolation is actually checked: `dotnet test`
     Verify: `dotnet test`
 
-29. Build the container image: `docker build --tag saas-api:dev .`
+31. Build the container image: `docker build --tag saas-api:dev .`
     Verify: `docker image inspect saas-api:dev`
 
-30. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force saas-api-check 2>/dev/null || true`
+32. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force saas-api-check 2>/dev/null || true`
     Verify: `test -z "$(docker ps --all --filter name=saas-api-check --quiet)"`
 
-31. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string, so one is supplied here; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -p 127.0.0.1::8080 saas-api:dev`
+33. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string or its authentication settings, so they are supplied here — which also shows the `__` form the application expects; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -e Oidc__Authority="https://localhost/issuer" -e Oidc__Audience="saas-api" -p 127.0.0.1::8080 saas-api:dev`
     Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port saas-api-check 8080)/health"`
 
-32. Stop the check container: `docker rm --force saas-api-check`
+34. Stop the check container: `docker rm --force saas-api-check`
     Verify: `docker ps --filter name=saas-api-check --quiet`
 
 ## After setup

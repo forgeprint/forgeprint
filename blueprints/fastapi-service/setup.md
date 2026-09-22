@@ -184,13 +184,32 @@ Requires Python 3.11 or newer, Docker, and `curl` for the last check.
 8. Create `app/main.py` with:
 
    ```python
+   from collections.abc import AsyncIterator
+   from contextlib import asynccontextmanager
    from typing import Annotated, Any
 
    from fastapi import Depends, FastAPI
 
    from app.security import current_claims
+   from app.settings import get_settings
 
-   app = FastAPI(title="Service", version="0.1.0")
+
+   @asynccontextmanager
+   async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+       """Read the configuration once, while the process is starting.
+
+       A missing or misspelled variable has to stop the process. Left to the
+       request dependency, it answers 500 to every call while /health still
+       returns 200 and an orchestrator calls the container ready.
+
+       In the lifespan rather than at import, because the tests import this
+       module to drive the app in-process and supply their own environment.
+       """
+       get_settings()
+       yield
+
+
+   app = FastAPI(title="Service", version="0.1.0", lifespan=lifespan)
 
 
    @app.get("/health")
@@ -397,7 +416,7 @@ Requires Python 3.11 or newer, Docker, and `curl` for the last check.
 19. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force fastapi-check 2>/dev/null || true`
     Verify: `test -z "$(docker ps --all --filter name=fastapi-check --quiet)"`
 
-20. Start the container and check that it answers. It reads its configuration from the environment, and the liveness endpoint never touches the database: `docker run -d --name fastapi-check -e DATABASE_URL="sqlite+aiosqlite:///./app.db" -e JWT_SECRET="local-development-only-not-a-real-secret-32b" -p 127.0.0.1::8000 fastapi-service:dev`
+20. Start the container and check that it answers. The URL matches the driver this image installed, and the liveness endpoint never touches the database — which is why no database has to be running for this check to mean something: `docker run -d --name fastapi-check -e DATABASE_URL="$(test -f compose.yaml && echo 'postgresql+asyncpg://app:local-development-only@127.0.0.1:5432/app' || echo 'sqlite+aiosqlite:///./app.db')" -e JWT_SECRET="local-development-only-not-a-real-secret-32b" -p 127.0.0.1::8000 fastapi-service:dev`
     Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port fastapi-check 8000)/health"`
 
 21. Stop the check container: `docker rm --force fastapi-check`

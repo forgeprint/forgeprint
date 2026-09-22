@@ -28,6 +28,18 @@ in C#: a JSON API that authenticates its callers and ships as a container.
   becomes slower than the framework it replaced.
 - **Migrations.** None are set up. Alembic is the answer and it is a decision
   with enough surface to make on purpose, when the model is real.
+- **Rate limiting.** Nothing restricts how often a caller may ask
+  (OWASP API4:2023). `slowapi` or a reverse proxy is where to start, and the
+  policy depends on what the API is for, which is why the blueprint does not
+  guess.
+
+### The base image moves within a minor
+
+`python:3.13-slim` is a tag, not a digest. That is deliberate and it is a
+trade-off: a digest is byte-exact and also stops security patches arriving,
+which for a base image is usually the wrong side to be on. Pin to a digest when
+a build has to be reproducible to the byte, and take over patching when you
+do.
 
 ## Trade-offs made on your behalf
 

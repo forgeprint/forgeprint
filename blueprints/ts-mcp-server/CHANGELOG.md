@@ -3,6 +3,42 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.1.0 — 2026-09-22
+
+Closes the findings of the first architecture and security review
+([report](../../docs/reviews/ts-mcp-server/2026-09-22.md)).
+
+- **The `http` transport refuses an unexpected `Origin`.** The MCP
+  specification names DNS rebinding as how an insecure local server is reached:
+  a browser is made to resolve an attacker's domain to `127.0.0.1` and posts to
+  the port as same-origin. A browser always sends `Origin` on a cross-site
+  request and no MCP client sends one at all, so refusing anything unexpected
+  costs nothing. `ALLOWED_ORIGINS` is empty by default, which refuses every
+  request that carries the header. The recipe now proves the guard: a request
+  with `Origin: https://example.com` must come back 403, and that check fails
+  the day somebody removes it.
+- **`overview.md` and `AGENTS.md` put the boundary where it belongs.** The
+  option was described as unsuitable for hosting, which implied the machine
+  itself was a boundary. It is not: every process on the host can call these
+  tools. `stdio` is now stated as the safer default — the client owns the
+  process, and that is the access control — and adding a tool with a side
+  effect means adding authentication in the same change.
+- **The lockfile is named as a file to commit.** The CI workflow runs `npm ci`,
+  which fails without `package-lock.json`, so the workflow could not run on a
+  fresh clone. It is also the only artefact that pins what the dependencies
+  pull in.
+- A note where `SERVER_VERSION` is written, because it must match
+  `package.json` and nothing enforces it. Forgeprint's own server shipped that
+  drift for three releases.
+
+- The step that reads the server's address out of its log waits sixty seconds
+  rather than thirty. Thirty was enough until it was not: the first run of a
+  freshly built binary on Windows exceeded it once during this release, and a
+  verification that fails intermittently is worse than a slow one.
+
+Minor rather than patch: the `http` option now refuses requests it previously
+accepted.
+
 ## 1.0.0 — 2026-09-22
 
 First release.

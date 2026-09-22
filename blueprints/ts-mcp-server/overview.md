@@ -20,6 +20,13 @@ distributed.
   `127.0.0.1`. Authentication, authorisation and tenancy are not here, and
   bolting them onto this shape is more work than starting from something built
   for it.
+- **An HTTP server anything but your own machine reaches.** The `http` option
+  refuses requests carrying an unexpected `Origin`, which closes DNS
+  rebinding, but it has no authentication: every process on the host can call
+  its tools. The MCP specification's first recommendation for a local server is
+  `stdio`, where the client owns the process and that _is_ the access control.
+  Use `http` when something other than the client must reach the server, and
+  add authentication in the same change.
 - **A .NET server.** Use `dotnet-mcp-server`; it makes the same product
   decisions in C#.
 - **Resources and prompts.** Only tools are wired up. Both are registered the

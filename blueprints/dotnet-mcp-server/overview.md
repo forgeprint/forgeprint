@@ -47,9 +47,15 @@ several clients or a remote client connect to.
   is. It will give you a working server and no understanding of the protocol.
 - **Resources and prompts.** Only tools are wired. Both are registered the same
   way and are a small addition, but the recipe does not make it for you.
-- **Authentication in front of the HTTP transport.** There is none. A server
-  reachable beyond localhost needs auth added deliberately, and that decision
-  belongs to whoever knows who the callers are.
+- **Authentication in front of the HTTP transport.** There is none, and
+  localhost is not a boundary: every process on the machine can call these
+  tools. The `http` option refuses requests carrying an unexpected `Origin`,
+  which closes DNS rebinding — the MCP specification names it as how an
+  insecure local server is reached — but that guard is not authentication.
+  `stdio` is the specification's first recommendation for a local server,
+  because the client owns the process and that _is_ the access control. Use
+  `http` when something other than the client has to reach the server, and add
+  authentication in the same change.
 - **Publishing to a registry.** No packaging, no `dnx` manifest, no marketplace
   entry. What you get is a server you can run and connect.
 

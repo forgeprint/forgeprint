@@ -3,6 +3,33 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.1.0 — 2026-09-22
+
+Closes both `high` findings of the architecture and security review
+([report](../../docs/reviews/dotnet-multitenant-saas-api/2026-09-22.md)). The
+data layer was right; both faults were in the layer that decides who reaches
+it.
+
+- **The tenant policy is now the fallback policy, not only the default.**
+  `SetDefaultPolicy` applies to endpoints that ask for authorization without
+  naming a policy; it does nothing for an endpoint that asks for none. The
+  comment beside it claimed _"no endpoint has to remember to check"_, and
+  `/customers` asked for none — so it was reachable without a token. Nothing
+  leaked, because `TenantContext` throws when no tenant was resolved and the
+  caller got a 500, but that depended on every future endpoint touching the
+  database. The first status or metrics endpoint would have been public
+  (OWASP API5:2023, Top 10:2025 A01).
+- **Authentication fails closed, at startup.** `Oidc:Authority` and
+  `Oidc:Audience` are required, and deriving `ValidateAudience` from whether
+  the audience happened to be set is gone. This service decides whose data a
+  caller sees from a claim inside the token; accepting a token this service
+  never verified was meant for it undoes the isolation everything else here is
+  built to guarantee (OWASP API2:2023).
+
+Both checks are at startup rather than inside the `AddJwtBearer` delegate,
+which runs per request: a missing setting has to stop the service coming up,
+not answer 500 to every call including `/health`.
+
 ## 1.0.4 — 2026-09-22
 
 Two findings that `dotnet-web-api`'s architecture review turned up in that

@@ -116,6 +116,31 @@ the last step.
 
    var app = builder.Build();
 
+   // A browser can be made to resolve an attacker's domain to 127.0.0.1 and
+   // post to this port as same-origin — DNS rebinding, which the MCP
+   // specification names as how an insecure local server is reached. A browser
+   // always sends Origin on a cross-site request and no MCP client sends one at
+   // all, so refusing anything unexpected costs nothing and closes the hole.
+   //
+   // This is not authentication. Every process on this machine can still call
+   // these tools; see AGENTS.md before adding a tool with a side effect.
+   var allowedOrigins = (builder.Configuration["AllowedOrigins"] ?? string.Empty)
+       .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+       .ToHashSet(StringComparer.Ordinal);
+
+   app.Use(async (context, next) =>
+   {
+       var origin = context.Request.Headers.Origin.ToString();
+       if (!string.IsNullOrEmpty(origin) && !allowedOrigins.Contains(origin))
+       {
+           context.Response.StatusCode = StatusCodes.Status403Forbidden;
+           await context.Response.WriteAsync("Origin not allowed");
+           return;
+       }
+
+       await next();
+   });
+
    // Serves the streamable HTTP transport at the application root.
    app.MapMcp();
 
@@ -290,13 +315,16 @@ the last step.
 18. Start the built server on a port the operating system chooses, and keep its process id. A fixed port can already be taken, and then the check either fails or — worse — answers from somebody else's server: `dotnet src/Mcp.Server/bin/Debug/net10.0/Mcp.Server.dll --urls http://127.0.0.1:0 > server.log 2>&1 & echo $! > server.pid`
     Verify: `test -s server.pid`
 
-19. Read the address it chose out of its own log: `for attempt in $(seq 30); do grep -oE "http://127\.0\.0\.1:[0-9]+" server.log | head -1 > server.url && test -s server.url && break; sleep 1; done`
+19. Read the address it chose out of its own log: `for attempt in $(seq 60); do grep -oE "http://127\.0\.0\.1:[0-9]+" server.log | head -1 > server.url && test -s server.url && break; sleep 1; done`
     Verify: `test -s server.url`
 
 20. Ask it to initialize, and keep the answer: `curl -fsS -o initialize.json -X POST "$(cat server.url)/" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1.0.0"}}}'`
     Verify: `grep -q protocolVersion initialize.json`
 
-21. Stop the server: `kill "$(cat server.pid)"`
+21. Confirm a request claiming to come from a web page is refused. This is the check that proves the rebinding guard, and it fails loudly if somebody removes it: `curl -sS -o rejected.txt -w "%{http_code}" -X POST "$(cat server.url)/" -H "Origin: https://example.com" -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' > rejected.code`
+    Verify: `grep -q 403 rejected.code`
+
+22. Stop the server: `kill "$(cat server.pid)"`
     Verify: `sleep 2; ! kill -0 "$(cat server.pid)" 2>/dev/null`
 
 <!-- endif -->

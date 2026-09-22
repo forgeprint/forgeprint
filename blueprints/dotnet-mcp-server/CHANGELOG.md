@@ -3,6 +3,34 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.1.0 — 2026-09-22
+
+Closes the findings of the first architecture and security review
+([report](../../docs/reviews/dotnet-mcp-server/2026-09-22.md)).
+
+- **The `http` transport refuses an unexpected `Origin`.** The MCP
+  specification names DNS rebinding as how an insecure local server is reached:
+  a browser is made to resolve an attacker's domain to `127.0.0.1` and posts to
+  the port as same-origin. A browser always sends `Origin` on a cross-site
+  request and no MCP client sends one at all, so refusing anything unexpected
+  costs nothing. `AllowedOrigins` is empty by default, which refuses every
+  request carrying the header. The recipe proves it: a request with
+  `Origin: https://example.com` must come back 403.
+- **`overview.md` puts the boundary where it belongs.** It said a server
+  "reachable beyond localhost" needs authentication, which told the reader the
+  machine was a boundary. It is not — every process on the host can call these
+  tools. It now says so, and says `stdio` is the specification's first
+  recommendation for a local server because the client owns the process and
+  that is the access control.
+
+- The step that reads the server's address out of its log waits sixty seconds
+  rather than thirty. Thirty was enough until it was not: the first run of a
+  freshly built binary on Windows exceeded it once during this release, and a
+  verification that fails intermittently is worse than a slow one.
+
+Minor rather than patch: the `http` option now refuses requests it previously
+accepted.
+
 ## 1.0.1 — 2026-09-22
 
 The recipe is now executed by `forgeprint test-setup` rather than followed by
