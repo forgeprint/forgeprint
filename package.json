@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "tsc --build",
+    "forgeprint": "node packages/cli/dist/bin.js",
     "clean": "tsc --build --clean",
     "typecheck": "tsc --build",
     "test": "pnpm run build && pnpm -r run test",
@@ -15,7 +16,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run test"
+    "check": "pnpm run format:check && pnpm run lint && pnpm run test",
+    "validate": "pnpm run build && node packages/cli/dist/bin.js validate"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

@@ -1,0 +1,132 @@
+# The dropdown below mirrors the `project_type` vocabulary in
+# schema/taxonomy.yaml. Keep the two in step when that vocabulary changes.
+name: Blueprint request
+description: Ask for a blueprint that does not exist yet
+title: 'Blueprint request: '
+labels: ['blueprint-request']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The catalog grows by demand, so a request is useful even when nobody
+        picks it up immediately. Requests are public: other people can see what
+        is wanted, and adopt one.
+
+        Before filing, please check [the catalog](../../blob/main/docs/index.json)
+        for something close. If a blueprint nearly fits, a pull request adding an
+        option to it lands far faster than a new blueprint.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you building?
+      description: A few sentences. What the project does, and who uses it.
+      placeholder: A multi-tenant SaaS API that serves a React dashboard, one database per tenant.
+    validations:
+      required: true
+
+  - type: input
+    id: languages
+    attributes:
+      label: Languages you already know
+      description: >-
+        The heaviest matching criterion. Comma separated, using the identifiers
+        from schema/taxonomy.yaml where you can — csharp, typescript, python, go.
+      placeholder: csharp, typescript
+    validations:
+      required: true
+
+  - type: dropdown
+    id: project_type
+    attributes:
+      label: Project type
+      options:
+        - api — API service
+        - web — Web application
+        - mobile — Mobile application
+        - game — Game
+        - cli — Command-line tool
+        - lib — Library
+        - data — Data or analytics
+        - agent — AI agent or MCP server
+        - infra — Infrastructure
+    validations:
+      required: true
+
+  - type: input
+    id: platforms
+    attributes:
+      label: Where does it run?
+      placeholder: linux, docker
+    validations:
+      required: true
+
+  - type: input
+    id: distribution
+    attributes:
+      label: How does it reach its users?
+      description: free, ads, paid, iap, open-source, saas or internal.
+      placeholder: saas
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: What does it need?
+      description: >-
+        Capabilities rather than libraries — authentication, multi-tenancy,
+        payments, realtime, offline, observability, CI.
+      placeholder: |
+        - multi-tenant
+        - auth
+        - ci
+    validations:
+      required: true
+
+  - type: input
+    id: stack
+    attributes:
+      label: Preferred stack, if you have one
+      description: Leave empty if you would rather be told what fits.
+      placeholder: aspnetcore, efcore, postgres
+
+  - type: textarea
+    id: closest
+    attributes:
+      label: Closest existing blueprint, and why it does not fit
+      description: >-
+        Name the nearest blueprint in the catalog and say what is missing. If
+        the catalog is empty in this area, say that instead.
+      placeholder: >-
+        dotnet-minimal-api is close, but it is single-tenant and the tenant
+        isolation is the hard part for me.
+    validations:
+      required: true
+
+  - type: input
+    id: agents
+    attributes:
+      label: Which coding agent do you use?
+      placeholder: claude-code
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the catalog and no existing blueprint covers this.
+          required: true
+        - label: I understand that a request is not a commitment by anyone to build it.
+          required: true
+        - label: This request is written in English.
+          required: true
+
+  - type: checkboxes
+    id: offer
+    attributes:
+      label: Would you write it?
+      options:
+        - label: I am willing to write this blueprint myself with some guidance.
