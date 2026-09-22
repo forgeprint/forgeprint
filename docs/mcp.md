@@ -170,22 +170,25 @@ Agent: [resolve {goal}] -> questions
        ? Which programming languages do you already write comfortably?
 Agent: Which languages do you write comfortably?
 User:  C#.
-Agent: [resolve {goal, languages:["csharp"]}] -> choose
-       • dotnet-multitenant-saas-api (1.00)
-       • dotnet-web-api (0.94)
-Agent: Two fit. Does it genuinely need tenant isolation, or is it a single-tenant API?
-User:  Multi-tenant, definitely.
-Agent: [resolve {..., requirements:["multi-tenant"]}] -> resolved
+Agent: [resolve {goal, languages:["C#"]}] -> resolved
        -> dotnet-multitenant-saas-api (1.00)
           written in C#, which you know; covers Multi-tenancy
+          read_from_your_description: ["multi-tenant"]
        undecided: database (postgres | sqlserver), tenancy (shared column | database per tenant)
 Agent: Postgres or SQL Server? One database with a tenant column, or one per tenant?
 User:  Postgres, database per tenant.
-Agent: [get_blueprint] -> setup.md with those branches resolved, 29 numbered steps
+Agent: [get_blueprint] -> setup.md with those branches resolved, 31 numbered steps
 Agent: [follows the recipe]
 ```
 
-Note the second step. `goal` alone is free text and the weakest signal the
-resolver has; the agent is expected to map what the user said into the
-structured fields. Had it passed `requirements: ["multi-tenant"]` from the
-opening sentence, the answer would have come one turn earlier.
+Two things there are the resolver doing work the agent used to have to do.
+`C#` is a label, not the identifier `csharp` the catalog stores, and both are
+understood. And "multi-tenant" arrived as prose inside `goal`:
+`read_from_your_description` reports that the resolver read it as a
+requirement, which is what turns a near-tie between two ASP.NET Core API
+blueprints into one answer.
+
+Both were found by running exactly this conversation against a real agent — see
+[the dogfood test](dogfood.md). Before those fixes this step returned two
+candidates and asked the user to choose between them, over a word they had
+already said.

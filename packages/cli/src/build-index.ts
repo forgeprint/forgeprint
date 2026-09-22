@@ -39,6 +39,13 @@ export interface IndexEntry {
   readonly options: Record<string, string[]>;
   readonly provides: { readonly mcp: string[]; readonly skills: string[] };
   readonly requires_tools: readonly string[];
+  /** Where the blueprint was derived from, when it was (ADR 0008). */
+  readonly provenance?: {
+    readonly derived_from: string;
+    readonly license: string;
+    readonly verified_on: string;
+    readonly note?: string | undefined;
+  };
   readonly deprecated: boolean;
   readonly supersedes: string | null;
   readonly files: readonly string[];
@@ -72,6 +79,9 @@ export function indexEntry(blueprint: Blueprint): IndexEntry {
     options: m.options ?? {},
     provides: { mcp: m.provides?.mcp ?? [], skills: m.provides?.skills ?? [] },
     requires_tools: m.requires_tools ?? [],
+    // Absent rather than empty: a blueprint written from scratch has none,
+    // and an empty object would read as an unanswered question.
+    ...(m.provenance === undefined ? {} : { provenance: m.provenance }),
     deprecated: m.deprecated,
     supersedes: m.supersedes,
     files: blueprint.files,

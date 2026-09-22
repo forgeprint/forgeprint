@@ -61,12 +61,14 @@ where the question is cheap to answer.
   reviewer still has to read the source, and `blueprint-review` asks whether
   `AGENTS.md` was copied — the two answer different halves of the same
   question.
-- The three official blueprints carry no `provenance`: they were written from
-  the .NET documentation and from the maintainer's own projects, not derived
+- No blueprint in the catalog carries `provenance` today: each was written
+  from vendor documentation and from the maintainer's own projects, not derived
   from a specific repository. Leaving the field absent is the accurate record,
   not an oversight.
 - A candidate whose source licence does not permit derivation is not a
   candidate. That is now a question asked during research rather than during
   review, which is several days earlier.
-- The site does not show provenance yet. When it does, it belongs next to the
-  maintainer byline: both answer "who is behind this".
+- The site shows it next to the maintainer byline, because both answer "who is
+  behind this": *Derived from github.com/example/starter (MIT), read
+  2026-09-22.* A blueprint without one shows nothing rather than an empty
+  line.

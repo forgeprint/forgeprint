@@ -32,6 +32,11 @@ Found by the dogfood test, on the first sentence a first-time user types.
   four words suppresses the match. Only requirements are read this way;
   guessing a language or a platform from prose would be guessing.
 
+## 0.2.4 — 2026-09-22
+
+- No change to the server. The catalog it serves gained `ts-mcp-server`, and
+  the version follows the workspace.
+
 ## 0.2.3 — 2026-09-22
 
 Hardening the resolver along the two failure classes the dogfood run exposed,

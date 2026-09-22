@@ -176,3 +176,33 @@ describe('contributor visibility', () => {
     assert.equal(/Featured contributors/.test(pages[1]?.html ?? ''), false);
   });
 });
+
+describe('provenance on a blueprint page', () => {
+  const entry = INDEX.blueprints.find((blueprint) => blueprint.slug === 'sample-api');
+
+  it('shows where a derived blueprint came from, with its licence', () => {
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage(
+      {
+        ...entry,
+        provenance: {
+          derived_from: 'https://github.com/example/starter',
+          license: 'MIT',
+          verified_on: '2026-09-22',
+          note: 'The auth wiring.',
+        },
+      },
+      INDEX.taxonomy,
+    );
+    assert.match(html, /Derived from/);
+    assert.match(html, /href="https:\/\/github\.com\/example\/starter"/);
+    assert.match(html, /\(MIT\), read 2026-09-22/);
+    assert.match(html, /The auth wiring\./);
+  });
+
+  it('says nothing when the blueprint was written from scratch', () => {
+    assert.ok(entry !== undefined);
+    // Most of them were. An empty line would read as an unanswered question.
+    assert.equal(/Derived from/.test(renderBlueprintPage(entry, INDEX.taxonomy)), false);
+  });
+});

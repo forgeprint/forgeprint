@@ -3,6 +3,16 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.4 — 2026-09-22
+
+- `docs/index.json` carries a blueprint's `provenance`, so the site can show
+  where a derived blueprint came from (ADR 0008). Absent rather than empty when
+  there is no source.
+- `test-setup` no longer reports an error after a run that passed. It removes
+  the working directory when it is done, and on Windows a handle can outlive
+  the process that held it; it now retries briefly and says where the directory
+  is if it still will not go.
+
 ## 0.2.3 — 2026-09-22
 
 - `schema/taxonomy.yaml` accepts an `aliases` section: spellings that mean a

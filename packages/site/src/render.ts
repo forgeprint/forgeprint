@@ -230,6 +230,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
         ${entry.deprecated ? '<p class="warn">Deprecated. It is no longer offered by the resolver.</p>' : ''}
         ${entry.supersedes === null ? '' : `<p class="muted">Supersedes <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
         ${byline(entry.maintainers)}
+        ${derivedFrom(entry.provenance)}
       </header>
 
       <section>
@@ -300,6 +301,21 @@ function byline(maintainers: readonly string[]): string {
     )
     .join('');
   return `<p class="byline">Blueprint by ${people}</p>`;
+}
+
+/**
+ * Where the blueprint came from, when it came from somewhere.
+ *
+ * A blueprint carries somebody else's design decisions into other people's
+ * projects, and the catalog cannot credit what it does not show (ADR 0008).
+ * Absent for a blueprint written from scratch, which is most of them.
+ */
+function derivedFrom(provenance: IndexEntry['provenance']): string {
+  if (provenance === undefined) return '';
+  const note = provenance.note === undefined ? '' : ` ${escape(provenance.note)}`;
+  return `<p class="muted small">Derived from <a href="${escape(provenance.derived_from)}">${escape(
+    provenance.derived_from.replace(/^https:\/\//, ''),
+  )}</a> (${escape(provenance.license)}), read ${escape(provenance.verified_on)}.${note}</p>`;
 }
 
 function avatar(handle: string, size = 32): string {
