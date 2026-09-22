@@ -84,6 +84,41 @@ Publishing is manual today. Replacing it with npm trusted publishing — Actions
 OIDC and provenance — is on the roadmap; until then the token stays on the
 maintainer's machine.
 
+### When publish reports an error, check the registry before believing it
+
+Two failures look alike and neither means what it says.
+
+**`409 Conflict: Cannot publish over previously staged version "X.Y.Z"`** does
+not mean a staged version is waiting for approval. It is npm's message for
+"this version already exists" ([npm/cli#9889]), and it appears _after a publish
+that succeeded_ — the package is on the registry and the client tried again.
+Check `npm stage list <package>`: an empty list means nothing is staged and
+there is nothing to approve or reject. Do not bump the version to escape it;
+the version is published.
+
+**`404 Not Found`** on publish means the credentials are rejected, not that the
+package is missing. npm answers unauthorized requests for packages you cannot
+write with 404. Confirm with `npm whoami`, which says `401` plainly.
+
+In both cases, read the registry rather than the error:
+
+```bash
+npm cache clean --force
+npm view forgeprint dist-tags --prefer-online
+npm view forgeprint-mcp dist-tags --prefer-online
+```
+
+`--prefer-online` is not enough on its own — it has returned the previous
+version for minutes after a publish that the package page already showed as
+live. When the CLI and the package page on npmjs.com disagree, the page is
+right.
+
+If one package published and another did not, continue with
+`pnpm publish --filter <package> --access public`. Re-running `pnpm publish -r`
+makes the first package fail again and stops the run.
+
+[npm/cli#9889]: https://github.com/npm/cli/issues/9889
+
 ## 8. Afterwards
 
 - Check the site: https://forgeprint.github.io/forgeprint
