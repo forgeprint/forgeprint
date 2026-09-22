@@ -271,6 +271,35 @@ against the skill tools.
 
 ## Runs
 
-| Date | Agent | Catalog | Result      |
-| ---- | ----- | ------- | ----------- |
-| —    | —     | —       | not run yet |
+| Date       | Agent                       | Catalog         | Result                                                                      |
+| ---------- | --------------------------- | --------------- | --------------------------------------------------------------------------- |
+| 2026-09-22 | Claude Code 2.1.278, Opus 5 | published 0.2.1 | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet |
+
+### 2026-09-22, steps 1–3
+
+Two false starts before the run counted, and both are now preconditions above:
+the first had twelve MCP servers and three hundred tools connected, the second
+had the agent's memory from the first. In neither did the agent call `resolve`,
+and neither says anything about `resolve`.
+
+The clean run reached a blueprint, and both defects came from the same place —
+the resolver's vocabulary:
+
+- **dogfood-1** — the agent wrote `languages: ["C#"]`, as a person would. The
+  catalog stores `csharp`, so the heaviest criterion scored zero: `no_match` for
+  a profile the catalog fits exactly. The same fault told the agent that a
+  blueprint named _Multi-tenant SaaS API_ "does not cover multi-tenancy". The
+  agent diagnosed it out loud — _"looks like a vocabulary mismatch… let me retry
+  with normalized terms"_ — and told the user to ignore the reasoning. Fixed in
+  `2eca0f2`: ids and labels are both accepted, and anything unrecognised is
+  reported rather than scored as a silent zero.
+- **dogfood-2** — "I'm building a multi-tenant SaaS API" produced a near-tie,
+  1.00 against 0.94, and the resolver asked the user to choose over a word they
+  had already said. Free text is worth four points against forty for a language,
+  so the one fact separating the two blueprints barely registered. The agent
+  compensated by reading both `overview.md` files itself. Fixed in `b348758`: a
+  requirement named in the sentence counts as stated, negations included.
+
+What worked, and is worth keeping in mind when reading the next run: once it had
+the blueprint, the agent checked `requires_tools` against the machine, relayed
+the "what it is NOT for" section accurately, and asked before running anything.
