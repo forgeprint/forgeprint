@@ -5,3 +5,6 @@
 # and approve changes to it; they do not merge.
 
 * @aliosmanmho
+
+# One line per blueprint, ordered by slug.
+/blueprints/dotnet-web-api/ @aliosmanmho

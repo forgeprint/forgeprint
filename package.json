@@ -16,7 +16,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run test",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run test && node packages/cli/dist/bin.js validate",
     "validate": "pnpm run build && node packages/cli/dist/bin.js validate"
   },
   "devDependencies": {

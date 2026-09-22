@@ -165,3 +165,93 @@ describe('lintSetup', () => {
     );
   });
 });
+
+describe('fenced blocks', () => {
+  it('does not read a numbered line inside a code block as a step', () => {
+    const source = [
+      '1. Write the file `notes.md`:',
+      '',
+      '   ```markdown',
+      '   1. This is content, not a step.',
+      '   2. So is this.',
+      '   ```',
+      '',
+      '   Verify: `test -f notes.md`',
+      '',
+      '2. Build it: `dotnet build`',
+      '   Verify: `dotnet build`',
+      '',
+    ].join('\n');
+    assert.deepEqual(lintSetup(source, { options: {} }), []);
+  });
+
+  it('still lints commands inside a code block', () => {
+    const source = [
+      '1. Write the script `run.sh`:',
+      '',
+      '   ```bash',
+      '   sudo systemctl restart app',
+      '   ```',
+      '',
+      '   Verify: `test -f run.sh`',
+      '',
+    ].join('\n');
+    assert.ok(rules(source, {}).includes('no-sudo'));
+  });
+});
+
+describe('guard groups', () => {
+  const TWO_FIELDS = { database: ['postgres', 'sqlserver'], auth: ['jwt', 'oidc'] };
+
+  it('continues the numbering when a second group branches on another field', () => {
+    const source = [
+      '1. One: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- if options.database == postgres -->',
+      '',
+      '2. Postgres: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.database == sqlserver -->',
+      '',
+      '2. SQL Server: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.auth == jwt -->',
+      '',
+      '3. JWT: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.auth == oidc -->',
+      '',
+      '3. OIDC: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '4. Four: `a`',
+      '   Verify: `b`',
+      '',
+    ].join('\n');
+    assert.deepEqual(lintSetup(source, { options: TWO_FIELDS }), []);
+  });
+
+  it('accepts a docker run whose image is tagged, past the flags', () => {
+    const source =
+      '1. Start it: `docker run -d --name check -p 8080:8080 app-api:dev`\n   Verify: `docker ps`\n';
+    assert.ok(!rules(source, {}).includes('pin-image'));
+  });
+
+  it('still rejects a docker run with an untagged image past the flags', () => {
+    const source =
+      '1. Start it: `docker run -d --name check -p 8080:8080 app-api`\n   Verify: `docker ps`\n';
+    assert.ok(rules(source, {}).includes('pin-image'));
+  });
+});

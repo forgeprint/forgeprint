@@ -1,0 +1,23 @@
+schema: 1
+slug: dotnet-web-api
+name: 'ASP.NET Core REST API'
+version: 1.0.0
+tier: official
+maintainers: [aliosmanmho]
+summary: 'ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.'
+stack: [dotnet, aspnetcore, efcore]
+languages: [csharp]
+platforms: [linux, docker]
+distribution: [internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, ci, containerization]
+agents: [claude-code]
+options:
+  database: [postgres, sqlserver]
+  auth: [jwt, oidc]
+provides:
+  skills: [efcore-migrations]
+requires_tools: [dotnet>=10, docker]
+deprecated: false
+supersedes: null

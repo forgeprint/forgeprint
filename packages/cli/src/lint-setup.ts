@@ -23,6 +23,9 @@ const IF_PATTERN = /^<!--\s*if\s+options\.([a-z0-9-]+)\s*==\s*([a-z0-9-]+)\s*-->
 const ENDIF_PATTERN = /^<!--\s*endif\s*-->$/;
 const ANY_GUARD_PATTERN = /^<!--\s*(if|endif)\b/;
 
+/** Opening or closing line of a fenced code block. */
+const FENCE_PATTERN = /^\s*(?:```|~~~)/;
+
 /** Hosts a setup step may reach: package registries and the local machine. */
 const ALLOWED_HOSTS = new Set([
   'localhost',
@@ -116,8 +119,10 @@ const PINNING: readonly PinRule[] = [
   },
   {
     rule: 'pin-image',
-    detect: /\bdocker\s+(?:run|pull)\s+(?:-\S+\s+)*\S+/i,
-    pinned: /\bdocker\s+(?:run|pull)\s+(?:-\S+\s+)*[^\s`]+:(?!latest\b)\S+/i,
+    detect: /\bdocker\s+(?:run|pull)\b/i,
+    // An image reference starts with a letter, which is what separates it from
+    // a port mapping such as `-p 8080:8080`.
+    pinned: /\bdocker\s+(?:run|pull)\b[^`\n]*\s[a-z][\w./-]*:(?!latest\b)[\w.-]+/i,
     message: 'container images need an explicit tag that is not "latest"',
   },
 ];
@@ -153,14 +158,27 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
   let expected = 1;
   let guardEntry = 1;
   let afterGuard: number | null = null;
+  /** The option field of the guard group being read, if any. */
+  let groupField: string | null = null;
 
   const closeStep = (): void => {
     if (current !== null) steps.push(current);
     current = null;
   };
 
+  // A fenced block is content, not structure: a line inside one that looks like
+  // a step or a guard is neither.
+  let inFence = false;
+
   lines.forEach((text, index) => {
     const line = index + 1;
+    const isFence = FENCE_PATTERN.test(text);
+    if (isFence) inFence = !inFence;
+    if (inFence || isFence) {
+      if (current !== null) current.body.push(text);
+      return;
+    }
+
     const guard = IF_PATTERN.exec(text.trim());
     const isEndif = ENDIF_PATTERN.test(text.trim());
 
@@ -180,11 +198,16 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
           `"${value}" is not a declared value of options.${field} (${declared.join(', ')})`,
         );
       }
-      if (afterGuard === null) {
-        guardEntry = expected;
-      } else {
+      if (afterGuard !== null && field === groupField) {
         // A sibling branch of the same group: it repeats, not continues.
         expected = guardEntry;
+      } else {
+        if (afterGuard !== null) {
+          expected = afterGuard;
+          afterGuard = null;
+        }
+        guardEntry = expected;
+        groupField = field;
       }
       guardState.open = { field, value, line };
       return;
@@ -274,14 +297,14 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
 
   // Only commands are linted. Prose that mentions `sudo` to warn against it is
   // not a violation; a code span that runs it is.
-  let inFence = false;
+  let inCodeFence = false;
   lines.forEach((text, index) => {
     const line = index + 1;
-    if (/^\s*(?:```|~~~)/.test(text)) {
-      inFence = !inFence;
+    if (FENCE_PATTERN.test(text)) {
+      inCodeFence = !inCodeFence;
       return;
     }
-    const code = inFence ? text : inlineCode(text);
+    const code = inCodeFence ? text : inlineCode(text);
     if (code.trim().length === 0) return;
 
     for (const { rule, pattern, message } of FORBIDDEN) {
