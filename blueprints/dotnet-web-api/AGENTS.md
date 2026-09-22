@@ -54,9 +54,16 @@ endpoint, and it belongs on a separate path.
 
 ### Every endpoint is authorized or explicitly anonymous
 
-Endpoints require authorization by default. If an endpoint is public, say so in
-code with `.AllowAnonymous()` so the decision is visible in review. `/health` is
-the one exception and is already mapped that way.
+Endpoints require authorization by default, and that is enforced rather than
+asked for: `AddApiAuthentication` sets a fallback policy requiring an
+authenticated user, so an endpoint with no authorization attribute is refused.
+If an endpoint is public, say so in code with `.AllowAnonymous()` so the
+decision is visible in review. `/health` is the one exception and is mapped
+that way.
+
+Do not add `.RequireAuthorization()` out of habit; it is redundant under the
+fallback policy. `/items` deliberately carries no marker, so the test that it
+refuses an anonymous caller is a test of the default itself.
 
 ### Secrets never enter the repository
 

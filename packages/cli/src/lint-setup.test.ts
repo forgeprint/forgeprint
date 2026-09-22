@@ -118,6 +118,41 @@ describe('lintSetup', () => {
     assert.ok(found.includes('pin-image'));
   });
 
+  it('rejects a tag that merely contains latest', () => {
+    // `2025-latest` moves exactly as much as `latest` does, and it passed for
+    // as long as the rule matched the whole tag. Found by a review reading a
+    // compose file, which is the kind of thing a rule should have caught.
+    const source = [
+      '1. Write `compose.yaml`:',
+      '',
+      '   ```yaml',
+      '   services:',
+      '     db:',
+      '       image: mcr.microsoft.com/mssql/server:2025-latest',
+      '   ```',
+      '',
+      '   Verify: `docker compose config`',
+      '',
+    ].join('\n');
+    assert.ok(rules(source, {}).includes('pin-image'));
+  });
+
+  it('accepts a compose image with a pinned tag', () => {
+    const source = [
+      '1. Write `compose.yaml`:',
+      '',
+      '   ```yaml',
+      '   services:',
+      '     db:',
+      '       image: postgres:18-alpine',
+      '   ```',
+      '',
+      '   Verify: `docker compose config`',
+      '',
+    ].join('\n');
+    assert.ok(!rules(source, {}).includes('pin-image'));
+  });
+
   it('rejects an image tagged latest', () => {
     const source = '1. Start it: `docker run postgres:latest`\n   Verify: `docker ps`\n';
     assert.ok(rules(source).includes('pin-image'));

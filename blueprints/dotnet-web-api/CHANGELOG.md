@@ -3,6 +3,55 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.5 — 2026-09-22
+
+Closes every finding of the first architecture and security review
+([report](../../docs/reviews/dotnet-web-api/2026-09-22.md)). Two of them were
+the same fault: the blueprint failed open where its own documentation said it
+failed closed.
+
+- **Authorization is now denied by default.** `AddApiAuthentication` sets a
+  fallback policy requiring an authenticated user, in both the `jwt` and `oidc`
+  branches. `AGENTS.md` has said "endpoints require authorization by default"
+  since 1.0.0 and nothing implemented it — an agent reading that file would add
+  an endpoint, not mark it, and publish it. `/health` now opts out explicitly
+  with `.AllowAnonymous()`, and `/items` carries no marker at all, so the test
+  that it refuses an anonymous caller is a test of the default itself
+  (OWASP API5:2023, Top 10:2025 A01).
+- **The `oidc` branch fails closed.** `Oidc:Authority` and `Oidc:Audience` are
+  required and the service refuses to start without them. Deriving
+  `ValidateAudience` from whether the audience happened to be set meant a
+  missing setting silently accepted any token that authority issued, including
+  one minted for a different application (OWASP API2:2023).
+- **The local database binds to loopback.** `compose.yaml` published 5432 and
+  1433 on every interface, with the password three lines above it in the same
+  file (Top 10:2025 A02).
+- **The SQL Server image is pinned.** `2025-latest` moved; it is now
+  `2025-CU9-ubuntu-24.04` (Top 10:2025 A03). `lint-setup` was widened in the
+  same release to reject any tag containing `latest`, and to check compose
+  `image:` lines at all — it had never looked at them.
+- **The check happens at startup, not on every request.** The first attempt at
+  the `oidc` fix put the `throw` inside the `AddJwtBearer` options delegate,
+  which runs when the options are first resolved — on a request. A missing
+  setting became a 500 on every call, including `/health`, instead of a
+  service that refuses to start. The values are read and checked in
+  `AddApiAuthentication` before registration, so the failure happens once, at
+  startup, where somebody is watching.
+- **The tests supply the configuration the application now demands.** Making
+  the `oidc` branch fail closed made it fail in the test host too: the
+  integration tests boot the real application, and it refuses to start without
+  its settings. That is the fix working, not a regression — so the test host
+  provides them the way a deployment does, through a small
+  `WebApplicationFactory` with values nothing ever contacts, and the container
+  check passes them as environment variables — which also demonstrates the
+  `__` form. Found by running the recipe, which is the only way either of these
+  would have been found.
+- Documented what is deliberately absent: rate limiting (API4:2023), and why
+  base images are pinned to a minor rather than a digest.
+
+No change to what the recipe builds beyond the above. Verified on Windows with
+.NET SDK 10.0.103 and Docker 29.7.2, for all four option combinations.
+
 ## 1.0.4 — 2026-09-22
 
 - `requires_tools` declares `curl`. The last step of the recipe reads `/health`

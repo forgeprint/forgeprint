@@ -122,16 +122,27 @@ const PINNING: readonly PinRule[] = [
   {
     rule: 'pin-image',
     detect: /^\s*FROM\s+\S+/,
-    pinned: /^\s*FROM\s+\S+:(?!latest\b)\S+/,
-    message: 'a Dockerfile FROM needs an explicit tag that is not "latest"',
+    // `latest` anywhere in the tag, not only as the whole tag: `2025-latest`
+    // and `stable-latest` move exactly as much as `latest` does.
+    pinned: /^\s*FROM\s+\S+:(?![\w.-]*latest\b)\S+/,
+    message: 'a Dockerfile FROM needs an explicit tag, and a tag containing "latest" moves',
   },
   {
     rule: 'pin-image',
     detect: /\bdocker\s+(?:run|pull)\b/i,
     // An image reference starts with a letter, which is what separates it from
     // a port mapping such as `-p 8080:8080`.
-    pinned: /\bdocker\s+(?:run|pull)\b[^`\n]*\s[a-z][\w./-]*:(?!latest\b)[\w.-]+/i,
-    message: 'container images need an explicit tag that is not "latest"',
+    pinned: /\bdocker\s+(?:run|pull)\b[^`\n]*\s[a-z][\w./-]*:(?![\w.-]*latest\b)[\w.-]+/i,
+    message: 'container images need an explicit tag, and a tag containing "latest" moves',
+  },
+  {
+    rule: 'pin-image',
+    // A compose service names its image the same way, and nothing was checking
+    // it: `image: mcr.microsoft.com/mssql/server:2025-latest` passed every rule
+    // here until a review read it.
+    detect: /^\s*image:\s*\S+/,
+    pinned: /^\s*image:\s*['"]?\S+:(?![\w.-]*latest\b)[\w.-]+/,
+    message: 'a compose image needs an explicit tag, and a tag containing "latest" moves',
   },
 ];
 

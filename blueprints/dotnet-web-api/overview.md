@@ -59,6 +59,9 @@ secret into the repository.
   beginner will get a working service and an unclear mental model.
 - **Serverless.** No Azure Functions or Lambda host; the deliverable is a
   long-running container.
+- **Rate limiting.** Nothing restricts how often a caller may ask
+  (OWASP API4:2023). `AddRateLimiter` is where to start, and the policy depends
+  on what the API is for, which is why the blueprint does not guess.
 
 ## Trade-offs made on your behalf
 
@@ -86,6 +89,14 @@ that is a change to make consciously.
 **Tests do not require a database.** The fast suite boots the application and
 asserts wiring and authorization. Tests that need real SQL belong in a second
 project with a container fixture, so the fast suite stays fast.
+
+### Base images move within a minor
+
+The Dockerfile pins `mcr.microsoft.com/dotnet/sdk:10.0` and `aspnet:10.0`, not
+a digest. That is deliberate, and it is a trade-off: a digest is byte-exact and
+also stops security patches arriving, which for a base image is usually the
+wrong side to be on. Pin to a digest when a build has to be reproducible to the
+byte, and take over patching when you do.
 
 ## Cost of adoption
 

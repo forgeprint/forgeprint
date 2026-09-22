@@ -3,6 +3,23 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.4 — 2026-09-22
+
+Two findings that `dotnet-web-api`'s architecture review turned up in that
+blueprint, and that this one shares. Its own full review is still pending.
+
+- **The local database binds to loopback.** `compose.yaml` published 5432 and
+  1433 on every interface, with the password three lines above it in the same
+  file. On a shared network that is a database with a known password, reachable
+  by anything that can reach the machine (OWASP Top 10:2025 A02).
+- **The SQL Server image is pinned.** `2025-latest` is a moving tag, so the
+  same recipe pulled different bytes on different days; it is now
+  `2025-CU9-ubuntu-24.04` (OWASP Top 10:2025 A03). `lint-setup` now rejects any
+  tag containing `latest` and checks compose `image:` lines, which it had never
+  done — this is the blueprint that found the gap.
+
+No change to what the recipe builds.
+
 ## 1.0.3 — 2026-09-22
 
 - `requires_tools` declares `curl`. Step 31 reads `/health` back from the

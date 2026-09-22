@@ -733,7 +733,7 @@ Requires the .NET SDK 10 and Docker.
           POSTGRES_USER: app
           POSTGRES_PASSWORD: local-development-only
         ports:
-          - '5432:5432'
+          - '127.0.0.1:5432:5432'
         healthcheck:
           test: ['CMD-SHELL', 'pg_isready -U app -d app']
           interval: 5s
@@ -753,12 +753,12 @@ Requires the .NET SDK 10 and Docker.
     # change does not need an image rebuild.
     services:
       db:
-        image: mcr.microsoft.com/mssql/server:2025-latest
+        image: mcr.microsoft.com/mssql/server:2025-CU9-ubuntu-24.04
         environment:
           ACCEPT_EULA: 'Y'
           MSSQL_SA_PASSWORD: 'Local-development-only-1'
         ports:
-          - '1433:1433'
+          - '127.0.0.1:1433:1433'
     ```
 
     Verify: `docker compose config`

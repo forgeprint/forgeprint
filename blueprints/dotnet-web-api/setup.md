@@ -180,6 +180,7 @@ Requires the .NET SDK 10 and Docker.
 
     ```csharp
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
 
     namespace App.Api.Authentication;
 
@@ -200,7 +201,15 @@ Requires the .NET SDK 10 and Docker.
                         .GetSection("Authentication:Schemes:Bearer:ValidAudiences")
                         .Get<string[]>();
                 });
-            services.AddAuthorization();
+
+            // The default is deny. An endpoint that should be public says so
+            // with .AllowAnonymous(), which makes the decision visible in a
+            // diff; without this, forgetting .RequireAuthorization() on a new
+            // endpoint publishes it silently.
+            services.AddAuthorization(options =>
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build());
             return services;
         }
     }
@@ -216,6 +225,7 @@ Requires the .NET SDK 10 and Docker.
 
     ```csharp
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
 
     namespace App.Api.Authentication;
 
@@ -227,16 +237,36 @@ Requires the .NET SDK 10 and Docker.
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            // Read and check here, not inside the options delegate: that
+            // delegate runs when the options are first resolved, which is on a
+            // request, so a missing setting would be a 500 on every call
+            // instead of a service that refuses to start.
+            //
+            // Both are required. Deriving ValidateAudience from whether the
+            // audience happens to be set turns a missing setting into silently
+            // accepting any token this authority issued, including one minted
+            // for a different application.
+            var authority = configuration["Oidc:Authority"]
+                ?? throw new InvalidOperationException("Oidc:Authority is required.");
+            var audience = configuration["Oidc:Audience"]
+                ?? throw new InvalidOperationException("Oidc:Audience is required.");
+
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = configuration["Oidc:Authority"];
-                    options.Audience = configuration["Oidc:Audience"];
-                    options.TokenValidationParameters.ValidateAudience =
-                        !string.IsNullOrEmpty(options.Audience);
+                    options.Authority = authority;
+                    options.Audience = audience;
                 });
-            services.AddAuthorization();
+
+            // The default is deny. An endpoint that should be public says so
+            // with .AllowAnonymous(), which makes the decision visible in a
+            // diff; without this, forgetting .RequireAuthorization() on a new
+            // endpoint publishes it silently.
+            services.AddAuthorization(options =>
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build());
             return services;
         }
     }
@@ -275,11 +305,15 @@ Requires the .NET SDK 10 and Docker.
 
     // Liveness only. If this touched the database, one database blip would
     // restart every healthy container and turn a degradation into an outage.
-    app.MapHealthChecks("/health");
+    // Anonymous explicitly: the default policy denies, so this is the one
+    // endpoint that opts out, and the opt-out is visible in the diff.
+    app.MapHealthChecks("/health").AllowAnonymous();
 
+    // No .RequireAuthorization() here, on purpose: the fallback policy already
+    // denies. The test that /items refuses an anonymous caller is therefore a
+    // test of the default itself, and it fails the day somebody removes it.
     app.MapGet("/items", async (AppDbContext db, CancellationToken token) =>
             await db.Items.OrderBy(item => item.CreatedAt).ToListAsync(token))
-        .RequireAuthorization()
         .WithName("ListItems");
 
     app.Run();
@@ -294,12 +328,27 @@ Requires the .NET SDK 10 and Docker.
 
     ```csharp
     using System.Net;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
 
     namespace App.Api.Tests;
 
-    public sealed class HealthEndpointTests(WebApplicationFactory<Program> factory)
-        : IClassFixture<WebApplicationFactory<Program>>
+    // The application refuses to start without its authentication settings,
+    // which is the point of them being required. So the test host supplies
+    // them, the way a deployment does — with values that are obviously not
+    // real and that nothing ever contacts: these tests only assert that an
+    // unauthenticated request is refused, which happens before any token is
+    // validated or any metadata is fetched.
+    public sealed class ApiFactory : WebApplicationFactory<Program>
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder) =>
+            builder
+                .UseSetting("Authentication:Schemes:Bearer:Authority", "https://localhost/issuer")
+                .UseSetting("Oidc:Authority", "https://localhost/issuer")
+                .UseSetting("Oidc:Audience", "app-api-tests");
+    }
+
+    public sealed class HealthEndpointTests(ApiFactory factory) : IClassFixture<ApiFactory>
     {
         [Fact]
         public async Task Health_reports_healthy_without_a_database()
@@ -314,12 +363,17 @@ Requires the .NET SDK 10 and Docker.
         [Fact]
         public async Task Items_requires_authentication()
         {
+            // /items declares no authorization of its own, so a 401 here can
+            // only come from the fallback policy. That is the point of the
+            // test: it guards the default, not this endpoint.
+
             using var client = factory.CreateClient();
 
             using var response = await client.GetAsync("/items");
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+
     }
     ```
 
@@ -384,7 +438,7 @@ Requires the .NET SDK 10 and Docker.
           POSTGRES_USER: app
           POSTGRES_PASSWORD: local-development-only
         ports:
-          - '5432:5432'
+          - '127.0.0.1:5432:5432'
         healthcheck:
           test: ['CMD-SHELL', 'pg_isready -U app -d app']
           interval: 5s
@@ -404,12 +458,12 @@ Requires the .NET SDK 10 and Docker.
     # change does not need an image rebuild.
     services:
       db:
-        image: mcr.microsoft.com/mssql/server:2025-latest
+        image: mcr.microsoft.com/mssql/server:2025-CU9-ubuntu-24.04
         environment:
           ACCEPT_EULA: 'Y'
           MSSQL_SA_PASSWORD: 'Local-development-only-1'
         ports:
-          - '1433:1433'
+          - '127.0.0.1:1433:1433'
     ```
 
     Verify: `docker compose config`
@@ -457,7 +511,7 @@ Requires the .NET SDK 10 and Docker.
 27. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force app-api-check 2>/dev/null || true`
     Verify: `test -z "$(docker ps --all --filter name=app-api-check --quiet)"`
 
-28. Start the container and check that it answers. The retry is not politeness: the published port accepts a connection as soon as the container exists, seconds before the application listens on it: `docker run -d --name app-api-check -p 127.0.0.1::8080 app-api:dev`
+28. Start the container and check that it answers. The image takes its configuration from the environment and refuses to start without what it needs, so the authentication settings are supplied here — which also shows the `__` form the application expects. The retry is not politeness: the published port accepts a connection as soon as the container exists, seconds before the application listens on it: `docker run -d --name app-api-check -e Oidc__Authority="https://localhost/issuer" -e Oidc__Audience="app-api" -e Authentication__Schemes__Bearer__Authority="https://localhost/issuer" -p 127.0.0.1::8080 app-api:dev`
     Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port app-api-check 8080)/health"`
 
 29. Stop the check container: `docker rm --force app-api-check`

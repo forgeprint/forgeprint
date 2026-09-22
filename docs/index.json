@@ -299,7 +299,7 @@
     {
       "slug": "dotnet-multitenant-saas-api",
       "name": "Multi-tenant SaaS API",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -366,7 +366,7 @@
     {
       "slug": "dotnet-web-api",
       "name": "ASP.NET Core REST API",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
