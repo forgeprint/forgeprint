@@ -1,0 +1,19 @@
+{
+  "name": "@forgeprint/site",
+  "version": "0.1.0",
+  "description": "Static GitHub Pages site generated from docs/index.json. No build service required.",
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "node --test \"dist/**/*.test.js\""
+  },
+  "dependencies": {
+    "@forgeprint/cli": "workspace:*"
+  }
+}
