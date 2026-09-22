@@ -124,12 +124,14 @@ pnpm run build
 pnpm forgeprint validate
 ```
 
-| Command                            | What it does                                                 |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `pnpm forgeprint validate`         | Schema, taxonomy, required files, and the catalog-wide rules |
-| `pnpm forgeprint build-index`      | Regenerate `docs/index.json`                                 |
-| `pnpm forgeprint build-schema`     | Regenerate `schema/manifest.schema.json`                     |
-| `pnpm forgeprint build-codeowners` | Regenerate `.github/CODEOWNERS` from the manifests           |
+| Command                             | What it does                                                   |
+| ----------------------------------- | -------------------------------------------------------------- |
+| `pnpm forgeprint validate`          | Schema, taxonomy, required files, and the catalog-wide rules   |
+| `pnpm forgeprint build-index`       | Regenerate `docs/index.json`                                   |
+| `pnpm forgeprint build-schema`      | Regenerate `schema/manifest.schema.json`                       |
+| `pnpm forgeprint build-codeowners`  | Regenerate `.github/CODEOWNERS` from the manifests             |
+| `pnpm forgeprint lint-setup <slug>` | Check a setup recipe: numbering, verification, pinning, safety |
+| `pnpm forgeprint similarity <slug>` | Duplicate report against every other blueprint                 |
 
 **Every pipeline step is a command you can run locally.** Hosted CI is a
 convenience, never a dependency: the workflows call these same commands, the

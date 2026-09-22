@@ -155,8 +155,8 @@ pnpm forgeprint validate
 | `pnpm forgeprint build-index`       | regenerate `docs/index.json`                    | now       |
 | `pnpm forgeprint build-schema`      | regenerate `schema/manifest.schema.json`        | now       |
 | `pnpm forgeprint build-codeowners`  | regenerate `.github/CODEOWNERS`                 | now       |
-| `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint  | phase 1   |
-| `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules             | phase 1   |
+| `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint  | now       |
+| `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules             | now       |
 | `pnpm forgeprint test-setup <slug>` | run the recipe in a clean container             | phase 1   |
 
 `docs/index.json` and `schema/manifest.schema.json` are generated **and

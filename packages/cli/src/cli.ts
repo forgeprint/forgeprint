@@ -4,7 +4,10 @@ import { Command } from 'commander';
 import { renderCodeowners } from './build-codeowners.js';
 import { loadBlueprints, renderIndex } from './build-index.js';
 import { buildManifestJsonSchema } from './build-schema.js';
+import { readBlueprintFile, readBlueprintFolder, readManifest } from './catalog.js';
 import { CONFIG_FILE, loadConfig } from './config.js';
+import { lintSetup } from './lint-setup.js';
+import { compareBlueprints, DEFAULT_THRESHOLD, renderReport } from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy } from './taxonomy.js';
 import { validateCatalog } from './validate.js';
@@ -45,6 +48,53 @@ export function createProgram(): Command {
       }
       console.error(`\n${report.problems.length} problem(s) in ${report.checked} blueprint(s)`);
       process.exitCode = 1;
+    });
+
+  program
+    .command('lint-setup')
+    .argument('<slug>', 'blueprint to check')
+    .description('check a blueprint setup.md against the structure and safety rules')
+    .action((slug: string) => {
+      const root = rootOf();
+      const folder = readBlueprintFolder(root, slug);
+      const manifest = readManifest(loadTaxonomy(root), folder);
+      const problems = lintSetup(readBlueprintFile(folder, 'setup.md'), {
+        options: manifest.options ?? {},
+      });
+      for (const problem of problems) {
+        console.error(`error  setup.md:${problem.line}  ${problem.rule}: ${problem.message}`);
+      }
+      if (problems.length === 0) {
+        console.log(`ok  ${slug}/setup.md passes the setup rules`);
+        return;
+      }
+      console.error(`
+${problems.length} problem(s) in ${slug}/setup.md`);
+      process.exitCode = 1;
+    });
+
+  program
+    .command('similarity')
+    .argument('<slug>', 'blueprint to compare against the rest of the catalog')
+    .option('--threshold <ratio>', 'flag above this similarity', String(DEFAULT_THRESHOLD))
+    .description('report how close a blueprint is to the ones already in the catalog')
+    .action((slug: string, options: { threshold: string }) => {
+      const root = rootOf();
+      const taxonomy = loadTaxonomy(root);
+      const blueprints = loadBlueprints(root, taxonomy);
+      const subject = blueprints.find((blueprint) => blueprint.slug === slug);
+      if (subject === undefined) throw new Error(`No such blueprint: ${slug}`);
+      const threshold = Number(options.threshold);
+      if (!Number.isFinite(threshold) || threshold <= 0 || threshold > 1) {
+        throw new Error('--threshold must be a ratio between 0 and 1');
+      }
+      const report = compareBlueprints(
+        subject,
+        blueprints.filter((blueprint) => blueprint.slug !== slug),
+        threshold,
+      );
+      console.log(renderReport(report));
+      if (report.flagged || report.closest?.sameCombination === true) process.exitCode = 1;
     });
 
   program

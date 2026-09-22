@@ -1,0 +1,167 @@
+import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
+import { lintSetup } from './lint-setup.js';
+
+const OPTIONS = { database: ['postgres', 'sqlserver'] };
+
+const VALID = `# Setup
+
+1. Create the project: \`dotnet new webapi -o src/Api\`
+   Verify: \`test -f src/Api/Api.csproj\`
+
+<!-- if options.database == postgres -->
+
+2. Add the provider: \`dotnet add src/Api package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.0\`
+   Verify: \`dotnet build\`
+
+<!-- endif -->
+
+<!-- if options.database == sqlserver -->
+
+2. Add the provider: \`dotnet add src/Api package Microsoft.EntityFrameworkCore.SqlServer --version 10.0.0\`
+   Verify: \`dotnet build\`
+
+<!-- endif -->
+
+3. Run the tests: \`dotnet test\`
+   Verify: \`dotnet test\`
+`;
+
+function rules(source: string, options: Record<string, string[]> = OPTIONS): string[] {
+  return lintSetup(source, { options }).map((problem) => problem.rule);
+}
+
+describe('lintSetup', () => {
+  it('accepts a recipe that follows the rules', () => {
+    assert.deepEqual(lintSetup(VALID, { options: OPTIONS }), []);
+  });
+
+  it('lets sibling branches repeat the number they opened at', () => {
+    assert.ok(!rules(VALID).includes('step-numbering'));
+  });
+
+  it('rejects a gap in the numbering', () => {
+    const source = '1. First: `a`\n   Verify: `b`\n\n3. Third: `c`\n   Verify: `d`\n';
+    assert.ok(rules(source).includes('step-numbering'));
+  });
+
+  it('rejects a step with no verification', () => {
+    const source = '1. Create it: `dotnet new webapi`\n';
+    assert.ok(rules(source).includes('step-needs-verification'));
+  });
+
+  it('rejects a step that states no command', () => {
+    const source = '1. Install the required packages.\n   Verify: `dotnet build`\n';
+    assert.ok(rules(source).includes('step-needs-command'));
+  });
+
+  it('rejects a document with no steps at all', () => {
+    assert.ok(rules('Just run the usual commands.\n').includes('no-steps'));
+  });
+
+  it('rejects piping a download into a shell', () => {
+    const source =
+      '1. Install: `curl -sSL https://example.com/i.sh | sh`\n   Verify: `x --version`\n';
+    assert.ok(rules(source).includes('no-pipe-to-shell'));
+  });
+
+  it('rejects sudo, recursive deletes and system paths', () => {
+    const found = rules(
+      '1. One: `sudo apt-get install -y git`\n   Verify: `git --version`\n\n' +
+        '2. Two: `rm -rf ./build`\n   Verify: `test ! -d ./build`\n\n' +
+        '3. Three: `cp app /usr/local/bin/app`\n   Verify: `app --version`\n',
+    );
+    assert.ok(found.includes('no-sudo'));
+    assert.ok(found.includes('no-recursive-delete'));
+    assert.ok(found.includes('no-system-paths'));
+  });
+
+  it('ignores a forbidden word in prose, and catches it in a command', () => {
+    const prose = '1. Do not use sudo here: `dotnet build`\n   Verify: `dotnet build`\n';
+    assert.ok(!rules(prose).includes('no-sudo'));
+  });
+
+  it('requires a pinned NuGet version', () => {
+    const source = '1. Add it: `dotnet add package Serilog`\n   Verify: `dotnet build`\n';
+    assert.ok(rules(source).includes('pin-nuget'));
+  });
+
+  it('accepts a pinned NuGet version', () => {
+    const source =
+      '1. Add it: `dotnet add package Serilog --version 4.2.0`\n   Verify: `dotnet build`\n';
+    assert.ok(!rules(source).includes('pin-nuget'));
+  });
+
+  it('requires a pinned npm version and a tagged image', () => {
+    const found = rules(
+      '1. Add it: `npm install zod`\n   Verify: `npm test`\n\n' +
+        '2. Start it: `docker run postgres`\n   Verify: `docker ps`\n',
+    );
+    assert.ok(found.includes('pin-npm'));
+    assert.ok(found.includes('pin-image'));
+  });
+
+  it('rejects an image tagged latest', () => {
+    const source = '1. Start it: `docker run postgres:latest`\n   Verify: `docker ps`\n';
+    assert.ok(rules(source).includes('pin-image'));
+  });
+
+  it('allows a bare npm install, which pins nothing by definition', () => {
+    const source = '1. Install: `npm install`\n   Verify: `npm test`\n';
+    assert.ok(!rules(source).includes('pin-npm'));
+  });
+
+  it('allows a registry host and a localhost health check', () => {
+    const source =
+      '1. Fetch it: `dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget`\n' +
+      '   Verify: `dotnet nuget list source`\n\n' +
+      '2. Check it: `curl -f http://localhost:5000/health`\n   Verify: `curl -f http://localhost:5000/health`\n';
+    assert.ok(!rules(source).includes('registry-only'));
+  });
+
+  it('rejects a host that is not a package registry', () => {
+    const source =
+      '1. Fetch it: `curl -o tool.zip https://files.example.com/tool.zip`\n   Verify: `test -f tool.zip`\n';
+    assert.ok(rules(source).includes('registry-only'));
+  });
+
+  it('rejects a guard for an option that is not declared', () => {
+    const source =
+      '<!-- if options.cache == redis -->\n\n1. One: `a`\n   Verify: `b`\n\n<!-- endif -->\n';
+    assert.ok(rules(source).includes('unknown-option'));
+  });
+
+  it('rejects a guard value that is not declared', () => {
+    const source =
+      '<!-- if options.database == mysql -->\n\n1. One: `a`\n   Verify: `b`\n\n<!-- endif -->\n';
+    assert.ok(rules(source).includes('unknown-option-value'));
+  });
+
+  it('rejects an unclosed guard', () => {
+    const source = '<!-- if options.database == postgres -->\n\n1. One: `a`\n   Verify: `b`\n';
+    assert.ok(rules(source).includes('unclosed-guard'));
+  });
+
+  it('rejects nested guards (ADR 0001)', () => {
+    const source =
+      '<!-- if options.database == postgres -->\n' +
+      '<!-- if options.database == sqlserver -->\n\n1. One: `a`\n   Verify: `b`\n\n' +
+      '<!-- endif -->\n<!-- endif -->\n';
+    assert.ok(rules(source).includes('no-nested-guards'));
+  });
+
+  it('rejects a malformed guard rather than ignoring it', () => {
+    const source =
+      '<!-- if database == postgres -->\n\n1. One: `a`\n   Verify: `b`\n\n<!-- endif -->\n';
+    assert.ok(rules(source).includes('guard-syntax'));
+  });
+
+  it('reports problems in line order', () => {
+    const problems = lintSetup('1. One: `a`\n\n5. Five: `b`\n', { options: {} });
+    const lineNumbers = problems.map((problem) => problem.line);
+    assert.deepEqual(
+      [...lineNumbers].sort((a, b) => a - b),
+      lineNumbers,
+    );
+  });
+});
