@@ -37,6 +37,8 @@ export interface ReleaseOptions {
   skipCi?: boolean;
   /** Print the plan and stop. */
   dryRun?: boolean;
+  /** Wait while a workflow is still running, rather than refusing. Default on. */
+  wait?: boolean;
 }
 
 const say = (line = ''): void => {
@@ -117,6 +119,45 @@ function ciState(root: string): { known: boolean; green: boolean; detail: string
     green: true,
     detail: forHead.map((r) => r.workflowName).join(', '),
   };
+}
+
+/** How often to ask GitHub again while a workflow is still running. */
+const CI_POLL_SECONDS = 30;
+/** Longer than the matrix takes, short enough that a stuck run is not forever. */
+const CI_WAIT_MINUTES = 45;
+
+/**
+ * Wait for CI rather than making the maintainer poll it.
+ *
+ * "Still running" is not "failed", and the difference was being paid for by
+ * hand: run the command, read that setup-test is in progress, wait, run it
+ * again. The matrix takes around ten minutes, which is exactly long enough to
+ * go and do something else and exactly short enough that starting over is
+ * wasteful.
+ */
+async function waitForCi(
+  root: string,
+  wait: boolean,
+): Promise<{ known: boolean; green: boolean; detail: string }> {
+  const deadline = Date.now() + CI_WAIT_MINUTES * 60_000;
+  let announced = false;
+  for (;;) {
+    const state = ciState(root);
+    if (!state.known || state.green || !wait) return state;
+    if (!state.detail.startsWith('still running')) return state;
+    if (Date.now() > deadline) {
+      return {
+        known: true,
+        green: false,
+        detail: `${state.detail}, and ${String(CI_WAIT_MINUTES)} minutes is long enough to stop waiting`,
+      };
+    }
+    if (!announced) {
+      say(`  waiting for CI (${state.detail}); --no-wait to stop doing this`);
+      announced = true;
+    }
+    await new Promise((resolve) => setTimeout(resolve, CI_POLL_SECONDS * 1000));
+  }
 }
 
 /**
@@ -213,7 +254,9 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
   }
 
   // 4. CI has verified this commit.
-  const ci = options.skipCi ? { known: false, green: false, detail: 'not checked' } : ciState(root);
+  const ci = options.skipCi
+    ? { known: false, green: false, detail: 'not checked' }
+    : await waitForCi(root, options.wait !== false);
   if (ci.known && !ci.green) fail(`CI is not green on HEAD — ${ci.detail}`);
   say(
     ci.known

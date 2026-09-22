@@ -306,12 +306,19 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     .argument('<version>', 'the version every published package is at, e.g. 0.3.0')
     .option('--skip-check', 'do not run pnpm run check (CI ran it)')
     .option('--skip-ci', 'do not ask GitHub whether CI is green on HEAD')
+    .option('--no-wait', 'do not wait for a workflow that is still running')
     .option('--dry-run', 'print the plan and stop')
     .option('-y, --yes', 'do not ask for confirmation')
     .action(
       async (
         version: string,
-        options: { skipCheck?: boolean; skipCi?: boolean; dryRun?: boolean; yes?: boolean },
+        options: {
+          skipCheck?: boolean;
+          skipCi?: boolean;
+          dryRun?: boolean;
+          yes?: boolean;
+          wait?: boolean;
+        },
       ) => {
         await release(rootOf(), { version, ...options });
       },

@@ -25,6 +25,10 @@ publish over previously staged version`, and `npm view --prefer-online`
   stops, so a human rewrites them before anything immutable exists. Running it
   again after a failure is safe: whatever is already done is skipped.
 
+  It waits for CI rather than refusing. "Still running" is not "failed", and
+  the difference was being paid for by hand: run the command, read that the
+  matrix is in progress, wait, run it again. `--no-wait` restores the refusal.
+
   Output is captured with room for the whole test suite. The default limit is
   1MB and `pnpm run check` prints close to it, so the release succeeded or
   failed depending on how much its own logs happened to say. When a step does

@@ -26,6 +26,7 @@ stopped halfway finishes by running the same command.
 | `--dry-run`    | print the plan and stop                                  |
 | `--skip-check` | CI already ran `pnpm run check` on this commit           |
 | `--skip-ci`    | Actions is unavailable and you verified it yourself (§4) |
+| `--no-wait`    | refuse rather than wait for a workflow still running     |
 | `-y`           | do not ask; for a plan you have already read             |
 
 Two things stay outside it, because both are someone else's registry and
