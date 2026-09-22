@@ -1,0 +1,55 @@
+# The deterministic gate.
+#
+# Every step here is a command that also runs on a laptop. The workflow holds no
+# logic of its own, so a contributor gets the same answer locally that a pull
+# request gets here — that is the rule, not a coincidence (ADR 0002).
+#
+# Actions are pinned to full commit SHAs because a tag can be moved and a SHA
+# cannot; the repository requires it. See docs/repo-settings.md.
+
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Formatting, lint, types, the test suites, and the catalog: schema,
+      # taxonomy, required files, one blueprint per stack + project_type +
+      # requirements, a CHANGELOG entry per version, and generated files that
+      # are committed and current.
+      - name: Check
+        run: pnpm run check
+
+      - name: Lint setup recipes
+        run: pnpm forgeprint lint-setup --all
+
+      # Prints the duplicate report for every blueprint. It fails only on the
+      # objective rule — a second blueprint claiming an existing stack +
+      # project_type + requirements. A red flag is a question the pull request
+      # template makes the author answer, not a build failure (rules 10 and 11).
+      - name: Duplicate report
+        run: pnpm forgeprint similarity --all
