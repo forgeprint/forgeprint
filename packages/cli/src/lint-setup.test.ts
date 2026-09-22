@@ -255,3 +255,42 @@ describe('guard groups', () => {
     assert.ok(rules(source, {}).includes('pin-image'));
   });
 });
+
+describe('two guard groups on one field', () => {
+  it('continues the numbering when the same field branches again', () => {
+    const source = [
+      '<!-- if options.transport == stdio -->',
+      '',
+      '1. Stdio project: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.transport == http -->',
+      '',
+      '1. HTTP project: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.transport == stdio -->',
+      '',
+      '2. Stdio entry point: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '<!-- if options.transport == http -->',
+      '',
+      '2. HTTP entry point: `a`',
+      '   Verify: `b`',
+      '',
+      '<!-- endif -->',
+      '',
+      '3. Build: `dotnet build`',
+      '   Verify: `dotnet build`',
+      '',
+    ].join('\n');
+    assert.deepEqual(lintSetup(source, { options: { transport: ['stdio', 'http'] } }), []);
+  });
+});

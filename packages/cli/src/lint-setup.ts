@@ -158,8 +158,9 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
   let expected = 1;
   let guardEntry = 1;
   let afterGuard: number | null = null;
-  /** The option field of the guard group being read, if any. */
+  /** The option field of the guard group being read, and the values it used. */
   let groupField: string | null = null;
+  let groupValues = new Set<string>();
 
   const closeStep = (): void => {
     if (current !== null) steps.push(current);
@@ -198,9 +199,11 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
           `"${value}" is not a declared value of options.${field} (${declared.join(', ')})`,
         );
       }
-      if (afterGuard !== null && field === groupField) {
-        // A sibling branch of the same group: it repeats, not continues.
+      // A sibling branch of the same group repeats its numbering instead of
+      // continuing it. A repeated value means a new group, not a sibling.
+      if (afterGuard !== null && field === groupField && !groupValues.has(value)) {
         expected = guardEntry;
+        groupValues.add(value);
       } else {
         if (afterGuard !== null) {
           expected = afterGuard;
@@ -208,6 +211,7 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
         }
         guardEntry = expected;
         groupField = field;
+        groupValues = new Set([value]);
       }
       guardState.open = { field, value, line };
       return;

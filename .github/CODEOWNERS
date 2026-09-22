@@ -7,4 +7,5 @@
 * @aliosmanmho
 
 # One line per blueprint, ordered by slug.
+/blueprints/dotnet-mcp-server/ @aliosmanmho
 /blueprints/dotnet-web-api/ @aliosmanmho
