@@ -8,6 +8,9 @@ const SEMVER_PATTERN =
 /** GitHub login, as GitHub itself validates it. */
 export const GITHUB_HANDLE_PATTERN = /^[a-zA-Z\d](?:[a-zA-Z\d]|-(?=[a-zA-Z\d])){0,38}$/;
 
+/** Calendar date, so a provenance record says when it was last checked. */
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
 /** A tool with an optional version constraint, for example `dotnet>=9`. */
 const REQUIRED_TOOL_PATTERN =
   /^[a-z0-9][a-z0-9.+-]*(?:\s*(?:>=|<=|==|>|<|~|\^)\s*[0-9][0-9a-zA-Z.-]*)?$/;
@@ -67,6 +70,32 @@ export function manifestObjectSchema(taxonomy: Taxonomy) {
       requires_tools: uniqueArray(
         z.string().regex(REQUIRED_TOOL_PATTERN, 'must be a tool name with an optional version'),
       ).optional(),
+      /**
+       * Where the blueprint came from, when it came from somewhere.
+       *
+       * Most blueprints are derived from a project that already exists —
+       * `blueprint-author` exists to do exactly that — and the result is
+       * handed to strangers under CC BY 4.0. A catalog cannot credit what it
+       * did not write down (ADR 0008).
+       */
+      provenance: z
+        .object({
+          derived_from: z
+            .url({ protocol: /^https$/ })
+            .describe('The project this was derived from, as an https URL.'),
+          license: z
+            .string()
+            .min(2)
+            .max(60)
+            .describe('The licence that project is under, SPDX where there is one.'),
+          verified_on: z
+            .string()
+            .regex(ISO_DATE_PATTERN, 'must be an ISO date, YYYY-MM-DD')
+            .describe('When the source was last read.'),
+          note: z.string().min(1).max(300).optional(),
+        })
+        .strict()
+        .optional(),
       deprecated: z.boolean().default(false),
       supersedes: slug.nullable().default(null),
     })

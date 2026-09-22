@@ -8,7 +8,7 @@ coding agent bootstrap a new project with the right context in one shot: the
 `AGENTS.md`, the skills, the MCP and plugin configuration, and a deterministic
 setup recipe the agent can execute.
 
-> **Status: pre-release.** Three blueprints, working tooling, and an MCP server
+> **Status: pre-release.** Four blueprints, working tooling, and an MCP server
 > with all six tools, published and connectable today:
 >
 > ```bash

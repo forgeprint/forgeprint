@@ -41,6 +41,22 @@ blueprints/<slug>/
 The folder name is the slug, and the slug is also the `slug` field in
 `manifest.yaml`. Slugs are lower kebab-case.
 
+If the blueprint is derived from a project that already exists — which is what
+`blueprint-author` is for — say so in `provenance`:
+
+```yaml
+provenance:
+  derived_from: https://github.com/example/starter
+  license: MIT
+  verified_on: 2026-09-22
+  note: 'The auth wiring and the test layout; the rest is ours.'
+```
+
+It is optional, because a blueprint written from scratch has none. It is also
+the field that decides whether the derivation was allowed at all, so a source
+whose licence does not permit it is not a source
+([ADR 0008](docs/decisions/0008-provenance.md)).
+
 Every controlled value has an identifier and a label — `csharp` and "C#",
 `multi-tenant` and "Multi-tenancy" — and manifests are written in identifiers.
 `schema/taxonomy.yaml` also carries an `aliases` section for the spellings

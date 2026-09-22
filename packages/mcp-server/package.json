@@ -1,6 +1,6 @@
 {
   "name": "forgeprint-mcp",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "mcpName": "io.github.forgeprint/forgeprint",
   "description": "Forgeprint MCP server: resolve a profile to exactly one blueprint and return its setup recipe.",
   "keywords": [

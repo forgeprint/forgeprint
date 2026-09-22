@@ -15,7 +15,7 @@ worth nothing until something other than a careful human runs it.
 The obvious environment is a container, and that is what the project kickoff
 called for. It does not work, for a reason that is not incidental:
 
-**Recipes use containers themselves.** All three official blueprints end by
+**Recipes use containers themselves.** The three .NET blueprints end by
 building an image and starting it to read `/health` back — which is exactly the
 verification that makes them trustworthy. Inside a container there is no Docker
 daemon. The usual workarounds are worse than the problem: mounting the host

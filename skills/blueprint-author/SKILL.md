@@ -201,7 +201,33 @@ understand it well enough to publish it.
 
 ---
 
-## 6. CHANGELOG.md
+## 6. Record where it came from
+
+If the blueprint is derived from a project that already exists — and if you
+followed this skill, it is — the manifest says so:
+
+```yaml
+provenance:
+  derived_from: https://github.com/example/starter
+  license: MIT
+  verified_on: 2026-09-22
+  note: 'The auth wiring and the test layout; the rest is ours.'
+```
+
+Three reasons, in ascending order of seriousness. The credit belongs to
+whoever did the work. The licence decides whether the derivation was allowed at
+all — a source under a licence that does not permit it is not a source, and
+that question is cheaper to answer now than after the recipe is written. And a
+reviewer cannot check whether something is original when the answer lives only
+in your memory.
+
+Leave it out only when there was no source: a blueprint written from vendor
+documentation and your own projects has no provenance, and inventing one is
+worse than an absent field ([ADR 0008](../../docs/decisions/0008-provenance.md)).
+
+---
+
+## 7. CHANGELOG.md
 
 `1.0.0` for a new blueprint, with an entry that records what was decided and
 what was verified: the platform, the tool versions, what was run, what passed.
@@ -212,7 +238,7 @@ tell the difference between an omission and a decision.
 
 ---
 
-## 7. Run the gate before asking anyone to look
+## 8. Run the gate before asking anyone to look
 
 ```bash
 pnpm install
@@ -247,7 +273,7 @@ Commit the regenerated `docs/index.json`.
 
 ---
 
-## 8. Prepare the pull request
+## 9. Prepare the pull request
 
 - One blueprint per pull request. Taxonomy changes are their own.
 - Answer the template's required section — closest blueprint, what is different,

@@ -50,7 +50,7 @@ Answer each with **yes/no + one-sentence rationale**:
 4. Are `setup.md` steps single command/single operation, each with a verification, all versions pinned?
 5. Is `AGENTS.md` specific to this stack, or generic "write good code" advice? Generic → `CHANGES`.
 6. Is the change type (`fix|update|feature|breaking`) declared, and are `version` and `CHANGELOG.md` consistent?
-7. If this edits an existing blueprint: has a listed `maintainers` member approved? If not and the PR is younger than 14 days → `WAIT_MAINTAINER`.
+7. If this edits an existing blueprint: has a listed `maintainers` member approved? If not and the PR is younger than 14 days → `WAIT_MAINTAINER`. **Unless the author is themselves a listed maintainer** — GitHub does not let anyone approve their own pull request, so waiting for it would deadlock. Authorship satisfies rule 18; the owner's Approve is still required by the ruleset.
 8. Security: `curl | sh`, `sudo`, `rm -rf`, network access outside package registries?
 
 ## 4. Verdict
