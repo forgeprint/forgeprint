@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, describe, it } from 'node:test';
 import { parseRecipe } from './recipe.js';
-import { checkTools, runDirectoryName, runRecipe, satisfies } from './test-setup.js';
+import { checkTools, resolveShell, runDirectoryName, runRecipe, satisfies } from './test-setup.js';
 
 const directories: string[] = [];
 
@@ -179,5 +179,53 @@ describe('runDirectoryName', () => {
 
   it('falls back to the slug when there are no options', () => {
     assert.equal(runDirectoryName('dotnet-mcp-server', {}), 'forgeprint-dotnet-mcp-server');
+  });
+});
+
+describe('resolveShell', () => {
+  const win = 'win32';
+  const gitBash = join('C:\\Program Files', 'Git', 'bin', 'bash.exe');
+
+  it('finds Git Bash rather than the WSL launcher on PATH', () => {
+    // The failure this prevents: `bash` on Windows is usually
+    // System32\bash.exe, which starts and then reports
+    // `execvpe(/bin/bash) failed` when no distribution is installed. Every
+    // step of every recipe fails for a reason that is not the recipe.
+    const shell = resolveShell(win, { ProgramFiles: 'C:\\Program Files' }, (q) => q === gitBash);
+    assert.equal(shell, gitBash);
+  });
+
+  it('looks where a per-user install puts it', () => {
+    const local = join('C:\\Users\\someone\\AppData\\Local', 'Programs', 'Git', 'bin', 'bash.exe');
+    const shell = resolveShell(
+      win,
+      { LOCALAPPDATA: 'C:\\Users\\someone\\AppData\\Local' },
+      (q) => q === local,
+    );
+    assert.equal(shell, local);
+  });
+
+  it('falls back to the name, so the tool check is what reports it missing', () => {
+    assert.equal(
+      resolveShell(win, { ProgramFiles: 'C:\\Program Files' }, () => false),
+      'bash',
+    );
+  });
+
+  it('takes FORGEPRINT_BASH over anything it would have found', () => {
+    const elsewhere = join('D:\\msys64', 'usr', 'bin', 'bash.exe');
+    assert.equal(
+      resolveShell(win, { FORGEPRINT_BASH: elsewhere }, () => true),
+      elsewhere,
+    );
+  });
+
+  it('does not go looking on a platform where bash is bash', () => {
+    assert.equal(
+      resolveShell('linux', {}, () => {
+        throw new Error('should not probe the filesystem');
+      }),
+      'bash',
+    );
   });
 });

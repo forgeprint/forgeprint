@@ -8,6 +8,7 @@
  */
 
 import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import type { RecipeStep } from './recipe.js';
@@ -15,8 +16,39 @@ import type { RecipeStep } from './recipe.js';
 /** A step that runs longer than this has hung; the run fails rather than waits. */
 export const STEP_TIMEOUT_MS = 15 * 60 * 1000;
 
+/**
+ * Where a POSIX shell actually is.
+ *
+ * Commands are POSIX shell so they read the same on every platform, but on
+ * Windows `bash` on PATH is usually `System32\bash.exe` — the WSL launcher.
+ * With no distribution installed it does not fail to start; it starts and then
+ * says `execvpe(/bin/bash) failed`, so every step fails for a reason that has
+ * nothing to do with the recipe. Git Bash is the one that is meant, so it is
+ * named rather than hoped for.
+ *
+ * `FORGEPRINT_BASH` overrides everything, for a shell in neither place.
+ */
+export function resolveShell(
+  platform: string,
+  env: NodeJS.ProcessEnv,
+  exists: (path: string) => boolean,
+): string {
+  const override = env.FORGEPRINT_BASH;
+  if (override !== undefined && override !== '') return override;
+  if (platform !== 'win32') return 'bash';
+  const candidates = [
+    env.ProgramFiles,
+    env.ProgramW6432,
+    env['ProgramFiles(x86)'],
+    env.LOCALAPPDATA === undefined ? undefined : join(env.LOCALAPPDATA, 'Programs'),
+  ]
+    .filter((base): base is string => base !== undefined && base !== '')
+    .map((base) => join(base, 'Git', 'bin', 'bash.exe'));
+  return candidates.find((candidate) => exists(candidate)) ?? 'bash';
+}
+
 /** Commands are POSIX shell, so they read the same on every platform. */
-export const SHELL = 'bash';
+export const SHELL = resolveShell(process.platform, process.env, existsSync);
 
 export interface StepOutcome {
   readonly step: RecipeStep;
@@ -178,8 +210,12 @@ export async function checkTools(requires: readonly string[]): Promise<ToolProbl
   const shell = await probe(SHELL, '--version');
   if (shell === undefined) {
     problems.push({
-      tool: SHELL,
-      message: `${SHELL} is required: recipe commands are POSIX shell. On Windows, Git Bash provides it.`,
+      tool: 'bash',
+      message:
+        'bash is required: recipe commands are POSIX shell. On Windows, install Git Bash — ' +
+        'the `bash` on PATH there is usually the WSL launcher, which reports ' +
+        '`execvpe(/bin/bash) failed` instead of running anything. Set FORGEPRINT_BASH ' +
+        'to point at a shell somewhere else.',
     });
   }
 
@@ -213,7 +249,15 @@ export async function checkTools(requires: readonly string[]): Promise<ToolProbl
 
 async function probe(tool: string, flag: string): Promise<string | undefined> {
   return await new Promise((resolvePromise) => {
-    const child = spawn(tool, [flag], { windowsHide: true, shell: process.platform === 'win32' });
+    // A shell on Windows, because most tools there are `.cmd` shims that
+    // cannot be executed directly — but not for something given as a path.
+    // cmd splits an unquoted `C:\Program Files\...` at the space and reports
+    // the tool as missing when it is sitting right there.
+    const looksLikeAPath = /[\\/]/.test(tool);
+    const child = spawn(tool, [flag], {
+      windowsHide: true,
+      shell: !looksLikeAPath && process.platform === 'win32',
+    });
     let output = '';
     child.stdout.on('data', (chunk: Buffer) => (output += chunk.toString('utf8')));
     child.stderr.on('data', (chunk: Buffer) => (output += chunk.toString('utf8')));

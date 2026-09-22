@@ -25,6 +25,15 @@ publish over previously staged version`, and `npm view --prefer-online`
   stops, so a human rewrites them before anything immutable exists. Running it
   again after a failure is safe: whatever is already done is skipped.
 
+- **Recipes run against Git Bash on Windows, not the WSL launcher.** `bash` on
+  PATH there is usually `System32ash.exe`, which starts and then reports
+  `execvpe(/bin/bash) failed` when no distribution is installed — so every step
+  of every recipe failed for a reason that was not the recipe. The shell is now
+  looked for where Git installs it, and `FORGEPRINT_BASH` overrides that. The
+  tool check also stopped putting a full path through `cmd`, which split
+  `C:\Program Files\...` at the space and reported bash as missing while it sat
+  there.
+
   It waits for CI rather than refusing. "Still running" is not "failed", and
   the difference was being paid for by hand: run the command, read that the
   matrix is in progress, wait, run it again. `--no-wait` restores the refusal.
