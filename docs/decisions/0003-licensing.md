@@ -24,13 +24,13 @@ a fork, not whether one may exist.
 
 ## Decision
 
-| Part | Licence | Rationale |
-|---|---|---|
-| `packages/**` (MCP server, CLI, site) | PolyForm Shield 1.0.0 | Free to use, modify, and contribute; offering a competing product or service is not permitted |
-| `blueprints/**` (catalog content) | CC BY 4.0 | Users embed blueprints in their own projects, including commercial ones |
-| `schema/**`, `skills/**` | CC BY 4.0 | Same reasoning as blueprints: these are consumed as content |
-| Name and logo | `TRADEMARK.md` | "Forgeprint" may be used only for this repository and its official distributions; forks must rename |
-| Contributions | DCO (`Signed-off-by`) | A CLA suppresses contribution; a sign-off is sufficient |
+| Part                                  | Licence               | Rationale                                                                                           |
+| ------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------- |
+| `packages/**` (MCP server, CLI, site) | PolyForm Shield 1.0.0 | Free to use, modify, and contribute; offering a competing product or service is not permitted       |
+| `blueprints/**` (catalog content)     | CC BY 4.0             | Users embed blueprints in their own projects, including commercial ones                             |
+| `schema/**`, `skills/**`              | CC BY 4.0             | Same reasoning as blueprints: these are consumed as content                                         |
+| Name and logo                         | `TRADEMARK.md`        | "Forgeprint" may be used only for this repository and its official distributions; forks must rename |
+| Contributions                         | DCO (`Signed-off-by`) | A CLA suppresses contribution; a sign-off is sufficient                                             |
 
 `LICENSE` at the repository root carries the PolyForm Shield text and states the
 split. `blueprints/LICENSE` carries the CC BY 4.0 reference for content.

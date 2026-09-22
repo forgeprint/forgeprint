@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Forgeprint blueprint manifest",
+  "description": "Generated from schema/taxonomy.yaml by `forgeprint build-schema`. Do not edit by hand. Rules that JSON Schema cannot express — the option field limit, the uniqueness of the stack/project_type/requirements combination, and CHANGELOG consistency — are enforced by `forgeprint validate`.",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "type": "number",
+      "const": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "community",
+        "official",
+        "verified"
+      ]
+    },
+    "maintainers": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z\\d](?:[a-zA-Z\\d]|-(?=[a-zA-Z\\d])){0,38}$"
+      },
+      "uniqueItems": true
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 200
+    },
+    "stack": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "angular",
+          "aspnetcore",
+          "astro",
+          "aws",
+          "axum",
+          "azure",
+          "bevy",
+          "blazor",
+          "cloudflare",
+          "django",
+          "docker",
+          "dotnet",
+          "efcore",
+          "express",
+          "fastapi",
+          "fastify",
+          "flask",
+          "flutter",
+          "gcp",
+          "gin",
+          "github-actions",
+          "godot",
+          "jetpack-compose",
+          "ktor",
+          "kubernetes",
+          "laravel",
+          "maui",
+          "mcp",
+          "mongodb",
+          "mysql",
+          "nestjs",
+          "nextjs",
+          "node",
+          "phoenix",
+          "postgres",
+          "rails",
+          "react",
+          "react-native",
+          "redis",
+          "spring-boot",
+          "sqlite",
+          "sqlserver",
+          "svelte",
+          "swiftui",
+          "tailwind",
+          "terraform",
+          "unity",
+          "unreal",
+          "vercel",
+          "vite",
+          "vue"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "languages": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "bash",
+          "c",
+          "cpp",
+          "csharp",
+          "dart",
+          "elixir",
+          "go",
+          "java",
+          "javascript",
+          "kotlin",
+          "lua",
+          "php",
+          "python",
+          "ruby",
+          "rust",
+          "scala",
+          "sql",
+          "swift",
+          "typescript"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "platforms": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "android",
+          "cloud",
+          "docker",
+          "ios",
+          "linux",
+          "macos",
+          "web",
+          "windows"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "distribution": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ads",
+          "free",
+          "iap",
+          "internal",
+          "open-source",
+          "paid",
+          "saas"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "project_type": {
+      "type": "string",
+      "enum": [
+        "agent",
+        "api",
+        "cli",
+        "data",
+        "game",
+        "infra",
+        "lib",
+        "mobile",
+        "web"
+      ]
+    },
+    "audience": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "advanced",
+          "beginner",
+          "intermediate"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "requirements": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "accessibility",
+          "analytics",
+          "api-docs",
+          "auth",
+          "background-jobs",
+          "caching",
+          "cd",
+          "ci",
+          "containerization",
+          "email",
+          "file-upload",
+          "i18n",
+          "iac",
+          "migrations",
+          "monorepo",
+          "multi-tenant",
+          "notifications",
+          "observability",
+          "offline",
+          "payments",
+          "rate-limiting",
+          "rbac",
+          "realtime",
+          "search",
+          "seo",
+          "testing"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "agents": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "claude-code",
+          "codex",
+          "copilot-cli",
+          "cursor",
+          "gemini-cli",
+          "windsurf"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "options": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "minItems": 2,
+        "maxItems": 3,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "uniqueItems": true
+      }
+    },
+    "provides": {
+      "type": "object",
+      "properties": {
+        "mcp": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        },
+        "skills": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "requires_tools": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9.+-]*(?:\\s*(?:>=|<=|==|>|<|~|\\^)\\s*[0-9][0-9a-zA-Z.-]*)?$"
+      },
+      "uniqueItems": true
+    },
+    "deprecated": {
+      "default": false,
+      "type": "boolean"
+    },
+    "supersedes": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "slug",
+    "name",
+    "version",
+    "tier",
+    "maintainers",
+    "summary",
+    "stack",
+    "languages",
+    "platforms",
+    "distribution",
+    "project_type",
+    "audience",
+    "requirements",
+    "agents",
+    "deprecated",
+    "supersedes"
+  ],
+  "additionalProperties": false
+}
