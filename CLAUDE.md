@@ -169,6 +169,7 @@ A project that depends on hosted CI locks up when CI is unavailable. Therefore:
 
 ### General
 1. Language: code, commits, docs, issues, comments — **English only**. No other language anywhere in the repo.
+   **Conversation with the maintainer is in Turkish.** Chat replies, questions, progress summaries and explanations to the repo owner are written in Turkish; everything that is committed to the repository stays in English. Never mix the two: Turkish in the terminal conversation, English in files.
 2. TypeScript strict, ESM, Node ≥ 20, pnpm workspace. One repo, three packages.
 3. Ask before adding a dependency. Defaults: MCP SDK, zod, yaml, commander. Nothing else without approval.
 4. No commit while `pnpm test` is red. If there is no test, write the test first.
@@ -277,7 +278,7 @@ This section is not legal advice; license texts should be reviewed by a lawyer b
 
 ## 10. First-session instructions
 
-After reading this file, in order:
+After reading this file, in order (talk to the owner in Turkish; write files in English):
 
 1. Write ADRs `docs/decisions/0001-no-variants.md`, `0002-actions-optional.md`, `0003-licensing.md`, `0004-english-only-catalog.md` (short; rationale from §4, §5, §8, §9).
 2. Complete Phase 0. Summarize each step in one line; stop whenever a decision needs the owner.
@@ -291,4 +292,5 @@ After reading this file, in order:
 - Return more than one blueprint from the resolver.
 - Accept a tag outside the taxonomy.
 - Write any non-English text into the repo.
+- Reply to the owner in English when they write in Turkish.
 - Invent a blueprint on your own.
