@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeprint</title>
+    <meta
+      name="description"
+      content="Resolved, AI-ready project blueprints for coding agents. One MCP call returns the right context and a tested setup recipe."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #ffffff;
+        --fg: #1b1b1f;
+        --muted: #5a5a66;
+        --line: #e3e3e8;
+        --accent: #b8541a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #15151a;
+          --fg: #e9e9ee;
+          --muted: #a0a0ad;
+          --line: #2c2c34;
+          --accent: #ff9f57;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 4rem 1rem;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.6 ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          sans-serif;
+      }
+      main {
+        max-width: 42rem;
+        margin: 0 auto;
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+      }
+      .tagline {
+        margin: 0 0 2rem;
+        color: var(--muted);
+      }
+      .status {
+        margin: 0 0 2rem;
+        padding: 0.9rem 1.1rem;
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        border-radius: 6px;
+        color: var(--muted);
+      }
+      h2 {
+        margin: 2.5rem 0 0.5rem;
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+      li {
+        margin: 0.4rem 0;
+      }
+      a {
+        color: var(--accent);
+      }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Forgeprint</h1>
+      <p class="tagline">
+        Tell your agent who you are and what you are building — get back one blueprint and a setup
+        recipe it can execute.
+      </p>
+
+      <p class="status">
+        <strong>Pre-release.</strong> The catalog is empty and this page is a placeholder. The
+        browsable site is generated from <a href="index.json">index.json</a> in phase 3 of the
+        roadmap.
+      </p>
+
+      <h2>What it is</h2>
+      <ul>
+        <li>A curated catalog of project blueprints, one folder each.</li>
+        <li>
+          A resolver that takes your languages and goals and returns
+          <strong>exactly one</strong> blueprint — not a list to browse.
+        </li>
+        <li>
+          A deterministic <code>setup.md</code> per blueprint: numbered steps, pinned versions, a
+          verification command after each one.
+        </li>
+        <li>A quality gate on every contribution: schema, setup test, duplicate report.</li>
+      </ul>
+
+      <h2>Follow along</h2>
+      <ul>
+        <li><a href="https://github.com/forgeprint/forgeprint">Repository</a></li>
+        <li>
+          <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"
+            >How to contribute a blueprint</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml"
+            >Request a blueprint</a
+          >
+        </li>
+      </ul>
+
+      <footer>
+        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0, catalog content
+        under CC BY 4.0.
+      </footer>
+    </main>
+  </body>
+</html>
