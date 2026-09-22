@@ -25,6 +25,13 @@ publish over previously staged version`, and `npm view --prefer-online`
   stops, so a human rewrites them before anything immutable exists. Running it
   again after a failure is safe: whatever is already done is skipped.
 
+  Output is captured with room for the whole test suite. The default limit is
+  1MB and `pnpm run check` prints close to it, so the release succeeded or
+  failed depending on how much its own logs happened to say. When a step does
+  fail, the lines that name the failure are printed rather than the last
+  twenty — which were the runner's epilogue, naming the package and never the
+  test — and the whole output is written to a file.
+
 ## 0.2.5 — 2026-09-22
 
 - `no-system-paths` no longer fires inside a fenced `dockerfile` block. The

@@ -5,6 +5,7 @@ import {
   checkVersions,
   classifyPublishError,
   draftNotes,
+  failureLines,
   hasChangelogEntry,
   isReleaseVersion,
   publishable,
@@ -188,5 +189,33 @@ describe('draftNotes', () => {
 
   it('marks itself as a draft, because a release cannot be edited afterwards', () => {
     assert.ok(draftNotes('1.0.0', [], []).startsWith('<!-- Draft.'));
+  });
+});
+
+describe('failureLines', () => {
+  it('finds the failing test in output that ends with the runner\u2019s epilogue', () => {
+    // The case this exists for: a failing check printed its tail, the tail was
+    // pnpm saying which package failed, and the test that failed was hundreds
+    // of lines above it.
+    const output = [
+      'ok 1 - something',
+      'not ok 2 - the one that matters',
+      '# fail 1',
+      'ELIFECYCLE Test failed.',
+      'Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL',
+    ].join('\n');
+    const lines = failureLines(output);
+    assert.ok(lines.includes('not ok 2 - the one that matters'));
+    assert.ok(lines.includes('# fail 1'));
+  });
+
+  it('keeps the tail, because an unfamiliar failure has nothing to match on', () => {
+    const output = Array.from({ length: 50 }, (_, i) => `line ${i}`).join('\n');
+    assert.ok(failureLines(output, 3).includes('line 49'));
+  });
+
+  it('does not repeat a line that is both marked and in the tail', () => {
+    const lines = failureLines('not ok 1 - only failure', 5);
+    assert.equal(lines.filter((l) => l === 'not ok 1 - only failure').length, 1);
   });
 });

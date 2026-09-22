@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { listBlueprintSlugs } from './catalog.js';
 import { repoPaths } from './paths.js';
 import {
@@ -8,6 +8,7 @@ import {
   checkVersions,
   classifyPublishError,
   draftNotes,
+  failureLines,
   isReleaseVersion,
   notesPath,
   publishable,
@@ -225,8 +226,11 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
     say('  running pnpm run check');
     const check = run('pnpm', ['run', 'check'], root);
     if (!check.ok) {
-      process.stderr.write(check.output.split('\n').slice(-20).join('\n'));
-      fail('pnpm run check failed');
+      const log = join(root, 'docs', 'releases', `.check-${version}.log`);
+      mkdirSync(dirname(log), { recursive: true });
+      writeFileSync(log, check.output, 'utf8');
+      for (const line of failureLines(check.output)) process.stderr.write(`${line}\n`);
+      fail(`pnpm run check failed; the whole output is in ${log}`);
     }
     say('  ok     check passed');
   }

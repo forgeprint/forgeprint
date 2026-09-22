@@ -209,6 +209,15 @@ export function isReleaseVersion(version: string): boolean {
   return /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version);
 }
 
+/**
+ * Enough room for the whole test suite.
+ *
+ * The default is 1MB, and a full `pnpm run check` sits close enough to it that
+ * the run fails or succeeds depending on how much the test runner printed.
+ * A release that depends on the volume of its own log output is not a check.
+ */
+const MAX_OUTPUT_BYTES = 64 * 1024 * 1024;
+
 /** Run a command and return its combined output, never throwing. */
 export function run(command: string, args: string[], cwd: string): { ok: boolean; output: string } {
   try {
@@ -216,6 +225,7 @@ export function run(command: string, args: string[], cwd: string): { ok: boolean
       cwd,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
+      maxBuffer: MAX_OUTPUT_BYTES,
       shell: process.platform === 'win32',
     });
     return { ok: true, output };
@@ -226,6 +236,25 @@ export function run(command: string, args: string[], cwd: string): { ok: boolean
       output: `${failure.stdout ?? ''}${failure.stderr ?? ''}${failure.message ?? ''}`,
     };
   }
+}
+
+/**
+ * The lines of a failed run that say what went wrong.
+ *
+ * A failing `pnpm run check` ends with pnpm's own epilogue, so printing the
+ * tail shows which package failed and never which test. This pulls out the
+ * lines that name the failure and keeps the tail as well, because an
+ * unrecognised failure has no marker to find.
+ */
+export function failureLines(output: string, tail = 15): string[] {
+  const lines = output.split('\n');
+  const marked = lines.filter((line) =>
+    /(^|\s)(not ok|# fail [1-9]|AssertionError|error TS\d|✖|failed)/i.test(line),
+  );
+  const keep = marked.slice(0, 40);
+  const end = lines.slice(-tail);
+  const seen = new Set(keep);
+  return [...keep, ...end.filter((line) => !seen.has(line))];
 }
 
 /**
