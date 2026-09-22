@@ -98,7 +98,9 @@ interface PinRule {
 const PINNING: readonly PinRule[] = [
   {
     rule: 'pin-nuget',
-    detect: /\bdotnet\s+add\s+package\s+\S+/i,
+    // `dotnet add <project> package <name>` is the form every recipe here
+    // writes; without the optional project this rule only saw the short one.
+    detect: /\bdotnet\s+add\s+(?:\S+\s+)?package\s+\S+/i,
     pinned: /--version\s+\S+/i,
     message: 'dotnet add package needs an explicit --version',
   },

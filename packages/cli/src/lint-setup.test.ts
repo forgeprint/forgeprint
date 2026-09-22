@@ -86,6 +86,23 @@ describe('lintSetup', () => {
     assert.ok(rules(source).includes('pin-nuget'));
   });
 
+  it('sees the form recipes actually use, with the project in the middle', () => {
+    // `dotnet add <project> package <name>` went unchecked entirely: the rule
+    // required "add package" to be adjacent, and no recipe here writes it that
+    // way. Found by rehearsing a review against a deliberately unpinned PR.
+    const source =
+      '1. Add it: `dotnet add src/App.Api package Npgsql.EntityFrameworkCore.PostgreSQL`\n' +
+      '   Verify: `dotnet build`\n';
+    assert.ok(rules(source).includes('pin-nuget'));
+  });
+
+  it('accepts a pinned version with the project in the middle', () => {
+    const source =
+      '1. Add it: `dotnet add src/App.Api package Npgsql --version 10.0.3`\n' +
+      '   Verify: `dotnet build`\n';
+    assert.ok(!rules(source).includes('pin-nuget'));
+  });
+
   it('accepts a pinned NuGet version', () => {
     const source =
       '1. Add it: `dotnet add package Serilog --version 4.2.0`\n   Verify: `dotnet build`\n';
