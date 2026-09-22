@@ -1,0 +1,20 @@
+{
+  "name": "forgeprint",
+  "description": "The skills behind the Forgeprint catalog: writing a blueprint, and reviewing one.",
+  "owner": {
+    "name": "Forgeprint",
+    "url": "https://github.com/forgeprint"
+  },
+  "plugins": [
+    {
+      "name": "blueprint-author",
+      "source": "./skills/blueprint-author",
+      "description": "Turn a working project into a Forgeprint blueprint that passes the quality gate."
+    },
+    {
+      "name": "blueprint-review",
+      "source": "./skills/blueprint-review",
+      "description": "Review a blueprint contribution for duplication and quality, and reach one verdict."
+    }
+  ]
+}

@@ -27,11 +27,11 @@ the maintainer, the listing is a liability.
 
 ## Repository prerequisites
 
-| What                                           | Where                                                             | Why                                                                                                                                                    |
-| ---------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json`, then publish **0.2.1** to npm | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
-| `server.json`                                  | repository root                                                   | The registry's own manifest (below)                                                                                                                    |
-| `.claude-plugin/marketplace.json`              | repository root                                                   | Lets anyone run `/plugin marketplace add forgeprint/forgeprint`. There is no central Claude Code plugin registry, so this file **is** the distribution |
+| What                                              | Where                                                                           | Why                                                                                                                                                    |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ✅ `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json` — **0.2.1 still has to be published to npm** | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
+| ✅ `server.json`                                  | repository root                                                                 | The registry's own manifest (below)                                                                                                                    |
+| ✅ `.claude-plugin/marketplace.json`              | repository root                                                                 | Lets anyone run `/plugin marketplace add forgeprint/forgeprint`. There is no central Claude Code plugin registry, so this file **is** the distribution |
 
 ---
 
@@ -41,10 +41,10 @@ _Source: `modelcontextprotocol/registry` — `docs/modelcontextprotocol-io/quick
 
 | Requirement                                                | Forgeprint today                                                                                                                                        |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.2.0`                                                                                                                               |
-| `mcpName` in `package.json`, matching `server.json` `name` | ❌ to add, then publish 0.2.1                                                                                                                           |
+| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.2.0`; 0.2.1 pending                                                                                                                |
+| `mcpName` in `package.json`, matching `server.json` `name` | ✅ added; publish 0.2.1 to npm before registering                                                                                                       |
 | Namespace proven by GitHub OAuth                           | ✅ `io.github.forgeprint/*` — **@aliosmanmho must be an Owner of the org**, not merely a member. Ordinary membership no longer grants the org namespace |
-| `server.json` at the repository root                       | ❌ to add                                                                                                                                               |
+| `server.json` at the repository root                       | ✅ committed                                                                                                                                            |
 
 ```bash
 brew install mcp-publisher     # or the prebuilt binary
@@ -232,39 +232,26 @@ several skills worth installing together; two is not enough.
 _Source: code.claude.com/docs/en/plugin-marketplaces, read 2026-09-22._
 
 There is no central registry, no approval, and no listing process: a
-marketplace is a file in a repository, and users add it directly. So this is
-not a submission but a feature to ship.
+marketplace is a file in a repository, and users add it directly. So this was
+not a submission but a feature to ship, and it is shipped.
 
-`.claude-plugin/marketplace.json`:
-
-```json
-{
-  "name": "forgeprint",
-  "owner": { "name": "Forgeprint", "url": "https://github.com/forgeprint" },
-  "plugins": [
-    {
-      "name": "blueprint-author",
-      "source": "./skills/blueprint-author"
-    }
-  ]
-}
-```
-
-Each plugin also needs its own `.claude-plugin/plugin.json` with `name`,
-`description`, `version` and `author`. Validate before publishing:
-
-```bash
-claude plugin validate .
-```
-
-Then the README gains one line:
+`.claude-plugin/marketplace.json` offers both catalog skills as plugins, each
+with its own `.claude-plugin/plugin.json`. The skill folders keep their
+`SKILL.md` at the plugin root, which the documented single-skill shortcut
+loads as that plugin's only skill — no duplicated files, and the same folders
+`npx skills add` and `gh skill install` already use (ADR 0006).
 
 ```
 /plugin marketplace add forgeprint/forgeprint
+/plugin install blueprint-author@forgeprint
 ```
 
-Reserved names (`claude-code-marketplace`, `anthropic-plugins`, …) are refused;
-`forgeprint` is fine.
+`claude plugin validate .` passes on the marketplace and on both plugin
+manifests. Bump each plugin's `version` when its skill changes, the way the
+packages are bumped.
+
+Reserved marketplace names (`claude-code-marketplace`, `anthropic-plugins`, …)
+are refused; `forgeprint` is fine.
 
 ---
 

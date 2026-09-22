@@ -3,6 +3,22 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.1 — 2026-09-22
+
+### Added
+
+- `forgeprint build-requests` — writes `docs/requests.json` from the open
+  `blueprint-request` issues through `gh`, with the date it was taken. It is
+  the site's fallback when a reader cannot reach the issues API
+  (ADR 0007). Without `gh` it leaves the committed file alone rather than
+  replacing a good list with an empty one.
+- `validate` now checks every `SKILL.md` against the format the distribution
+  tools read — frontmatter, a name that matches its folder, a description, a
+  licence, `allowed-tools` as a string, no committed install metadata, and no
+  two skills sharing a name (ADR 0006).
+- `featured_contributors` in `forgeprint.json`, for the people the site
+  credits.
+
 ## 0.2.0 — 2026-09-22
 
 The release that makes a setup recipe executable rather than readable.

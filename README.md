@@ -209,6 +209,13 @@ judged against. Install either one into your agent:
 
 ```bash
 gh skill install forgeprint/forgeprint blueprint-author
+npx skills add forgeprint/forgeprint --skill blueprint-author
+```
+
+Or add the marketplace, and take them as Claude Code plugins:
+
+```
+/plugin marketplace add forgeprint/forgeprint
 ```
 
 Want a blueprint you cannot write yourself? File a

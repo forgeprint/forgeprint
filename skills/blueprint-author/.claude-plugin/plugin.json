@@ -1,0 +1,9 @@
+{
+  "name": "blueprint-author",
+  "description": "Turn a working project into a Forgeprint blueprint that passes the quality gate.",
+  "version": "0.2.1",
+  "author": {
+    "name": "Forgeprint",
+    "url": "https://github.com/forgeprint/forgeprint"
+  }
+}

@@ -4,6 +4,18 @@ The static site generator behind https://forgeprint.github.io/forgeprint. It is
 private: the site is generated into `docs/` and committed, so Pages deploys
 from the branch and needs no build service (ADR 0002).
 
+## 0.2.1 — 2026-09-22
+
+- Each blueprint page credits its maintainer — "Blueprint by @handle", with the
+  avatar from `github.com/<login>.png`, which needs no API call at build time
+  and no script in the page.
+- The front page credits the featured contributors from `forgeprint.json`.
+- The front page shows the open blueprint requests: a dated snapshot in the
+  HTML, replaced on load by the live queue read from the public issues API and
+  cached in `sessionStorage` for ten minutes. No token, and no workflow with
+  write access (ADR 0007). Issue titles are user input, so the list is built
+  with `textContent` and `innerHTML` is never assigned.
+
 ## 0.2.0 — 2026-09-22
 
 First working version; the version number follows the workspace.

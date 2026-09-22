@@ -4,6 +4,12 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.1 — 2026-09-22
+
+- `mcpName` in the package manifest, which is how the official MCP registry
+  verifies that this npm package belongs to the server it lists. No behaviour
+  changed; the version moves so the published package carries the field.
+
 ## 0.2.0 — 2026-09-22
 
 No tool behaviour changed. The version moves with the workspace so that a
