@@ -225,6 +225,7 @@ A project that depends on hosted CI locks up when CI is unavailable. Therefore:
 - [ ] Pages site (`docs/`, branch deploy, no Actions required)
 - [ ] Workflows (active once Actions is available): validate, similarity, setup-test matrix, build-pages
 - [ ] Compatibility tests for `npx skills add` / `gh skills install`
+- [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand
 
 ### Phase 4 — Community
 - [ ] Orphan/stale bot, co-maintainer bot

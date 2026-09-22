@@ -1,0 +1,55 @@
+# Changelog — forgeprint
+
+The catalog tooling. Every pipeline step is a command here, so a contributor
+gets the same answer locally that a pull request gets in CI (ADR 0002).
+
+## 0.2.0 — 2026-09-22
+
+The release that makes a setup recipe executable rather than readable.
+
+### Added
+
+- `forgeprint test-setup` — runs a recipe in a fresh temporary directory: every
+  step, then its verification, stopping at the first failure with the command
+  and its output. It checks the tools a manifest declares in `requires_tools`
+  before it starts and installs nothing; a missing tool is a refusal that names
+  the tool (ADR 0005). Flags: `--all`, `--options database=postgres,auth=jwt`,
+  `--all-options` for the full matrix, `--keep` to keep the working directory.
+- `--changed-since <ref>` on `test-setup` — the blueprints a branch changed,
+  and every blueprint when the recipe runner itself changed. It compares
+  commits, not the working tree. When nothing changed it says so and succeeds,
+  which is what lets the recipe run be a required status check without
+  blocking pull requests that touch no blueprint.
+- A recipe parser behind `test-setup`: a step is one command (the last code
+  span) or one file (a path in backticks followed by a fenced block), and a
+  step ends at the next heading, so the prose after a recipe is never run.
+- `--all` on `lint-setup` and `similarity`.
+- Two `lint-setup` rules that came out of running the recipes for real:
+  `one-action-per-step` and `write-step-needs-path`.
+
+### Fixed
+
+- `forgeprint --version` reported `0.1.0` whatever was installed. It now
+  reports the package version, and a test keeps the two in step.
+
+## 0.1.1 — 2026-09-22
+
+- Published unscoped as `forgeprint`. `0.1.0` went out depending on
+  `@forgeprint/cli`, which does not exist and made the package uninstallable;
+  it is deprecated on npm.
+
+## 0.1.0 — 2026-09-22
+
+First release.
+
+- `validate` — schema, taxonomy, required files, one blueprint per
+  `stack + project_type + requirements`, a CHANGELOG entry per version, and
+  generated files that are committed and current.
+- `lint-setup` — the structure and safety rules for `setup.md`: numbered steps,
+  a verification per step, pinned versions, and no `sudo`, no pipe to a shell,
+  no recursive delete, no system paths (rule 20).
+- `similarity` — the duplicate report: tag overlap and TF-IDF text similarity
+  against the closest blueprint in the catalog.
+- `build-index`, `build-schema`, `build-codeowners` — the generated files that
+  are committed to the repository so that Pages and CODEOWNERS work without a
+  build service.
