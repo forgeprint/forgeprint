@@ -46,12 +46,33 @@ _Source: `modelcontextprotocol/registry` — `docs/modelcontextprotocol-io/quick
 | Namespace proven by GitHub OAuth                           | ✅ `io.github.forgeprint/*` — **@aliosmanmho must be an Owner of the org**, not merely a member. Ordinary membership no longer grants the org namespace |
 | `server.json` at the repository root                       | ✅ committed                                                                                                                                            |
 
-```bash
-brew install mcp-publisher     # or the prebuilt binary
-mcp-publisher init             # writes a server.json template
-mcp-publisher login github     # device flow, as the org Owner
-mcp-publisher publish
+Install the publisher. There is no npm package for it: a prebuilt binary, or
+Homebrew on macOS.
+
+```powershell
+# Windows
+$dir = "$env:USERPROFILEin"
+New-Item -ItemType Directory -Force $dir | Out-Null
+$arch = if ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -eq "Arm64") { "arm64" } else { "amd64" }
+Invoke-WebRequest -Uri "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_windows_$arch.tar.gz" -OutFile "$dir\mcp-publisher.tar.gz"
+tar xf "$dir\mcp-publisher.tar.gz" -C $dir mcp-publisher.exe
+Remove-Item "$dir\mcp-publisher.tar.gz"
 ```
+
+```bash
+# macOS / Linux
+brew install mcp-publisher
+```
+
+Then, **from the repository root**, because `publish` reads `./server.json`:
+
+```powershell
+& "$env:USERPROFILEin\mcp-publisher.exe" login github     # device flow, as the org Owner
+& "$env:USERPROFILEin\mcp-publisher.exe" publish
+```
+
+`mcp-publisher init` writes a `server.json` template; this repository already
+has one, so it is not needed.
 
 `server.json` to commit:
 
