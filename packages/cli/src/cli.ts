@@ -1,5 +1,6 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
 import { Command } from 'commander';
 import { renderCodeowners } from './build-codeowners.js';
 import { loadBlueprints, renderIndex } from './build-index.js';
@@ -12,6 +13,10 @@ import {
 } from './catalog.js';
 import { CONFIG_FILE, loadConfig } from './config.js';
 import { lintSetup } from './lint-setup.js';
+import type { Manifest } from './manifest.js';
+import { checkOptions, resolveSetupOptions } from './options.js';
+import { parseRecipe } from './recipe.js';
+import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
 import { compareBlueprints, DEFAULT_THRESHOLD, renderReport } from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy } from './taxonomy.js';
@@ -133,6 +138,87 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     );
 
   program
+    .command('test-setup')
+    .argument('[slug]', 'blueprint to run; omit with --all')
+    .option('--all', 'run every blueprint in the catalog')
+    .option('--options <pairs>', 'option values, for example database=postgres,auth=jwt')
+    .option('--all-options', 'run every combination of the declared options')
+    .option('--keep', 'keep the working directory instead of deleting it')
+    .description('run a setup recipe in a fresh directory and verify every step')
+    .action(
+      async (
+        slug: string | undefined,
+        flags: { all?: boolean; options?: string; allOptions?: boolean; keep?: boolean },
+      ) => {
+        const root = rootOf();
+        const taxonomy = loadTaxonomy(root);
+        let failures = 0;
+
+        for (const target of targets(root, slug, flags.all === true)) {
+          const folder = readBlueprintFolder(root, target);
+          const manifest = readManifest(taxonomy, folder);
+
+          // Nothing is installed: a missing tool is a refusal, not a guess at a
+          // different toolchain (ADR 0005).
+          const missing = await checkTools(manifest.requires_tools ?? []);
+          if (missing.length > 0) {
+            for (const problem of missing) console.error(`error  ${target}: ${problem.message}`);
+            console.error(`\n${target} cannot be tested on this machine. Nothing was installed.`);
+            failures += 1;
+            continue;
+          }
+
+          for (const chosen of combinations(manifest, flags)) {
+            checkOptions(manifest, chosen);
+            const label = describeOptions(chosen);
+            console.log(`\n${target}${label === '' ? '' : `  ${label}`}`);
+
+            const resolved = resolveSetupOptions(readBlueprintFile(folder, 'setup.md'), chosen);
+            const recipe = parseRecipe(resolved.markdown);
+            if (recipe.problems.length > 0) {
+              for (const problem of recipe.problems) {
+                console.error(`error  setup.md:${problem.line}: ${problem.message}`);
+              }
+              failures += 1;
+              continue;
+            }
+
+            const dir = mkdtempSync(join(tmpdir(), `${runDirectoryName(target, chosen)}-`));
+            const started = Date.now();
+            const result = await runRecipe(recipe.steps, {
+              dir,
+              // The step's own number can outrun the count: a branch the caller
+              // did not pick leaves a gap in the numbering of the one they did.
+              onStep: (step, position, total) => {
+                console.log(
+                  `  [${String(position).padStart(2)}/${total}] ${step.number}. ${step.title}`,
+                );
+              },
+            });
+
+            if (result.ok) {
+              console.log(`ok  ${recipe.steps.length} step(s) in ${seconds(started)}`);
+              if (flags.keep === true) console.log(`  working directory: ${dir}`);
+              else rmSync(dir, { recursive: true, force: true });
+            } else {
+              const failure = result.failure;
+              console.error(
+                `\nerror  step ${String(failure?.step.number)} failed during the ` +
+                  `${String(failure?.phase)} (exit ${String(failure?.exitCode)})`,
+              );
+              console.error(`  ${failedCommand(failure)}`);
+              console.error(indent(tail(failure?.output ?? '', 40)));
+              console.error(`  working directory kept at ${dir}`);
+              failures += 1;
+            }
+          }
+        }
+
+        if (failures > 0) process.exitCode = 1;
+      },
+    );
+
+  program
     .command('build-index')
     .description('regenerate docs/index.json from the catalog')
     .action(() => {
@@ -166,6 +252,69 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     });
 
   return program;
+}
+
+/** Every combination of the declared options, or just the first of each. */
+function combinations(
+  manifest: Manifest,
+  flags: { options?: string; allOptions?: boolean },
+): Record<string, string>[] {
+  if (flags.options !== undefined) return [parsePairs(flags.options)];
+
+  const fields = Object.entries(manifest.options ?? {});
+  if (fields.length === 0) return [{}];
+  if (flags.allOptions !== true) {
+    // One run, deterministically the first value of each field. The full matrix
+    // is slow enough that making it the default would mean nobody runs it.
+    return [Object.fromEntries(fields.map(([field, values]) => [field, values[0] ?? '']))];
+  }
+  return fields.reduce<Record<string, string>[]>(
+    (rows, [field, values]) =>
+      rows.flatMap((row) => values.map((value) => ({ ...row, [field]: value }))),
+    [{}],
+  );
+}
+
+function parsePairs(text: string): Record<string, string> {
+  return Object.fromEntries(
+    text.split(',').map((pair) => {
+      const [field = '', value = ''] = pair.split('=');
+      if (field.trim() === '' || value.trim() === '') {
+        throw new Error(`--options takes field=value pairs, got "${pair}"`);
+      }
+      return [field.trim(), value.trim()];
+    }),
+  );
+}
+
+function describeOptions(chosen: Readonly<Record<string, string>>): string {
+  return Object.entries(chosen)
+    .map(([field, value]) => `${field}=${value}`)
+    .join(' ');
+}
+
+/** What to show for a failure: the verification, or the action that ran. */
+function failedCommand(failure: StepOutcome | undefined): string {
+  if (failure === undefined) return '';
+  if (failure.phase === 'verify') return failure.step.verify;
+  return failure.step.action.kind === 'run'
+    ? failure.step.action.command
+    : `write ${failure.step.action.path}`;
+}
+
+function seconds(started: number): string {
+  return `${((Date.now() - started) / 1000).toFixed(1)}s`;
+}
+
+function tail(text: string, lines: number): string {
+  return text.split('\n').slice(-lines).join('\n');
+}
+
+function indent(text: string): string {
+  return text
+    .split('\n')
+    .map((line) => `  | ${line}`)
+    .join('\n');
 }
 
 /** The blueprints a command should act on: one slug, or the whole catalog. */

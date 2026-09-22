@@ -140,6 +140,21 @@ End the recipe with a step that proves the result works — a request against th
 running service, a protocol handshake, a test run — not with "the build
 succeeds".
 
+Then run it with `forgeprint test-setup`, which is what turns "every step is a
+command" from a style rule into something enforced. Three things it catches
+that reading does not:
+
+- **A fixed port.** `-p 8080:8080` fails on any machine already using 8080, and
+  a fixed port on a check can even be answered by somebody else's server, which
+  passes while proving nothing. Ask the operating system for a port and read it
+  back.
+- **A process that never returns.** A step that starts a server in the
+  foreground can be followed by a human and never by a script. Start it in the
+  background, record the process id, and stop it in a later step.
+- **Configuration the recipe never supplies.** A container that refuses to
+  start without a setting will exit before the check that was meant to prove it
+  works.
+
 ---
 
 ## 4. Write AGENTS.md as rules, not encouragement
@@ -205,6 +220,7 @@ pnpm forgeprint build-index
 pnpm forgeprint validate
 pnpm forgeprint lint-setup <slug>
 pnpm forgeprint similarity <slug>
+pnpm forgeprint test-setup <slug>
 pnpm run check
 ```
 
@@ -213,6 +229,13 @@ pnpm run check
 - `lint-setup` red — the recipe is not deterministic yet.
 - `similarity` prints **REJECTED** — same triple as an existing blueprint. Go
   back to step 0.
+- `test-setup` red — the recipe does not work. It runs in a fresh directory,
+  checks the tools your manifest declares, executes every step and its
+  verification, and stops at the first failure with the command and its output.
+  This is the check that finds what reading cannot: a fixed port that is
+  already taken, a container started without the configuration it refuses to
+  boot without, a step that starts a server in the foreground and never
+  returns. Run `--all-options` before you open the pull request.
 - `similarity` prints **RED FLAG** — above the threshold but a different triple.
   The command passes; the pull request is where you justify it. Note that tag
   overlap can be high between genuinely different blueprints, because six tag

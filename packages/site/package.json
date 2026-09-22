@@ -11,9 +11,13 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "test": "node --test \"dist/**/*.test.js\""
+    "test": "node --test \"dist/**/*.test.js\"",
+    "build-site": "node dist/bin.js"
   },
   "dependencies": {
     "forgeprint": "workspace:*"
+  },
+  "bin": {
+    "forgeprint-site": "dist/bin.js"
   }
 }

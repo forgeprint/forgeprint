@@ -632,9 +632,10 @@ Requires the .NET SDK 10 and Docker.
     }
     ```
 
-    Delete the template's placeholder test file `tests/Saas.Api.Tests/UnitTest1.cs`.
-
     Verify: `dotnet build tests/Saas.Api.Tests`
+
+22. Remove the template's placeholder test: `rm tests/Saas.Api.Tests/UnitTest1.cs`
+    Verify: `test ! -f tests/Saas.Api.Tests/UnitTest1.cs`
 
 <!-- endif -->
 
@@ -669,13 +670,14 @@ Requires the .NET SDK 10 and Docker.
     }
     ```
 
-    Delete the template's placeholder test file `tests/Saas.Api.Tests/UnitTest1.cs`.
-
     Verify: `dotnet build tests/Saas.Api.Tests`
+
+22. Remove the template's placeholder test: `rm tests/Saas.Api.Tests/UnitTest1.cs`
+    Verify: `test ! -f tests/Saas.Api.Tests/UnitTest1.cs`
 
 <!-- endif -->
 
-22. Create `Dockerfile` with:
+23. Create `Dockerfile` with:
 
     ```dockerfile
     # Build stage: restore first, so a code change does not re-download packages.
@@ -700,7 +702,7 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f Dockerfile`
 
-23. Create `.dockerignore` with:
+24. Create `.dockerignore` with:
 
     ```gitignore
     **/bin/
@@ -718,7 +720,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == postgres -->
 
-24. Create `compose.yaml` for the local database with:
+25. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -744,7 +746,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == sqlserver -->
 
-24. Create `compose.yaml` for the local database with:
+25. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -763,7 +765,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- endif -->
 
-25. Create `.github/workflows/ci.yml` with:
+26. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: CI
@@ -792,19 +794,19 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-26. Build the solution: `dotnet build`
+27. Build the solution: `dotnet build`
     Verify: `dotnet build --configuration Release`
 
-27. Run the tests, which is where tenant isolation is actually checked: `dotnet test`
+28. Run the tests, which is where tenant isolation is actually checked: `dotnet test`
     Verify: `dotnet test`
 
-28. Build the container image: `docker build --tag saas-api:dev .`
+29. Build the container image: `docker build --tag saas-api:dev .`
     Verify: `docker image inspect saas-api:dev`
 
-29. Start the container and check that it answers: `docker run -d --name saas-api-check -p 8080:8080 saas-api:dev`
-    Verify: `curl -fsS http://localhost:8080/health`
+30. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string, so one is supplied here; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -p 127.0.0.1::8080 saas-api:dev`
+    Verify: `curl -fsS --retry 10 --retry-delay 1 --retry-connrefused "http://$(docker port saas-api-check 8080)/health"`
 
-30. Stop the check container: `docker rm -f saas-api-check`
+31. Stop the check container: `docker rm -f saas-api-check`
     Verify: `docker ps --filter name=saas-api-check --quiet`
 
 ## After setup

@@ -1,0 +1,85 @@
+# Running the recipes for real.
+#
+# This is the check the catalog's central claim rests on: a `setup.md` is a
+# script, and a machine can follow it on an empty directory. Nothing else in CI
+# can tell you that.
+#
+# It runs on a runner rather than inside a container, because the recipes build
+# and run containers themselves — see docs/decisions/0005-setup-test-environment.md.
+#
+# The runner provides the toolchain. `forgeprint test-setup` checks what each
+# blueprint declares in `requires_tools` and refuses to run if something is
+# missing, naming it. So a blueprint in a language this job does not install
+# fails with a readable message, and the fix is a step here.
+
+name: setup-test
+
+on:
+  # While the catalog is bootstrapped, blueprints land on main directly, so the
+  # pull request trigger alone would never fire.
+  push:
+    branches: [main]
+    paths:
+      - 'blueprints/**'
+      - 'packages/cli/**'
+      - '.github/workflows/setup-test.yml'
+  pull_request:
+    paths:
+      - 'blueprints/**'
+      - 'packages/cli/**'
+      - '.github/workflows/setup-test.yml'
+  workflow_dispatch:
+    inputs:
+      all-options:
+        description: 'Run every option combination rather than one per blueprint'
+        type: boolean
+        default: true
+  schedule:
+    # Recipes rot from the outside: a package is yanked, an image tag moves, an
+    # advisory appears. Monday morning, before anyone relies on them.
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: setup-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-recipes:
+    runs-on: ubuntu-latest
+    # A recipe builds projects and images; the default is far too tight.
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      # The toolchain today's catalog declares. Docker is already on the runner.
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the tooling
+        run: pnpm run build
+
+      # A pull request tests one combination per blueprint: the first value of
+      # each option, deterministically. The full matrix is slow enough that
+      # making it the default would mean nobody waits for it, so it runs on
+      # Mondays and on demand.
+      - name: Run one combination per blueprint
+        if: github.event_name == 'pull_request'
+        run: pnpm forgeprint test-setup --all
+
+      - name: Run every option combination
+        if: github.event_name != 'pull_request'
+        run: pnpm forgeprint test-setup --all --all-options

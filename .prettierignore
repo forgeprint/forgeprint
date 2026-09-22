@@ -4,6 +4,9 @@ pnpm-lock.yaml
 # Generated artifacts: `forgeprint build-*` owns their formatting.
 docs/index.json
 schema/manifest.schema.json
+docs/index.html
+docs/forgeprint.css
+docs/b/
 
 # Maintainer-owned documents: formatting changes would churn the diff.
 CLAUDE.md

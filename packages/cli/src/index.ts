@@ -9,6 +9,8 @@ export * from './lint-setup.js';
 export * from './manifest.js';
 export * from './options.js';
 export * from './paths.js';
+export * from './recipe.js';
 export * from './similarity.js';
 export * from './taxonomy.js';
+export * from './test-setup.js';
 export * from './validate.js';

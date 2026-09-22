@@ -3,6 +3,23 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.1 — 2026-09-22
+
+The recipe is now executed by `forgeprint test-setup` rather than followed by
+hand, and two things had to change before a machine could run it.
+
+- Removing the template's placeholder test is its own numbered step with a
+  command. It used to be a sentence inside the step that writes the real test,
+  which reads fine and cannot be executed.
+- The container check no longer binds host port 8080. It asks the operating
+  system for a port and reads it back with `docker port`, because a fixed port
+  fails on any machine that already uses it — which, for 8080, is most of them.
+  The health check also retries while the container starts, instead of racing
+  it.
+
+Verified end to end on .NET SDK 10.0.103 and Docker 29.7.2: every step and
+every verification, for each option combination.
+
 ## 1.0.0 — 2026-09-22
 
 First release.

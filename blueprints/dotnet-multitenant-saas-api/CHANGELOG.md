@@ -3,6 +3,25 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.1 — 2026-09-22
+
+The recipe is now executed by `forgeprint test-setup` rather than followed by
+hand, and that immediately found a step that could not have worked for anyone.
+
+- The container check never started. `AddTenantDatabase` refuses to run without
+  `ConnectionStrings:Default` — correct behaviour, and the recipe did not
+  supply it, so the container exited before the health check and a reader would
+  have hit that at the last step. The run now passes the setting as an
+  environment variable, which also demonstrates the `__` form the application
+  expects.
+- The container check no longer binds host port 8080; it asks the operating
+  system for a port and reads it back, and retries while the container starts.
+- Removing the template's placeholder test is its own numbered step with a
+  command.
+
+Verified end to end on .NET SDK 10.0.103 and Docker 29.7.2, for each option
+combination: every step, every verification, and the tenant isolation suite.
+
 ## 1.0.0 — 2026-09-22
 
 First release.

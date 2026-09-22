@@ -15,7 +15,8 @@ setup recipe the agent can execute.
 > claude mcp add forgeprint -- npx -y forgeprint-mcp
 > ```
 >
-> The site is not live yet. [Roadmap](#roadmap) has the rest.
+> The catalog is browsable at <https://forgeprint.github.io/forgeprint>.
+> [Roadmap](#roadmap) has the rest.
 
 ---
 
@@ -161,7 +162,7 @@ skills/                blueprint-author and blueprint-review
 schema/                manifest schema and the controlled taxonomy
 packages/cli/          forgeprint validate / build-* / similarity / lint-setup
 packages/mcp-server/   the MCP server (npx forgeprint-mcp)
-packages/site/         the static GitHub Pages site
+packages/site/         the static GitHub Pages site, generated into docs/
 docs/                  index.json, the ADRs, and the published site
 ```
 
@@ -176,8 +177,10 @@ docs/                  index.json, the ADRs, and the published site
       and the setup lint.
 - [x] **Phase 2 — MCP.** The six tools, the option resolver, and the server
       over stdio, published as `forgeprint-mcp`.
-- [ ] **Phase 3 — Publishing.** The Pages site, the workflows, and
-      compatibility with the skill installers.
+- [x] **Phase 3 — Publishing.** The site is generated from the catalog and
+      served at <https://forgeprint.github.io/forgeprint>, and the workflows
+      run: `validate` on every push and pull request, `setup-test` on the
+      recipes. Compatibility tests for the skill installers are what remain.
 - [ ] **Phase 4 — Community.** Adoption and staleness handling, resolve
       counters, contributor visibility, optional translations.
 

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASP.NET Core REST API — Forgeprint</title>
+    <meta name="description" content="ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI." />
+    <link rel="stylesheet" href="../forgeprint.css" />
+  </head>
+  <body>
+    <main>
+<p class="back"><a href="../index.html">← all blueprints</a></p>
+
+      <header class="hero blueprint">
+        <p class="slug">dotnet-web-api</p>
+        <h1>ASP.NET Core REST API <span class="tier official">official</span></h1>
+        <p class="tagline">ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.</p>
+        
+        
+      </header>
+
+      <section>
+        <h2>Use it</h2>
+        <p>Ask your agent for it by name, or let <code>resolve</code> find it from your profile.</p>
+        <pre class="install"><code>get_blueprint { "slug": "dotnet-web-api", "options": { "database": "postgres", "auth": "jwt" } }</code></pre>
+      </section>
+
+      <section>
+        <h2>Options</h2>
+        <dl class="options">
+          <dt>database</dt><dd><code>postgres</code> · <code>sqlserver</code></dd>
+          <dt>auth</dt><dd><code>jwt</code> · <code>oidc</code></dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>What it is</h2>
+        <table class="facts">
+          <tr><th>Languages</th><td>C#</td></tr>
+          <tr><th>Project type</th><td>API service</td></tr>
+          <tr><th>Stack</th><td>.NET, ASP.NET Core, Entity Framework Core</td></tr>
+          <tr><th>Platforms</th><td>Linux, Docker</td></tr>
+          <tr><th>Distribution</th><td>Internal, SaaS</td></tr>
+          <tr><th>Sets up</th><td>Authentication, Continuous integration, Containerization</td></tr>
+          <tr><th>Audience</th><td>Intermediate</td></tr>
+          <tr><th>Tested with</th><td>Claude Code</td></tr>
+          <tr><th>Needs</th><td>dotnet&gt;=10, docker</td></tr>
+          <tr><th>Maintainers</th><td>@aliosmanmho</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>Files</h2>
+        <ul class="files">
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/AGENTS.md"><code>AGENTS.md</code></a></li>
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/CHANGELOG.md"><code>CHANGELOG.md</code></a></li>
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/manifest.yaml"><code>manifest.yaml</code></a></li>
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/overview.md"><code>overview.md</code></a></li>
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/setup.md"><code>setup.md</code></a></li>
+          <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/skills/efcore-migrations/SKILL.md"><code>skills/efcore-migrations/SKILL.md</code></a></li>
+        </ul>
+        <p class="muted">Version 1.0.1 · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api/CHANGELOG.md">changelog</a> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/dotnet-web-api">folder on GitHub</a></p>
+      </section>
+    </main>
+    <footer>
+      <a href="https://github.com/forgeprint/forgeprint">Repository</a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="../index.json">index.json</a>
+      <p class="muted">
+        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
+        catalog content under CC BY 4.0.
+      </p>
+    </footer>
+  </body>
+</html>

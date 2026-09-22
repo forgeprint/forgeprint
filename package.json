@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc --build",
     "forgeprint": "node packages/cli/dist/bin.js",
+    "build-site": "node packages/site/dist/bin.js",
     "clean": "tsc --build --clean",
     "typecheck": "tsc --build",
     "test": "pnpm run build && pnpm -r run test",
@@ -16,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run test && node packages/cli/dist/bin.js validate",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run test && node packages/cli/dist/bin.js validate && node packages/site/dist/bin.js --check",
     "validate": "pnpm run build && node packages/cli/dist/bin.js validate"
   },
   "devDependencies": {

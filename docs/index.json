@@ -157,7 +157,7 @@
     {
       "slug": "dotnet-mcp-server",
       "name": "C# MCP Server",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -218,7 +218,7 @@
     {
       "slug": "dotnet-multitenant-saas-api",
       "name": "Multi-tenant SaaS API",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -284,7 +284,7 @@
     {
       "slug": "dotnet-web-api",
       "name": "ASP.NET Core REST API",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"

@@ -23,6 +23,9 @@ const IF_PATTERN = /^<!--\s*if\s+options\.([a-z0-9-]+)\s*==\s*([a-z0-9-]+)\s*-->
 const ENDIF_PATTERN = /^<!--\s*endif\s*-->$/;
 const ANY_GUARD_PATTERN = /^<!--\s*(if|endif)\b/;
 
+/** A heading ends the step above it; the prose after a recipe is not a step. */
+const HEADING_PATTERN = /^\s{0,3}#{1,6}\s/;
+
 /** Opening or closing line of a fenced code block. */
 const FENCE_PATTERN = /^\s*(?:```|~~~)/;
 
@@ -180,6 +183,11 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
       return;
     }
 
+    if (HEADING_PATTERN.test(text)) {
+      closeStep();
+      return;
+    }
+
     const guard = IF_PATTERN.exec(text.trim());
     const isEndif = ENDIF_PATTERN.test(text.trim());
 
@@ -297,6 +305,34 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
         `step ${step.number} has no "Verify: \`command\`" line`,
       );
     }
+
+    // A step that writes a file names the file in backticks and then opens a
+    // fenced block. Anything in backticks after that block is a second action,
+    // which makes the step unexecutable however clearly it reads.
+    const opening = step.body.findIndex((text) => FENCE_PATTERN.test(text));
+    if (opening !== -1) {
+      const closing = step.body.findIndex((text, at) => at > opening && FENCE_PATTERN.test(text));
+      const before = step.body.slice(0, opening).join('\n');
+      const after = step.body
+        .slice(closing === -1 ? step.body.length : closing + 1)
+        .filter((text) => !VERIFY_PATTERN.test(text))
+        .join('\n');
+
+      if (!/`[^`]+`/.test(before)) {
+        add(
+          step.line,
+          'write-step-needs-path',
+          `step ${step.number} writes a file but does not name it; put the path in backticks before the block`,
+        );
+      }
+      if (/`[^`]+`/.test(after)) {
+        add(
+          step.line,
+          'one-action-per-step',
+          `step ${step.number} states another action after the block; a step is one action, so give it its own step`,
+        );
+      }
+    }
   }
 
   // Only commands are linted. Prose that mentions `sudo` to warn against it is
@@ -339,8 +375,18 @@ function hostsIn(text: string): string[] {
   for (const match of urls) {
     const authority = match[1];
     if (authority === undefined) continue;
-    const host = authority.split('@').pop() ?? authority;
-    hosts.push(host.replace(/:\d+$/, '').toLowerCase());
+    // A host the shell computes at run time cannot be checked here. The rules
+    // that matter for those commands — no privilege, no pipe from a download —
+    // are checked on the command itself.
+    if (authority.includes('$')) continue;
+    const authorityOnly = authority.split('@').pop() ?? authority;
+    // Backslashes come from regexes written inside a command; the port may be a
+    // pattern rather than a number, so everything after the colon goes.
+    const withoutEscapes = authorityOnly.replace(/\\/g, '');
+    const host = withoutEscapes.startsWith('[')
+      ? withoutEscapes.slice(0, withoutEscapes.indexOf(']') + 1)
+      : (withoutEscapes.split(':')[0] ?? withoutEscapes);
+    hosts.push(host.toLowerCase());
   }
   return hosts;
 }

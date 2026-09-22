@@ -1,7 +1,7 @@
 schema: 1
 slug: dotnet-web-api
 name: 'ASP.NET Core REST API'
-version: 1.0.0
+version: 1.0.1
 tier: official
 maintainers: [aliosmanmho]
 summary: 'ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.'

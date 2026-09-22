@@ -166,16 +166,41 @@ pnpm forgeprint validate
 | `pnpm forgeprint build-index`       | regenerate `docs/index.json`                    | now       |
 | `pnpm forgeprint build-schema`      | regenerate `schema/manifest.schema.json`        | now       |
 | `pnpm forgeprint build-codeowners`  | regenerate `.github/CODEOWNERS`                 | now       |
+| `pnpm run build-site`               | regenerate the site in `docs/`                  | now       |
 | `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint  | now       |
 | `pnpm forgeprint similarity --all`  | the same, for every blueprint                   | now       |
 | `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules             | now       |
 | `pnpm forgeprint lint-setup --all`  | the same, for every blueprint                   | now       |
-| `pnpm forgeprint test-setup <slug>` | run the recipe in a clean container             | phase 1   |
+| `pnpm forgeprint test-setup <slug>` | run the recipe for real and verify every step   | now       |
+| `pnpm forgeprint test-setup --all`  | the same, one option combination per blueprint  | now       |
 
-`docs/index.json` and `schema/manifest.schema.json` are generated **and
-committed**. After changing a blueprint or the taxonomy, run the matching
+`docs/index.json`, `schema/manifest.schema.json` and the site under `docs/`
+are generated **and committed**. After changing a blueprint or the taxonomy, run the matching
 `build-*` command and commit the result; `validate` fails if a committed file is
 stale.
+
+Run the recipe you wrote. This is the check the catalog rests on, and the one
+that finds what reading cannot:
+
+```bash
+pnpm forgeprint test-setup <slug>            # one combination
+pnpm forgeprint test-setup <slug> --all-options
+```
+
+It works in a fresh temporary directory, checks the tools your manifest declares
+before it starts, runs every step followed by its verification, and stops at the
+first failure with the command and its output. It installs nothing: a missing
+tool is a refusal, not a guess (see
+[ADR 0005](docs/decisions/0005-setup-test-environment.md)).
+
+For that to be possible, a step has to be executable as written:
+
+- a **command step** ends with the command in backticks, and that last code span
+  is what runs;
+- a **file step** names the path in backticks and then opens a fenced block,
+  which becomes the file;
+- nothing else. A sentence like "and delete the placeholder test" is a second
+  action: give it its own step with a command. `lint-setup` rejects it.
 
 Before pushing:
 

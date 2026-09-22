@@ -2,7 +2,7 @@
 import { createProgram } from './cli.js';
 
 try {
-  createProgram().parse(process.argv);
+  await createProgram().parseAsync(process.argv);
 } catch (error) {
   console.error(`error  ${error instanceof Error ? error.message : String(error)}`);
   process.exitCode = 1;

@@ -168,11 +168,12 @@ the last step.
     }
     ```
 
-    Delete the template's placeholder test file `tests/Mcp.Server.Tests/UnitTest1.cs`.
-
     Verify: `dotnet build tests/Mcp.Server.Tests`
 
-13. Create `.github/workflows/ci.yml` with:
+13. Remove the template's placeholder test: `rm tests/Mcp.Server.Tests/UnitTest1.cs`
+    Verify: `test ! -f tests/Mcp.Server.Tests/UnitTest1.cs`
+
+14. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: CI
@@ -200,13 +201,13 @@ the last step.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-14. Build the solution: `dotnet build`
+15. Build the solution: `dotnet build`
     Verify: `dotnet build --configuration Release`
 
-15. Run the tests: `dotnet test`
+16. Run the tests: `dotnet test`
     Verify: `dotnet test`
 
-16. Create `scripts/probe.mjs`, a protocol-level smoke test that speaks JSON-RPC to the server:
+17. Create `scripts/probe.mjs`, a protocol-level smoke test that speaks JSON-RPC to the server:
 
     ```javascript
     // Usage: node scripts/probe.mjs <command> [args...]
@@ -279,15 +280,24 @@ the last step.
 
 <!-- if options.transport == stdio -->
 
-17. Speak MCP to the server and confirm the tool answers: `node scripts/probe.mjs dotnet src/Mcp.Server/bin/Debug/net10.0/Mcp.Server.dll`
+18. Speak MCP to the server and confirm the tool answers: `node scripts/probe.mjs dotnet src/Mcp.Server/bin/Debug/net10.0/Mcp.Server.dll`
     Verify: `node scripts/probe.mjs dotnet src/Mcp.Server/bin/Debug/net10.0/Mcp.Server.dll`
 
 <!-- endif -->
 
 <!-- if options.transport == http -->
 
-17. Start the server: `dotnet run --project src/Mcp.Server --urls http://localhost:5199`
-    Verify: `curl -fsS -X POST http://localhost:5199/ -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-06-18\",\"capabilities\":{},\"clientInfo\":{\"name\":\"probe\",\"version\":\"1.0.0\"}}}"`
+18. Start the built server on a port the operating system chooses, and keep its process id. A fixed port can already be taken, and then the check either fails or — worse — answers from somebody else's server: `dotnet src/Mcp.Server/bin/Debug/net10.0/Mcp.Server.dll --urls http://127.0.0.1:0 > server.log 2>&1 & echo $! > server.pid`
+    Verify: `test -s server.pid`
+
+19. Read the address it chose out of its own log: `for attempt in $(seq 30); do grep -oE "http://127\.0\.0\.1:[0-9]+" server.log | head -1 > server.url && test -s server.url && break; sleep 1; done`
+    Verify: `test -s server.url`
+
+20. Ask it to initialize, and keep the answer: `curl -fsS -o initialize.json -X POST "$(cat server.url)/" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1.0.0"}}}'`
+    Verify: `grep -q protocolVersion initialize.json`
+
+21. Stop the server: `kill "$(cat server.pid)"`
+    Verify: `sleep 2; ! kill -0 "$(cat server.pid)" 2>/dev/null`
 
 <!-- endif -->
 

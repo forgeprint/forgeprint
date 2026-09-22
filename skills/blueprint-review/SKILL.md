@@ -26,6 +26,7 @@ pnpm run build
 pnpm forgeprint validate
 pnpm forgeprint lint-setup <slug>
 pnpm forgeprint similarity <slug>
+pnpm forgeprint test-setup <slug> --all-options
 ```
 
 A red result here is not a review question, it is a fix. Report the output and
@@ -84,8 +85,10 @@ concrete fix, not a complaint.
 - Do the option guards reference declared options, one level deep?
 - Does the recipe end by proving the result works — a request, a handshake, a
   test run — rather than by building successfully?
-- Does the contributor say they ran it, on what platform, with what tool
-  versions? An unrun recipe is the most common source of a broken blueprint.
+- Did `test-setup` actually run it? That is the answer, not the contributor's
+  word for it. If this machine is missing a tool the blueprint declares, the
+  command refuses and names it — say so in the review rather than passing the
+  recipe unrun.
 
 ### AGENTS.md
 

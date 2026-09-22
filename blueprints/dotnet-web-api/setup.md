@@ -323,11 +323,12 @@ Requires the .NET SDK 10 and Docker.
     }
     ```
 
-    Delete the template's placeholder test file `tests/App.Api.Tests/UnitTest1.cs`.
-
     Verify: `dotnet build tests/App.Api.Tests`
 
-19. Create `Dockerfile` with:
+19. Remove the template's placeholder test: `rm tests/App.Api.Tests/UnitTest1.cs`
+    Verify: `test ! -f tests/App.Api.Tests/UnitTest1.cs`
+
+20. Create `Dockerfile` with:
 
     ```dockerfile
     # Build stage: restore first, so a code change does not re-download packages.
@@ -352,7 +353,7 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f Dockerfile`
 
-20. Create `.dockerignore` with:
+21. Create `.dockerignore` with:
 
     ```gitignore
     **/bin/
@@ -370,7 +371,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == postgres -->
 
-21. Create `compose.yaml` for the local database with:
+22. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -396,7 +397,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == sqlserver -->
 
-21. Create `compose.yaml` for the local database with:
+22. Create `compose.yaml` for the local database with:
 
     ```yaml
     # Local development only. The API itself runs from the SDK, so that a code
@@ -415,7 +416,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- endif -->
 
-22. Create `.github/workflows/ci.yml` with:
+23. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: CI
@@ -444,19 +445,19 @@ Requires the .NET SDK 10 and Docker.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-23. Build the solution: `dotnet build`
+24. Build the solution: `dotnet build`
     Verify: `dotnet build --configuration Release`
 
-24. Run the tests: `dotnet test`
+25. Run the tests: `dotnet test`
     Verify: `dotnet test`
 
-25. Build the container image: `docker build --tag app-api:dev .`
+26. Build the container image: `docker build --tag app-api:dev .`
     Verify: `docker image inspect app-api:dev`
 
-26. Start the container and check that it answers: `docker run -d --name app-api-check -p 8080:8080 app-api:dev`
-    Verify: `curl -fsS http://localhost:8080/health`
+27. Start the container and check that it answers: `docker run -d --name app-api-check -p 127.0.0.1::8080 app-api:dev`
+    Verify: `curl -fsS --retry 10 --retry-delay 1 --retry-connrefused "http://$(docker port app-api-check 8080)/health"`
 
-27. Stop the check container: `docker rm -f app-api-check`
+28. Stop the check container: `docker rm -f app-api-check`
     Verify: `docker ps --filter name=app-api-check --quiet`
 
 ## After setup

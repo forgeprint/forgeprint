@@ -3,6 +3,26 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.1 — 2026-09-22
+
+The recipe is now executed by `forgeprint test-setup` rather than followed by
+hand, which changed how the HTTP transport proves itself.
+
+- Removing the template's placeholder test is its own numbered step with a
+  command.
+- The HTTP check used to start the server with `dotnet run` in the foreground,
+  which a script can never get past. It now starts the built assembly in the
+  background, records its process id, and stops it at the end.
+- It also asks the operating system for a port instead of taking 5199, and
+  reads the address out of the server's own log. The fixed port was worse than
+  a flaky check: during testing the request was answered by an unrelated server
+  that happened to hold 5199, and the step passed. A check that can pass
+  against somebody else's process is not a check.
+
+Verified end to end on .NET SDK 10.0.103, for both transports: the stdio run
+performs a full `initialize` / `tools/list` / `tools/call` exchange, and the
+HTTP run an `initialize` against the port it was given.
+
 ## 1.0.0 — 2026-09-22
 
 First release.
