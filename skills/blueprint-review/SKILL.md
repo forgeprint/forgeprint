@@ -1,6 +1,7 @@
 ---
 name: blueprint-review
 description: Review a Forgeprint blueprint for duplication and quality, and produce a verdict. Use when reviewing a blueprint contribution or pull request, when asked whether a blueprint is a duplicate, when judging setup.md or AGENTS.md quality, or when deciding between MERGE, DUPLICATE, CHANGES and WAIT_MAINTAINER.
+license: CC-BY-4.0
 ---
 
 # Reviewing a blueprint

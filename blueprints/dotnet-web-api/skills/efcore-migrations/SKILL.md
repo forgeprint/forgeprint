@@ -1,6 +1,7 @@
 ---
 name: efcore-migrations
 description: Create, review, apply and undo EF Core migrations in a .NET project. Use when a change touches the DbContext or an entity, when `dotnet ef` reports a pending-model or snapshot error, when a migration must be reverted or renamed, or when deciding how schema changes reach an environment.
+license: CC-BY-4.0
 ---
 
 # EF Core migrations

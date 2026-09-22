@@ -12,6 +12,7 @@ export * from './options.js';
 export * from './paths.js';
 export * from './recipe.js';
 export * from './similarity.js';
+export * from './skills.js';
 export * from './taxonomy.js';
 export * from './test-setup.js';
 export * from './validate.js';

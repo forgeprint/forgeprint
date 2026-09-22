@@ -79,7 +79,16 @@ stays testable. See [ADR 0001](docs/decisions/0001-no-variants.md).
 
 Forgeprint follows the existing specs — `AGENTS.md`, `SKILL.md`,
 `marketplace.json` — so its output drops into the tools you already use, and
-skills remain installable through the usual channels.
+skills remain installable through the usual channels:
+
+```bash
+npx skills add forgeprint/forgeprint            # skills.sh CLI
+gh skill install forgeprint/forgeprint blueprint-author
+```
+
+Both are verified against the real tools before each release, and
+`forgeprint validate` fails on a skill that would not install — see
+[ADR 0006](docs/decisions/0006-skill-distribution.md).
 
 ---
 
@@ -196,7 +205,11 @@ Two skills carry the procedure, for you or for your agent:
 [`blueprint-author`](skills/blueprint-author/SKILL.md) turns a working project
 into a blueprint that passes the gate, and
 [`blueprint-review`](skills/blueprint-review/SKILL.md) is the standard it is
-judged against.
+judged against. Install either one into your agent:
+
+```bash
+gh skill install forgeprint/forgeprint blueprint-author
+```
 
 Want a blueprint you cannot write yourself? File a
 [blueprint request](https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml).

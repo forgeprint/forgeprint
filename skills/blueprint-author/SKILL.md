@@ -1,6 +1,7 @@
 ---
 name: blueprint-author
 description: Turn an existing, working project into a Forgeprint blueprint. Use when contributing a blueprint, when asked to "make a blueprint out of this project", when drafting manifest.yaml / AGENTS.md / overview.md / setup.md for the catalog, or when a blueprint pull request needs to pass validate, lint-setup and similarity before review.
+license: CC-BY-4.0
 ---
 
 # Authoring a blueprint

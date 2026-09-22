@@ -14,6 +14,7 @@ import { loadConfig } from './config.js';
 import { normalizeNewlines } from './json.js';
 import { combinationKey } from './manifest.js';
 import { repoPaths } from './paths.js';
+import { checkSkills } from './skills.js';
 import { SLUG_PATTERN, describeError, loadTaxonomy, type Taxonomy } from './taxonomy.js';
 
 export interface Problem {
@@ -95,6 +96,12 @@ export function validateCatalog(root: string): ValidationReport {
         message: `same stack + project_type + requirements combination as "${owner}" (rule 9); supersede it instead`,
       });
     }
+  }
+
+  // Skills are distributed by tools nobody here controls, so the format they
+  // read is checked with everything else (ADR 0006).
+  for (const problem of checkSkills(root)) {
+    problems.push({ message: `${problem.file}: ${problem.message}` });
   }
 
   problems.push(...generatedFileProblems(root, blueprints, taxonomy));

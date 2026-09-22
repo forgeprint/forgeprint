@@ -3,6 +3,14 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.3 — 2026-09-22
+
+- The `efcore-migrations` skill declares its licence in its frontmatter. The
+  file is copied into another repository when somebody installs it, and
+  nothing around it there says what it may be used for. `CC-BY-4.0`, which is
+  what `blueprints/LICENSE` already said about skills. No change to the setup
+  recipe or the project it produces.
+
 ## 1.0.2 — 2026-09-22
 
 The recipe now passes on a GitHub runner, which is where it first failed. Both

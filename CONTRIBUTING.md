@@ -217,6 +217,43 @@ pnpm run check
 
 ---
 
+## Writing a skill
+
+A skill is `SKILL.md` in a folder named after it, either in the catalog's own
+`skills/` or in a blueprint's. Forgeprint defines no skill format of its own:
+these are installable by `npx skills add` and `gh skill install` because they
+follow those tools' conventions, and `forgeprint validate` fails on a skill
+that would not install
+([ADR 0006](docs/decisions/0006-skill-distribution.md)).
+
+```
+skills/<name>/SKILL.md
+blueprints/<slug>/skills/<name>/SKILL.md
+```
+
+The frontmatter:
+
+```yaml
+---
+name: efcore-migrations # equals the folder name, lower kebab-case
+description: What it does, and when an agent should reach for it.
+license: CC-BY-4.0 # required here, because the file is copied elsewhere
+---
+```
+
+`description` is what an agent matches against, so write when to use it, not
+only what it is. `allowed-tools`, if present, is a string. Never commit the
+`metadata.github-*` fields an installer injects into its copy.
+
+The catalog's own skills also install into your agent, which is the fastest way
+to read them:
+
+```bash
+gh skill install forgeprint/forgeprint blueprint-author
+```
+
+---
+
 ## Pull request rules
 
 - **One blueprint per pull request.** A taxonomy change is its own pull
