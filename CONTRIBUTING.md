@@ -54,7 +54,13 @@ that it duplicates a blueprint that is already there.
    sense.
 
 Two blueprints may not claim the same `stack` + `project_type` +
-`requirements` combination. `forgeprint validate` rejects the second one.
+`requirements` combination. `forgeprint validate` rejects the second one, and
+so does `forgeprint similarity`.
+
+Similarity above 70% is a **red flag**, not a rejection: the command still
+succeeds and prints the question, and the pull request template is where you
+answer it. Two blueprints can be genuinely different and still share almost
+every tag — what matters is whether the difference justifies a second slug.
 
 There are no variants. `extends`, `inherits` and `fork_of` do not exist in the
 schema and will not be added — see

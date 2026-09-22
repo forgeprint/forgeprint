@@ -113,3 +113,28 @@ describe('compareBlueprints', () => {
     }
   });
 });
+
+describe('renderReport wording', () => {
+  it('separates the objective rejection from the reviewer question', () => {
+    const rejection = renderReport(
+      report([{ slug: 'first-api' }, { slug: 'second-api' }], 'second-api'),
+    );
+    assert.match(rejection, /REJECTED/);
+    assert.doesNotMatch(rejection, /RED FLAG/);
+
+    const flag = renderReport(
+      report(
+        [
+          { slug: 'first-api', manifest: validManifest({ slug: 'first-api' }) },
+          {
+            slug: 'second-api',
+            manifest: validManifest({ slug: 'second-api', requirements: ['auth'] }),
+          },
+        ],
+        'second-api',
+      ),
+    );
+    assert.match(flag, /RED FLAG/);
+    assert.doesNotMatch(flag, /REJECTED/);
+  });
+});

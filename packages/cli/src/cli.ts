@@ -77,8 +77,9 @@ ${problems.length} problem(s) in ${slug}/setup.md`);
     .command('similarity')
     .argument('<slug>', 'blueprint to compare against the rest of the catalog')
     .option('--threshold <ratio>', 'flag above this similarity', String(DEFAULT_THRESHOLD))
+    .option('--fail-on-flag', 'exit non-zero on a red flag, not only on a rule 9 rejection')
     .description('report how close a blueprint is to the ones already in the catalog')
-    .action((slug: string, options: { threshold: string }) => {
+    .action((slug: string, options: { threshold: string; failOnFlag?: boolean }) => {
       const root = rootOf();
       const taxonomy = loadTaxonomy(root);
       const blueprints = loadBlueprints(root, taxonomy);
@@ -94,7 +95,12 @@ ${problems.length} problem(s) in ${slug}/setup.md`);
         threshold,
       );
       console.log(renderReport(report));
-      if (report.flagged || report.closest?.sameCombination === true) process.exitCode = 1;
+      // A red flag is a question for the reviewer, which the pull request
+      // template makes them answer (rule 11). Only the objective rule — one
+      // blueprint per stack + project_type + requirements — fails the command.
+      if (report.closest?.sameCombination === true || options.failOnFlag === true) {
+        if (report.flagged || report.closest?.sameCombination === true) process.exitCode = 1;
+      }
     });
 
   program
