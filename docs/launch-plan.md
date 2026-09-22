@@ -14,10 +14,11 @@ the maintainer, the listing is a liability.
 ## Order
 
 1. Dogfood test green.
-2. Repository prerequisites below (`mcpName`, `server.json`, the plugin
-   marketplace file) — each is a small pull request.
-3. The **official MCP registry**. Several directories read it, so it goes
-   first and does some of the work for the others.
+2. ~~Repository prerequisites~~ — done: `mcpName`, `server.json`, the plugin
+   marketplace file.
+3. ~~The **official MCP registry**~~ — done, 2026-09-22:
+   `io.github.forgeprint/forgeprint` 0.2.1, active. Several directories read
+   it, so the rest starts from there.
 4. Directories that index by themselves: Glama, PulseMCP (when it reopens).
 5. Submissions with a human on the other end: mcp.so, awesome-mcp-servers.
 6. Lists with an eligibility window: awesome-claude-code, awesome-copilot.
@@ -74,45 +75,50 @@ Then, **from the repository root**, because `publish` reads `./server.json`:
 `mcp-publisher init` writes a `server.json` template; this repository already
 has one, so it is not needed.
 
-**The 403 that catches everyone.** `You have permission to publish:
-io.github.<user>/*. Attempting to publish: io.github.<org>/...`
+**The 403 that catches everyone**, and the three wrong answers it invites:
 
-The error suggests making your organization membership public. That is a red
-herring: the registry does not read public membership. Its code calls
-`GET /user/memberships/orgs?state=active` and grants the organization
-namespace only where your role is `admin` — and it needs a token that is
-allowed to read that endpoint at all.
+```
+You have permission to publish: io.github.<user>/*.
+Attempting to publish: io.github.<org>/...
+```
 
-On a **new organization, GitHub enables OAuth App access restrictions by
-default**, so the registry's OAuth app cannot see your membership no matter
-what your role is or how public it is. That is what produced this 403 for
-`forgeprint`, which was a day old at the time.
+What it is **not**:
 
-Fix it in the organization, then take a new token:
+- **Not your role.** `gh api user/memberships/orgs/<org>` returning
+  `role: admin` is necessary and not sufficient.
+- **Not a hidden membership.** The error suggests publicising it; the registry
+  never reads public membership. Its code calls
+  `GET /user/memberships/orgs?state=active` and grants the namespace where the
+  role is `admin`.
+- **Not the OAuth App access policy.** The registry authenticates through a
+  **GitHub App** (client id `Iv23li…`), so the organization's third-party OAuth
+  application page never lists it and shows no pending request. Removing those
+  restrictions weakens the organization and changes nothing here.
 
-1. **Organization → Settings → Third-party Access → OAuth app policy**
-   (`https://github.com/organizations/<org>/settings/oauth_application_policy`)
-   and approve the registry's app. A login attempt leaves a pending request
-   there; an Owner can grant it directly.
-2. Log out and in again. The publisher stores the namespaces it was granted at
-   login, so an approval does not reach a token that already exists.
+What it is: the token handed to the registry could not read your organization
+membership. The device flow grants organization access only if you use the
+per-organization **Grant** button on the authorization screen, above
+_Authorize_ — easy to walk past, and the resulting token is silently
+org-less.
+
+**The reliable fix**, and the one the registry documents: authenticate with a
+classic personal access token whose only scope is `read:org`. The registry
+never reads your code, so it needs nothing else.
 
 ```powershell
 & "$env:USERPROFILEin\mcp-publisher.exe" logout
-& "$env:USERPROFILEin\mcp-publisher.exe" login github
-```
-
-The alternative, if the approval route is blocked, is a **classic personal
-access token with `read:org` and nothing else** — the registry never reads
-your code:
-
-```powershell
 & "$env:USERPROFILEin\mcp-publisher.exe" login github --token <PAT>
+& "$env:USERPROFILEin\mcp-publisher.exe" publish C:\Project\Forgeprint\server.json
 ```
 
-To see what a token actually grants, decode the `permissions` claim in
-`~/.config/mcp-publisher/token.json`. Before the fix it reads
-`io.github.<user>/*`; after it, the organization is there too.
+This is what published `io.github.forgeprint/forgeprint` 0.2.1 on 2026-09-22.
+The token can be deleted immediately afterwards: the grant lives in the
+registry's own token, not in the PAT.
+
+**To see what a token actually grants** rather than guessing, decode the
+`permissions` claim of `~/.config/mcp-publisher/token.json`. Before the fix it
+reads `io.github.<user>/*` alone; after it, the organization is there. That one
+check would have skipped every wrong answer above.
 
 ---
 
