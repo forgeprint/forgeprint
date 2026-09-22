@@ -55,6 +55,14 @@ const ALLOWED_HOSTS = new Set([
   'ghcr.io',
   'docker.io',
   'registry-1.docker.io',
+  // Reserved for documentation and testing, by RFC 2606 and RFC 6761: they
+  // resolve to nothing anybody runs, which is why a recipe naming one is not
+  // reaching out to anything. A step that rejects `Origin: https://example.com`
+  // is the case this exists for.
+  'example.com',
+  'example.org',
+  'example.net',
+  'invalid',
 ]);
 
 interface ForbiddenRule {

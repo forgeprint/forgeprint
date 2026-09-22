@@ -171,6 +171,16 @@ describe('lintSetup', () => {
     assert.ok(!rules(source).includes('registry-only'));
   });
 
+  it('allows a documentation host, which resolves to nothing anybody runs', () => {
+    // RFC 2606 reserves example.com for exactly this. A step that proves a
+    // server rejects `Origin: https://example.com` names a host without
+    // reaching one, and the rule used to fail it.
+    const source =
+      '1. Check it refuses a browser origin: `curl -sS -H "Origin: https://example.com" http://127.0.0.1:8080/`\n' +
+      '   Verify: `test -f out.txt`\n';
+    assert.ok(!rules(source).includes('registry-only'));
+  });
+
   it('rejects a host that is not a package registry', () => {
     const source =
       '1. Fetch it: `curl -o tool.zip https://files.example.com/tool.zip`\n   Verify: `test -f tool.zip`\n';
