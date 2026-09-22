@@ -10,6 +10,11 @@ gets the same answer locally that a pull request gets in CI (ADR 0002).
   puts what it installs, and the rule is about the machine running the recipe.
   Every other rule still applies inside that block, and a system path in a
   shell block is still refused.
+- A recipe may name a domain RFC 2606 and RFC 6761 reserve for documentation —
+  `example.com`, `example.org`, `example.net`, `.invalid`. A step that proves a
+  server refuses a foreign `Origin` has to send one, and those names resolve to
+  nothing anybody runs, so naming one is not the network access this rule is
+  looking for.
 
 ## 0.2.4 — 2026-09-22
 

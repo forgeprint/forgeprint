@@ -4,34 +4,6 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
-## 0.2.2 — 2026-09-22
-
-Found by the dogfood test, on the first sentence a first-time user types.
-
-- **`resolve` and `search_blueprints` now accept a taxonomy label where they
-  previously demanded the identifier.** "I know C#" reached the resolver as
-  `languages: ["C#"]`, the catalog stores `csharp`, and the heaviest criterion
-  scored zero: the answer came back as `no_match`, or as a match whose
-  reasoning said "written in C#, which you did not list" and had to be
-  explained away. Both spellings are understood now, for languages, stack,
-  project type, platforms, distribution and requirements, folding case and the
-  separators people vary on — never a word, so `db-per-tenant` can never reach
-  `per-tenant`.
-- A value that matches nothing comes back in `unrecognised_values` instead of
-  being scored as a silent zero, and the `no_match` instruction tells the agent
-  to check it before reporting that the catalog has nothing.
-- The input schemas say so: ids or labels, `["csharp"]` and `["C#"]` alike.
-- **The resolver reads the requirements out of the goal sentence.** "I'm
-  building a multi-tenant SaaS API" put the decisive word in the weakest field
-  — free text is worth four points against forty for a language — so two
-  blueprints landed within three points of each other and the user was asked to
-  choose between them over a word they had already said. A requirement named in
-  the sentence now counts as stated, and `read_from_your_description` says
-  which ones, so a wrong reading is visible rather than silent. "not
-  multi-tenant" and "no authentication" are not requirements: a negation within
-  four words suppresses the match. Only requirements are read this way;
-  guessing a language or a platform from prose would be guessing.
-
 ## 0.2.5 — 2026-09-22
 
 - No change to the server. The catalog it serves gained `fastapi-service`, its
@@ -78,6 +50,34 @@ rather than the two instances of them.
 The table in `resolve.test.ts` is the specification for all of this: fifteen
 profiles, each with the answer it must produce, and the rule they all share —
 one blueprint, or a question, never an invented match.
+
+## 0.2.2 — 2026-09-22
+
+Found by the dogfood test, on the first sentence a first-time user types.
+
+- **`resolve` and `search_blueprints` now accept a taxonomy label where they
+  previously demanded the identifier.** "I know C#" reached the resolver as
+  `languages: ["C#"]`, the catalog stores `csharp`, and the heaviest criterion
+  scored zero: the answer came back as `no_match`, or as a match whose
+  reasoning said "written in C#, which you did not list" and had to be
+  explained away. Both spellings are understood now, for languages, stack,
+  project type, platforms, distribution and requirements, folding case and the
+  separators people vary on — never a word, so `db-per-tenant` can never reach
+  `per-tenant`.
+- A value that matches nothing comes back in `unrecognised_values` instead of
+  being scored as a silent zero, and the `no_match` instruction tells the agent
+  to check it before reporting that the catalog has nothing.
+- The input schemas say so: ids or labels, `["csharp"]` and `["C#"]` alike.
+- **The resolver reads the requirements out of the goal sentence.** "I'm
+  building a multi-tenant SaaS API" put the decisive word in the weakest field
+  — free text is worth four points against forty for a language — so two
+  blueprints landed within three points of each other and the user was asked to
+  choose between them over a word they had already said. A requirement named in
+  the sentence now counts as stated, and `read_from_your_description` says
+  which ones, so a wrong reading is visible rather than silent. "not
+  multi-tenant" and "no authentication" are not requirements: a negation within
+  four words suppresses the match. Only requirements are read this way;
+  guessing a language or a platform from prose would be guessing.
 
 ## 0.2.1 — 2026-09-22
 
