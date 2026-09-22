@@ -184,6 +184,38 @@ describe('lintSetup', () => {
 });
 
 describe('fenced blocks', () => {
+  it('does not read a system path inside a Dockerfile as writing outside the project', () => {
+    // The image's filesystem is not the reader's. /usr/local is where a
+    // container puts what it installs, and the rule is about the machine
+    // running the recipe.
+    const source = [
+      '1. Write the `Dockerfile`:',
+      '',
+      '   ```dockerfile',
+      '   FROM python:3.13-slim',
+      '   COPY --from=build /install /usr/local',
+      '   ```',
+      '',
+      '   Verify: `test -f Dockerfile`',
+      '',
+    ].join('\n');
+    assert.ok(!rules(source, {}).includes('no-system-paths'));
+  });
+
+  it('still refuses a system path in a shell block', () => {
+    const source = [
+      '1. Write the script `run.sh`:',
+      '',
+      '   ```bash',
+      '   cp app /usr/local/bin/app',
+      '   ```',
+      '',
+      '   Verify: `test -f run.sh`',
+      '',
+    ].join('\n');
+    assert.ok(rules(source, {}).includes('no-system-paths'));
+  });
+
   it('does not read a numbered line inside a code block as a step', () => {
     const source = [
       '1. Write the file `notes.md`:',

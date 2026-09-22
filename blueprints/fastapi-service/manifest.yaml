@@ -1,0 +1,20 @@
+schema: 1
+slug: fastapi-service
+name: 'FastAPI Service'
+version: 1.0.0
+tier: official
+maintainers: [aliosmanmho]
+summary: 'FastAPI service with SQLAlchemy, bearer token verification, a container image and CI.'
+stack: [fastapi, postgres]
+languages: [python]
+platforms: [linux, docker]
+distribution: [internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, ci, containerization]
+agents: [claude-code]
+options:
+  database: [postgres, sqlite]
+requires_tools: [python>=3.11, docker, curl]
+deprecated: false
+supersedes: null

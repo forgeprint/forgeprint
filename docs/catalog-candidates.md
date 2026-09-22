@@ -74,7 +74,7 @@ stack, which is what rule 9 actually asks.
 and almost no words. Both option combinations run in CI in under twenty
 seconds.
 
-### 2. `fastapi-service` — Python API with Postgres
+### 2. `fastapi-service` — Python API with Postgres — **written, 2026-09-22**
 
 **Triple:** `[fastapi, postgres]` + `api` + `[auth, ci, containerization]`
 **Demand:** signals 2 and 4. Python is the largest missing language, and
@@ -89,6 +89,11 @@ answering `/health` — the pattern the .NET recipes already prove works.
 **Risk:** dependency pinning in Python is a choice, not a default. The recipe
 has to commit to one — `uv` with a lockfile is the current answer — and
 `lint-setup` will insist on `==` versions throughout.
+**Outcome:** `uv` was refused by our own rules — its installer is
+`curl … | sh`, which `lint-setup` forbids, and `pip install uv` then pins the
+pinner. A virtual environment and `requirements.txt` with `==` throughout is
+what survived. The `database` option became `postgres` or `sqlite`; both run in
+CI, 21 steps in 175s and 20 in 202s.
 
 ### 3. `express-rest-api` — Node REST API with Postgres
 

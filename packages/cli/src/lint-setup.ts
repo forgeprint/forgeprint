@@ -29,6 +29,9 @@ const HEADING_PATTERN = /^\s{0,3}#{1,6}\s/;
 /** Opening or closing line of a fenced code block. */
 const FENCE_PATTERN = /^\s*(?:```|~~~)/;
 
+/** The language tag on an opening fence, which says what the block is. */
+const LANGUAGE_PATTERN = /^\s*(?:```|~~~)\s*([A-Za-z0-9_+-]+)/;
+
 /** Hosts a setup step may reach: package registries and the local machine. */
 const ALLOWED_HOSTS = new Set([
   'localhost',
@@ -340,9 +343,11 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
   // Only commands are linted. Prose that mentions `sudo` to warn against it is
   // not a violation; a code span that runs it is.
   let inCodeFence = false;
+  let fenceLanguage = '';
   lines.forEach((text, index) => {
     const line = index + 1;
     if (FENCE_PATTERN.test(text)) {
+      fenceLanguage = inCodeFence ? '' : (LANGUAGE_PATTERN.exec(text)?.[1] ?? '').toLowerCase();
       inCodeFence = !inCodeFence;
       return;
     }
@@ -350,6 +355,10 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
     if (code.trim().length === 0) return;
 
     for (const { rule, pattern, message } of FORBIDDEN) {
+      // A Dockerfile's filesystem is the image's, not the reader's. `/usr/local`
+      // is where a container puts what it installs, and the rule that keeps a
+      // step from writing outside the project is about the machine running it.
+      if (rule === 'no-system-paths' && fenceLanguage === 'dockerfile') continue;
       if (pattern.test(code)) add(line, rule, message);
     }
     for (const { rule, detect, pinned, message } of PINNING) {
