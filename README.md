@@ -192,9 +192,21 @@ docs/                  index.json, the ADRs, and the published site
 - [x] **Phase 3 — Publishing.** The site is generated from the catalog and
       served at <https://forgeprint.github.io/forgeprint>, and the workflows
       run: `validate` on every push and pull request, `setup-test` on the
-      recipes. Compatibility tests for the skill installers are what remain.
-- [ ] **Phase 4 — Community.** Adoption and staleness handling, resolve
-      counters, contributor visibility, optional translations.
+      recipes. `forgeprint validate` checks the skill format the distribution
+      tools read, so `npx skills add` and `gh skills install` agree with it
+      ([ADR 0006](docs/decisions/0006-skill-distribution.md)).
+- [ ] **Phase 4 — Community.** Contributor visibility has shipped: every
+      blueprint page names and links its maintainer, and the open blueprint
+      requests are listed live. What is left waits on people rather than on
+      work — the orphan, staleness and co-maintainer rules are written in
+      [GOVERNANCE.md](GOVERNANCE.md) and will be automated when there is a
+      second maintainer to automate them for, and community translations open
+      when somebody wants to write one.
+
+      A "times resolved" counter is **not** planned. It would mean the server
+      learning something about the people who use it, and
+      [PRIVACY.md](PRIVACY.md) says it collects nothing. If it is ever
+      revisited it will be anonymous and opt-in, and that file says so.
 
 ---
 
