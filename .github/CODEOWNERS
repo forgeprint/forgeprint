@@ -10,3 +10,4 @@
 /blueprints/dotnet-mcp-server/ @aliosmanmho
 /blueprints/dotnet-multitenant-saas-api/ @aliosmanmho
 /blueprints/dotnet-web-api/ @aliosmanmho
+/blueprints/dotnet-worker-service/ @aliosmanmho

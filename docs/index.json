@@ -430,6 +430,59 @@
         "skills/efcore-migrations/SKILL.md"
       ],
       "i18n": []
+    },
+    {
+      "slug": "dotnet-worker-service",
+      "name": ".NET Worker Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A .NET 10 background worker that processes a queue, with health checks and CI.",
+      "stack": [
+        "dotnet",
+        "efcore"
+      ],
+      "languages": [
+        "csharp"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal"
+      ],
+      "project_type": "infra",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "background-jobs",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "dotnet>=10"
+      ],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
     }
   ]
 }
