@@ -4,6 +4,24 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.2 — 2026-09-22
+
+Found by the dogfood test, on the first sentence a first-time user types.
+
+- **`resolve` and `search_blueprints` now accept a taxonomy label where they
+  previously demanded the identifier.** "I know C#" reached the resolver as
+  `languages: ["C#"]`, the catalog stores `csharp`, and the heaviest criterion
+  scored zero: the answer came back as `no_match`, or as a match whose
+  reasoning said "written in C#, which you did not list" and had to be
+  explained away. Both spellings are understood now, for languages, stack,
+  project type, platforms, distribution and requirements, folding case and the
+  separators people vary on — never a word, so `db-per-tenant` can never reach
+  `per-tenant`.
+- A value that matches nothing comes back in `unrecognised_values` instead of
+  being scored as a silent zero, and the `no_match` instruction tells the agent
+  to check it before reporting that the catalog has nothing.
+- The input schemas say so: ids or labels, `["csharp"]` and `["C#"]` alike.
+
 ## 0.2.1 — 2026-09-22
 
 - `mcpName` in the package manifest, which is how the official MCP registry

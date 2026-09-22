@@ -290,3 +290,44 @@ function toYaml(manifest: Record<string, unknown>): string {
     .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
     .join('\n');
 }
+
+describe('resolve takes the words a person uses', () => {
+  it('resolves a language given by its label, not only by its taxonomy id', async () => {
+    // The dogfood run: "I know C#. I'm building a multi-tenant SaaS API."
+    // The agent wrote `C#`, the catalog stores `csharp`, and the answer came
+    // back as no_match with "written in C#, which you did not list".
+    const { payload } = await call('resolve', {
+      languages: ['C#'],
+      project_type: 'API service',
+    });
+    const body = payload as {
+      status: string;
+      blueprint?: { slug: string };
+      why_it_fits?: string[];
+    };
+    assert.equal(body.status, 'resolved');
+    assert.equal(body.blueprint?.slug, 'sample-api');
+    assert.ok(body.why_it_fits?.some((reason) => /which you know/.test(reason)));
+  });
+
+  it('gives the same answer for the id and for the label', async () => {
+    const byLabel = await call('resolve', { languages: ['C#'], project_type: 'API service' });
+    const byId = await call('resolve', { languages: ['csharp'], project_type: 'api' });
+    assert.deepEqual(byLabel.payload, byId.payload);
+  });
+
+  it('names a value it could not place, rather than scoring it as unknown', async () => {
+    const { payload } = await call('resolve', {
+      languages: ['Brainfuck'],
+      project_type: 'api',
+    });
+    const body = payload as { unrecognised_values?: string[] };
+    assert.deepEqual(body.unrecognised_values, ['languages: Brainfuck']);
+  });
+
+  it('searches by label too', async () => {
+    const { payload } = await call('search_blueprints', { languages: ['C#'] });
+    const body = payload as { matches: { slug: string }[] };
+    assert.equal(body.matches[0]?.slug, 'sample-api');
+  });
+});

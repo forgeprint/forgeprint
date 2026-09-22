@@ -3,6 +3,11 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.2 — 2026-09-22
+
+- No change. The version follows the workspace, which moved for a fix in
+  `forgeprint-mcp`.
+
 ## 0.2.1 — 2026-09-22
 
 ### Added

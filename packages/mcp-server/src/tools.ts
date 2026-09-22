@@ -16,6 +16,7 @@ import { parse } from 'yaml';
 import { z } from 'zod';
 import { entryFor, type CatalogSource } from './catalog.js';
 import { CONTENT_IS_DATA } from './notes.js';
+import { normalizeProfile } from './profile.js';
 import {
   isGenuineTie,
   MATCH_FLOOR,
@@ -63,9 +64,18 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         'Find blueprints matching a stack, languages, project type or requirements, with a score and the reasons behind it. ' +
         'Use this when the user wants to look at the catalog themselves. When they want a recommendation, use `resolve` instead: it returns one blueprint rather than a list.',
       inputSchema: {
-        languages: z.array(z.string()).optional().describe('Taxonomy ids, for example ["csharp"].'),
-        stack: z.array(z.string()).optional().describe('Taxonomy ids, for example ["aspnetcore"].'),
-        project_type: z.string().optional().describe('One taxonomy id, for example "api".'),
+        languages: z
+          .array(z.string())
+          .optional()
+          .describe('Taxonomy ids or their labels: ["csharp"] and ["C#"] are both understood.'),
+        stack: z
+          .array(z.string())
+          .optional()
+          .describe('Taxonomy ids or labels, for example ["aspnetcore"] or [".NET"].'),
+        project_type: z
+          .string()
+          .optional()
+          .describe('One taxonomy id or label, for example "api" or "API service".'),
         requirements: z.array(z.string()).optional(),
         platforms: z.array(z.string()).optional(),
         distribution: z.array(z.string()).optional(),
@@ -76,11 +86,13 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     async (input) =>
       guard(async () => {
         const index = await source.loadIndex();
-        const profile: Profile = { ...input, goal: input.text ?? undefined };
+        const stated: Profile = { ...input, goal: input.text ?? undefined };
+        const { profile, unrecognised } = normalizeProfile(stated, index.taxonomy);
         const scored = scoreCatalog(index, profile).slice(0, input.limit ?? 10);
         return reply({
           matches: scored.map(summarize),
           catalog_size: index.blueprints.length,
+          unrecognised_values: unrecognised.length === 0 ? undefined : unrecognised,
           note:
             scored.length === 0
               ? 'Nothing matched. Do not invent a blueprint; `request_blueprint` records the demand.'
@@ -157,7 +169,12 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         'Fill the structured fields from what the user said rather than passing only `goal`: the free text is the weakest signal, ' +
         'and mapping "it has to be multi-tenant" to requirements:["multi-tenant"] is what turns a coin-flip into an answer.',
       inputSchema: {
-        languages: z.array(z.string()).optional().describe('Languages the user already writes.'),
+        languages: z
+          .array(z.string())
+          .optional()
+          .describe(
+            'Languages the user already writes. Taxonomy ids or their labels: ["csharp"] and ["C#"] are both understood.',
+          ),
         goal: z.string().optional().describe('What they are building, in their words.'),
         skills: z.array(z.string()).optional(),
         project_type: z.string().optional(),
@@ -168,10 +185,15 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         locale: localeInput,
       },
     },
-    async (profile) =>
+    async (stated) =>
       guard(async () => {
         const index = await source.loadIndex();
-        const meta = { present_in: profile.locale };
+        const meta = { present_in: stated.locale };
+        // "C#" is the right answer in the wrong alphabet; the catalog stores
+        // `csharp`. Scoring it as a language the user does not know turned a
+        // match into no_match, so both spellings are accepted here.
+        const { profile, unrecognised } = normalizeProfile(stated, index.taxonomy);
+        const ignored = unrecognised.length === 0 ? undefined : unrecognised;
 
         const questions = questionsFor(index, profile);
         if (questions.length > 0) {
@@ -179,6 +201,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             {
               status: 'questions',
               questions,
+              unrecognised_values: ignored,
               instruction:
                 'Ask the user these questions before recommending anything. Then call `resolve` again with their answers.',
             },
@@ -192,12 +215,13 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
           return reply(
             {
               status: 'no_match',
+              unrecognised_values: ignored,
               closest:
                 best === undefined
                   ? undefined
                   : { ...summarize(best), why_it_does_not_fit: best.mismatches },
               instruction:
-                'Tell the user nothing in the catalog fits, name the closest blueprint and why it does not, and offer `request_blueprint`. Do not present the closest blueprint as a match.',
+                'Tell the user nothing in the catalog fits, name the closest blueprint and why it does not, and offer `request_blueprint`. Do not present the closest blueprint as a match. If `unrecognised_values` is present, one of those values is not in the taxonomy — check it before telling the user the catalog has nothing.',
             },
             meta,
           );
@@ -208,6 +232,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
           return reply(
             {
               status: 'choose',
+              unrecognised_values: ignored,
               question:
                 'Two blueprints fit almost equally well. Which one matches what you are building?',
               candidates: [best, runnerUp].map((score) => ({
@@ -225,6 +250,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         return reply(
           {
             status: 'resolved',
+            unrecognised_values: ignored,
             blueprint: best.entry,
             score: round(best.total),
             why_it_fits: best.reasons,

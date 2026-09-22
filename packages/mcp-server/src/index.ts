@@ -4,10 +4,11 @@ import { CONTENT_IS_DATA } from './notes.js';
 import { registerTools } from './tools.js';
 
 export const SERVER_NAME = 'forgeprint';
-export const SERVER_VERSION = '0.2.1';
+export const SERVER_VERSION = '0.2.2';
 
 export * from './catalog.js';
 export * from './notes.js';
+export * from './profile.js';
 export * from './scoring.js';
 export { registerTools } from './tools.js';
 
