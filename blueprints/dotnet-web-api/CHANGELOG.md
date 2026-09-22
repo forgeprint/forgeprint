@@ -3,6 +3,14 @@
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 
+## 1.0.4 — 2026-09-22
+
+- `requires_tools` declares `curl`. The last step of the recipe reads `/health`
+  back from the running container with it, so a machine without `curl` fails
+  twenty-eight steps in, with a shell error rather than the refusal
+  `test-setup` is supposed to give before it starts. No change to the recipe or
+  the project it produces.
+
 ## 1.0.3 — 2026-09-22
 
 - The `efcore-migrations` skill declares its licence in its frontmatter. The

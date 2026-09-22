@@ -365,7 +365,7 @@
     {
       "slug": "dotnet-web-api",
       "name": "ASP.NET Core REST API",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -417,7 +417,8 @@
       },
       "requires_tools": [
         "dotnet>=10",
-        "docker"
+        "docker",
+        "curl"
       ],
       "deprecated": false,
       "supersedes": null,
