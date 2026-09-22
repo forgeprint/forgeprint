@@ -9,9 +9,13 @@ coding agent bootstrap a new project with the right context in one shot: the
 setup recipe the agent can execute.
 
 > **Status: pre-release.** Three blueprints, working tooling, and an MCP server
-> with all six tools. Not published to npm yet, and the site is not live, so
-> connecting the server means running it from a checkout — see
-> [docs/mcp.md](docs/mcp.md). [Roadmap](#roadmap) has the rest.
+> with all six tools, published and connectable today:
+>
+> ```bash
+> claude mcp add forgeprint -- npx -y forgeprint-mcp
+> ```
+>
+> The site is not live yet. [Roadmap](#roadmap) has the rest.
 
 ---
 
@@ -118,6 +122,13 @@ be translated. See [ADR 0004](docs/decisions/0004-english-only-catalog.md).
 ## What works today
 
 ```bash
+npx forgeprint validate          # in a checkout of any Forgeprint catalog
+npx -y forgeprint-mcp            # the MCP server, over stdio
+```
+
+To work on the catalog itself:
+
+```bash
 git clone https://github.com/forgeprint/forgeprint.git
 cd forgeprint
 pnpm install
@@ -164,8 +175,7 @@ docs/                  index.json, the ADRs, and the published site
       `blueprint-author` and `blueprint-review` skills, the similarity report
       and the setup lint.
 - [x] **Phase 2 — MCP.** The six tools, the option resolver, and the server
-      over stdio. Publishing to npm so that `npx forgeprint-mcp` resolves is
-      the one piece still outstanding.
+      over stdio, published as `forgeprint-mcp`.
 - [ ] **Phase 3 — Publishing.** The Pages site, the workflows, and
       compatibility with the skill installers.
 - [ ] **Phase 4 — Community.** Adoption and staleness handling, resolve

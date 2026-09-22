@@ -7,10 +7,6 @@ blueprint and a setup recipe it can execute.
 The server returns text. It installs nothing, runs nothing on your machine, and
 keeps no state beyond a five-minute cache of the catalog index.
 
-> **Status:** the server works and is tested, but it is not published to npm
-> yet, so `npx forgeprint-mcp` does not resolve. Run it from a checkout until
-> it is — the commands for that are below.
-
 ---
 
 ## The tools
@@ -50,13 +46,12 @@ agent presents. See [ADR 0004](decisions/0004-english-only-catalog.md).
 
 ### Claude Code
 
-Once published:
-
 ```bash
 claude mcp add forgeprint -- npx -y forgeprint-mcp
 ```
 
-From a checkout, today:
+From a checkout instead, which is what you want when you are working on the
+catalog or a blueprint that is not merged yet:
 
 ```bash
 git clone https://github.com/forgeprint/forgeprint.git
@@ -110,11 +105,16 @@ args = ["-y", "forgeprint-mcp"]
 The server speaks JSON-RPC over stdio, so you can drive it without a client:
 
 ```bash
-FORGEPRINT_CATALOG="$PWD" node packages/mcp-server/dist/bin.js
+npx -y forgeprint-mcp
 ```
 
-Send an `initialize` request, then `tools/list`. A working server answers with
-the six tools above.
+It prints nothing and waits: that is correct, it is waiting for a request. Send
+an `initialize`, then `tools/list`, and a working server answers with the six
+tools above.
+
+If `npx` reports a 404 for a package that does exist, it is reusing a cached
+version. `npx -y forgeprint-mcp@latest` sidesteps the cache, and
+`npm cache clean --force` clears it.
 
 ---
 
