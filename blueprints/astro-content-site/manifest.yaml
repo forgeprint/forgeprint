@@ -1,0 +1,21 @@
+schema: 1
+slug: astro-content-site
+name: 'Astro Content Site'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.'
+stack: [astro, tailwind]
+languages: [typescript]
+platforms: [web, linux, macos, windows]
+distribution: [open-source, free]
+project_type: web
+audience: [beginner, intermediate]
+requirements: [seo, accessibility, ci]
+agents: [claude-code]
+options:
+  content: [markdown, mdx]
+requires_tools: [node>=22.12]
+deprecated: false
+supersedes: null
