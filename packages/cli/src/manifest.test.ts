@@ -115,3 +115,58 @@ describe('combinationKey', () => {
     assert.notEqual(combinationKey(api), combinationKey(cli));
   });
 });
+
+describe('provenance', () => {
+  const withProvenance = (provenance: unknown): unknown =>
+    schema.parse(validManifest({ provenance }));
+
+  it('accepts a complete record', () => {
+    const manifest = schema.parse(
+      validManifest({
+        provenance: {
+          derived_from: 'https://github.com/example/starter',
+          license: 'MIT',
+          verified_on: '2026-09-22',
+          note: 'The auth wiring and the test layout; the rest is ours.',
+        },
+      }),
+    );
+    assert.equal(manifest.provenance?.license, 'MIT');
+  });
+
+  it('is optional, because a blueprint written from scratch has none', () => {
+    assert.equal(schema.parse(validManifest()).provenance, undefined);
+  });
+
+  it('refuses a source that is not an https URL', () => {
+    // A provenance record is a credit somebody can follow. "an old project of
+    // mine" credits nobody.
+    assert.throws(() =>
+      withProvenance({
+        derived_from: 'an old project of mine',
+        license: 'MIT',
+        verified_on: '2026-09-22',
+      }),
+    );
+  });
+
+  it('refuses a date that is not a calendar date', () => {
+    assert.throws(() =>
+      withProvenance({
+        derived_from: 'https://github.com/example/starter',
+        license: 'MIT',
+        verified_on: 'last spring',
+      }),
+    );
+  });
+
+  it('refuses a record with the licence left out', () => {
+    // Which licence decides whether the derivation was allowed at all.
+    assert.throws(() =>
+      withProvenance({
+        derived_from: 'https://github.com/example/starter',
+        verified_on: '2026-09-22',
+      }),
+    );
+  });
+});
