@@ -29,11 +29,20 @@ export interface Page {
  */
 export interface SiteContext {
   readonly requests: readonly BlueprintRequest[];
+  /** The day the committed snapshot was taken, or '' when there is none. */
+  readonly requestsFrom: string;
   /** GitHub logins credited on the front page. */
   readonly featured: readonly string[];
 }
 
-const NOTHING: SiteContext = { requests: [], featured: [] };
+const NOTHING: SiteContext = { requests: [], requestsFrom: '', featured: [] };
+
+/** Where the page reads the live list from. Public data, no token. */
+export const REQUESTS_API =
+  'https://api.github.com/repos/forgeprint/forgeprint/issues?labels=blueprint-request&state=open&per_page=50';
+
+/** Issue links the page will follow. Anything else is somebody else's URL. */
+const ISSUE_PREFIX = 'https://github.com/forgeprint/forgeprint/issues/';
 
 export function renderSite(index: CatalogIndex, context: SiteContext = NOTHING): Page[] {
   return [
@@ -86,7 +95,7 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
           The catalog grows by demand. <a href="${REQUEST_URL}">Request a blueprint</a> and
           say what is missing — requests are public, and somebody may pick yours up.
         </p>
-        ${requestList(context.requests)}
+        ${requestList(context.requests, context.requestsFrom)}
       </section>
 
       ${contributors(context.featured)}
@@ -106,6 +115,84 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
           if (nothing) nothing.hidden = shown > 0;
         });
       }
+
+      // The requests come from the issues API, read by the browser with no
+      // token: the alternative was a workflow with write access to this
+      // repository, which is a large key for a small list (ADR 0007). The page
+      // ships with a snapshot, so this only ever improves what is shown.
+      (function () {
+        const list = document.getElementById('requests');
+        const empty = document.getElementById('requests-empty');
+        const source = document.getElementById('requests-source');
+        if (!list) return;
+        const KEY = 'forgeprint.requests';
+        const MAX_AGE = 10 * 60 * 1000;
+        const API = ${JSON.stringify(REQUESTS_API)};
+        const PREFIX = ${JSON.stringify(ISSUE_PREFIX)};
+
+        function show(items) {
+          list.textContent = '';
+          for (const item of items) {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            // textContent, never innerHTML: an issue title is written by
+            // whoever opened the issue.
+            link.textContent = item.title;
+            link.href = item.url;
+            li.appendChild(link);
+            if (item.author) {
+              const by = document.createElement('span');
+              by.className = 'muted';
+              by.textContent = ' asked by @' + item.author;
+              li.appendChild(by);
+            }
+            list.appendChild(li);
+          }
+          list.hidden = items.length === 0;
+          if (empty) empty.hidden = items.length > 0;
+          if (source) source.remove();
+        }
+
+        function cached() {
+          try {
+            const raw = sessionStorage.getItem(KEY);
+            if (!raw) return null;
+            const saved = JSON.parse(raw);
+            return Date.now() - saved.at < MAX_AGE ? saved.items : null;
+          } catch (error) {
+            return null;
+          }
+        }
+
+        const ready = cached();
+        if (ready) {
+          show(ready);
+          return;
+        }
+
+        fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+          .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+          .then((issues) => {
+            const items = issues
+              // The issues endpoint returns pull requests too, and a link is
+              // only followed when it points into this repository's issues.
+              .filter((issue) => !issue.pull_request && String(issue.html_url).indexOf(PREFIX) === 0)
+              .map((issue) => ({
+                title: String(issue.title),
+                url: String(issue.html_url),
+                author: issue.user && issue.user.login ? String(issue.user.login) : '',
+              }));
+            try {
+              sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), items: items }));
+            } catch (error) {
+              // A browser that refuses storage still gets the list.
+            }
+            show(items);
+          })
+          // Rate-limited, offline, blocked: the snapshot stays, and it is
+          // dated, so nobody reads it as current.
+          .catch(() => {});
+      })();
     `,
   });
 }
@@ -220,14 +307,14 @@ function avatar(handle: string, size = 32): string {
 }
 
 /**
- * The open requests, as a list of what people actually asked for. Empty is a
- * normal state and says so, rather than hiding the section: the point is that
- * the queue is public.
+ * The open requests.
+ *
+ * Rendered twice over: what is in the committed snapshot, and then whatever
+ * the browser reads live from the issues API. The snapshot is what a reader
+ * sees when the API is rate-limited or unreachable, and it says how old it is
+ * rather than pretending to be current (ADR 0007).
  */
-function requestList(requests: readonly BlueprintRequest[]): string {
-  if (requests.length === 0) {
-    return '<p class="muted">No open requests right now.</p>';
-  }
+function requestList(requests: readonly BlueprintRequest[], from: string): string {
   const items = requests
     .map(
       (request) =>
@@ -238,10 +325,14 @@ function requestList(requests: readonly BlueprintRequest[]): string {
         }</li>`,
     )
     .join('\n          ');
+
+  const empty = requests.length === 0;
   return `<h3>Requested blueprints</h3>
-        <ul class="requests">
+        <ul class="requests" id="requests"${empty ? ' hidden' : ''}>
           ${items}
-        </ul>`;
+        </ul>
+        <p class="muted" id="requests-empty"${empty ? '' : ' hidden'}>No open requests right now.</p>
+        ${from === '' ? '' : `<p class="muted small" id="requests-source">Snapshot from ${escape(from)}.</p>`}`;
 }
 
 function contributors(featured: readonly string[]): string {

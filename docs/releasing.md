@@ -1,0 +1,94 @@
+# Releasing
+
+What the core maintainer does to cut a release. Everything here is a command
+that runs on a laptop; nothing waits on Actions (ADR 0002).
+
+---
+
+## 1. The catalog is correct
+
+```bash
+pnpm run check
+pnpm forgeprint lint-setup --all
+pnpm forgeprint similarity --all
+```
+
+`check` covers formatting, lint, types, every test suite, `validate` — which
+now includes the skill format the distribution tools read (ADR 0006) — and the
+committed site.
+
+## 2. The recipes actually run
+
+```bash
+pnpm forgeprint test-setup --all --all-options
+```
+
+The full matrix, not one combination. CI runs this on every push to `main` and
+every Monday; run it again before a release, because a release is what people
+install.
+
+## 3. Refresh the request snapshot
+
+```bash
+pnpm forgeprint build-requests
+pnpm run build-site
+```
+
+The site reads the live queue in the browser, but it ships with a dated
+snapshot for readers whose request fails (ADR 0007). A release is the moment to
+make that snapshot current. Commit both files.
+
+## 4. Verify the skill tools still agree
+
+```bash
+gh skill publish --dry-run .
+npx skills add forgeprint/forgeprint --list
+```
+
+The first is the specification's own validator; if it disagrees with
+`forgeprint validate`, the specification wins and the repository changes.
+Record what was run in [ADR 0006](decisions/0006-skill-distribution.md).
+
+## 5. Versions and changelogs
+
+- Bump each published package in `packages/*/package.json`.
+- Write the entry in that package's `CHANGELOG.md` — a bump without an entry is
+  a defect, the same rule blueprints live under (rule 17).
+- Blueprints carry their own versions; a blueprint that changed needs its bump
+  and its entry in the same pull request that changed it.
+
+## 6. Tag and release
+
+```bash
+git tag -a vX.Y.Z -m "Forgeprint X.Y.Z"
+git push origin vX.Y.Z
+gh release create vX.Y.Z --title "Forgeprint X.Y.Z" --notes-file <notes>
+```
+
+Releases are immutable and tags are protected by the `protect-tags` ruleset, so
+the notes have to be right before they are published, not after. Wait for the
+`setup-test` matrix on the tagged commit to go green **before** pushing the
+tag: a tag that cannot be moved should not point at a commit nobody verified.
+
+`gh skill install` resolves the latest tag before the default branch, so this
+step is also what ships a changed skill to everyone who installs one.
+
+## 7. npm
+
+```bash
+pnpm publish -r --dry-run
+pnpm publish -r --access public
+```
+
+Publishing is manual today. Replacing it with npm trusted publishing — Actions
+OIDC and provenance — is on the roadmap; until then the token stays on the
+maintainer's machine.
+
+## 8. Afterwards
+
+- Check the site: https://forgeprint.github.io/forgeprint
+- Check the install path a stranger uses:
+  `npx -y forgeprint-mcp@latest` in an empty directory. Add `--prefer-online`
+  if npm serves a stale version; npm's metadata cache has lied before.
+- If the release changed anything a first-time user sees, the
+  [dogfood test](dogfood.md) is due again.

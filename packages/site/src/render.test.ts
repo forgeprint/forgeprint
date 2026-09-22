@@ -13,6 +13,7 @@ const CONTEXT = {
       author: 'someone',
     },
   ],
+  requestsFrom: '2026-09-22',
   featured: ['aliosmanmho'],
 };
 
@@ -133,7 +134,35 @@ describe('contributor visibility', () => {
   it('says the queue is empty rather than hiding it', () => {
     const html = renderIndexPage(INDEX);
     assert.match(html, /No open requests right now/);
-    assert.equal(/Requested blueprints/.test(html), false);
+    // The list is always in the page, empty and hidden, because the script
+    // fills it from the live API.
+    assert.match(html, /<ul class="requests" id="requests" hidden>/);
+  });
+
+  it('dates the snapshot, and drops the note when there is none', () => {
+    assert.match(renderIndexPage(INDEX, CONTEXT), /Snapshot from 2026-09-22\./);
+    assert.equal(/Snapshot from/.test(renderIndexPage(INDEX)), false);
+  });
+
+  it('reads the live list from the issues API, with no token', () => {
+    const html = renderIndexPage(INDEX, CONTEXT);
+    assert.match(html, /api\.github\.com\/repos\/forgeprint\/forgeprint\/issues/);
+    assert.match(html, /labels=blueprint-request&state=open/);
+    // No credential of any kind reaches the page: the endpoint is public.
+    assert.equal(/Authorization|access_token|client_secret/.test(html), false);
+  });
+
+  it('builds the live list as text nodes, because an issue title is user input', () => {
+    const html = renderIndexPage(INDEX, CONTEXT);
+    assert.match(html, /link\.textContent = item\.title/);
+    // Nothing is ever assigned into innerHTML.
+    assert.equal(/\.innerHTML\s*=/.test(html), false);
+  });
+
+  it('caches the live list for ten minutes in the tab', () => {
+    const html = renderIndexPage(INDEX, CONTEXT);
+    assert.match(html, /sessionStorage/);
+    assert.match(html, /MAX_AGE = 10 \* 60 \* 1000/);
   });
 
   it('shows the featured contributors, and nothing when there are none', () => {

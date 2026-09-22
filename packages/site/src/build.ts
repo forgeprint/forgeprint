@@ -15,8 +15,10 @@ export function siteFiles(root: string): Page[] {
   // The requests come from outside the repository and the contributors from
   // configuration; both are optional, and a missing one renders as empty
   // rather than failing the build.
+  const snapshot = readRequests(root);
   const context = {
-    requests: readRequests(root).requests,
+    requests: snapshot.requests,
+    requestsFrom: snapshot.generated_on,
     featured: loadConfig(root).featured_contributors ?? [],
   };
   return [...renderSite(loadIndex(root), context), { path: 'forgeprint.css', html: STYLESHEET }];

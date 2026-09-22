@@ -183,9 +183,12 @@ stale.
 
 `docs/requests.json` is the exception. It is generated too, but from the open
 `blueprint-request` issues rather than from the repository, so nothing can
-regenerate it to check for drift and nothing depends on it being current. The
-maintainer refreshes it with `forgeprint build-requests`; without `gh` the
-command leaves the file alone, and a missing file renders as an empty queue.
+regenerate it to check for drift and nothing depends on it being current: the
+site reads the live queue in the browser and falls back to this dated snapshot
+([ADR 0007](docs/decisions/0007-live-requests-no-write-token.md)). The
+maintainer refreshes it with `forgeprint build-requests` at release time;
+without `gh` the command leaves the file alone, and a missing file renders as
+an empty queue.
 
 Run the recipe you wrote. This is the check the catalog rests on, and the one
 that finds what reading cannot:

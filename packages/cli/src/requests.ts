@@ -31,6 +31,8 @@ const requestSchema = z.object({
 
 const fileSchema = z.object({
   repository: z.string(),
+  /** The day the snapshot was taken, so the site can date what it shows. */
+  generated_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   requests: z.array(requestSchema),
 });
 
@@ -95,8 +97,17 @@ export function hasGitHubCli(): boolean {
   }
 }
 
-export function renderRequests(repository: string, requests: readonly BlueprintRequest[]): string {
-  return stableJson({ repository, requests });
+export function renderRequests(
+  repository: string,
+  requests: readonly BlueprintRequest[],
+  generatedOn: string = today(),
+): string {
+  return stableJson({ repository, generated_on: generatedOn, requests });
+}
+
+/** The date, to the day: a rebuild an hour later is still the same snapshot. */
+export function today(): string {
+  return new Date().toISOString().slice(0, 10);
 }
 
 /**
@@ -107,6 +118,6 @@ export function readRequests(root: string): RequestsFile {
   try {
     return fileSchema.parse(JSON.parse(readFileSync(repoPaths.requests(root), 'utf8')));
   } catch {
-    return { repository: '', requests: [] };
+    return { repository: '', generated_on: '', requests: [] };
   }
 }
