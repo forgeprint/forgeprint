@@ -18,12 +18,12 @@ real conversation answers that.
 
 ## Before you start
 
-|                           |                                                                                                                                     |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Empty directory**       | Not a copy of the repository. `mkdir ~/dogfood && cd ~/dogfood`                                                                     |
-| **A fresh agent session** | No memory of this project. Nothing in `CLAUDE.md`, and **no other MCP server connected** — see below, this one is easy to get wrong |
-| **Tools installed**       | .NET SDK 10, Docker running, `git`                                                                                                  |
-| **What you are**          | Somebody who writes C# and has never used Forgeprint                                                                                |
+|                           |                                                                                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Empty directory**       | Not a copy of the repository. `mkdir ~/dogfood && cd ~/dogfood`                                                                                               |
+| **A fresh agent session** | Truly fresh: **no memory**, nothing in `CLAUDE.md`, and **no other MCP server connected**. Both are easy to get wrong and both invalidate the run — see below |
+| **Tools installed**       | .NET SDK 10, Docker running, `git`                                                                                                                            |
+| **What you are**          | Somebody who writes C# and has never used Forgeprint                                                                                                          |
 
 Connect the published server — the same command a stranger would run:
 
@@ -59,6 +59,23 @@ claude --strict-mcp-config --mcp-config /path/to/forgeprint-only.json
 ```
 
 Check it with `/mcp`: exactly one server, `forgeprint`, connected, six tools.
+
+**Clear the memory too.** An agent that already remembers "the user knows C#"
+and "the user is building a multi-tenant SaaS API" learns nothing from your
+first sentence, so the moment that should send it to the catalog never
+arrives. It answers from its own knowledge instead, and the run tells you
+nothing. The memory of a previous run lives beside the transcripts:
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\projects\C--Project-dogfood\memory"
+```
+
+(The folder is named after the working directory, with the separators replaced
+by dashes.) `--bare` also disables memory, but it disables OAuth with it, so it
+is not an option on a subscription.
+
+**If the agent says anything like "already in memory from earlier", stop.**
+The run is contaminated; clear it and start again.
 
 The crowded case is worth testing too — most people have other servers — but
 test it **second**, and as its own question: does `resolve` still get picked
@@ -108,7 +125,12 @@ than guessing.
 - it asks more than two or three things before recommending anything;
 - it recommends `dotnet-web-api` for a sentence that says "multi-tenant";
 - it pastes raw JSON at you instead of speaking;
-- it starts writing code before it has a blueprint.
+- it starts writing code before it has a blueprint;
+- it offers you design choices that are not the blueprint's options. The tell
+  is a value the catalog does not have: `dotnet-multitenant-saas-api` offers
+  `shared-db-tenant-column` and `db-per-tenant`, so a menu that includes
+  "schema per tenant" was written from the agent's own knowledge and not from
+  `get_blueprint`.
 
 **Open question this step answers:** does a real agent map "multi-tenant" onto
 `requirements`? The tool description tells it to, in as many words. If it does
