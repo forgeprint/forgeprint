@@ -279,6 +279,7 @@ a decision behind an empty box is how the decision gets made again.
 - [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
 - [ ] Orphan/stale bot, co-maintainer bot. The rules are in GOVERNANCE.md and are applied by hand; a bot needs a second maintainer to be worth writing
 - [ ] Optional community translations of `overview.md` (§9), when somebody wants to write one
+- [ ] Re-run `skills/catalog-research` monthly: a dated report under `docs/research/`, and the candidate list refreshed from it. Next due 2026-10-23
 - [ ] ~~Anonymous resolve counter~~ — **not planned.** It means the server learning something about the people who use it, and PRIVACY.md says it collects nothing. If it is ever revisited it is anonymous and opt-in, and that file already says so
 
 ---

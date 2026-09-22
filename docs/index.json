@@ -285,6 +285,7 @@
         "dotnet>=10",
         "node>=20"
       ],
+      "provenance": "human",
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -352,6 +353,7 @@
         "docker",
         "curl"
       ],
+      "provenance": "human",
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -421,6 +423,7 @@
         "docker",
         "curl"
       ],
+      "provenance": "human",
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -484,6 +487,7 @@
         "docker",
         "curl"
       ],
+      "provenance": "human",
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -545,6 +549,7 @@
         "node>=20",
         "curl"
       ],
+      "provenance": "human",
       "deprecated": false,
       "supersedes": null,
       "files": [

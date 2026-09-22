@@ -35,6 +35,25 @@ const localeInput = z
     'BCP-47 tag. Presentation hint only: the catalog is English, and this is handed back so the calling agent knows which language to answer in.',
   );
 
+/**
+ * What the agent is told about how far this blueprint has been checked.
+ *
+ * Two separate facts, because they answer different questions. `tier` says
+ * whether a maintainer ran the setup; `provenance` says whether a person
+ * wrote it at all. A generated blueprint's recipe passes CI like any other —
+ * what nobody did is ask whether those are the right steps (ADR 0011).
+ */
+function tierNote(entry: { tier: string; provenance?: 'human' | 'generated' }): string | undefined {
+  const notes: string[] = [];
+  if (entry.provenance === 'generated') {
+    notes.push('Generated, CI-tested, not manually verified.');
+  }
+  if (entry.tier === 'community') {
+    notes.push('Community blueprint: review the setup steps before running them.');
+  }
+  return notes.length === 0 ? undefined : notes.join(' ');
+}
+
 export function registerTools(server: McpServer, source: CatalogSource): void {
   const reply = (payload: unknown, meta: Record<string, unknown> = {}): CallToolResult => ({
     content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }],
@@ -152,10 +171,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             unresolved_option_guards: setup.unresolved,
             files,
             other_files: entry.files.filter((path) => !(path in files)),
-            tier_note:
-              entry.tier === 'community'
-                ? 'Community blueprint: review the setup steps before running them.'
-                : undefined,
+            tier_note: tierNote(entry),
           },
           { present_in: locale },
         );
@@ -291,10 +307,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             tools_the_setup_needs: best.entry.requires_tools,
             decisions_still_to_make: missingOptions(asManifestLike(best.entry)),
             next_step: `Call get_blueprint with slug "${best.entry.slug}" and the chosen options, then follow setup.md.`,
-            tier_note:
-              best.entry.tier === 'community'
-                ? 'Community blueprint: review the setup steps before running them.'
-                : undefined,
+            tier_note: tierNote(best.entry),
           },
           meta,
         );
@@ -323,6 +336,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             slug,
             name: entry.name,
             tier: entry.tier,
+            tier_note: tierNote(entry),
             summary: entry.summary,
             languages: entry.languages,
             project_type: entry.project_type,

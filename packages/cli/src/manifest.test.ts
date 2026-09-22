@@ -117,32 +117,32 @@ describe('combinationKey', () => {
 });
 
 describe('provenance', () => {
-  const withProvenance = (provenance: unknown): unknown =>
-    schema.parse(validManifest({ provenance }));
+  const withSource = (derived_from: unknown): unknown =>
+    schema.parse(validManifest({ derived_from }));
 
   it('accepts a complete record', () => {
     const manifest = schema.parse(
       validManifest({
-        provenance: {
-          derived_from: 'https://github.com/example/starter',
+        derived_from: {
+          url: 'https://github.com/example/starter',
           license: 'MIT',
           verified_on: '2026-09-22',
           note: 'The auth wiring and the test layout; the rest is ours.',
         },
       }),
     );
-    assert.equal(manifest.provenance?.license, 'MIT');
+    assert.equal(manifest.derived_from?.license, 'MIT');
   });
 
   it('is optional, because a blueprint written from scratch has none', () => {
-    assert.equal(schema.parse(validManifest()).provenance, undefined);
+    assert.equal(schema.parse(validManifest()).derived_from, undefined);
   });
 
   it('refuses a source that is not an https URL', () => {
     // A provenance record is a credit somebody can follow. "an old project of
     // mine" credits nobody.
     assert.throws(() =>
-      withProvenance({
+      withSource({
         derived_from: 'an old project of mine',
         license: 'MIT',
         verified_on: '2026-09-22',
@@ -152,8 +152,8 @@ describe('provenance', () => {
 
   it('refuses a date that is not a calendar date', () => {
     assert.throws(() =>
-      withProvenance({
-        derived_from: 'https://github.com/example/starter',
+      withSource({
+        url: 'https://github.com/example/starter',
         license: 'MIT',
         verified_on: 'last spring',
       }),
@@ -163,10 +163,42 @@ describe('provenance', () => {
   it('refuses a record with the licence left out', () => {
     // Which licence decides whether the derivation was allowed at all.
     assert.throws(() =>
-      withProvenance({
-        derived_from: 'https://github.com/example/starter',
+      withSource({
+        url: 'https://github.com/example/starter',
         verified_on: '2026-09-22',
       }),
     );
+  });
+});
+
+describe('provenance', () => {
+  it('is human when nothing says otherwise', () => {
+    // Every blueprint written before this field existed was written by a
+    // person. A default of anything else would be a lie about all of them.
+    assert.equal(schema.parse(validManifest()).provenance, 'human');
+  });
+
+  it('accepts generated', () => {
+    assert.equal(schema.parse(validManifest({ provenance: 'generated' })).provenance, 'generated');
+  });
+
+  it('refuses a generated blueprint that claims tier: official', () => {
+    // official is the catalog saying a person stands behind this. Nobody sat
+    // with a generated one, whatever CI says about its recipe (ADR 0011).
+    assert.throws(
+      () => schema.parse(validManifest({ provenance: 'generated', tier: 'official' })),
+      /cannot be tier: official/,
+    );
+  });
+
+  it('allows a generated blueprint at the tiers below official', () => {
+    assert.equal(
+      schema.parse(validManifest({ provenance: 'generated', tier: 'community' })).tier,
+      'community',
+    );
+  });
+
+  it('refuses a value that is neither', () => {
+    assert.throws(() => schema.parse(validManifest({ provenance: 'ai' })));
   });
 });

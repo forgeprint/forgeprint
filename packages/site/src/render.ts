@@ -230,7 +230,8 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
         ${entry.deprecated ? '<p class="warn">Deprecated. It is no longer offered by the resolver.</p>' : ''}
         ${entry.supersedes === null ? '' : `<p class="muted">Supersedes <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
         ${byline(entry.maintainers)}
-        ${derivedFrom(entry.provenance)}
+        ${generatedNotice(entry.provenance)}
+        ${derivedFrom(entry.derived_from)}
       </header>
 
       <section>
@@ -310,12 +311,25 @@ function byline(maintainers: readonly string[]): string {
  * projects, and the catalog cannot credit what it does not show (ADR 0008).
  * Absent for a blueprint written from scratch, which is most of them.
  */
-function derivedFrom(provenance: IndexEntry['provenance']): string {
-  if (provenance === undefined) return '';
-  const note = provenance.note === undefined ? '' : ` ${escape(provenance.note)}`;
-  return `<p class="muted small">Derived from <a href="${escape(provenance.derived_from)}">${escape(
-    provenance.derived_from.replace(/^https:\/\//, ''),
-  )}</a> (${escape(provenance.license)}), read ${escape(provenance.verified_on)}.${note}</p>`;
+/**
+ * A generated blueprint says so, on its own page.
+ *
+ * Its recipe passed CI like every other, which is the part that can be
+ * checked mechanically. What nobody did is sit with it and ask whether these
+ * are the right steps — and a reader deciding whether to build on it is
+ * entitled to know which kind of confidence they are getting (ADR 0011).
+ */
+function generatedNotice(provenance: IndexEntry['provenance']): string {
+  if (provenance !== 'generated') return '';
+  return `<p class="notice">Generated, CI-tested, not manually verified. The setup steps run; nobody has reviewed them by hand.</p>`;
+}
+
+function derivedFrom(source: IndexEntry['derived_from']): string {
+  if (source === undefined) return '';
+  const note = source.note === undefined ? '' : ` ${escape(source.note)}`;
+  return `<p class="muted small">Derived from <a href="${escape(source.url)}">${escape(
+    source.url.replace(/^https:\/\//, ''),
+  )}</a> (${escape(source.license)}), read ${escape(source.verified_on)}.${note}</p>`;
 }
 
 function avatar(handle: string, size = 32): string {

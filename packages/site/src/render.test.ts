@@ -185,8 +185,8 @@ describe('provenance on a blueprint page', () => {
     const html = renderBlueprintPage(
       {
         ...entry,
-        provenance: {
-          derived_from: 'https://github.com/example/starter',
+        derived_from: {
+          url: 'https://github.com/example/starter',
           license: 'MIT',
           verified_on: '2026-09-22',
           note: 'The auth wiring.',
@@ -204,5 +204,21 @@ describe('provenance on a blueprint page', () => {
     assert.ok(entry !== undefined);
     // Most of them were. An empty line would read as an unanswered question.
     assert.equal(/Derived from/.test(renderBlueprintPage(entry, INDEX.taxonomy)), false);
+  });
+});
+
+describe('a generated blueprint says so', () => {
+  const entry = INDEX.blueprints.find((blueprint) => blueprint.slug === 'sample-api');
+
+  it('carries the notice on its page', () => {
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage({ ...entry, provenance: 'generated' }, INDEX.taxonomy);
+    assert.match(html, /Generated, CI-tested, not manually verified/);
+  });
+
+  it('says nothing extra for one a person wrote', () => {
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage({ ...entry, provenance: 'human' }, INDEX.taxonomy);
+    assert.doesNotMatch(html, /Generated, CI-tested/);
   });
 });

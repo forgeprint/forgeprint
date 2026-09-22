@@ -4,6 +4,12 @@ The static site generator behind https://forgeprint.github.io/forgeprint. It is
 private: the site is generated into `docs/` and committed, so Pages deploys
 from the branch and needs no build service (ADR 0002).
 
+## 0.2.7 — 2026-09-23
+
+- A generated blueprint's page carries the notice that nobody reviewed its
+  steps by hand (ADR 0011), and the "derived from" line reads the renamed
+  `derived_from` field.
+
 ## 0.2.6 — 2026-09-22
 
 - No change to the site. The version follows the workspace.

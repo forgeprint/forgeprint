@@ -298,9 +298,18 @@
       "uniqueItems": true
     },
     "provenance": {
+      "default": "human",
+      "description": "Who produced this blueprint. A generated one cannot be tier: official.",
+      "type": "string",
+      "enum": [
+        "human",
+        "generated"
+      ]
+    },
+    "derived_from": {
       "type": "object",
       "properties": {
-        "derived_from": {
+        "url": {
           "type": "string",
           "format": "uri",
           "description": "The project this was derived from, as an https URL."
@@ -323,7 +332,7 @@
         }
       },
       "required": [
-        "derived_from",
+        "url",
         "license",
         "verified_on"
       ],
@@ -362,6 +371,7 @@
     "audience",
     "requirements",
     "agents",
+    "provenance",
     "deprecated",
     "supersedes"
   ],

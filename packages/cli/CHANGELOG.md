@@ -3,6 +3,19 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.7 — 2026-09-23
+
+- **`provenance: human | generated` in the manifest**, defaulting to `human`,
+  and the schema refuses `provenance: generated` with `tier: official`. A tool
+  drafting a blueprint and CI running its recipe is a different claim from a
+  person standing behind it, and the difference is what a reader is trusting
+  the catalog for (ADR 0011).
+- The object that records which project a blueprint was derived from is now
+  `derived_from`, with its URL under `url`. It held the name `provenance` and
+  no blueprint used it yet, so the rename cost nothing.
+- `docs/index.json` carries both fields, so the site and the MCP server can say
+  which is which.
+
 ## 0.2.6 — 2026-09-22
 
 - **`forgeprint release <version>`.** Cutting 0.2.5 by hand took six commands

@@ -4,6 +4,14 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.7 — 2026-09-23
+
+- **A generated blueprint says so in `tier_note`**: _"Generated, CI-tested, not
+  manually verified."_ It appears in `get_blueprint`, `resolve` and
+  `compare_blueprints`, alongside the community note where both apply, so an
+  agent can tell the user which kind of confidence is on offer before it starts
+  following the recipe (ADR 0011).
+
 ## 0.2.6 — 2026-09-22
 
 - No change to the server. The release is `forgeprint release`, and the version

@@ -34,10 +34,50 @@ about people who did not:
    ```bash
    node -e "const i=require('./docs/index.json');/* compare i.taxonomy to i.blueprints */"
    ```
-3. **The ecosystem.** Framework and database usage surveys, package registry
-   counts, what the MCP registry actually carries. Prefer a number you can
-   fetch over an article that quotes one: an article is somebody else's
-   reading, and it is usually a year old.
+3. **The ecosystem.** Two halves, and both go into the report.
+
+   **Stack combinations** — what people build with, and more importantly what
+   they build with _together_. A blueprint is a combination, so a package that
+   is popular alone says less than two that are always installed side by side.
+
+   | Source                                 | What it is good for                        |
+   | -------------------------------------- | ------------------------------------------ |
+   | Stack Overflow Developer Survey        | framework and database share, year on year |
+   | JetBrains State of Developer Ecosystem | language share and perceived growth        |
+   | State of JS, State of Python           | satisfaction and retention, not just usage |
+   | GitHub Octoverse                       | active users per language, growth rates    |
+   | npm, PyPI, NuGet download APIs         | installs, fetchable and exactly dated      |
+   | Stars on the awesome list for a stack  | rough attention, and nothing more          |
+
+   **MCP servers and Claude Code plugins** — what a blueprint should put in
+   `provides.mcp`. The official registry, Smithery, PulseMCP and Glama, the
+   `@modelcontextprotocol/*` download counts, `awesome-mcp-servers`. Tag each
+   one with which stacks it actually suits; a server that fits everything fits
+   nothing in particular and does not belong in a manifest.
+
+   Fifteen rows each, ordered by signal strength.
+
+**Fetch the number; do not quote somebody's reading of it.** These are primary
+and take one command each:
+
+```bash
+curl -s "https://api.npmjs.org/downloads/point/last-week/next"
+curl -s "https://pypistats.org/api/packages/fastapi/recent"
+curl -s "https://azuresearch-usnc.nuget.org/query?q=packageid:Microsoft.EntityFrameworkCore"
+curl -s "https://api.github.com/repos/vercel/next.js"
+```
+
+Two traps worth naming, because both have produced confident nonsense:
+
+- **A directory's server count is not an install count.** "50,000 MCP servers
+  indexed" says how much a directory has crawled, not what anybody runs.
+- **Downloads are not developers.** CI reinstalls the same package every run,
+  and a transitive dependency counts like a chosen one. Downloads are a floor
+  on attention. Survey percentages are people who answered a survey. Read both;
+  where they disagree, say so rather than picking the flattering one.
+
+Write the result to `docs/research/<YYYY-MM-DD>-demand.md` with those two
+sections, every row carrying its source and the date it was read.
 
 Write down **where each number came from and when**. A signal with no source is
 an opinion, and six months from now nobody will remember which it was.
@@ -82,15 +122,39 @@ is invisible to the people who might write it.
 
 ## 4. Provenance, before anybody writes code
 
-Most blueprints are derived from a project that already exists — that is what
-`blueprint-author` does. So the candidate says, up front, **which project it is
-derived from and under what licence**, and the manifest records it in
-`provenance` (ADR 0008).
+Two separate questions, and the candidate answers both before a line is
+written.
 
-This is not bookkeeping. A blueprint carries somebody else's design decisions
-into other people's projects under CC BY 4.0, and the catalog cannot credit
-what it did not write down. A candidate derived from a source whose licence
-does not allow it is not a candidate.
+**Where did it come from?** Most blueprints are derived from a project that
+already exists — that is what `blueprint-author` does. The candidate says
+which project and under what licence, and the manifest records it in
+`derived_from` (ADR 0008). This is not bookkeeping: a blueprint carries
+somebody else's design decisions into other people's projects under CC BY 4.0,
+and the catalog cannot credit what it did not write down. A candidate derived
+from a source whose licence does not allow it is not a candidate.
+
+**Who wrote it?** A draft produced by an agent from this research carries
+`provenance: generated`, and a generated blueprint can never be `tier: official`
+— the schema refuses it (ADR 0011). It also carries, everywhere it is served,
+_"Generated, CI-tested, not manually verified."_ A generated draft passes
+`validate`, `similarity`, `lint-setup`, `test-setup` **and** an architecture and
+security review (§5c) before its pull request opens.
+
+Nothing is drafted before the core maintainer picks it from the candidate list.
+Research produces candidates; picking is not research (CLAUDE.md §10).
+
+---
+
+## When to run this
+
+Monthly, and whenever a `blueprint-request` issue arrives. The roadmap carries
+the cadence (CLAUDE.md §6); the reason for it is that the numbers move faster
+than the catalog does, and a report nobody refreshed is worse than none — it
+still looks like evidence.
+
+Each run writes a new dated file rather than editing the last one. Two reports
+a month apart are the only way to see a trend, and a file that gets overwritten
+can never show one.
 
 ---
 

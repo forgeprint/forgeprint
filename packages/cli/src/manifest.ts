@@ -71,6 +71,24 @@ export function manifestObjectSchema(taxonomy: Taxonomy) {
         z.string().regex(REQUIRED_TOOL_PATTERN, 'must be a tool name with an optional version'),
       ).optional(),
       /**
+       * Who wrote this: a person, or a tool.
+       *
+       * A generated blueprint is one an agent drafted from the catalog's own
+       * research. It can be correct — CI runs its recipe like any other — but
+       * nobody has sat with it, and the difference between "the steps execute"
+       * and "the steps are the right steps" is exactly what a reader is
+       * trusting the catalog for. So it is said out loud, in the manifest, in
+       * the index, and in what the MCP server returns (ADR 0011).
+       *
+       * Absent means `human`. Every blueprint written before this field
+       * existed was written by a person, and a default that assumed otherwise
+       * would be a lie about all of them.
+       */
+      provenance: z
+        .enum(['human', 'generated'])
+        .default('human')
+        .describe('Who produced this blueprint. A generated one cannot be tier: official.'),
+      /**
        * Where the blueprint came from, when it came from somewhere.
        *
        * Most blueprints are derived from a project that already exists —
@@ -78,9 +96,9 @@ export function manifestObjectSchema(taxonomy: Taxonomy) {
        * handed to strangers under CC BY 4.0. A catalog cannot credit what it
        * did not write down (ADR 0008).
        */
-      provenance: z
+      derived_from: z
         .object({
-          derived_from: z
+          url: z
             .url({ protocol: /^https$/ })
             .describe('The project this was derived from, as an https URL.'),
           license: z
@@ -118,6 +136,18 @@ export function manifestSchema(taxonomy: Taxonomy) {
         code: 'custom',
         path: ['supersedes'],
         message: 'a blueprint cannot supersede itself',
+      });
+    }
+    // `official` is the catalog saying a person stands behind this. A tool
+    // drafted it and CI ran it is a different claim, and it has its own tier
+    // (ADR 0011). The schema refuses the combination rather than trusting
+    // every future reviewer to notice it.
+    if (manifest.provenance === 'generated' && manifest.tier === 'official') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['tier'],
+        message:
+          'a generated blueprint cannot be tier: official — nobody has verified it by hand (ADR 0011)',
       });
     }
   });

@@ -1,161 +1,171 @@
 # Catalog candidates
 
 What the catalog should hold next, and why. Produced with
-[`catalog-research`](../skills/catalog-research/SKILL.md) on **2026-09-22**.
+[`catalog-research`](../skills/catalog-research/SKILL.md) from
+[the demand report of 2026-09-23](research/2026-09-23-demand.md).
 
-**These are candidates, not commitments.** Nothing here is written until
-somebody picks it up, and a candidate that nobody picks up was correctly
-identified as not urgent.
-
----
-
-## The demand, with its sources
-
-**1. Nobody has asked us yet.** Zero open `blueprint-request` issues. The label
-and the site's request list were only wired up today, so this says nothing
-about demand — it says the queue is new. It also means everything below is an
-outside signal, which is the weaker kind.
-
-**2. The catalog cannot answer most questions it is asked.** From its own
-index, today:
-
-| Criterion      | Covered                           | Missing                                                   |
-| -------------- | --------------------------------- | --------------------------------------------------------- |
-| `project_type` | `api`, `agent`                    | `cli`, `data`, `game`, `infra`, `lib`, `mobile`, `web`    |
-| `languages`    | `csharp`                          | 18 others, including `typescript`, `python`, `go`, `java` |
-| `distribution` | `internal`, `saas`, `open-source` | `free`, `paid`, `ads`, `iap`                              |
-
-These are the two heaviest criteria in the resolver. A user who writes Python,
-or is building a CLI, gets `no_match` — correctly, and that is the problem.
-
-**3. The ecosystem, measured rather than quoted.** The official MCP registry's
-first hundred servers, fetched 2026-09-22: **79 remote-only, 20 npm, 1 PyPI**.
-Of the servers that ship as a package, npm is twenty to one. We publish the
-only .NET MCP blueprint in a registry whose packaged servers are almost
-entirely TypeScript.
-
-**4. Framework and database usage**, Stack Overflow Developer Survey 2025
-([survey.stackoverflow.co/2025/technology](https://survey.stackoverflow.co/2025/technology)):
-Node.js 49.1% and React 46.9% lead; Express remains the most-used Node
-framework; Next.js 21.5%; FastAPI 15.1%, the largest single rise in the
-survey; **PostgreSQL 58.2%**, first by a distance. Our two API blueprints
-already offer Postgres, which is the one thing this list says we got right.
-
-**5. What people buy.** The SaaS starter-kit market — ShipFast, Supastarter,
-SaaSykit and the rest — sells the same feature list every time: multi-tenancy,
-authentication, role-based access, billing, and per-tenant data isolation.
-People pay for that assembly, which is a stronger demand signal than a survey.
-We have exactly one of those features, in one language.
+**These are candidates, not commitments.** Nothing here is written until the
+core maintainer picks it, and a candidate nobody picks was correctly identified
+as not urgent. No draft exists for any of them.
 
 ---
 
-## The candidates
+## What the catalog covers today
 
-Five, in the order I would take them. Each states the risk, because a candidate
-without one has not been thought about.
+Five blueprints, and their triples — this is what rule 9 is checked against:
 
-### 1. `ts-mcp-server` — MCP server in TypeScript — **written, 2026-09-22**
+| Slug                          | `stack`                    | `project_type` | `requirements`                           |
+| ----------------------------- | -------------------------- | -------------- | ---------------------------------------- |
+| `dotnet-web-api`              | dotnet, aspnetcore, efcore | `api`          | auth, ci, containerization               |
+| `dotnet-multitenant-saas-api` | dotnet, aspnetcore, efcore | `api`          | auth, ci, containerization, multi-tenant |
+| `fastapi-service`             | fastapi, postgres          | `api`          | auth, ci, containerization               |
+| `ts-mcp-server`               | node, mcp                  | `agent`        | ci, testing                              |
+| `dotnet-mcp-server`           | dotnet, mcp                | `agent`        | ci, testing                              |
 
-**Triple:** `[node, mcp]` + `agent` + `[ci, testing]` — distinct from
-`dotnet-mcp-server`'s `[dotnet, mcp]` on stack, which is what rule 9 compares.
-**Demand:** signal 3. Twenty of the twenty-one packaged servers in the official
-registry are npm. This is the single most common thing being built in the
-ecosystem Forgeprint itself lives in.
-**Testable:** the same probe `dotnet-mcp-server` uses — speak MCP over stdio,
-initialise, call a tool, assert the response. Node is on every runner, so the
-recipe costs seconds in CI rather than minutes.
-**Provenance:** derivable from the official TypeScript SDK's own examples (MIT).
-**Risk:** its `setup.md` will look like `dotnet-mcp-server`'s, because the
-shape of an MCP server is the same in any language. Expect a similarity RED
-FLAG on the recipe and answer it in the pull request; the triple differs on
-stack, which is what rule 9 actually asks.
-**Outcome:** the risk did not materialise — 69% on tags, 35% on `AGENTS.md`,
-43% on `setup.md`, all under the threshold. The two blueprints share a shape
-and almost no words. Both option combinations run in CI in under twenty
-seconds.
+Two `project_type` values out of nine. Three languages out of nineteen. Eleven
+of the fifteen strongest stack combinations in the demand report have nothing
+behind them, and `mobile`, `cli`, `game`, `infra`, `lib` and `web` all return
+`no_match`.
 
-### 2. `fastapi-service` — Python API with Postgres — **written, 2026-09-22**
-
-**Triple:** `[fastapi, postgres]` + `api` + `[auth, ci, containerization]`
-**Demand:** signals 2 and 4. Python is the largest missing language, and
-FastAPI is the fastest-rising framework in the survey. Same triple shape as
-`dotnet-web-api`, different stack — which is precisely how the catalog is
-supposed to grow: the resolver weights a language the user already knows above
-everything else, so a Python developer needs a Python answer, not a good C# one.
-**Testable:** `pytest` against the app with `httpx`, a token check that a
-protected route refuses an unauthenticated request, and the container
-answering `/health` — the pattern the .NET recipes already prove works.
-**Provenance:** the FastAPI full-stack template (MIT) is the obvious source.
-**Risk:** dependency pinning in Python is a choice, not a default. The recipe
-has to commit to one — `uv` with a lockfile is the current answer — and
-`lint-setup` will insist on `==` versions throughout.
-**Outcome:** `uv` was refused by our own rules — its installer is
-`curl … | sh`, which `lint-setup` forbids, and `pip install uv` then pins the
-pinner. A virtual environment and `requirements.txt` with `==` throughout is
-what survived. The `database` option became `postgres` or `sqlite`; both run in
-CI, 21 steps in 175s and 20 in 202s.
-
-### 3. `express-rest-api` — Node REST API with Postgres
-
-**Triple:** `[node, express, postgres]` + `api` + `[auth, ci, containerization]`
-**Demand:** signal 4. Express is still the most-used Node framework and Node
-the most-used web technology; this is the most common backend in the world and
-the catalog has nothing for it.
-**Testable:** `node --test` with `supertest`, plus the container health check.
-**Provenance:** no single canonical source; write it from the Express and
-`node-postgres` documentation and record that.
-**Risk:** "Express with auth" is the most-written starter on the internet, so
-the bar for being worth a blueprint is higher than usual. It earns its place
-only if the recipe is genuinely opinionated — one auth mechanism, one migration
-tool, one test layout — rather than a menu.
-
-### 4. `nextjs-saas-web` — multi-tenant SaaS web application
-
-**Triple:** `[nextjs, postgres]` + `web` + `[multi-tenant, auth, rbac, ci]`
-**Demand:** signals 4 and 5. Next.js is the fastest-growing framework, `web`
-is our largest empty `project_type`, and multi-tenant SaaS is the feature list
-the entire paid boilerplate market is built on.
-**Testable:** a Playwright smoke test that signs in as two tenants and proves
-one cannot see the other's rows — the same claim `dotnet-multitenant-saas-api`
-proves in its test suite, which is the part that makes it worth having.
-**Provenance:** to be decided; most sources in this space are commercial and
-cannot be derived from. That may mean writing it from scratch.
-**Risk:** the heaviest candidate by far. Billing is what people actually want
-from a SaaS starter and it cannot be CI-tested against a payment provider, so
-the blueprint has to say plainly in "What it is NOT for" that it stops before
-billing. A blueprint that promises a SaaS kit and omits payments will
-disappoint unless it is explicit.
-
-### 5. `go-cli` — command-line tool in Go
-
-**Triple:** `[go-stdlib]` + `cli` + `[ci, testing]`
-**Demand:** signal 2 — `cli` is an empty `project_type` and Go is a missing
-language. No external signal says this is urgent; it is here because it is the
-cheapest possible proof that the catalog is not a .NET catalog.
-**Testable:** `go test ./...` and running the built binary with `--help` and a
-real argument. No container, no database, seconds in CI.
-**Provenance:** written from the Go standard library documentation.
-**Risk:** the smallest value of the five. A Go CLI is not hard to start, so the
-blueprint has to earn its place on the parts people get wrong — flag parsing
-without a framework, exit codes, testing a binary rather than a package, and
-cross-compilation in CI.
+**Nobody has asked us yet.** Zero open `blueprint-request` issues. Every
+candidate below is therefore an outside signal, which is the weaker kind — one
+person asking would outrank all five.
 
 ---
 
-## What this does not include
+## The five
 
-- **A second .NET blueprint.** The three we have cover the maintainer's stack;
-  a fourth would deepen the catalog where it is already deepest.
-- **Anything needing a taxonomy change.** Every triple above uses values that
-  already exist, except one — see the note below.
-- **Mobile, game, data.** All empty `project_type`s, all requiring a toolchain
-  or a device CI cannot provide today. They wait for a contributor who has one.
+### 1. `python-mcp-server`
 
-> **One triple above is approximate.** `stack` has no value for a Go
-> command-line tool written against the standard library, so candidate 5 needs
-> a taxonomy pull request first, on its own, before the blueprint. That is the
-> rule and this document is not an exception to it.
->
-> Candidate 1 does not: `mcp` is already in the vocabulary, and
-> `[node, mcp]` differs from `[dotnet, mcp]` on stack, which is what rule 9
-> compares. An earlier draft of this document said otherwise and was wrong.
+The clearest gap. The catalog has an MCP server blueprint in TypeScript and one
+in C#, and Python's SDK is downloaded at a comparable scale to TypeScript's.
+
+- **Triple:** stack `[mcp]` · `agent` · `[ci, testing]` — new: the two existing
+  agent blueprints carry `node` and `dotnet` alongside `mcp`.
+- **Demand:** `mcp` on PyPI, 219.5M downloads in the last month (2026-09-23).
+- **Options:** `transport: [stdio, http]` — the same split the other two use,
+  which keeps the three comparable.
+- **`provides.mcp`:** `everything` (the reference server is the conformance
+  target a server blueprint is checked against), `filesystem`.
+- **Testable:** the same proof the other two now carry — start the server,
+  speak the protocol to it, and for `http` show that a foreign `Origin` is
+  refused with 403. Not "it starts".
+- **Risk, and it is a real one:** the taxonomy has no plain `python` value in
+  `stack`, so the stack would be `[mcp]` alone, which is thinner than the other
+  two and makes the resolver lean entirely on `languages`. **This needs a
+  taxonomy pull request first** — that is two changes, and the vocabulary one
+  goes on its own.
+
+### 2. `nextjs-fullstack-app`
+
+The strongest combined signal in the report, and `web` is empty.
+
+- **Triple:** stack `[nextjs, react, tailwind, postgres]` · `web` ·
+  `[auth, ci, testing]` — new by every part.
+- **Demand:** `next` 42.7M/wk, `tailwindcss` 95.6M/wk, `drizzle-orm` 16.3M/wk,
+  `prisma` 12.2M/wk (npm, week of 2026-09-15). Next.js 142k stars.
+- **Options:** `orm: [drizzle, prisma]` — the one place the ecosystem is
+  genuinely split, and the report shows Drizzle ahead on installs while Prisma
+  7 rewrote its client.
+- **`provides.mcp`:** `playwright` (5.43M/wk — the browser is the point of a
+  `web` blueprint), `chrome-devtools` (1.03M/wk).
+- **Testable:** build, run migrations against a Postgres service container,
+  and a Playwright test that signs in and reads a row back. That is a test of
+  what the blueprint claims, not of the compiler.
+- **Risk:** the longest recipe the catalog would carry, and Next.js is gaining
+  usage while losing satisfaction (State of JS 2025). A reader who resents the
+  framework will resent the blueprint. Also the only candidate where the option
+  field changes a large part of the recipe.
+
+### 3. `go-http-service`
+
+A fourth `api`, which needs justifying — the justification is that `languages`
+is the heaviest criterion in the resolver and Go returns `no_match` today.
+
+- **Triple:** stack `[gin, postgres, docker]` · `api` ·
+  `[auth, ci, containerization]` — the type and requirements match
+  `dotnet-web-api` and `fastapi-service`; the stack does not, so rule 9 is
+  satisfied.
+- **Demand:** Go among the languages with the highest perceived growth
+  (JetBrains 2025); `gin` is in the taxonomy and in no blueprint.
+- **Options:** `database: [postgres, sqlite]`, `router: [gin, net/http]` —
+  `net/http` is not in the taxonomy's stack list, so this may be one option
+  field, not two.
+- **`provides.mcp`:** `github` (33.1k stars, and this blueprint sets up `ci`),
+  `sentry` where the reader adds observability.
+- **Testable:** `go test ./...`, a container that answers `/health`, and a
+  request without a token that is refused. Go's toolchain is on every runner
+  and the build is fast, so this is the cheapest of the five in CI.
+- **Risk:** the third `auth + ci + containerization` API. If the resolver ever
+  weights language lower, three near-identical blueprints look like a catalog
+  that repeats itself.
+
+### 4. `astro-content-site`
+
+The other `web` candidate, and the opposite shape from `nextjs-fullstack-app`:
+no database, no auth, short recipe.
+
+- **Triple:** stack `[astro, tailwind]` · `web` · `[seo, ci, accessibility]` —
+  new, and it is the only candidate that would put `seo` and `accessibility`
+  into the catalog at all.
+- **Demand:** Astro leads meta-framework satisfaction by about 39 points over
+  Next.js (State of JS 2025).
+- **Options:** `content: [markdown, mdx]`, `deploy: [static, cloudflare]`.
+- **`provides.mcp`:** `playwright` (an accessibility assertion needs a
+  browser), `context7` (354k/wk).
+- **Testable:** build, then assert the generated HTML actually carries the meta
+  tags and heading structure the blueprint claims. A `seo` blueprint whose test
+  is "it built" would be exactly the kind of verification the catalog rejects.
+- **Risk:** the smallest blueprint here, and a reader may reasonably ask what
+  it adds over `npm create astro`. The answer has to be the SEO and
+  accessibility work, or there is no blueprint.
+
+### 5. `python-background-worker`
+
+Fills `data`, and `background-jobs` — a requirement in the taxonomy that no
+blueprint has ever carried.
+
+- **Triple:** stack `[redis, postgres, docker]` · `data` ·
+  `[background-jobs, ci, containerization]` — new by every part.
+- **Demand:** `celery` 42.0M downloads in the last month (PyPI, 2026-09-23).
+- **Options:** `broker: [redis, rabbitmq]` — `rabbitmq` is not in the
+  taxonomy, so this may have to be `[redis]` only, which is not an option field
+  at all (a field needs at least two values).
+- **`provides.mcp`:** `sentry` (a worker that fails silently is the failure
+  mode this blueprint exists to prevent), `postgres`.
+- **Testable:** enqueue a job, wait for the result, and assert a retry happens
+  when the job raises. That is the only way to prove a queue works.
+- **Risk:** two taxonomy gaps (`celery`, `rabbitmq`), and the recipe needs two
+  service containers plus a worker process, which is the most fragile CI setup
+  of the five.
+
+---
+
+## Not proposed, with the reason
+
+- **`mobile` (React Native / Expo).** The emptiest `project_type` and a real
+  gap, but a mobile build in CI needs either a paid build service or an
+  account-bound toolchain, and the catalog's first filter is that the recipe
+  runs on an ordinary Linux runner. A blueprint whose setup cannot be tested is
+  a description. If this is ever wanted, it has to be scoped to what does run
+  headless — `expo export` and the test suite — and say plainly that it does
+  not build an app store binary.
+- **`game`.** Unity and Godot are in the taxonomy; neither has a CI story that
+  does not involve a licence server or a multi-gigabyte editor download.
+- **A second FastAPI blueprint.** Anything close enough to be tempting is an
+  option on `fastapi-service`, not a blueprint (rule 8, ADR 0001).
+
+---
+
+## Before any of these is written
+
+1. **The core maintainer picks.** No draft exists and none will be produced
+   before that (CLAUDE.md §10, "Never invent a blueprint on your own").
+2. **Taxonomy first where one is needed.** Candidates 1 and 5 need vocabulary
+   that does not exist. The taxonomy change is its own pull request and it goes
+   first.
+3. **Provenance is declared up front.** A generated draft carries
+   `provenance: generated` and can never be `tier: official`
+   ([ADR 0011](decisions/0011-generated-blueprints.md)). A draft derived from
+   an existing project also records `derived_from`
+   ([ADR 0008](decisions/0008-provenance.md)).
