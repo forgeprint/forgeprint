@@ -160,25 +160,32 @@ pnpm run build
 pnpm forgeprint validate
 ```
 
-| Command                             | What it does                                    | Available |
-| ----------------------------------- | ----------------------------------------------- | --------- |
-| `pnpm forgeprint validate`          | schema, taxonomy, required files, catalog rules | now       |
-| `pnpm forgeprint build-index`       | regenerate `docs/index.json`                    | now       |
-| `pnpm forgeprint build-schema`      | regenerate `schema/manifest.schema.json`        | now       |
-| `pnpm forgeprint build-codeowners`  | regenerate `.github/CODEOWNERS`                 | now       |
-| `pnpm run build-site`               | regenerate the site in `docs/`                  | now       |
-| `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint  | now       |
-| `pnpm forgeprint similarity --all`  | the same, for every blueprint                   | now       |
-| `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules             | now       |
-| `pnpm forgeprint lint-setup --all`  | the same, for every blueprint                   | now       |
-| `pnpm forgeprint test-setup <slug>` | run the recipe for real and verify every step   | now       |
-| `pnpm forgeprint test-setup --all`  | the same, one option combination per blueprint  | now       |
-| `... --changed-since main`          | only the blueprints your branch changed         | now       |
+| Command                             | What it does                                     | Available |
+| ----------------------------------- | ------------------------------------------------ | --------- |
+| `pnpm forgeprint validate`          | schema, taxonomy, required files, catalog rules  | now       |
+| `pnpm forgeprint build-index`       | regenerate `docs/index.json`                     | now       |
+| `pnpm forgeprint build-schema`      | regenerate `schema/manifest.schema.json`         | now       |
+| `pnpm forgeprint build-codeowners`  | regenerate `.github/CODEOWNERS`                  | now       |
+| `pnpm forgeprint build-requests`    | regenerate `docs/requests.json` from open issues | now       |
+| `pnpm run build-site`               | regenerate the site in `docs/`                   | now       |
+| `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint   | now       |
+| `pnpm forgeprint similarity --all`  | the same, for every blueprint                    | now       |
+| `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules              | now       |
+| `pnpm forgeprint lint-setup --all`  | the same, for every blueprint                    | now       |
+| `pnpm forgeprint test-setup <slug>` | run the recipe for real and verify every step    | now       |
+| `pnpm forgeprint test-setup --all`  | the same, one option combination per blueprint   | now       |
+| `... --changed-since main`          | only the blueprints your branch changed          | now       |
 
 `docs/index.json`, `schema/manifest.schema.json` and the site under `docs/`
 are generated **and committed**. After changing a blueprint or the taxonomy, run the matching
 `build-*` command and commit the result; `validate` fails if a committed file is
 stale.
+
+`docs/requests.json` is the exception. It is generated too, but from the open
+`blueprint-request` issues rather than from the repository, so nothing can
+regenerate it to check for drift and nothing depends on it being current. The
+maintainer refreshes it with `forgeprint build-requests`; without `gh` the
+command leaves the file alone, and a missing file renders as an empty queue.
 
 Run the recipe you wrote. This is the check the catalog rests on, and the one
 that finds what reading cannot:

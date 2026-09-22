@@ -4,6 +4,18 @@ import { buildIndex, loadBlueprints, loadTaxonomy, type CatalogIndex } from 'for
 import { makeRepo, validManifest, type BlueprintFixture } from 'forgeprint/testing';
 import { escape, renderBlueprintPage, renderIndexPage, renderSite } from './render.js';
 
+const CONTEXT = {
+  requests: [
+    {
+      number: 7,
+      title: 'Blueprint request: Rust CLI',
+      url: 'https://github.com/forgeprint/forgeprint/issues/7',
+      author: 'someone',
+    },
+  ],
+  featured: ['aliosmanmho'],
+};
+
 function catalog(fixtures: readonly BlueprintFixture[]): CatalogIndex {
   const root = makeRepo(fixtures);
   const taxonomy = loadTaxonomy(root);
@@ -97,5 +109,41 @@ describe('a blueprint page', () => {
 describe('escape', () => {
   it('neutralises markup that would otherwise close a tag', () => {
     assert.equal(escape('<script>"&"</script>'), '&lt;script&gt;&quot;&amp;&quot;&lt;/script&gt;');
+  });
+});
+
+describe('contributor visibility', () => {
+  it('credits the maintainer on a blueprint page, with a face', () => {
+    const entry = INDEX.blueprints.find((blueprint) => blueprint.slug === 'sample-api');
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage(entry, INDEX.taxonomy);
+    assert.match(html, /Blueprint by/);
+    // The avatar is a plain image URL: no API call at build time, no script.
+    assert.match(html, /github\.com\/octocat\.png\?size=64/);
+    assert.match(html, /href="https:\/\/github\.com\/octocat"/);
+  });
+
+  it('lists the open requests, so the demand queue is public', () => {
+    const html = renderIndexPage(INDEX, CONTEXT);
+    assert.match(html, /Requested blueprints/);
+    assert.match(html, /Rust CLI/);
+    assert.match(html, /asked by @someone/);
+  });
+
+  it('says the queue is empty rather than hiding it', () => {
+    const html = renderIndexPage(INDEX);
+    assert.match(html, /No open requests right now/);
+    assert.equal(/Requested blueprints/.test(html), false);
+  });
+
+  it('shows the featured contributors, and nothing when there are none', () => {
+    assert.match(renderIndexPage(INDEX, CONTEXT), /Featured contributors/);
+    assert.equal(/Featured contributors/.test(renderIndexPage(INDEX)), false);
+  });
+
+  it('passes the context through renderSite to the index page only', () => {
+    const pages = renderSite(INDEX, CONTEXT);
+    assert.match(pages[0]?.html ?? '', /Featured contributors/);
+    assert.equal(/Featured contributors/.test(pages[1]?.html ?? ''), false);
   });
 });

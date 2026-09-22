@@ -28,6 +28,7 @@ export const repoPaths = {
   blueprintsDir: (root: string): string => join(root, 'blueprints'),
   blueprintDir: (root: string, slug: string): string => join(root, 'blueprints', slug),
   index: (root: string): string => join(root, 'docs', 'index.json'),
+  requests: (root: string): string => join(root, 'docs', 'requests.json'),
   codeowners: (root: string): string => join(root, '.github', 'CODEOWNERS'),
 };
 

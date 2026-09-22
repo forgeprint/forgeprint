@@ -17,6 +17,7 @@ import { lintSetup } from './lint-setup.js';
 import type { Manifest } from './manifest.js';
 import { checkOptions, resolveSetupOptions } from './options.js';
 import { parseRecipe } from './recipe.js';
+import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
 import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
 import { compareBlueprints, DEFAULT_THRESHOLD, renderReport } from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
@@ -255,6 +256,31 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     .action(() => {
       const root = rootOf();
       write(repoPaths.manifestSchema(root), buildManifestJsonSchema(loadTaxonomy(root)));
+    });
+
+  program
+    .command('build-requests')
+    .description('regenerate docs/requests.json from the open blueprint-request issues')
+    .option(
+      '--repository <owner/repo>',
+      `repository to read (default: repository in ${CONFIG_FILE})`,
+    )
+    .action((options: { repository?: string }) => {
+      const root = rootOf();
+      const repository = options.repository ?? loadConfig(root).repository;
+      if (repository === undefined) {
+        throw new Error(`No repository: pass --repository or set repository in ${CONFIG_FILE}`);
+      }
+      // Without gh there is nothing to ask, and an empty list would delete a
+      // good one. The build carries on either way: the demand list is never
+      // worth failing on (ADR 0002).
+      if (!hasGitHubCli()) {
+        console.log('skip   gh is not installed; docs/requests.json left as it is');
+        return;
+      }
+      const requests = fetchRequests(repository);
+      write(repoPaths.requests(root), renderRequests(repository, requests));
+      console.log(`       ${String(requests.length)} open request(s)`);
     });
 
   program

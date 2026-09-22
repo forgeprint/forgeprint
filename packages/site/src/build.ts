@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { loadConfig, readRequests } from 'forgeprint';
 import { renderSite, STYLESHEET, type Page } from './render.js';
 import { loadIndex } from './index.js';
 
@@ -11,7 +12,14 @@ export interface BuildResult {
 
 /** Every file the site is made of: the pages plus the one stylesheet. */
 export function siteFiles(root: string): Page[] {
-  return [...renderSite(loadIndex(root)), { path: 'forgeprint.css', html: STYLESHEET }];
+  // The requests come from outside the repository and the contributors from
+  // configuration; both are optional, and a missing one renders as empty
+  // rather than failing the build.
+  const context = {
+    requests: readRequests(root).requests,
+    featured: loadConfig(root).featured_contributors ?? [],
+  };
+  return [...renderSite(loadIndex(root), context), { path: 'forgeprint.css', html: STYLESHEET }];
 }
 
 /**

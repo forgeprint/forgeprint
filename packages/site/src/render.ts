@@ -11,7 +11,7 @@
  * quietly stale is worse than one that is obviously missing.
  */
 
-import type { CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
+import type { BlueprintRequest, CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
 
 export const REQUEST_URL =
   'https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml';
@@ -23,9 +23,21 @@ export interface Page {
   readonly html: string;
 }
 
-export function renderSite(index: CatalogIndex): Page[] {
+/**
+ * What the site shows besides the catalog: who wrote it, and what people have
+ * asked for. Both are optional, so a checkout with neither still renders.
+ */
+export interface SiteContext {
+  readonly requests: readonly BlueprintRequest[];
+  /** GitHub logins credited on the front page. */
+  readonly featured: readonly string[];
+}
+
+const NOTHING: SiteContext = { requests: [], featured: [] };
+
+export function renderSite(index: CatalogIndex, context: SiteContext = NOTHING): Page[] {
   return [
-    { path: 'index.html', html: renderIndexPage(index) },
+    { path: 'index.html', html: renderIndexPage(index, context) },
     ...index.blueprints.map((entry) => ({
       path: `b/${entry.slug}.html`,
       html: renderBlueprintPage(entry, index.taxonomy),
@@ -33,7 +45,7 @@ export function renderSite(index: CatalogIndex): Page[] {
   ];
 }
 
-export function renderIndexPage(index: CatalogIndex): string {
+export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTHING): string {
   const blueprints = [...index.blueprints].sort((a, b) => a.slug.localeCompare(b.slug));
   const cards = blueprints.map((entry) => card(entry, index.taxonomy)).join('\n');
   const empty = blueprints.length === 0;
@@ -74,7 +86,10 @@ export function renderIndexPage(index: CatalogIndex): string {
           The catalog grows by demand. <a href="${REQUEST_URL}">Request a blueprint</a> and
           say what is missing — requests are public, and somebody may pick yours up.
         </p>
+        ${requestList(context.requests)}
       </section>
+
+      ${contributors(context.featured)}
     `,
     script: `
       const filter = document.getElementById('filter');
@@ -111,7 +126,6 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
     ['Audience', entry.audience.map((id) => label('audience', id)).join(', ')],
     ['Tested with', entry.agents.map((id) => label('agents', id)).join(', ')],
     ['Needs', entry.requires_tools.join(', ') || '—'],
-    ['Maintainers', entry.maintainers.map((handle) => `@${handle}`).join(', ')],
   ] as const;
 
   return page({
@@ -127,6 +141,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
         <p class="tagline">${escape(entry.summary)}</p>
         ${entry.deprecated ? '<p class="warn">Deprecated. It is no longer offered by the resolver.</p>' : ''}
         ${entry.supersedes === null ? '' : `<p class="muted">Supersedes <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
+        ${byline(entry.maintainers)}
       </header>
 
       <section>
@@ -179,6 +194,69 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
       </section>
     `,
   });
+}
+
+/**
+ * Who maintains this blueprint, with a face.
+ *
+ * A catalog entry is written by somebody, and the page says so where it cannot
+ * be missed. The avatar comes from github.com/<login>.png, which needs no API
+ * call at build time and no script in the page.
+ */
+function byline(maintainers: readonly string[]): string {
+  if (maintainers.length === 0) return '';
+  const people = maintainers
+    .map(
+      (handle) =>
+        `<a class="person" href="https://github.com/${escape(handle)}">${avatar(handle)}<span>@${escape(handle)}</span></a>`,
+    )
+    .join('');
+  return `<p class="byline">Blueprint by ${people}</p>`;
+}
+
+function avatar(handle: string, size = 32): string {
+  // Twice the displayed size, so it stays sharp on a dense screen.
+  return `<img class="avatar" src="https://github.com/${escape(handle)}.png?size=${String(size * 2)}" width="${String(size)}" height="${String(size)}" loading="lazy" alt="" />`;
+}
+
+/**
+ * The open requests, as a list of what people actually asked for. Empty is a
+ * normal state and says so, rather than hiding the section: the point is that
+ * the queue is public.
+ */
+function requestList(requests: readonly BlueprintRequest[]): string {
+  if (requests.length === 0) {
+    return '<p class="muted">No open requests right now.</p>';
+  }
+  const items = requests
+    .map(
+      (request) =>
+        `<li><a href="${escape(request.url)}">${escape(request.title)}</a>${
+          request.author === ''
+            ? ''
+            : ` <span class="muted">asked by @${escape(request.author)}</span>`
+        }</li>`,
+    )
+    .join('\n          ');
+  return `<h3>Requested blueprints</h3>
+        <ul class="requests">
+          ${items}
+        </ul>`;
+}
+
+function contributors(featured: readonly string[]): string {
+  if (featured.length === 0) return '';
+  const people = featured
+    .map(
+      (handle) =>
+        `<a class="person" href="https://github.com/${escape(handle)}">${avatar(handle, 48)}<span>@${escape(handle)}</span></a>`,
+    )
+    .join('');
+  return `<section class="contributors">
+        <h2>Featured contributors</h2>
+        <p class="muted">The catalog is written by people. These are the ones who wrote what is in it.</p>
+        <div class="people">${people}</div>
+      </section>`;
 }
 
 function card(entry: IndexEntry, taxonomy: Taxonomy): string {
@@ -323,5 +401,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .options dd { margin: 0 0 0.6rem; color: var(--muted); }
 .files { list-style: none; padding: 0; columns: 2; }
 .files li { margin: 0.2rem 0; break-inside: avoid; }
+.byline { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; color: var(--muted); margin: 0 0 0.5rem; font-size: 0.95rem; }
+.person { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--fg); }
+.person:hover span { text-decoration: underline; }
+.avatar { border-radius: 999px; border: 1px solid var(--line); display: block; }
+.requests { list-style: none; padding: 0; margin: 0.75rem 0 0; }
+.requests li { padding: 0.4rem 0; border-bottom: 1px solid var(--line); }
+.people { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.75rem; }
+.contributors .person { flex-direction: column; gap: 0.45rem; font-size: 0.9rem; }
 footer { margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
 `;
