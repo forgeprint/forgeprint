@@ -199,12 +199,12 @@ importers:
 
   packages/mcp-server:
     dependencies:
-      '@forgeprint/cli':
-        specifier: workspace:*
-        version: link:../cli
       '@modelcontextprotocol/sdk':
         specifier: 1.30.0
         version: 1.30.0(zod@4.6.5)
+      forgeprint:
+        specifier: workspace:*
+        version: link:../cli
       yaml:
         specifier: 2.9.1
         version: 2.9.1
@@ -214,7 +214,7 @@ importers:
 
   packages/site:
     dependencies:
-      '@forgeprint/cli':
+      forgeprint:
         specifier: workspace:*
         version: link:../cli
 

@@ -10,7 +10,7 @@
 
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { CatalogIndex, IndexEntry } from '@forgeprint/cli';
+import type { CatalogIndex, IndexEntry } from 'forgeprint';
 
 export const DEFAULT_INDEX_URL = 'https://forgeprint.github.io/forgeprint/index.json';
 export const FALLBACK_INDEX_URL =

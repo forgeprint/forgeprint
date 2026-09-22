@@ -1,8 +1,26 @@
 {
   "name": "forgeprint-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Forgeprint MCP server: resolve a profile to exactly one blueprint and return its setup recipe.",
+  "keywords": [
+    "forgeprint",
+    "mcp",
+    "model-context-protocol",
+    "blueprints",
+    "ai-agents",
+    "claude-code",
+    "scaffolding"
+  ],
   "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/forgeprint/forgeprint#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forgeprint/forgeprint.git",
+    "directory": "packages/mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/forgeprint/forgeprint/issues"
+  },
   "type": "module",
   "bin": {
     "forgeprint-mcp": "dist/bin.js"
@@ -10,16 +28,21 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.*"
   ],
   "engines": {
     "node": ">=20.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "prepublishOnly": "tsc --build",
     "test": "node --test \"dist/**/*.test.js\""
   },
   "dependencies": {
-    "@forgeprint/cli": "workspace:*",
+    "forgeprint": "workspace:*",
     "@modelcontextprotocol/sdk": "1.30.0",
     "yaml": "2.9.1",
     "zod": "4.6.5"

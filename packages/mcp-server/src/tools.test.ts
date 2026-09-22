@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
-import { makeRepo, validManifest } from '@forgeprint/cli/testing';
+import { makeRepo, validManifest } from 'forgeprint/testing';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { localSource } from './catalog.js';

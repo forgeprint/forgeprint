@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
-import { repoPaths } from '@forgeprint/cli';
-import { makeRepo } from '@forgeprint/cli/testing';
+import { repoPaths } from 'forgeprint';
+import { makeRepo } from 'forgeprint/testing';
 import { loadIndex, SITE_OUTPUT_DIR } from './index.js';
 
 describe('loadIndex', () => {

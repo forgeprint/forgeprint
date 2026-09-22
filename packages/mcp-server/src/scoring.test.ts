@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { loadBlueprints, buildIndex, loadTaxonomy, type CatalogIndex } from '@forgeprint/cli';
-import { makeRepo, validManifest, type BlueprintFixture } from '@forgeprint/cli/testing';
+import { loadBlueprints, buildIndex, loadTaxonomy, type CatalogIndex } from 'forgeprint';
+import { makeRepo, validManifest, type BlueprintFixture } from 'forgeprint/testing';
 import { isGenuineTie, MATCH_FLOOR, questionsFor, scoreCatalog } from './scoring.js';
 
 function catalog(fixtures: readonly BlueprintFixture[]): CatalogIndex {

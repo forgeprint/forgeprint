@@ -1,8 +1,26 @@
 {
-  "name": "@forgeprint/cli",
-  "version": "0.1.0",
+  "name": "forgeprint",
+  "version": "0.1.1",
   "description": "Forgeprint catalog tooling. Every pipeline step runs here, not in CI configuration.",
+  "keywords": [
+    "forgeprint",
+    "blueprints",
+    "catalog",
+    "cli",
+    "agents",
+    "ai-agents",
+    "scaffolding"
+  ],
   "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/forgeprint/forgeprint#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forgeprint/forgeprint.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/forgeprint/forgeprint/issues"
+  },
   "type": "module",
   "bin": {
     "forgeprint": "dist/bin.js"
@@ -26,7 +44,11 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "prepublishOnly": "tsc --build",
     "test": "node --test \"dist/**/*.test.js\""
   },
   "dependencies": {

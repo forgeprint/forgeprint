@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { repoPaths } from '@forgeprint/cli';
-import type { CatalogIndex } from '@forgeprint/cli';
+import { repoPaths } from 'forgeprint';
+import type { CatalogIndex } from 'forgeprint';
 
 /**
  * The site is built from the committed `docs/index.json` and written back into

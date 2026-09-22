@@ -10,7 +10,7 @@
  *   answer would change which blueprint wins.
  */
 
-import type { CatalogIndex, IndexEntry, Taxonomy } from '@forgeprint/cli';
+import type { CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
 
 export interface Profile {
   // `| undefined` is explicit because the server runs with
