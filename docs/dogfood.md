@@ -18,12 +18,12 @@ real conversation answers that.
 
 ## Before you start
 
-|                           |                                                                                  |
-| ------------------------- | -------------------------------------------------------------------------------- |
-| **Empty directory**       | Not a copy of the repository. `mkdir ~/dogfood && cd ~/dogfood`                  |
-| **A fresh agent session** | No memory of this project. Nothing in `CLAUDE.md`, no other MCP server connected |
-| **Tools installed**       | .NET SDK 10, Docker running, `git`                                               |
-| **What you are**          | Somebody who writes C# and has never used Forgeprint                             |
+|                           |                                                                                                                                     |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Empty directory**       | Not a copy of the repository. `mkdir ~/dogfood && cd ~/dogfood`                                                                     |
+| **A fresh agent session** | No memory of this project. Nothing in `CLAUDE.md`, and **no other MCP server connected** — see below, this one is easy to get wrong |
+| **Tools installed**       | .NET SDK 10, Docker running, `git`                                                                                                  |
+| **What you are**          | Somebody who writes C# and has never used Forgeprint                                                                                |
 
 Connect the published server — the same command a stranger would run:
 
@@ -37,6 +37,32 @@ its own option:
 ```powershell
 claude mcp add forgeprint "--" npx -y forgeprint-mcp
 ```
+
+**Run it isolated.** `claude mcp add` leaves every other server connected, and
+a working setup usually has several. That is a different test: with three
+hundred tools in the session, Forgeprint's six are competing for attention, and
+a run where the agent never calls `resolve` tells you nothing about `resolve`.
+Write this file somewhere outside the working directory:
+
+```json
+{
+  "mcpServers": {
+    "forgeprint": { "command": "npx", "args": ["-y", "forgeprint-mcp"] }
+  }
+}
+```
+
+and start the session with nothing else loaded:
+
+```bash
+claude --strict-mcp-config --mcp-config /path/to/forgeprint-only.json
+```
+
+Check it with `/mcp`: exactly one server, `forgeprint`, connected, six tools.
+
+The crowded case is worth testing too — most people have other servers — but
+test it **second**, and as its own question: does `resolve` still get picked
+when it is one of three hundred tools?
 
 Check that it is the only one, and that all six tools are there:
 
