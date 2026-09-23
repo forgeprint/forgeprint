@@ -1,0 +1,19 @@
+schema: 1
+slug: go-http-service
+name: 'Go HTTP Service'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'HTTP service in Go on Gin with bearer token verification, a distroless container, and tests that prove an unauthenticated request is refused.'
+stack: [go, gin, docker]
+languages: [go]
+platforms: [linux, docker]
+distribution: [open-source, internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, ci, containerization]
+agents: [claude-code]
+requires_tools: [go>=1.25, docker, curl]
+deprecated: false
+supersedes: null
