@@ -222,3 +222,28 @@ describe('a generated blueprint says so', () => {
     assert.doesNotMatch(html, /Generated, CI-tested/);
   });
 });
+
+describe('what a blueprint suggests alongside itself', () => {
+  const entry = INDEX.blueprints.find((blueprint) => blueprint.slug === 'sample-api');
+
+  it('lists the MCP servers and skills it names', () => {
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage(
+      { ...entry, provides: { mcp: ['everything'], skills: ['efcore-migrations'] } },
+      INDEX.taxonomy,
+    );
+    assert.match(html, /Suggested alongside/);
+    assert.match(html, /everything/);
+    assert.match(html, /efcore-migrations/);
+  });
+
+  it('says nothing when a blueprint suggests nothing', () => {
+    // Most do. An empty heading is worse than no heading.
+    assert.ok(entry !== undefined);
+    const html = renderBlueprintPage(
+      { ...entry, provides: { mcp: [], skills: [] } },
+      INDEX.taxonomy,
+    );
+    assert.doesNotMatch(html, /Suggested alongside/);
+  });
+});

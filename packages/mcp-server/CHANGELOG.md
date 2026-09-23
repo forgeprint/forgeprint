@@ -4,6 +4,16 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.8 — 2026-09-23
+
+- **`suggested_alongside` in `get_blueprint`, `resolve` and
+  `compare_blueprints`.** A blueprint's `provides.mcp` and `provides.skills`
+  have been in the schema and the index since the first version and were read
+  by nothing, so a blueprint could name the MCP servers it expects and the
+  agent would never hear about them — while CLAUDE.md §3.3 says `get_blueprint`
+  returns exactly that. Absent rather than empty: a blueprint that suggests
+  nothing says nothing.
+
 ## 0.2.7 — 2026-09-23
 
 - **A generated blueprint says so in `tier_note`**: _"Generated, CI-tested, not

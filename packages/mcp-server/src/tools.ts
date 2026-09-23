@@ -43,6 +43,27 @@ const localeInput = z
  * wrote it at all. A generated blueprint's recipe passes CI like any other —
  * what nobody did is ask whether those are the right steps (ADR 0011).
  */
+/**
+ * What a blueprint suggests installing alongside itself.
+ *
+ * The field has been in the schema and the index since the beginning and was
+ * read by nothing, so a blueprint could name the MCP servers it expects and
+ * the agent would never hear about them — while CLAUDE.md §3.3 promises
+ * `get_blueprint` returns exactly that. Absent rather than empty: a blueprint
+ * that suggests nothing should say nothing, not answer with two empty lists.
+ */
+function suggests(entry: {
+  provides?: { mcp?: readonly string[]; skills?: readonly string[] };
+}): Record<string, readonly string[]> | undefined {
+  const mcp = entry.provides?.mcp ?? [];
+  const skills = entry.provides?.skills ?? [];
+  if (mcp.length === 0 && skills.length === 0) return undefined;
+  return {
+    ...(mcp.length === 0 ? {} : { mcp_servers: mcp }),
+    ...(skills.length === 0 ? {} : { skills }),
+  };
+}
+
 function tierNote(entry: { tier: string; provenance?: 'human' | 'generated' }): string | undefined {
   const notes: string[] = [];
   if (entry.provenance === 'generated') {
@@ -172,6 +193,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             files,
             other_files: entry.files.filter((path) => !(path in files)),
             tier_note: tierNote(entry),
+            suggested_alongside: suggests(entry),
           },
           { present_in: locale },
         );
@@ -308,6 +330,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             decisions_still_to_make: missingOptions(asManifestLike(best.entry)),
             next_step: `Call get_blueprint with slug "${best.entry.slug}" and the chosen options, then follow setup.md.`,
             tier_note: tierNote(best.entry),
+            suggested_alongside: suggests(best.entry),
           },
           meta,
         );
@@ -337,6 +360,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             name: entry.name,
             tier: entry.tier,
             tier_note: tierNote(entry),
+            suggested_alongside: suggests(entry),
             summary: entry.summary,
             languages: entry.languages,
             project_type: entry.project_type,

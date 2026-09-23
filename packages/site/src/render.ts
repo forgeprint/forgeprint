@@ -234,6 +234,8 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
         ${derivedFrom(entry.derived_from)}
       </header>
 
+      ${suggested(entry)}
+
       <section>
         <h2>Use it</h2>
         <p>Ask your agent for it by name, or let <code>resolve</code> find it from your profile.</p>
@@ -319,6 +321,30 @@ function byline(maintainers: readonly string[]): string {
  * are the right steps — and a reader deciding whether to build on it is
  * entitled to know which kind of confidence they are getting (ADR 0011).
  */
+/**
+ * What a blueprint suggests installing alongside itself.
+ *
+ * Nothing rendered this, so a blueprint could name the MCP servers it expects
+ * and a reader of its page would never see them. Absent rather than empty:
+ * most blueprints suggest nothing, and an empty heading is worse than none.
+ */
+function suggested(entry: IndexEntry): string {
+  const mcp = entry.provides.mcp;
+  const skills = entry.provides.skills;
+  if (mcp.length === 0 && skills.length === 0) return '';
+  const row = (label: string, values: readonly string[]): string =>
+    values.length === 0
+      ? ''
+      : `<dt>${label}</dt><dd>${values.map((value) => `<code>${escape(value)}</code>`).join(' · ')}</dd>`;
+  return `<section>
+        <h2>Suggested alongside</h2>
+        <dl class="options">
+          ${row('MCP servers', mcp)}
+          ${row('Skills', skills)}
+        </dl>
+      </section>`;
+}
+
 function generatedNotice(provenance: IndexEntry['provenance']): string {
   if (provenance !== 'generated') return '';
   return `<p class="notice">Generated, CI-tested, not manually verified. The setup steps run; nobody has reviewed them by hand.</p>`;

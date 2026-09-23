@@ -3,6 +3,10 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.8 — 2026-09-23
+
+- No change to the tooling. The version follows the workspace.
+
 ## 0.2.7 — 2026-09-23
 
 - **`provenance: human | generated` in the manifest**, defaulting to `human`,
