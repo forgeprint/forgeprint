@@ -1,0 +1,19 @@
+schema: 1
+slug: python-cli
+name: 'Python CLI'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Command-line tool in Python on Typer, with commands tested through the real parser and a module that runs with python -m.'
+stack: [python, typer]
+languages: [python]
+platforms: [windows, linux, macos]
+distribution: [open-source, internal]
+project_type: cli
+audience: [beginner, intermediate]
+requirements: [ci, testing]
+agents: [claude-code]
+requires_tools: [python>=3.10]
+deprecated: false
+supersedes: null
