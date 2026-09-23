@@ -419,6 +419,9 @@ h3.sub {
   color: var(--muted);
   font-size: var(--t-1);
   padding: var(--s-2) 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 .aside[open] summary {
   margin-bottom: var(--s-2);
@@ -527,11 +530,17 @@ h3.sub {
   font-size: var(--t-1);
   font-weight: 700;
 }
+/* The ::before counter is the first grid item, so the heading and the body
+   have to be placed in the second column explicitly. Without this the
+   paragraph falls into the next row of column one — a 2.5rem gutter — and
+   every step renders as a column of single words. */
 .steps h3 {
+  grid-column: 2;
   font-size: var(--t-2);
   font-weight: 650;
 }
 .steps p {
+  grid-column: 2;
   margin: 0;
   color: var(--muted);
   line-height: 1.65;
