@@ -10,6 +10,14 @@ gets the same answer locally that a pull request gets in CI (ADR 0002).
   and `shell: true` hands the line to cmd without quoting anything: `git tag -m
 Forgeprint 0.2.8` arrived as two arguments and the tag was never created.
   Same class as the `C:\Program Files` split fixed in the tool check.
+- **A release that stopped after tagging can be finished.** `release` refused
+  with "v0.2.9 already exists locally" when the tag and the GitHub release were
+  done and npm was not — which is precisely the state it claims to be safe to
+  re-run from. It now asks the question that matters: have the published
+  packages changed since the tag was cut? If they have, the tag no longer
+  describes what would go to npm and it says to bump instead. If they have not
+  — the only commits since touched a private package — it skips the tag, makes
+  sure it is on the remote, and carries on to the part that is left.
 - **A failed git step prints what git said.** It reported "could not create
   v0.2.8" and threw the output away, which sent the maintainer looking for a
   tag that did not exist. That is twice now that swallowing a command's output

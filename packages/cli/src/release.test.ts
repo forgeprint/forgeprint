@@ -9,6 +9,7 @@ import {
   hasChangelogEntry,
   isReleaseVersion,
   publishable,
+  publishedCodeUnchanged,
   quoteForShell,
   type WorkspacePackage,
 } from './release.js';
@@ -246,5 +247,53 @@ describe('quoteForShell', () => {
   it('turns an empty argument into an empty quoted one', () => {
     // Dropped entirely otherwise, which silently shifts every later argument.
     assert.equal(quoteForShell(''), '""');
+  });
+});
+
+describe('publishedCodeUnchanged', () => {
+  const pkgs = [pkg('a', '1.0.0'), pkg('b', '1.0.0')];
+
+  it('lets a release finish when only a private package moved', () => {
+    // The case this exists for: the tag and the GitHub release were made, npm
+    // was not, and the only commits since touched the site — which is private
+    // and never reaches the tarball. Refusing here spends a version number to
+    // publish byte-identical code.
+    assert.equal(
+      publishedCodeUnchanged(() => false, 'v1.0.0', pkgs),
+      true,
+    );
+  });
+
+  it('refuses when a published package has changed since the tag', () => {
+    assert.equal(
+      publishedCodeUnchanged(() => true, 'v1.0.0', pkgs),
+      false,
+    );
+  });
+
+  it('asks about the published packages and nothing else', () => {
+    const asked: string[][] = [];
+    publishedCodeUnchanged(
+      (_ref, paths) => {
+        asked.push(paths);
+        return false;
+      },
+      'v1.0.0',
+      pkgs,
+    );
+    assert.deepEqual(asked, [['/repo/packages/a', '/repo/packages/b']]);
+  });
+
+  it('says yes when there is nothing published at all', () => {
+    assert.equal(
+      publishedCodeUnchanged(
+        () => {
+          throw new Error('should not ask git about nothing');
+        },
+        'v1.0.0',
+        [],
+      ),
+      true,
+    );
   });
 });

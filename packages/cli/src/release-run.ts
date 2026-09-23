@@ -12,6 +12,7 @@ import {
   isReleaseVersion,
   notesPath,
   publishable,
+  publishedCodeUnchanged,
   readWorkspacePackages,
   registryVersion,
   run,
@@ -218,8 +219,25 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
   if (git.branch !== 'main') {
     say(`  note   releasing from ${git.branch}, not main`);
   }
-  if (run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`], root).ok) {
-    fail(`${tag} already exists locally`);
+  // An existing tag is not automatically a problem: a release that stopped
+  // between tagging and npm has to be finishable, and refusing here is how a
+  // half-finished release costs a version number. What matters is whether the
+  // tag still describes the code that would be published.
+  const tagExists = run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`], root).ok;
+  if (tagExists) {
+    const unchanged = publishedCodeUnchanged(
+      (ref, paths) => !run('git', ['diff', '--quiet', `${ref}..HEAD`, '--', ...paths], root).ok,
+      tag,
+      packages,
+    );
+    if (!unchanged) {
+      fail(
+        `${tag} already exists, and the published packages have changed since it was cut. ` +
+          'It no longer describes what would go to npm — bump the version instead.',
+      );
+    }
+    const at = run('git', ['rev-parse', '--short', tag], root).output.trim();
+    say(`  note   ${tag} already exists (${at}); nothing published has changed since`);
   }
 
   // 2. The versions and changelogs agree with what is being released.
@@ -298,18 +316,25 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
 
   // 7. Do it, one step at a time, saying which step failed if one does.
   const notesBody = readFileSync(notes, 'utf8');
-  // Print what the command said. "could not create v0.2.8" sent the maintainer
-  // looking for a tag that already existed, when the real answer was in the
-  // output being thrown away.
-  const created = run('git', ['tag', '-a', tag, '-m', `Forgeprint ${version}`], root);
-  if (!created.ok)
-    fail(`could not create ${tag}:
+  if (tagExists) {
+    say(`  ok     ${tag} was already tagged`);
+  } else {
+    // Print what the command said. "could not create v0.2.8" sent the
+    // maintainer looking for a tag that already existed, when the real answer
+    // was in the output being thrown away.
+    const created = run('git', ['tag', '-a', tag, '-m', `Forgeprint ${version}`], root);
+    if (!created.ok)
+      fail(`could not create ${tag}:
 ${created.output.trim()}`);
+  }
+  // Pushed whether or not it was just created: a tag can exist locally and not
+  // on the remote, which is exactly what a run that died between the two
+  // leaves behind.
   const pushed = run('git', ['push', 'origin', tag], root);
-  if (!pushed.ok)
+  if (!pushed.ok && !/already exists|up to date/i.test(pushed.output))
     fail(`could not push ${tag}:
 ${pushed.output.trim()}`);
-  say(`  ok     ${tag} pushed`);
+  say(`  ok     ${tag} is on the remote`);
 
   if (run('gh', ['release', 'view', tag], root).ok) {
     say(`  note   a release for ${tag} already exists; leaving it alone`);

@@ -139,6 +139,30 @@ export function classifyPublishError(output: string): PublishOutcome {
   return { kind: 'failed', detail: output.trim().split('\n').slice(-5).join('\n') };
 }
 
+/**
+ * Whether a tag that already exists still describes what would be published.
+ *
+ * A release that stopped between the tag and npm has to be finishable, and
+ * refusing because "the tag exists" is how a half-finished release becomes a
+ * wasted version number. But the tag has to still be true: if the published
+ * packages have changed since it was cut, it no longer describes them and a
+ * new version is the honest answer.
+ *
+ * Only the published packages count. Work on a private package — the site —
+ * is not in the tarball, so it cannot make the tag wrong.
+ */
+export function publishedCodeUnchanged(
+  diffPaths: (ref: string, paths: string[]) => boolean,
+  tag: string,
+  packages: readonly WorkspacePackage[],
+): boolean {
+  if (packages.length === 0) return true;
+  return !diffPaths(
+    tag,
+    packages.map((pkg) => pkg.dir),
+  );
+}
+
 /** The notes file for a version, which is committed so the release is reviewable. */
 export function notesPath(root: string, version: string): string {
   return join(root, 'docs', 'releases', `v${version}.md`);
