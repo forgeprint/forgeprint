@@ -10,6 +10,8 @@ import {
   readBlueprintFile,
   readBlueprintFolder,
   readManifest,
+  readUnitFile,
+  type BlueprintFolder,
 } from './catalog.js';
 import { affectedBlueprints, changedFiles } from './changed.js';
 import { CONFIG_FILE, loadConfig } from './config.js';
@@ -20,10 +22,18 @@ import { parseRecipe } from './recipe.js';
 import { release } from './release-run.js';
 import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
 import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
-import { compareBlueprints, DEFAULT_THRESHOLD, renderReport } from './similarity.js';
+import {
+  compareBlueprints,
+  compareDocuments,
+  documentFromExpert,
+  DEFAULT_THRESHOLD,
+  EXPERT_LABELS,
+  renderReport,
+} from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
-import { loadTaxonomy } from './taxonomy.js';
+import { loadTaxonomy, type Taxonomy } from './taxonomy.js';
 import { validateCatalog } from './validate.js';
+import { validateUnits } from './validate-units.js';
 
 export const VERSION = '0.2.10';
 
@@ -103,23 +113,34 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
 
   program
     .command('similarity')
-    .argument('[slug]', 'blueprint to compare; omit with --all')
-    .option('--all', 'report on every blueprint in the catalog')
+    .argument('[slug]', 'blueprint or expert to compare; omit with --all')
+    .option('--all', 'report on everything of this kind in the catalog')
+    .option('--expert', 'compare experts rather than blueprints')
     .option('--threshold <ratio>', 'flag above this similarity', String(DEFAULT_THRESHOLD))
     .option('--fail-on-flag', 'exit non-zero on a red flag, not only on a rule 9 rejection')
-    .description('report how close a blueprint is to the ones already in the catalog')
+    .description('report how close an entry is to the ones already in the catalog')
     .action(
       (
         slug: string | undefined,
-        options: { all?: boolean; threshold: string; failOnFlag?: boolean },
+        options: { all?: boolean; expert?: boolean; threshold: string; failOnFlag?: boolean },
       ) => {
         const root = rootOf();
         const taxonomy = loadTaxonomy(root);
-        const blueprints = loadBlueprints(root, taxonomy);
         const threshold = Number(options.threshold);
         if (!Number.isFinite(threshold) || threshold <= 0 || threshold > 1) {
           throw new Error('--threshold must be a ratio between 0 and 1');
         }
+        if (options.expert === true) {
+          process.exitCode = reportExpertSimilarity(root, taxonomy, slug, {
+            all: options.all === true,
+            threshold,
+            failOnFlag: options.failOnFlag === true,
+          })
+            ? 0
+            : 1;
+          return;
+        }
+        const blueprints = loadBlueprints(root, taxonomy);
 
         let rejected = false;
         let flagged = false;
@@ -425,4 +446,61 @@ function write(file: string, contents: string): void {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, contents, 'utf8');
   console.log(`wrote  ${file}`);
+}
+
+/**
+ * The same report, for experts.
+ *
+ * An expert is compared on `SKILL.md` and its checklists rather than
+ * `AGENTS.md` and `setup.md`, and rule 9 is applied to role + domain +
+ * seniority (ADR 0012). Everything else — the threshold, what fails the
+ * command, what is only a question for the reviewer — is deliberately
+ * identical, because a contributor should not have to learn two tools.
+ */
+function reportExpertSimilarity(
+  root: string,
+  taxonomy: Taxonomy,
+  slug: string | undefined,
+  options: { all: boolean; threshold: number; failOnFlag: boolean },
+): boolean {
+  const experts = validateUnits(root, taxonomy).experts;
+  const documents = experts.map((expert) =>
+    documentFromExpert(
+      expert.slug,
+      expert.manifest,
+      fileOrEmpty(expert.folder, 'SKILL.md'),
+      expert.folder.files
+        .filter((file) => file.startsWith('checklists/'))
+        .map((file) => fileOrEmpty(expert.folder, file))
+        .join('\n'),
+    ),
+  );
+
+  if (!options.all && slug === undefined) throw new Error('name an expert, or pass --all');
+  const chosen = options.all ? documents.map((document) => document.slug) : [slug as string];
+  if (chosen.length === 0) {
+    console.log('no expert in the catalog to compare');
+    return true;
+  }
+
+  let rejected = false;
+  let flagged = false;
+  for (const target of chosen) {
+    const subject = documents.find((document) => document.slug === target);
+    if (subject === undefined) throw new Error(`No such expert: ${target}`);
+    const report = compareDocuments(
+      subject,
+      documents.filter((document) => document.slug !== target),
+      options.threshold,
+    );
+    console.log(renderReport(report, EXPERT_LABELS));
+    console.log('');
+    rejected ||= report.closest?.sameCombination === true;
+    flagged ||= report.flagged;
+  }
+  return !(rejected || (options.failOnFlag && flagged));
+}
+
+function fileOrEmpty(folder: BlueprintFolder, file: string): string {
+  return folder.files.includes(file) ? readUnitFile(folder, file) : '';
 }

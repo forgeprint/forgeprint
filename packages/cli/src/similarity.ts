@@ -27,6 +27,46 @@ export interface SimilaritySubject {
   readonly setupMarkdown: string;
 }
 
+/**
+ * What the scoring engine actually needs, once the kind is stripped away: two
+ * bodies of text and a set of tags. Blueprints and experts are compared by the
+ * same arithmetic on different files (ADR 0012), so the arithmetic is written
+ * once and each kind says what to feed it.
+ */
+export interface ComparableDocument {
+  readonly slug: string;
+  readonly name: string;
+  readonly tags: ReadonlySet<string>;
+  /** The key rule 9 is applied to, already assembled for this kind. */
+  readonly combination: string;
+  /** How the thing works: AGENTS.md for a blueprint, SKILL.md for an expert. */
+  readonly primary: string;
+  /** What it does: setup.md for a blueprint, the checklists for an expert. */
+  readonly secondary: string;
+}
+
+/** Column headings and wording, so a report names the files it compared. */
+export interface ReportLabels {
+  readonly unit: string;
+  readonly primary: string;
+  readonly secondary: string;
+  readonly combination: string;
+}
+
+export const BLUEPRINT_LABELS: ReportLabels = {
+  unit: 'blueprint',
+  primary: 'AGENTS.md',
+  secondary: 'setup.md',
+  combination: 'stack + project_type + requirements',
+};
+
+export const EXPERT_LABELS: ReportLabels = {
+  unit: 'expert',
+  primary: 'SKILL.md',
+  secondary: 'checklists',
+  combination: 'role + domain + seniority',
+};
+
 /** Read a blueprint on disk into a comparable subject. */
 export function subjectFromBlueprint(blueprint: Blueprint): SimilaritySubject {
   const m = blueprint.manifest;
@@ -92,20 +132,29 @@ export function compareSubjects(
   others: readonly SimilaritySubject[],
   threshold: number = DEFAULT_THRESHOLD,
 ): SimilarityReport {
-  const corpus = [subject, ...others];
-  const agentsIdf = inverseDocumentFrequency(corpus.map((b) => tokens(b.agentsMarkdown)));
-  const setupIdf = inverseDocumentFrequency(corpus.map((b) => tokens(b.setupMarkdown)));
+  return compareDocuments(documentOf(subject), others.map(documentOf), threshold);
+}
 
-  const subjectAgents = vector(tokens(subject.agentsMarkdown), agentsIdf);
-  const subjectSetup = vector(tokens(subject.setupMarkdown), setupIdf);
-  const subjectTags = tagSet(subject);
+/** The scoring engine. Every kind reaches the threshold through here. */
+export function compareDocuments(
+  subject: ComparableDocument,
+  others: readonly ComparableDocument[],
+  threshold: number = DEFAULT_THRESHOLD,
+): SimilarityReport {
+  const corpus = [subject, ...others];
+  const primaryIdf = inverseDocumentFrequency(corpus.map((d) => tokens(d.primary)));
+  const secondaryIdf = inverseDocumentFrequency(corpus.map((d) => tokens(d.secondary)));
+
+  const subjectPrimary = vector(tokens(subject.primary), primaryIdf);
+  const subjectSecondary = vector(tokens(subject.secondary), secondaryIdf);
+  const subjectTags = subject.tags;
 
   const scores = others
     .map((other): SimilarityScore => {
-      const otherTags = tagSet(other);
+      const otherTags = other.tags;
       const tags = jaccard(subjectTags, otherTags);
-      const agents = cosine(subjectAgents, vector(tokens(other.agentsMarkdown), agentsIdf));
-      const setup = cosine(subjectSetup, vector(tokens(other.setupMarkdown), setupIdf));
+      const agents = cosine(subjectPrimary, vector(tokens(other.primary), primaryIdf));
+      const setup = cosine(subjectSecondary, vector(tokens(other.secondary), secondaryIdf));
       return {
         slug: other.slug,
         name: other.name,
@@ -115,7 +164,7 @@ export function compareSubjects(
         highest: Math.max(tags, agents, setup),
         onlyHere: [...subjectTags].filter((tag) => !otherTags.has(tag)).sort(),
         onlyThere: [...otherTags].filter((tag) => !subjectTags.has(tag)).sort(),
-        sameCombination: combination(subject) === combination(other),
+        sameCombination: subject.combination === other.combination,
       };
     })
     .sort((a, b) => b.highest - a.highest || a.slug.localeCompare(b.slug));
@@ -130,16 +179,32 @@ export function compareSubjects(
   };
 }
 
+function documentOf(subject: SimilaritySubject): ComparableDocument {
+  return {
+    slug: subject.slug,
+    name: subject.name,
+    tags: tagSet(subject),
+    combination: combination(subject),
+    primary: subject.agentsMarkdown,
+    secondary: subject.setupMarkdown,
+  };
+}
+
 /** Render the report the way a reviewer reads it. */
-export function renderReport(report: SimilarityReport): string {
+export function renderReport(
+  report: SimilarityReport,
+  labels: ReportLabels = BLUEPRINT_LABELS,
+): string {
   const lines: string[] = [`similarity report for ${report.slug}`];
   if (report.scores.length === 0) {
-    lines.push('  no other blueprint in the catalog to compare against');
+    lines.push(`  no other ${labels.unit} in the catalog to compare against`);
     return lines.join('\n');
   }
 
   lines.push('');
-  lines.push('  blueprint                        tags   AGENTS.md   setup.md');
+  lines.push(
+    `  ${labels.unit.padEnd(30)}  tags   ${labels.primary.padStart(9)}  ${labels.secondary.padStart(8)}`,
+  );
   for (const score of report.scores) {
     lines.push(
       `  ${score.slug.padEnd(30)}  ${percent(score.tags)}  ${percent(score.agents).padStart(9)}  ${percent(
@@ -158,9 +223,7 @@ export function renderReport(report: SimilarityReport): string {
 
   if (closest.sameCombination) {
     lines.push('');
-    lines.push(
-      `  REJECTED: ${closest.slug} claims the same stack + project_type + requirements (rule 9).`,
-    );
+    lines.push(`  REJECTED: ${closest.slug} claims the same ${labels.combination} (rule 9).`);
     lines.push('           Improve it, add an option to it, or supersede it.');
   } else if (report.flagged) {
     lines.push('');
@@ -170,7 +233,7 @@ export function renderReport(report: SimilarityReport): string {
       )} threshold.`,
     );
     lines.push('           State in the pull request what is different and why this is not a');
-    lines.push('           change to that blueprint instead.');
+    lines.push(`           change to that ${labels.unit} instead.`);
   }
   return lines.join('\n');
 }
@@ -270,4 +333,43 @@ function cosine(a: ReadonlyMap<string, number>, b: ReadonlyMap<string, number>):
     Math.sqrt([...vec.values()].reduce((sum, value) => sum + value * value, 0));
   const scale = magnitude(a) * magnitude(b);
   return scale === 0 ? 0 : Math.min(1, dot / scale);
+}
+
+/**
+ * An expert, as something to compare.
+ *
+ * The two texts are `SKILL.md` — how it works — and its checklists, which are
+ * what it actually does. A copied expert gives itself away in both: the same
+ * phrasing of the method, and the same list of things to check (ADR 0012).
+ */
+export function documentFromExpert(
+  slug: string,
+  manifest: {
+    name: string;
+    role: string;
+    domain: string;
+    seniority: string;
+    deliverables: readonly string[];
+    languages?: readonly string[] | undefined;
+    stack?: readonly string[] | undefined;
+  },
+  skillMarkdown: string,
+  checklistMarkdown: string,
+): ComparableDocument {
+  const tags = new Set<string>([
+    `role:${manifest.role}`,
+    `domain:${manifest.domain}`,
+    `seniority:${manifest.seniority}`,
+  ]);
+  for (const value of manifest.deliverables) tags.add(`deliverable:${value}`);
+  for (const value of manifest.languages ?? []) tags.add(`lang:${value}`);
+  for (const value of manifest.stack ?? []) tags.add(`stack:${value}`);
+  return {
+    slug,
+    name: manifest.name,
+    tags,
+    combination: `${manifest.role}|${manifest.domain}|${manifest.seniority}`,
+    primary: skillMarkdown,
+    secondary: checklistMarkdown,
+  };
 }
