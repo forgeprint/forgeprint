@@ -1,3 +1,5 @@
+<img src="docs/brand/forgeprint-mark-accent.svg" width="56" height="56" alt="" />
+
 # Forgeprint
 
 **Others say "here are 200 skills, go find yours." Forgeprint says "tell me who

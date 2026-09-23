@@ -458,6 +458,7 @@ function page({ title, description, depth, body, script }: PageParts): string {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${escape(title)}</title>
     <meta name="description" content="${escape(description)}" />
+    <link rel="icon" href="${up}brand/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="${up}forgeprint.css" />
   </head>
   <body>

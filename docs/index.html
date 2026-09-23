@@ -11,6 +11,7 @@
       data-i18n-attr="content:meta.description"
       content="A curated blueprint catalog and MCP server. Describe yourself and your goal; get exactly one blueprint with its AGENTS.md, skills, MCP configuration and a setup recipe your agent can execute."
     />
+    <link rel="icon" href="brand/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://forgeprint.github.io/forgeprint/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" data-i18n-attr="content:meta.title" content="Forgeprint" />
@@ -30,21 +31,17 @@
     <header class="site-head">
       <div class="head-inner">
         <a class="wordmark" href="./" aria-label="Forgeprint">
+          <!-- Inline, so it takes the accent colour from CSS. The same
+               geometry lives in brand/forgeprint-mark.svg. -->
           <svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor" />
             <path
-              d="M4 7l8-4 8 4-8 4-8-4Z"
+              d="M12 10.5 22 16 12 21.5 2 16Z"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.6"
+              stroke-width="1.8"
               stroke-linejoin="round"
-            />
-            <path
-              d="M4 12l8 4 8-4M4 17l8 4 8-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              opacity="0.55"
             />
           </svg>
           <span>Forgeprint</span>

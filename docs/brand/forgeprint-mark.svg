@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Forgeprint">
+  <title>Forgeprint</title>
+  <!--
+    The die and the impression it leaves: forge and print, in one glyph.
+
+    Two elements, not three. The solid plate is the only emphasis; the
+    outline below is quiet and half-hidden behind it, which is what makes it
+    read as an impression rather than a second object.
+
+    Everything is currentColor, so the mark takes the colour of whatever it
+    sits in — but that only works when the SVG is INLINE in the page. Loaded
+    through <img> it is a separate document and currentColor falls back to
+    black. Use forgeprint-mark-accent.svg there.
+  -->
+  <path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor" />
+  <path
+    d="M12 10.5 22 16 12 21.5 2 16Z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linejoin="round"
+    opacity="0.55"
+  />
+</svg>

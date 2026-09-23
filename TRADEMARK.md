@@ -8,6 +8,10 @@ covered by the licences in [LICENSE](LICENSE) or
 [blueprints/LICENSE](blueprints/LICENSE): a licence to use the code and the
 content is not a licence to use the name.
 
+The logo is [`docs/brand/`](docs/brand/), with its usage notes. It was
+previously described here in the abstract and did not exist as a file; now it
+does, so what is protected is a specific mark rather than an idea of one.
+
 This policy exists for one reason. Anyone may fork this repository — GitHub's
 terms guarantee that, and contributions depend on it. What nobody may do is
 publish a fork under this name, because a user who installs "Forgeprint" needs

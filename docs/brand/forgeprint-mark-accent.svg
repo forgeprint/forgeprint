@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" role="img" aria-label="Forgeprint">
+  <title>Forgeprint</title>
+  <!--
+    The same mark with the brand colour baked in, for anywhere that cannot
+    set currentColor: a README, a marketplace listing, somebody else's page.
+    The tone lightens in dark mode so the burnt orange does not go muddy.
+  -->
+  <style>
+    .fp { fill: #b8541a; stroke: #b8541a; }
+    @media (prefers-color-scheme: dark) { .fp { fill: #ff9f57; stroke: #ff9f57; } }
+  </style>
+  <path class="fp" d="M12 2 22 7.5 12 13 2 7.5Z" stroke="none" />
+  <path class="fp" d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke-width="1.8" stroke-linejoin="round" opacity="0.55" />
+</svg>
