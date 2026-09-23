@@ -923,6 +923,64 @@
       "i18n": []
     },
     {
+      "slug": "terraform-module",
+      "name": "Terraform Module",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Reusable Terraform module with validated inputs, an example, and native tests that prove both the outputs and the refusals without touching a cloud.",
+      "stack": [
+        "terraform",
+        "github-actions"
+      ],
+      "languages": [
+        "bash"
+      ],
+      "platforms": [
+        "linux",
+        "macos",
+        "windows",
+        "cloud"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "infra",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "iac",
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "terraform>=1.9"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "ts-http-service",
       "name": "TypeScript HTTP Service",
       "version": "1.0.0",

@@ -1,0 +1,19 @@
+schema: 1
+slug: terraform-module
+name: 'Terraform Module'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Reusable Terraform module with validated inputs, an example, and native tests that prove both the outputs and the refusals without touching a cloud.'
+stack: [terraform, github-actions]
+languages: [bash]
+platforms: [linux, macos, windows, cloud]
+distribution: [open-source, internal]
+project_type: infra
+audience: [intermediate]
+requirements: [iac, ci, testing]
+agents: [claude-code]
+requires_tools: [terraform>=1.9]
+deprecated: false
+supersedes: null
