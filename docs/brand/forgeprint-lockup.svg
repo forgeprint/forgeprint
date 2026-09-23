@@ -10,8 +10,8 @@
     set the word yourself.
   -->
   <g transform="translate(4 4)">
-    <path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor" />
     <path d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity="0.55" />
+    <path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor" />
   </g>
   <text x="38" y="22" fill="currentColor" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="650" letter-spacing="-0.4">Forgeprint</text>
 </svg>

@@ -4,12 +4,25 @@ The mark, and the one thing that goes wrong with it.
 
 ## The files
 
-| File                         | Colour                       | Use it                                                           |
-| ---------------------------- | ---------------------------- | ---------------------------------------------------------------- |
-| `forgeprint-mark.svg`        | `currentColor`               | **Inlined** in a page, where CSS sets the colour                 |
-| `forgeprint-mark-accent.svg` | brand orange, light and dark | Anywhere you cannot set the colour: a README, a listing, a slide |
-| `forgeprint-lockup.svg`      | `currentColor`               | Mark plus the word, when you need both in one file               |
-| `favicon.svg`                | brand orange, light and dark | The browser tab. Linked from every page                          |
+| File                              | Colour                       | Use it                                                           |
+| --------------------------------- | ---------------------------- | ---------------------------------------------------------------- |
+| `forgeprint-mark.svg`             | `currentColor`               | **Inlined** in a page, where CSS sets the colour                 |
+| `forgeprint-mark-accent.svg`      | brand orange, light and dark | Anywhere you cannot set the colour: a README, a listing, a slide |
+| `forgeprint-lockup.svg`           | `currentColor`               | Mark plus the word, when you need both in one file               |
+| `favicon.svg`                     | brand orange, light and dark | The browser tab. Linked from every page                          |
+| `forgeprint-avatar-512.png`       | orange on near-black         | GitHub's organisation avatar, and anywhere that refuses SVG      |
+| `forgeprint-avatar-light-512.png` | orange on white              | The same, where a dark square would fight the surroundings       |
+
+The PNGs are generated from the same geometry by `make-png.py`, which needs
+Pillow — not a dependency of this repository:
+
+```bash
+pip install pillow
+python docs/brand/make-png.py
+```
+
+They exist because GitHub's avatar field takes PNG, GIF or JPG and nothing
+else. The SVG stays the source of truth; regenerate rather than edit the PNG.
 
 ## The thing that goes wrong
 
@@ -40,6 +53,10 @@ which is what makes it read as an impression rather than a second object.
 
 Two elements, not three. A third echo turned it into a generic layer stack, and
 closed into a smudge below about 24px.
+
+**Draw order matters.** The impression goes down first and the die covers it.
+The other way round, the semi-transparent outline crosses the die and leaves a
+band through the one shape that is meant to be solid.
 
 ## Colour
 
