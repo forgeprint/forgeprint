@@ -51,6 +51,10 @@ agents:
     limits: >-
       Project instruction loading is configurable, so which file an agent reads
       depends on a setting the catalog cannot see.
+    render:
+      path: CLAUDE.md
+      frontmatter: null
+      max_chars: null
     docs: https://code.claude.com/docs/en/memory
     last_checked: 2026-09-23
 
@@ -78,6 +82,10 @@ agents:
     limits: >-
       Project-scoped .codex/config.toml only loads in a trusted directory; the
       first encounter in an untrusted one prompts before any server starts.
+    render:
+      path: AGENTS.md
+      frontmatter: null
+      max_chars: null
     docs: https://learn.chatgpt.com/docs/extend/mcp?surface=cli
     last_checked: 2026-09-23
 
@@ -106,6 +114,10 @@ agents:
       Ships with the GitHub MCP server already configured; servers live in
       ~/.copilot/mcp-config.json. Grant tools individually with --allow-tool
       rather than --allow-all-tools.
+    render:
+      path: .github/copilot-instructions.md
+      frontmatter: null
+      max_chars: null
     docs: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli
     last_checked: 2026-09-23
 
@@ -133,6 +145,14 @@ agents:
     limits: >-
       An editor, not a CLI: setup recipes that assume a terminal agent have to
       be run by the user. MCP servers are added through the settings UI.
+    render:
+      path: .cursor/rules/{slug}.mdc
+      # A .cursor/rules file without frontmatter is ignored entirely, so this
+      # is not decoration: it is the difference between a rule and a dead file.
+      frontmatter:
+        description: '{summary}'
+        alwaysApply: 'true'
+      max_chars: null
     docs: https://cursor.com/docs/rules
     last_checked: 2026-09-23
 
@@ -159,6 +179,10 @@ agents:
     limits: >-
       Environment variables are expanded in the config with $VAR or ${VAR}, and
       %VAR% on Windows only.
+    render:
+      path: GEMINI.md
+      frontmatter: null
+      max_chars: null
     docs: https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md
     last_checked: 2026-09-23
 
@@ -190,6 +214,13 @@ agents:
       for stdio servers. Documentation now redirects to docs.devin.ai and the
       config path has moved with it; the legacy path was
       ~/.codeium/windsurf/mcp_config.json.
+    render:
+      path: .windsurf/rules/{slug}.md
+      frontmatter:
+        trigger: always_on
+      # Windsurf truncates past this without saying so. `render` refuses
+      # instead, because a silently half-delivered context is worse than none.
+      max_chars: 12000
     docs: https://docs.devin.ai/windsurf/plugins/cascade/mcp
     last_checked: 2026-09-23
 
@@ -217,6 +248,10 @@ agents:
     limits: >-
       MCP servers live in ~/.cline/mcp.json for the CLI and in the panel for
       the extensions. SSE is legacy; use streamableHttp for new servers.
+    render:
+      path: .clinerules/{slug}.md
+      frontmatter: null
+      max_chars: null
     docs: https://docs.cline.bot/features/cline-rules
     last_checked: 2026-09-23
 
@@ -244,6 +279,10 @@ agents:
     limits: >-
       MCP servers are declared in opencode.json under `mcp` with type local or
       remote; there is no add subcommand, the file is edited.
+    render:
+      path: AGENTS.md
+      frontmatter: null
+      max_chars: null
     docs: https://opencode.ai/docs/mcp-servers/
     last_checked: 2026-09-23
 
@@ -271,5 +310,11 @@ agents:
     limits: >-
       MCP servers live in .kiro/settings/mcp.json, and an environment variable
       is only expanded after it is added to the approved-variables setting.
+    render:
+      path: .kiro/steering/{slug}.md
+      # The inclusion mode must be the first content in the file.
+      frontmatter:
+        inclusion: always
+      max_chars: null
     docs: https://kiro.dev/docs/steering/
     last_checked: 2026-09-23

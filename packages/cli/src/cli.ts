@@ -2,6 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { Command } from 'commander';
+import { findAgent, loadAgentRegistry } from './agents.js';
 import { renderCodeowners } from './build-codeowners.js';
 import { loadBlueprints, renderIndex } from './build-index.js';
 import { buildManifestJsonSchema } from './build-schema.js';
@@ -32,6 +33,7 @@ import {
 } from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy, type Taxonomy } from './taxonomy.js';
+import { renderForAgent, writeRendered, type RenderInput } from './render.js';
 import { validateCatalog } from './validate.js';
 import { validateUnits } from './validate-units.js';
 
@@ -110,6 +112,40 @@ export function createProgram(): Command {
 ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
       process.exitCode = 1;
     });
+
+  program
+    .command('render')
+    .argument('<slug>', 'blueprint or expert to render')
+    .requiredOption('--agent <id>', 'agent to render for, from schema/agents.yaml')
+    .option('--out <dir>', 'where to write', '.')
+    .option('--expert', 'render an expert rather than a blueprint')
+    .option('--dry-run', 'list what would be written, without writing it')
+    .description("write one entry's context in the layout one agent reads")
+    .action(
+      (
+        slug: string,
+        options: { agent: string; out: string; expert?: boolean; dryRun?: boolean },
+      ) => {
+        const root = rootOf();
+        const taxonomy = loadTaxonomy(root);
+        const agent = findAgent(loadAgentRegistry(root), options.agent);
+        if (agent === undefined) {
+          throw new Error(`No such agent: ${options.agent} — see schema/agents.yaml`);
+        }
+
+        const input =
+          options.expert === true
+            ? expertRenderInput(root, taxonomy, slug)
+            : blueprintRenderInput(root, taxonomy, slug);
+        const files = renderForAgent(agent, input);
+
+        if (options.dryRun === true) {
+          for (const file of files) console.log(`would write  ${file.path}`);
+          return;
+        }
+        for (const path of writeRendered(options.out, files)) console.log(`wrote  ${path}`);
+      },
+    );
 
   program
     .command('similarity')
@@ -503,4 +539,34 @@ function reportExpertSimilarity(
 
 function fileOrEmpty(folder: BlueprintFolder, file: string): string {
   return folder.files.includes(file) ? readUnitFile(folder, file) : '';
+}
+
+/** A blueprint as `render` sees it: its AGENTS.md and the skills it ships. */
+function blueprintRenderInput(root: string, taxonomy: Taxonomy, slug: string): RenderInput {
+  const folder = readBlueprintFolder(root, slug);
+  const manifest = readManifest(taxonomy, folder);
+  return {
+    slug,
+    summary: manifest.summary,
+    body: readBlueprintFile(folder, 'AGENTS.md'),
+    skills: skillsIn(folder),
+  };
+}
+
+/** An expert as `render` sees it: its SKILL.md is both the body and the skill. */
+function expertRenderInput(root: string, taxonomy: Taxonomy, slug: string): RenderInput {
+  const expert = validateUnits(root, taxonomy).experts.find((one) => one.slug === slug);
+  if (expert === undefined) throw new Error(`No such expert: ${slug}`);
+  const skill = readUnitFile(expert.folder, 'SKILL.md');
+  return { slug, summary: expert.manifest.summary, body: skill, skills: { [slug]: skill } };
+}
+
+/** Every SKILL.md a folder ships, keyed by the directory that holds it. */
+function skillsIn(folder: BlueprintFolder): Record<string, string> {
+  const skills: Record<string, string> = {};
+  for (const file of folder.files) {
+    const match = /^skills\/([^/]+)\/SKILL\.md$/.exec(file);
+    if (match?.[1] !== undefined) skills[match[1]] = readBlueprintFile(folder, file);
+  }
+  return skills;
 }

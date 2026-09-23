@@ -27,6 +27,7 @@ function entry(overrides: Record<string, unknown> = {}): Record<string, unknown>
     headless: false,
     headless_command: null,
     limits: 'Nothing worth noting.',
+    render: { path: 'AGENTS.md', frontmatter: null, max_chars: null },
     docs: 'https://example.com/docs',
     last_checked: '2026-09-23',
     ...overrides,

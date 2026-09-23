@@ -42,6 +42,21 @@ const agentSchema = z
     headless: z.boolean(),
     headless_command: z.string().min(1).nullable(),
     limits: z.string().min(1).max(400),
+    /**
+     * How `forgeprint render` writes this agent's context file.
+     *
+     * Path, the frontmatter the agent needs to read the file at all, and the
+     * cap past which it truncates. Keeping this in the registry rather than in
+     * the renderer is what makes "one source, many outputs" a data change
+     * instead of a code change when an agent moves its files (ADR 0013).
+     */
+    render: z
+      .object({
+        path: z.string().min(1),
+        frontmatter: z.record(z.string().min(1), z.string()).nullable(),
+        max_chars: z.number().int().positive().nullable(),
+      })
+      .strict(),
     docs: z.url({ protocol: /^https$/ }),
     last_checked: z.string().regex(ISO_DATE_PATTERN, 'must be an ISO date, YYYY-MM-DD'),
   })
