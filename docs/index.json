@@ -448,7 +448,7 @@
     {
       "slug": "dotnet-mcp-server",
       "name": "C# MCP Server",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -496,9 +496,15 @@
         "node>=20"
       ],
       "provenance": "human",
-      "recommended_experts": [],
+      "recommended_experts": [
+        "dotnet-senior-architect",
+        "security-reviewer"
+      ],
       "recommended_crew": null,
-      "integrations": [],
+      "integrations": [
+        "github-mcp",
+        "context7-mcp"
+      ],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -513,7 +519,7 @@
     {
       "slug": "dotnet-multitenant-saas-api",
       "name": "Multi-tenant SaaS API",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -567,9 +573,16 @@
         "curl"
       ],
       "provenance": "human",
-      "recommended_experts": [],
-      "recommended_crew": null,
-      "integrations": [],
+      "recommended_experts": [
+        "dotnet-senior-architect",
+        "sql-data-engineer",
+        "security-reviewer"
+      ],
+      "recommended_crew": "saas-launch-crew",
+      "integrations": [
+        "github-mcp",
+        "sentry-mcp"
+      ],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -584,7 +597,7 @@
     {
       "slug": "dotnet-web-api",
       "name": "ASP.NET Core REST API",
-      "version": "1.0.5",
+      "version": "1.1.0",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
@@ -640,9 +653,16 @@
         "curl"
       ],
       "provenance": "human",
-      "recommended_experts": [],
-      "recommended_crew": null,
-      "integrations": [],
+      "recommended_experts": [
+        "dotnet-senior-architect",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "recommended_crew": "api-hardening-crew",
+      "integrations": [
+        "github-mcp",
+        "context7-mcp"
+      ],
       "deprecated": false,
       "supersedes": null,
       "files": [

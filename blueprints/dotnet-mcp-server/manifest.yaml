@@ -1,7 +1,7 @@
 schema: 1
 slug: dotnet-mcp-server
 name: 'C# MCP Server'
-version: 1.1.0
+version: 1.2.0
 tier: official
 maintainers: [aliosmanmho]
 summary: 'MCP server in C# on the official ModelContextProtocol SDK, over stdio or streamable HTTP.'
@@ -16,5 +16,11 @@ agents: [claude-code]
 options:
   transport: [stdio, http]
 requires_tools: [dotnet>=10, node>=20]
+recommended_experts:
+  - dotnet-senior-architect
+  - security-reviewer
+integrations:
+  - github-mcp
+  - context7-mcp
 deprecated: false
 supersedes: null

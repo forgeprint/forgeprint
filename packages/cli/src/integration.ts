@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Taxonomy } from './taxonomy.js';
+import { terms, type Taxonomy } from './taxonomy.js';
 import { commonFields, refineCommon, uniqueArray, vocabulary } from './unit.js';
 
 /** Environment variable name, as a shell would accept it. */
@@ -47,7 +47,7 @@ export function integrationObjectSchema(taxonomy: Taxonomy) {
        * configured by editing a file — so this is a partial map, and
        * `get_integration` says so rather than inventing one.
        */
-      install: z.record(vocabulary(taxonomy, 'agents'), z.string().min(3).max(400)),
+      install: z.record(z.string(), z.string().min(3).max(400)),
       /** Secrets the user has to supply. The agent never enters one (rule 21). */
       needs_secrets: uniqueArray(
         z.string().regex(ENV_NAME_PATTERN, 'must be an environment variable name'),
@@ -61,6 +61,7 @@ export function integrationObjectSchema(taxonomy: Taxonomy) {
 }
 
 export function integrationSchema(taxonomy: Taxonomy) {
+  const knownAgents = new Set(terms(taxonomy, 'agents'));
   return integrationObjectSchema(taxonomy).superRefine((integration, ctx) => {
     refineCommon(integration, ctx);
     if (Object.keys(integration.install).length === 0) {
@@ -69,6 +70,18 @@ export function integrationSchema(taxonomy: Taxonomy) {
         path: ['install'],
         message: 'name at least one agent this can be installed into',
       });
+    }
+    // The map is partial on purpose: an agent whose syntax nobody has
+    // confirmed gets no entry rather than a guessed one (ADR 0013). What it
+    // may not contain is a key that is not an agent at all.
+    for (const agent of Object.keys(integration.install)) {
+      if (!knownAgents.has(agent)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['install', agent],
+          message: `"${agent}" is not an agent in the taxonomy`,
+        });
+      }
     }
     // A secret in the install command is a secret in a public repository, and
     // it is also a lie about where the value comes from (§5b, rule 21).

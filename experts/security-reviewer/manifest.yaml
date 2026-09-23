@@ -1,0 +1,28 @@
+schema: 1
+slug: security-reviewer
+name: 'Security Reviewer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.'
+role: security-reviewer
+domain: security
+seniority: senior
+deliverables:
+  - security-review
+  - threat-model
+  - threat-model-review
+  - dependency-audit
+  - compliance-checklist
+checklists:
+  - trust-boundaries
+  - authn-authz
+  - input-and-output
+  - secrets-and-config
+  - dependencies
+  - logging-and-errors
+pairs_with: [dotnet-senior-architect]
+agents: [claude-code]
+deprecated: false
+supersedes: null

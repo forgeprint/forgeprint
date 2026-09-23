@@ -1,0 +1,22 @@
+schema: 1
+slug: saas-launch-crew
+name: 'SaaS Launch Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - dotnet-senior-architect
+  - sql-data-engineer
+  - security-reviewer
+  - qa-automation-lead
+integrations:
+  - github-mcp
+  - sentry-mcp
+for_what: 'Taking a multi-tenant SaaS from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate.'
+not_for: 'A prototype, an internal tool, or anything single-tenant. Four experts on a project with no customers is four opinions nobody has time to reconcile.'
+agents: [claude-code]
+deprecated: false
+supersedes: null

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-09-23
+
+Recommends `dotnet-senior-architect` and `security-reviewer`, and the
+`github-mcp` and `context7-mcp` integrations. No crew: this blueprint
+builds a tool surface rather than a product, and the two experts that
+matter for it are the ones that read a boundary.
+
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 

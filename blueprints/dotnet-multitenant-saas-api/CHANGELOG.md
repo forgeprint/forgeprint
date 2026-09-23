@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 — 2026-09-23
+
+Recommends `dotnet-senior-architect`, `sql-data-engineer` and
+`security-reviewer`, the `saas-launch-crew`, and the `github-mcp` and
+`sentry-mcp` integrations. The security reviewer is here for one reason
+in particular: on a multi-tenant system, the endpoint that checks you are
+logged in and never checks the row is yours is the vulnerability that
+matters, and no scanner finds it.
+
 All notable changes to this blueprint. The version here matches `version` in
 `manifest.yaml`, and every version bump needs an entry.
 

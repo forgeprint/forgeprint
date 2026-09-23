@@ -1,0 +1,21 @@
+schema: 1
+slug: api-hardening-crew
+name: 'API Hardening Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - security-reviewer
+  - qa-automation-lead
+  - devops-platform-engineer
+integrations:
+  - github-mcp
+  - playwright-mcp
+for_what: 'Hardening an API that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path.'
+not_for: 'A greenfield project, where there is nothing to harden yet and the decisions worth taking are architectural rather than defensive.'
+agents: [claude-code]
+deprecated: false
+supersedes: null
