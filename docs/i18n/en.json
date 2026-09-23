@@ -1,0 +1,319 @@
+{
+  "meta": {
+    "lang": "en",
+    "title": "Forgeprint — tell an agent who you are, get the whole project package",
+    "description": "A curated blueprint catalog and MCP server. Describe yourself and your goal; get exactly one blueprint with its AGENTS.md, skills, MCP configuration and a setup recipe your agent can execute."
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "what": "What it is",
+    "how": "How it works",
+    "templates": "Templates",
+    "use": "Use it",
+    "build": "Contribute",
+    "faq": "FAQ",
+    "repo": "Open the repository on GitHub",
+    "langLabel": "Language",
+    "langHint": "Interface language. The catalog itself stays in English."
+  },
+  "hero": {
+    "eyebrow": "Blueprint catalog + MCP server",
+    "title": "Tell an agent who you are. Get the whole project package.",
+    "lead": "Others hand you two hundred skills and wish you luck. Forgeprint asks what you know and what you are building, then returns <strong>exactly one</strong> blueprint — the rule file, the skills, the MCP configuration, and a setup recipe your agent runs step by step.",
+    "ctaPrimary": "Connect it to your agent",
+    "ctaPrimaryHint": "One command. It adds the MCP server to Claude Code.",
+    "ctaSecondary": "Browse the catalog",
+    "status": "Pre-release · 7 blueprints · 3 languages",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Could not copy — select the text instead",
+    "windows": "On Windows PowerShell, quote the separator:"
+  },
+  "problem": {
+    "title": "Every new project starts cold",
+    "lead": "You hunt down the requirements, write the rule file by hand, wire up the MCP servers, pick the plugins, and get the setup steps wrong twice before they work. Hours of it — repeated by everyone, on every project, forever.",
+    "punch": "That knowledge is not hard to write down. It is just never written down in a form another agent can use.",
+    "beforeTitle": "Without Forgeprint",
+    "before": [
+      "Search for a starting point, find five, compare them by hand",
+      "Write AGENTS.md from memory, forget half of it",
+      "Wire MCP servers one at a time, from their own READMEs",
+      "Run setup steps that were right six months ago",
+      "Discover the gaps only when something fails"
+    ],
+    "afterTitle": "With Forgeprint",
+    "after": [
+      "Describe yourself in one sentence; the resolver asks what it still needs",
+      "Get one blueprint, with the reason it was chosen",
+      "The rule file, the skills and the MCP configuration arrive together",
+      "Every setup step is pinned and ends with the command that proves it worked",
+      "The recipe is executed in CI before it ever reaches you"
+    ]
+  },
+  "how": {
+    "title": "How it works",
+    "lead": "You talk to your agent normally. Forgeprint answers in structured data, and your agent does the work. It installs nothing and runs nothing on your machine — every tool returns text.",
+    "steps": [
+      {
+        "title": "You describe yourself",
+        "body": "\"I know C#, I am building a multi-tenant SaaS API.\" No form to fill in, no catalogue to read."
+      },
+      {
+        "title": "The resolver asks what is missing",
+        "body": "An incomplete profile does not get a guess. It gets the questions your agent should ask you — which database, which auth, self-hosted or cloud."
+      },
+      {
+        "title": "One blueprint comes back",
+        "body": "Never a list. With the reason it was chosen, what is missing on your machine, and the setup plan. When two are genuinely close, you are asked to pick."
+      },
+      {
+        "title": "Your agent executes the recipe",
+        "body": "Numbered steps, pinned versions, and a verification command after each one. It stops at the first check that fails."
+      }
+    ],
+    "diagramTitle": "What moves between the pieces",
+    "diagramAlt": "You describe your goal to your coding agent. The agent calls the Forgeprint MCP server, which reads the catalog index and returns one blueprint: AGENTS.md, skills, MCP configuration and setup.md. The agent then executes the recipe in your project. Forgeprint never touches your machine.",
+    "diagram": {
+      "you": "You",
+      "youSub": "\"I know C#…\"",
+      "agent": "Your agent",
+      "agentSub": "Claude Code, Codex, Cursor",
+      "server": "Forgeprint MCP",
+      "serverSub": "resolve · get_blueprint",
+      "catalog": "The catalog",
+      "catalogSub": "reviewed, CI-tested",
+      "package": "Your package",
+      "packageSub": "AGENTS.md · skills · mcp.json · setup.md",
+      "project": "Your project",
+      "projectSub": "the agent runs the recipe",
+      "note": "Forgeprint returns text. It never runs anything on your machine."
+    }
+  },
+  "different": {
+    "title": "What makes it different",
+    "items": [
+      {
+        "title": "A resolver, not a list",
+        "body": "You do not search Forgeprint. It returns one blueprint, weighted so that a language you already know beats everything else. When nothing fits it says so, names the closest, and explains why — it never invents a match."
+      },
+      {
+        "title": "A recipe, not a description",
+        "body": "setup.md is a script. Every step is one command or one file, versions are pinned, and each ends with the check that proves it worked. CI runs the whole thing in a clean container before it is merged."
+      },
+      {
+        "title": "A gate, not a junk drawer",
+        "body": "Every pull request passes schema validation, a real setup run, and a duplicate report. Two blueprints may not claim the same stack, project type and requirements — a better one replaces the old one."
+      },
+      {
+        "title": "Standards, not another format",
+        "body": "AGENTS.md, SKILL.md and marketplace.json as they already exist, so the output drops into the tools you use and the skills stay installable through the usual channels."
+      }
+    ]
+  },
+  "templates": {
+    "title": "The templates",
+    "lead": "Every blueprint in the catalog right now. Each one has been reviewed against named security and architecture standards, and its setup recipe is executed in CI on every push — in every option combination.",
+    "loading": "Reading the catalog…",
+    "empty": "The catalog index is readable but lists no blueprints. That should not happen; the repository is the place to check.",
+    "error": "The catalog index could not be read, so this list is empty. It is generated into the repository, so it is readable there even when this page cannot reach it.",
+    "errorAction": "Open the catalog",
+    "openCatalog": "Full catalog with search",
+    "cardLink": "Read the blueprint",
+    "filterLabel": "Filter the templates",
+    "filterPlaceholder": "Filter by language, stack or name…",
+    "noMatch": "Nothing matches that filter.",
+    "noMatchAction": "Clear the filter",
+    "count": "{n} templates",
+    "countOne": "1 template",
+    "englishNote": "Blueprint summaries stay in English. The catalog is written once, in one language, and your agent presents it in yours.",
+    "tier": {
+      "official": "Official",
+      "verified": "Verified",
+      "community": "Community"
+    },
+    "tierHint": {
+      "official": "Written by a maintainer who built it first.",
+      "verified": "A maintainer ran the setup and confirmed it.",
+      "community": "Contributed. Read the setup steps before running them."
+    },
+    "generated": "Generated",
+    "generatedHint": "Drafted by a tool from the catalog's demand research. Its recipe runs in CI; nobody has reviewed the steps by hand.",
+    "options": "Options"
+  },
+  "who": {
+    "title": "Who it is for",
+    "useTitle": "People who use it",
+    "use": [
+      {
+        "title": "Anyone starting a project with an agent",
+        "body": "You do not need to know what an MCP server is. You connect it once, then describe what you are building in your own words."
+      },
+      {
+        "title": "Teams who keep rewriting the same setup",
+        "body": "The fourth service this quarter should not cost what the first one did. A blueprint is that decision, written down once."
+      },
+      {
+        "title": "People learning a stack",
+        "body": "The recipe shows the decisions, not just the commands — every non-obvious step carries the reason it is there."
+      }
+    ],
+    "buildTitle": "People who build it",
+    "build": [
+      {
+        "title": "Anyone with a project that works",
+        "body": "The most valuable blueprint comes from something real. The blueprint-author skill turns a working project into one that passes the gate."
+      },
+      {
+        "title": "Reviewers and maintainers",
+        "body": "Every blueprint has a maintainer, listed on its page. Three meaningful merged pull requests earns co-maintainership."
+      },
+      {
+        "title": "People who just want one to exist",
+        "body": "File a request. The catalog grows by demand, and a request is the strongest signal there is — stronger than any download chart."
+      }
+    ]
+  },
+  "use": {
+    "title": "How to use it",
+    "lead": "Two minutes, and nothing to install beyond the agent you already have.",
+    "steps": [
+      {
+        "title": "Connect the MCP server",
+        "body": "One command. npx fetches it; nothing is installed permanently."
+      },
+      {
+        "title": "Tell your agent what you are building",
+        "body": "In your own words. Ask it to use Forgeprint if it does not reach for it on its own."
+      },
+      {
+        "title": "Answer the questions it comes back with",
+        "body": "The resolver asks rather than guesses. Which database, which auth, who it is for."
+      },
+      {
+        "title": "Let it run the recipe",
+        "body": "Your agent executes the steps and checks each one. You watch, and you stop it if a step looks wrong — the recipe is readable on purpose."
+      }
+    ],
+    "sampleTitle": "What the exchange looks like",
+    "sampleYou": "You",
+    "sampleAgent": "Agent",
+    "sample": [
+      { "who": "you", "text": "I know C#. I want to build a multi-tenant SaaS API." },
+      {
+        "who": "agent",
+        "text": "Forgeprint needs three things: which database, which auth, and is tenancy one schema or one database per tenant?"
+      },
+      { "who": "you", "text": "Postgres, JWT, shared schema." },
+      {
+        "who": "agent",
+        "text": "dotnet-multitenant-saas-api. Chosen because you already write C#; tenant isolation is enforced in the data layer, not in each query. You are missing Docker. 34 steps — shall I start?"
+      }
+    ],
+    "alsoTitle": "Or take the pieces directly",
+    "also": "The skills install through the tools you already use, with no MCP server involved."
+  },
+  "build": {
+    "title": "How to contribute",
+    "lead": "One folder is one blueprint, and that folder is the unit of contribution. Everything the pipeline does is a command you can run on your own machine — hosted CI is a convenience here, never a dependency.",
+    "setupTitle": "Get it running",
+    "flowTitle": "The contribution flow",
+    "flow": [
+      {
+        "title": "Check whether it already exists",
+        "body": "The fastest merge is usually a pull request against a blueprint that is already there. Two blueprints may not claim the same stack, project type and requirements."
+      },
+      {
+        "title": "Write it from something that works",
+        "body": "The blueprint-author skill turns a working project into a blueprint: the manifest, the recipe, and the AGENTS.md that explains the decisions."
+      },
+      {
+        "title": "Pass the gate locally",
+        "body": "validate, lint-setup, similarity and a real setup run. Red here never reaches review."
+      },
+      {
+        "title": "Open the pull request",
+        "body": "Say which blueprint is closest and why yours is not a change to it. That section is required; an empty one fails the check."
+      }
+    ],
+    "archTitle": "How the repository is laid out",
+    "arch": [
+      {
+        "path": "blueprints/<slug>/",
+        "body": "One folder per blueprint — the unit of contribution"
+      },
+      { "path": "schema/", "body": "The manifest schema and the controlled taxonomy" },
+      {
+        "path": "packages/cli/",
+        "body": "validate, build-*, similarity, lint-setup, test-setup, release"
+      },
+      { "path": "packages/mcp-server/", "body": "The MCP server published as forgeprint-mcp" },
+      { "path": "packages/site/", "body": "The catalog pages, generated into docs/" },
+      {
+        "path": "skills/",
+        "body": "blueprint-author, blueprint-review, arch-review, catalog-research"
+      },
+      { "path": "docs/decisions/", "body": "Every architectural decision, with the reasoning kept" }
+    ]
+  },
+  "faq": {
+    "title": "Questions people actually ask",
+    "items": [
+      {
+        "q": "Does Forgeprint run anything on my machine?",
+        "a": "No. Every tool returns text. Your agent is what reads the recipe and runs the commands, and you can read every step before it does."
+      },
+      {
+        "q": "Does it collect anything about me?",
+        "a": "No telemetry, no logs, no analytics. There is no counter and none is planned; the privacy statement in the repository says so, and the roadmap says why one would have to be anonymous and opt-in if it ever existed."
+      },
+      {
+        "q": "Why only one blueprint? I want to compare.",
+        "a": "Because choosing from a list is the work you were trying to avoid. When two candidates are genuinely close the resolver hands you both as a question, and compare_blueprints builds the pros-and-cons table from their own overview files."
+      },
+      {
+        "q": "What if nothing fits what I am building?",
+        "a": "It tells you so, names the closest blueprint, explains why it does not fit, and offers to file a request. It never invents a match — a wrong blueprint costs more than no blueprint."
+      },
+      {
+        "q": "Some templates say \"generated\". Should I trust them?",
+        "a": "Trust them exactly as far as the label says. Their setup recipe runs in CI like every other, and nobody has built a real project on them first. That is why they can never be marked Official, and why the label follows them everywhere."
+      },
+      {
+        "q": "Can I use a blueprint in commercial work?",
+        "a": "Yes. Blueprint content is CC BY 4.0 — deliberately the freest part, because a blueprint you cannot put in your own project is worthless. The tooling is PolyForm Shield: use it, change it, contribute to it, but do not ship a competing product with it."
+      },
+      {
+        "q": "Is this open source?",
+        "a": "Source-available, not OSI open source. Saying otherwise would be easier and less honest. The licence table in the repository is exact about which part is which."
+      },
+      {
+        "q": "Does it work with agents other than Claude Code?",
+        "a": "It is an MCP server, so anything that speaks MCP can connect. Each blueprint lists the agents it has actually been tested with, rather than claiming all of them."
+      },
+      {
+        "q": "Is the site available in my language?",
+        "a": "This page is. The catalog is not, on purpose: it is written once in English, and your agent presents it in your language — the tools take a locale hint and hand it back. Nothing has to be translated to keep up."
+      }
+    ]
+  },
+  "links": {
+    "title": "Where to go next",
+    "repo": "The repository",
+    "repoBody": "Source, blueprints, decisions and the whole history.",
+    "issues": "Open issues",
+    "issuesBody": "Bugs, questions, and blueprint requests waiting for somebody.",
+    "request": "Request a blueprint",
+    "requestBody": "Nothing fits what you are building? That is the strongest signal there is.",
+    "contributing": "Contributing guide",
+    "contributingBody": "What a blueprint has to contain, and how it is judged.",
+    "governance": "Governance",
+    "governanceBody": "Who decides what, and what happens when nobody answers.",
+    "licence": "Licence",
+    "licenceBody": "Source-available. CC BY 4.0 for blueprint content."
+  },
+  "footer": {
+    "tagline": "A blueprint catalog and MCP server for coding agents.",
+    "note": "Source-available under PolyForm Shield 1.0.0. Blueprint content under CC BY 4.0.",
+    "built": "This page is hand-written HTML, CSS and JavaScript with no build step, served by GitHub Pages from the repository."
+  }
+}

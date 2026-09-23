@@ -45,7 +45,7 @@ describe('renderSite', () => {
     assert.deepEqual(
       renderSite(INDEX).map((page) => page.path),
       // The index sorts blueprints by slug, and the pages follow it.
-      ['index.html', 'b/old-api.html', 'b/sample-api.html'],
+      ['catalog.html', 'b/old-api.html', 'b/sample-api.html'],
     );
   });
 

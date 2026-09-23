@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeprint</title>
+    <meta name="description" content="Resolved, AI-ready project blueprints for coding agents. One MCP call returns the right context and a tested setup recipe." />
+    <link rel="stylesheet" href="forgeprint.css" />
+  </head>
+  <body>
+    <main>
+<header class="hero">
+        <h1>Forgeprint</h1>
+        <p class="tagline">
+          Tell your agent who you are and what you are building — get back one blueprint
+          and a setup recipe it can execute.
+        </p>
+        <pre class="install"><code>claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
+        <p class="muted small">On Windows PowerShell, quote the separator: <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
+      </header>
+
+      <section class="points">
+        <div><h2>One answer</h2><p>Describe yourself and your goal. The resolver returns a single blueprint, or the questions it still needs answered — never a list to sift through.</p></div>
+        <div><h2>A recipe, not a description</h2><p>Every step is one command with a verification after it, versions pinned. CI runs the recipes; a blueprint whose setup fails is not merged.</p></div>
+        <div><h2>Curated, not collected</h2><p>One blueprint per stack, project type and requirements. A better one replaces the old one instead of sitting next to it.</p></div>
+      </section>
+
+      <section class="catalog">
+        <div class="catalog-head">
+          <h2>7 blueprints</h2>
+          <input id="filter" type="search" placeholder="Filter by language, stack, type…" autocomplete="off" aria-label="Filter blueprints" />
+        </div>
+        <div id="cards">
+        <article class="card" data-terms="astro-content-site astro content site static content site in astro with tailwind, a typed content collection, and tests that assert the built html carries the seo and accessibility work. web typescript astro tailwind seo accessibility ci web linux macos windows open-source free">
+          <h3><a href="b/astro-content-site.html">Astro Content Site</a> </h3>
+          <p>Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.</p>
+          <p class="tags"><span>TypeScript</span><span>Web application</span></p>
+        </article>
+        <article class="card" data-terms="dotnet-mcp-server c# mcp server mcp server in c# on the official modelcontextprotocol sdk, over stdio or streamable http. agent csharp dotnet mcp ci testing windows linux macos open-source internal">
+          <h3><a href="b/dotnet-mcp-server.html">C# MCP Server</a> <span class="tier official">official</span></h3>
+          <p>MCP server in C# on the official ModelContextProtocol SDK, over stdio or streamable HTTP.</p>
+          <p class="tags"><span>C#</span><span>AI agent or MCP server</span></p>
+        </article>
+        <article class="card" data-terms="dotnet-multitenant-saas-api multi-tenant saas api asp.net core 10 saas api with tenant isolation enforced in the data layer and proven by tests. api csharp dotnet aspnetcore efcore multi-tenant auth ci containerization linux docker saas">
+          <h3><a href="b/dotnet-multitenant-saas-api.html">Multi-tenant SaaS API</a> <span class="tier official">official</span></h3>
+          <p>ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.</p>
+          <p class="tags"><span>C#</span><span>API service</span></p>
+        </article>
+        <article class="card" data-terms="dotnet-web-api asp.net core rest api asp.net core 10 minimal api with ef core, bearer authentication, a container image and ci. api csharp dotnet aspnetcore efcore auth ci containerization linux docker internal saas">
+          <h3><a href="b/dotnet-web-api.html">ASP.NET Core REST API</a> <span class="tier official">official</span></h3>
+          <p>ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.</p>
+          <p class="tags"><span>C#</span><span>API service</span></p>
+        </article>
+        <article class="card" data-terms="fastapi-service fastapi service fastapi service with sqlalchemy, bearer token verification, a container image and ci. api python fastapi postgres auth ci containerization linux docker internal saas">
+          <h3><a href="b/fastapi-service.html">FastAPI Service</a> <span class="tier official">official</span></h3>
+          <p>FastAPI service with SQLAlchemy, bearer token verification, a container image and CI.</p>
+          <p class="tags"><span>Python</span><span>API service</span></p>
+        </article>
+        <article class="card" data-terms="python-mcp-server python mcp server mcp server in python on the official sdk, over stdio or streamable http, with tests that speak the protocol in-process. agent python python mcp ci testing windows linux macos open-source internal">
+          <h3><a href="b/python-mcp-server.html">Python MCP Server</a> </h3>
+          <p>MCP server in Python on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol in-process.</p>
+          <p class="tags"><span>Python</span><span>AI agent or MCP server</span></p>
+        </article>
+        <article class="card" data-terms="ts-mcp-server typescript mcp server mcp server in typescript on the official sdk, over stdio or streamable http, with tests that speak the protocol. agent typescript node mcp ci testing windows linux macos open-source internal">
+          <h3><a href="b/ts-mcp-server.html">TypeScript MCP Server</a> <span class="tier official">official</span></h3>
+          <p>MCP server in TypeScript on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol.</p>
+          <p class="tags"><span>TypeScript</span><span>AI agent or MCP server</span></p>
+        </article>
+</div>
+        <p id="nothing" class="muted" hidden>Nothing matches that.</p>
+      </section>
+
+      <section class="ask">
+        <h2>Nothing fits?</h2>
+        <p>
+          The catalog grows by demand. <a href="https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml">Request a blueprint</a> and
+          say what is missing — requests are public, and somebody may pick yours up.
+        </p>
+        <h3>Requested blueprints</h3>
+        <ul class="requests" id="requests" hidden>
+          
+        </ul>
+        <p class="muted" id="requests-empty">No open requests right now.</p>
+        <p class="muted small" id="requests-source">Snapshot from 2026-09-22.</p>
+      </section>
+
+      <section class="contributors">
+        <h2>Featured contributors</h2>
+        <p class="muted">The catalog is written by people. These are the ones who wrote what is in it.</p>
+        <div class="people"><a class="person" href="https://github.com/aliosmanmho"><img class="avatar" src="https://github.com/aliosmanmho.png?size=96" width="48" height="48" loading="lazy" alt="" /><span>@aliosmanmho</span></a></div>
+      </section>
+    </main>
+    <footer>
+      <a href="https://github.com/forgeprint/forgeprint">Repository</a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="index.json">index.json</a>
+      <p class="muted">
+        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
+        catalog content under CC BY 4.0.
+      </p>
+    </footer>
+    <script>
+const filter = document.getElementById('filter');
+      const nothing = document.getElementById('nothing');
+      if (filter) {
+        filter.addEventListener('input', () => {
+          const needle = filter.value.trim().toLowerCase();
+          let shown = 0;
+          for (const card of document.querySelectorAll('.card')) {
+            const match = needle === '' || (card.dataset.terms || '').includes(needle);
+            card.hidden = !match;
+            if (match) shown += 1;
+          }
+          if (nothing) nothing.hidden = shown > 0;
+        });
+      }
+
+      // The requests come from the issues API, read by the browser with no
+      // token: the alternative was a workflow with write access to this
+      // repository, which is a large key for a small list (ADR 0007). The page
+      // ships with a snapshot, so this only ever improves what is shown.
+      (function () {
+        const list = document.getElementById('requests');
+        const empty = document.getElementById('requests-empty');
+        const source = document.getElementById('requests-source');
+        if (!list) return;
+        const KEY = 'forgeprint.requests';
+        const MAX_AGE = 10 * 60 * 1000;
+        const API = "https://api.github.com/repos/forgeprint/forgeprint/issues?labels=blueprint-request&state=open&per_page=50";
+        const PREFIX = "https://github.com/forgeprint/forgeprint/issues/";
+
+        function show(items) {
+          list.textContent = '';
+          for (const item of items) {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            // textContent, never innerHTML: an issue title is written by
+            // whoever opened the issue.
+            link.textContent = item.title;
+            link.href = item.url;
+            li.appendChild(link);
+            if (item.author) {
+              const by = document.createElement('span');
+              by.className = 'muted';
+              by.textContent = ' asked by @' + item.author;
+              li.appendChild(by);
+            }
+            list.appendChild(li);
+          }
+          list.hidden = items.length === 0;
+          if (empty) empty.hidden = items.length > 0;
+          if (source) source.remove();
+        }
+
+        function cached() {
+          try {
+            const raw = sessionStorage.getItem(KEY);
+            if (!raw) return null;
+            const saved = JSON.parse(raw);
+            return Date.now() - saved.at < MAX_AGE ? saved.items : null;
+          } catch (error) {
+            return null;
+          }
+        }
+
+        const ready = cached();
+        if (ready) {
+          show(ready);
+          return;
+        }
+
+        fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+          .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+          .then((issues) => {
+            const items = issues
+              // The issues endpoint returns pull requests too, and a link is
+              // only followed when it points into this repository's issues.
+              .filter((issue) => !issue.pull_request && String(issue.html_url).indexOf(PREFIX) === 0)
+              .map((issue) => ({
+                title: String(issue.title),
+                url: String(issue.html_url),
+                author: issue.user && issue.user.login ? String(issue.user.login) : '',
+              }));
+            try {
+              sessionStorage.setItem(KEY, JSON.stringify({ at: Date.now(), items: items }));
+            } catch (error) {
+              // A browser that refuses storage still gets the list.
+            }
+            show(items);
+          })
+          // Rate-limited, offline, blocked: the snapshot stays, and it is
+          // dated, so nobody reads it as current.
+          .catch(() => {});
+      })();
+    </script>
+  </body>
+</html>

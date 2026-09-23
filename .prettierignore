@@ -4,7 +4,7 @@ pnpm-lock.yaml
 # Generated artifacts: `forgeprint build-*` owns their formatting.
 docs/index.json
 schema/manifest.schema.json
-docs/index.html
+docs/catalog.html
 docs/forgeprint.css
 docs/b/
 

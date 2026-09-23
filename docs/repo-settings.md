@@ -140,7 +140,7 @@ Enabled, serving <https://forgeprint.github.io/forgeprint> from **branch
 That means `docs/` is part of the deployment, not a scratch folder:
 
 - `docs/index.json` — the generated catalog index, committed.
-- `docs/index.html`, `docs/b/*.html`, `docs/forgeprint.css` — the site,
+- `docs/catalog.html`, `docs/b/*.html`, `docs/forgeprint.css` — the catalog,
   generated from the index by `pnpm run build-site` and committed. `pnpm run
 check` fails if the committed copy has drifted from the catalog.
 - `docs/decisions/` and the other Markdown files are documentation that happens

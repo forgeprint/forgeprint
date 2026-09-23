@@ -46,7 +46,9 @@ const ISSUE_PREFIX = 'https://github.com/forgeprint/forgeprint/issues/';
 
 export function renderSite(index: CatalogIndex, context: SiteContext = NOTHING): Page[] {
   return [
-    { path: 'index.html', html: renderIndexPage(index, context) },
+    // `catalog.html`, not `index.html`: the root of the Pages site is the
+    // hand-written landing page, and this is the catalog it links into.
+    { path: 'catalog.html', html: renderIndexPage(index, context) },
     ...index.blueprints.map((entry) => ({
       path: `b/${entry.slug}.html`,
       html: renderBlueprintPage(entry, index.taxonomy),
@@ -221,7 +223,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
     description: entry.summary,
     depth: 1,
     body: `
-      <p class="back"><a href="../index.html">← all blueprints</a></p>
+      <p class="back"><a href="../catalog.html">← all blueprints</a></p>
 
       <header class="hero blueprint">
         <p class="slug">${escape(entry.slug)}</p>
