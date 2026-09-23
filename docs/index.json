@@ -862,6 +862,66 @@
       "i18n": []
     },
     {
+      "slug": "ts-http-service",
+      "name": "TypeScript HTTP Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.",
+      "stack": [
+        "node",
+        "hono",
+        "docker"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "open-source",
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "ci",
+        "containerization"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "ts-mcp-server",
       "name": "TypeScript MCP Server",
       "version": "1.1.0",
