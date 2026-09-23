@@ -17,6 +17,7 @@ import { z } from 'zod';
 import { entryFor, type CatalogSource } from './catalog.js';
 import { CONTENT_IS_DATA } from './notes.js';
 import { normalizeProfile } from './profile.js';
+import { INTENTS, registerUnitTools, type Intent } from './units.js';
 import {
   isGenuineTie,
   MATCH_FLOOR,
@@ -95,6 +96,8 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
       return failure(error instanceof Error ? error.message : String(error));
     }
   };
+
+  registerUnitTools(server, source, reply, guard);
 
   server.registerTool(
     'search_blueprints',
@@ -206,6 +209,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
       title: 'Resolve a profile to one blueprint',
       description:
         'Take what the user knows and what they are building, and return EITHER the questions to ask them OR exactly one blueprint with the reasoning behind it. ' +
+        'Set `intent` when the user is asking a different question: `expert` for how an agent should work, `crew` for a named package of experts, `integration` for installing a tool. Those route to the tool that answers them. ' +
         'Ask the returned questions before recommending anything: they are chosen because their answers change which blueprint wins. ' +
         'This tool never returns a list to choose from, and never invents a match. ' +
         'Fill the structured fields from what the user said rather than passing only `goal`: the free text is the weakest signal, ' +
@@ -230,6 +234,12 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
         distribution: z.array(z.string()).optional(),
         requirements: z.array(z.string()).optional(),
         constraints: z.array(z.string()).optional(),
+        intent: z
+          .enum(INTENTS)
+          .optional()
+          .describe(
+            'What is being asked for. `project` is the default and is what this tool answers; the other three are routed to the tool that answers them.',
+          ),
         locale: localeInput,
       },
     },
@@ -237,6 +247,24 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
       guard(async () => {
         const index = await source.loadIndex();
         const meta = { present_in: stated.locale };
+
+        // A different question has a different tool. Routing rather than
+        // answering keeps the one-blueprint rule intact: this tool returns a
+        // blueprint or it returns nothing, and never a different kind of thing
+        // wearing a blueprint's shape (ADR 0012).
+        const routed = routeFor(stated.intent);
+        if (routed !== undefined) {
+          return reply(
+            {
+              status: 'use_another_tool',
+              intent: stated.intent,
+              tool: routed.tool,
+              why: routed.why,
+              pass: routed.pass,
+            },
+            meta,
+          );
+        }
         // "C#" is the right answer in the wrong alphabet; the catalog stores
         // `csharp`. Scoring it as a language the user does not know turned a
         // match into no_match, so both spellings are accepted here.
@@ -557,3 +585,39 @@ function section(markdown: string, heading: RegExp): string | undefined {
 }
 
 export type { CatalogIndex };
+
+/**
+ * Where a non-project intent belongs.
+ *
+ * `resolve` answers one question — what should I build — and returning an
+ * expert from it would break the rule that it returns exactly one blueprint or
+ * nothing. So it hands the caller the tool that answers what they actually
+ * asked, and says what to pass.
+ */
+function routeFor(
+  intent: Intent | undefined,
+): { tool: string; why: string; pass: string } | undefined {
+  switch (intent) {
+    case undefined:
+    case 'project':
+      return undefined;
+    case 'expert':
+      return {
+        tool: 'recommend_experts',
+        why: 'An expert is how an agent should work, which is a different question from what to build.',
+        pass: 'task (what the user is trying to do), and domains or languages if they said any.',
+      };
+    case 'crew':
+      return {
+        tool: 'recommend_experts',
+        why: 'A crew is a named package of experts. recommend_experts returns one when the task is plainly the whole job it is assembled for, then get_crew returns it.',
+        pass: 'task, in the user’s words.',
+      };
+    case 'integration':
+      return {
+        tool: 'get_integration',
+        why: 'An integration is an installation recipe for third-party software Forgeprint does not host.',
+        pass: 'slug, and agent so the install command matches what they are running.',
+      };
+  }
+}

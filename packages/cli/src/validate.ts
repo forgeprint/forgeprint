@@ -222,7 +222,7 @@ function generatedFileProblems(
     }
   };
 
-  check(repoPaths.index(root), renderIndex(blueprints, taxonomy), 'forgeprint build-index');
+  check(repoPaths.index(root), renderIndex(blueprints, taxonomy, root), 'forgeprint build-index');
   check(
     repoPaths.manifestSchema(root),
     buildManifestJsonSchema(taxonomy),

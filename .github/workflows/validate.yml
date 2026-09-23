@@ -73,6 +73,35 @@ jobs:
       - name: Lint setup recipes
         run: pnpm forgeprint lint-setup --all
 
+  # The agent dimension of the matrix, and the half a machine can prove.
+  #
+  # A setup recipe is executed by the CLI, not by an agent, so running one "as
+  # Cursor" would demonstrate nothing. What this does demonstrate is that every
+  # entry renders into every registered agent's layout — which is where the
+  # real failures are: an unfilled placeholder, a colliding path, an entry
+  # longer than an agent's silent cap. The half that needs a person is recorded
+  # as a verification and never faked here (ADR 0013).
+  render-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the tooling
+        run: pnpm run build
+
+      - name: Render every entry for every agent
+        run: pnpm forgeprint render-check
+
   # The duplicate report for every blueprint. It fails only on the objective
   # rule — a second blueprint claiming an existing stack + project_type +
   # requirements. A red flag is a question the pull request template makes the

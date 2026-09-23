@@ -5,8 +5,13 @@ import {
   translations,
   type Blueprint,
 } from './catalog.js';
+import { hasAgentRegistry, loadAgentRegistry, type Agent } from './agents.js';
+import type { Crew } from './crew.js';
+import type { Expert } from './expert.js';
+import type { Integration } from './integration.js';
 import { stableJson } from './json.js';
 import type { Taxonomy } from './taxonomy.js';
+import { validateUnits } from './validate-units.js';
 
 /**
  * The published catalog index. It is committed to the repository so that GitHub
@@ -19,7 +24,27 @@ export interface CatalogIndex {
   readonly schema: 1;
   readonly taxonomy: Taxonomy;
   readonly blueprints: readonly IndexEntry[];
+  /**
+   * The three kinds that arrived with ADR 0012.
+   *
+   * They carry their manifest and their file list, the same way a blueprint
+   * does, because the MCP server and the site read this file and nothing else.
+   * Absent in an index built before they existed, so every reader treats them
+   * as optional.
+   */
+  /**
+   * The agent registry, so a reader knows what each agent actually reads
+   * without a second fetch (ADR 0013). The site draws its badges from this and
+   * `get_expert` answers "where do I write this" from it.
+   */
+  readonly agents?: readonly Agent[];
+  readonly experts?: readonly UnitEntry<Expert>[];
+  readonly crews?: readonly UnitEntry<Crew>[];
+  readonly integrations?: readonly UnitEntry<Integration>[];
 }
+
+/** One expert, crew or integration as the index carries it. */
+export type UnitEntry<T> = T & { readonly files: readonly string[] };
 
 export interface IndexEntry {
   readonly slug: string;
@@ -99,10 +124,32 @@ export function indexEntry(blueprint: Blueprint): IndexEntry {
   };
 }
 
-export function buildIndex(blueprints: readonly Blueprint[], taxonomy: Taxonomy): CatalogIndex {
-  return { schema: 1, taxonomy, blueprints: blueprints.map(indexEntry) };
+export function buildIndex(
+  blueprints: readonly Blueprint[],
+  taxonomy: Taxonomy,
+  root?: string,
+): CatalogIndex {
+  const base = { schema: 1, taxonomy, blueprints: blueprints.map(indexEntry) } as const;
+  if (root === undefined) return base;
+
+  // A catalog with none of these is not an error — they arrived after it did —
+  // so an empty kind is left out rather than published as an empty array.
+  const units = validateUnits(root, taxonomy);
+  const list = <T>(loaded: readonly { folder: { files: readonly string[] }; manifest: T }[]) =>
+    loaded.map((one) => ({ ...one.manifest, files: one.folder.files }));
+  return {
+    ...base,
+    ...(hasAgentRegistry(root) ? { agents: loadAgentRegistry(root).agents } : {}),
+    ...(units.experts.length === 0 ? {} : { experts: list(units.experts) }),
+    ...(units.crews.length === 0 ? {} : { crews: list(units.crews) }),
+    ...(units.integrations.length === 0 ? {} : { integrations: list(units.integrations) }),
+  };
 }
 
-export function renderIndex(blueprints: readonly Blueprint[], taxonomy: Taxonomy): string {
-  return stableJson(buildIndex(blueprints, taxonomy));
+export function renderIndex(
+  blueprints: readonly Blueprint[],
+  taxonomy: Taxonomy,
+  root?: string,
+): string {
+  return stableJson(buildIndex(blueprints, taxonomy, root));
 }

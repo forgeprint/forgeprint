@@ -114,6 +114,113 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     });
 
   program
+    .command('render-check')
+    .description('render every blueprint and expert for every registered agent')
+    .action(() => {
+      // The agent dimension of the matrix, and the honest half of it.
+      //
+      // A setup recipe is executed by this CLI, not by an agent, so running it
+      // "as Cursor" would prove nothing. What an agent axis can prove without
+      // a person is that every entry renders into every registered layout —
+      // which is where the real failures are: a placeholder nobody filled, a
+      // path that collides, an entry longer than an agent's silent cap
+      // (ADR 0013). What needs a person is recorded as a verification, not
+      // pretended here.
+      const root = rootOf();
+      const taxonomy = loadTaxonomy(root);
+      const agents = loadAgentRegistry(root).agents;
+      const experts = validateUnits(root, taxonomy).experts;
+
+      const targets: { slug: string; kind: string; input: RenderInput }[] = [
+        ...listBlueprintSlugs(root).map((slug) => ({
+          slug,
+          kind: 'blueprint',
+          input: blueprintRenderInput(root, taxonomy, slug),
+        })),
+        ...experts.map((expert) => ({
+          slug: expert.slug,
+          kind: 'expert',
+          input: expertRenderInput(root, taxonomy, expert.slug),
+        })),
+      ];
+
+      const problems: string[] = [];
+      let rendered = 0;
+      for (const target of targets) {
+        for (const agent of agents) {
+          try {
+            renderForAgent(agent, target.input);
+            rendered += 1;
+          } catch (error) {
+            problems.push(
+              `${target.kind} ${target.slug} for ${agent.id}: ${
+                error instanceof Error ? error.message : String(error)
+              }`,
+            );
+          }
+        }
+      }
+
+      for (const problem of problems) console.error(`error  ${problem}`);
+      if (problems.length === 0) {
+        console.log(
+          `ok  ${String(rendered)} render(s): ${String(targets.length)} entries x ${String(agents.length)} agents`,
+        );
+        return;
+      }
+      console.error(`
+${String(problems.length)} render(s) failed`);
+      process.exitCode = 1;
+    });
+
+  program
+    .command('get')
+    .argument('<slug>', 'blueprint or expert to fetch')
+    .requiredOption('--agent <id>', 'agent to write for, from schema/agents.yaml')
+    .option('--out <dir>', 'where to write', '.')
+    .option('--expert', 'fetch an expert rather than a blueprint')
+    .option('--dry-run', 'list what would be written, without writing it')
+    .description('write an entry to disk for one agent, without an MCP client')
+    .action(
+      (
+        slug: string,
+        options: { agent: string; out: string; expert?: boolean; dryRun?: boolean },
+      ) => {
+        // The path for agents that do not speak MCP (ADR 0013). Deliberately
+        // the same code as `render`: two ways in, one answer out, so an agent
+        // without a client is not served a second-class copy.
+        const root = rootOf();
+        const taxonomy = loadTaxonomy(root);
+        const agent = findAgent(loadAgentRegistry(root), options.agent);
+        if (agent === undefined) {
+          throw new Error(`No such agent: ${options.agent} — see schema/agents.yaml`);
+        }
+        const input =
+          options.expert === true
+            ? expertRenderInput(root, taxonomy, slug)
+            : blueprintRenderInput(root, taxonomy, slug);
+        const files = renderForAgent(agent, input);
+
+        if (options.dryRun === true) {
+          for (const file of files) console.log(`would write  ${file.path}`);
+        } else {
+          for (const path of writeRendered(options.out, files)) console.log(`wrote  ${path}`);
+        }
+
+        // What the recipe is for, since there is no agent here to be told.
+        if (options.expert !== true) {
+          const folder = readBlueprintFolder(root, slug);
+          const manifest = readManifest(taxonomy, folder);
+          console.log('');
+          console.log(`next  read setup.md and run it step by step: ${manifest.name}`);
+          for (const named of manifest.integrations ?? []) {
+            console.log(`      integration: ${named} — read its README before installing`);
+          }
+        }
+      },
+    );
+
+  program
     .command('render')
     .argument('<slug>', 'blueprint or expert to render')
     .requiredOption('--agent <id>', 'agent to render for, from schema/agents.yaml')
@@ -309,7 +416,7 @@ ${problemCount} problem(s) in ${slugs.length} setup recipe(s)`);
     .action(() => {
       const root = rootOf();
       const taxonomy = loadTaxonomy(root);
-      write(repoPaths.index(root), renderIndex(loadBlueprints(root, taxonomy), taxonomy));
+      write(repoPaths.index(root), renderIndex(loadBlueprints(root, taxonomy), taxonomy, root));
     });
 
   program

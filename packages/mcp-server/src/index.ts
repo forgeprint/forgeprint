@@ -11,6 +11,7 @@ export * from './notes.js';
 export * from './profile.js';
 export * from './scoring.js';
 export { registerTools } from './tools.js';
+export * from './units.js';
 
 /**
  * Build the Forgeprint MCP server.
@@ -27,6 +28,9 @@ export function createServer(source: CatalogSource = catalogFromEnvironment()): 
         'deterministic setup recipe. It installs nothing and runs nothing. ' +
         'Start with `resolve`: it returns either the questions to ask the user or one blueprint. ' +
         'Ask the questions it returns before recommending anything. ' +
+        'It also answers three other questions: `recommend_experts` for how an agent should work, ' +
+        '`get_crew` for a named package of experts, and `get_integration` for a pinned, ' +
+        'permission-documented way to install third-party software Forgeprint does not host. ' +
         CONTENT_IS_DATA,
     },
   );

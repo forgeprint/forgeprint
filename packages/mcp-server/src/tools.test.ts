@@ -104,11 +104,18 @@ function safeParse(text: string): any {
 }
 
 describe('the tool surface', () => {
-  it('registers exactly the six documented tools', async () => {
+  it('registers exactly the documented tools, and nothing else', async () => {
+    // Six for blueprints, four for the kinds that arrived with ADR 0012. The
+    // list is asserted exactly because an undocumented tool is a promise
+    // nobody wrote down.
     const { tools } = await client.listTools();
     assert.deepEqual(tools.map((tool) => tool.name).sort(), [
       'compare_blueprints',
       'get_blueprint',
+      'get_crew',
+      'get_expert',
+      'get_integration',
+      'recommend_experts',
       'request_blueprint',
       'resolve',
       'search_blueprints',

@@ -1481,5 +1481,1043 @@
       ],
       "i18n": []
     }
+  ],
+  "agents": [
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "vendor": "Anthropic",
+      "kind": "cli",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": true
+      },
+      "context_files": [
+        "CLAUDE.md",
+        ".claude/CLAUDE.md",
+        ".claude/rules/*.md",
+        "AGENTS.md"
+      ],
+      "context_note": "AGENTS.md is read directly from v2.1.277; where it is not available, a CLAUDE.md that imports it covers the same ground.",
+      "skill_format": "SKILL.md",
+      "skill_path": ".claude/skills/<name>/SKILL.md",
+      "install_mcp": "claude mcp add-json <name> '<json>'",
+      "secrets_via": [
+        "env",
+        "oauth",
+        "ui"
+      ],
+      "headless": true,
+      "headless_command": "claude -p \"<prompt>\"",
+      "limits": "Project instruction loading is configurable, so which file an agent reads depends on a setting the catalog cannot see.",
+      "render": {
+        "path": "CLAUDE.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://code.claude.com/docs/en/memory",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "vendor": "OpenAI",
+      "kind": "cli",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": false
+      },
+      "context_files": [
+        "AGENTS.md",
+        ".codex/config.toml"
+      ],
+      "context_note": "Instructions are read from ~/.codex/AGENTS.md, then each AGENTS.md on the way down to the working directory; AGENTS.override.md replaces broader guidance for one subtree.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": "codex mcp add <name> --env KEY=VALUE -- <command>",
+      "secrets_via": [
+        "env",
+        "oauth",
+        "headers"
+      ],
+      "headless": true,
+      "headless_command": "codex exec \"<prompt>\"",
+      "limits": "Project-scoped .codex/config.toml only loads in a trusted directory; the first encounter in an untrusted one prompts before any server starts.",
+      "render": {
+        "path": "AGENTS.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "copilot-cli",
+      "name": "GitHub Copilot CLI",
+      "vendor": "GitHub",
+      "kind": "cli",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": false
+      },
+      "context_files": [
+        ".github/copilot-instructions.md",
+        ".github/instructions/**/*.instructions.md",
+        "AGENTS.md"
+      ],
+      "context_note": "Repository instructions are included automatically for prompts entered in that repository.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": "copilot mcp add --transport http <name> <url>",
+      "secrets_via": [
+        "env",
+        "ui"
+      ],
+      "headless": true,
+      "headless_command": "copilot -p \"<prompt>\" -s",
+      "limits": "Ships with the GitHub MCP server already configured; servers live in ~/.copilot/mcp-config.json. Grant tools individually with --allow-tool rather than --allow-all-tools.",
+      "render": {
+        "path": ".github/copilot-instructions.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "vendor": "Anysphere",
+      "kind": "ide",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": true
+      },
+      "context_files": [
+        ".cursor/rules/*.mdc",
+        "AGENTS.md"
+      ],
+      "context_note": "A rule file needs YAML frontmatter with description, globs and alwaysApply; a plain .md in .cursor/rules has none and is ignored. Nested AGENTS.md files apply to their own subtree, most specific first.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": null,
+      "secrets_via": [
+        "env",
+        "ui"
+      ],
+      "headless": false,
+      "headless_command": null,
+      "limits": "An editor, not a CLI: setup recipes that assume a terminal agent have to be run by the user. MCP servers are added through the settings UI.",
+      "render": {
+        "path": ".cursor/rules/{slug}.mdc",
+        "frontmatter": {
+          "description": "{summary}",
+          "alwaysApply": "true"
+        },
+        "max_chars": null
+      },
+      "docs": "https://cursor.com/docs/rules",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI",
+      "vendor": "Google",
+      "kind": "cli",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": true
+      },
+      "context_files": [
+        "GEMINI.md",
+        ".gemini/settings.json"
+      ],
+      "context_note": "The context file name is the `context.fileName` setting and takes a list, so AGENTS.md can be added alongside GEMINI.md rather than replacing it.",
+      "skill_format": "SKILL.md",
+      "skill_path": ".gemini/skills/<name>/SKILL.md",
+      "install_mcp": "gemini mcp add <name> <commandOrUrl> [args...]",
+      "secrets_via": [
+        "env",
+        "headers",
+        "oauth"
+      ],
+      "headless": true,
+      "headless_command": "gemini -p \"<prompt>\" --output-format json",
+      "limits": "Environment variables are expanded in the config with $VAR or ${VAR}, and %VAR% on Windows only.",
+      "render": {
+        "path": "GEMINI.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "windsurf",
+      "name": "Windsurf",
+      "vendor": "Cognition",
+      "kind": "ide",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": true
+      },
+      "context_files": [
+        ".windsurf/rules/*.md",
+        ".devin/rules/*.md",
+        "AGENTS.md"
+      ],
+      "context_note": "Rule files carry a `trigger` frontmatter field — always_on, model_decision, glob or manual. A root AGENTS.md has no frontmatter and is always on.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": null,
+      "secrets_via": [
+        "env",
+        "oauth",
+        "ui"
+      ],
+      "headless": false,
+      "headless_command": null,
+      "limits": "Workspace rule files are capped at 12,000 characters and global ones at 6,000, so a long AGENTS.md is silently truncated. OAuth is unavailable for stdio servers. Documentation now redirects to docs.devin.ai and the config path has moved with it; the legacy path was ~/.codeium/windsurf/mcp_config.json.",
+      "render": {
+        "path": ".windsurf/rules/{slug}.md",
+        "frontmatter": {
+          "trigger": "always_on"
+        },
+        "max_chars": 12000
+      },
+      "docs": "https://docs.devin.ai/windsurf/plugins/cascade/mcp",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "cline",
+      "name": "Cline",
+      "vendor": "Cline",
+      "kind": "ide",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": true
+      },
+      "context_files": [
+        ".clinerules/",
+        ".cline/rules/",
+        "AGENTS.md"
+      ],
+      "context_note": "Reads a workspace AGENTS.md and a cross-tool ~/.agents/AGENTS.md as the standard format for compatibility with other agents.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": null,
+      "secrets_via": [
+        "env",
+        "headers"
+      ],
+      "headless": true,
+      "headless_command": "cline config mcp --json",
+      "limits": "MCP servers live in ~/.cline/mcp.json for the CLI and in the panel for the extensions. SSE is legacy; use streamableHttp for new servers.",
+      "render": {
+        "path": ".clinerules/{slug}.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://docs.cline.bot/features/cline-rules",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "vendor": "SST",
+      "kind": "cli",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": false
+      },
+      "context_files": [
+        "AGENTS.md",
+        "opencode.json"
+      ],
+      "context_note": "AGENTS.md is preferred and CLAUDE.md is the fallback; the first match wins per category. `instructions` in opencode.json adds more files, and accepts globs and remote URLs.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": null,
+      "secrets_via": [
+        "env",
+        "headers",
+        "oauth"
+      ],
+      "headless": true,
+      "headless_command": "opencode run \"<prompt>\" --format json",
+      "limits": "MCP servers are declared in opencode.json under `mcp` with type local or remote; there is no add subcommand, the file is edited.",
+      "render": {
+        "path": "AGENTS.md",
+        "frontmatter": null,
+        "max_chars": null
+      },
+      "docs": "https://opencode.ai/docs/mcp-servers/",
+      "last_checked": "2026-09-23"
+    },
+    {
+      "id": "kiro",
+      "name": "Kiro",
+      "vendor": "AWS",
+      "kind": "ide",
+      "mcp": {
+        "stdio": true,
+        "http": true,
+        "sse": false
+      },
+      "context_files": [
+        ".kiro/steering/*.md",
+        "AGENTS.md"
+      ],
+      "context_note": "Steering files use an `inclusion` frontmatter field — always, fileMatch, manual or auto — which must be the first content in the file. An AGENTS.md needs no inclusion mode and is always included.",
+      "skill_format": null,
+      "skill_path": null,
+      "install_mcp": null,
+      "secrets_via": [
+        "env",
+        "oauth"
+      ],
+      "headless": false,
+      "headless_command": null,
+      "limits": "MCP servers live in .kiro/settings/mcp.json, and an environment variable is only expanded after it is added to the approved-variables setting.",
+      "render": {
+        "path": ".kiro/steering/{slug}.md",
+        "frontmatter": {
+          "inclusion": "always"
+        },
+        "max_chars": null
+      },
+      "docs": "https://kiro.dev/docs/steering/",
+      "last_checked": "2026-09-23"
+    }
+  ],
+  "experts": [
+    {
+      "schema": 1,
+      "slug": "devops-platform-engineer",
+      "name": "DevOps Platform Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "platform-engineer",
+      "domain": "devops",
+      "seniority": "senior",
+      "stack": [
+        "docker",
+        "kubernetes",
+        "terraform"
+      ],
+      "deliverables": [
+        "infrastructure-plan",
+        "release-plan",
+        "runbook",
+        "slo-definition",
+        "observability-plan",
+        "cost-review"
+      ],
+      "checklists": [
+        "pipeline-integrity",
+        "secrets-in-ci",
+        "container-image",
+        "rollout-and-rollback",
+        "slo-and-alerting"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/container-image.md",
+        "checklists/pipeline-integrity.md",
+        "checklists/rollout-and-rollback.md",
+        "checklists/secrets-in-ci.md",
+        "checklists/slo-and-alerting.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "dotnet-senior-architect",
+      "name": ".NET Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "csharp"
+      ],
+      "stack": [
+        "dotnet",
+        "aspnetcore",
+        "efcore"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "api-design-review",
+        "migration-plan"
+      ],
+      "checklists": [
+        "layering",
+        "dependency-direction",
+        "config-separation",
+        "transaction-boundary",
+        "async-discipline",
+        "observability"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/async-discipline.md",
+        "checklists/config-separation.md",
+        "checklists/dependency-direction.md",
+        "checklists/layering.md",
+        "checklists/observability.md",
+        "checklists/transaction-boundary.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "qa-automation-lead",
+      "name": "QA Automation Lead",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "qa-automation-lead",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "test-plan",
+        "test-suite",
+        "evaluation-harness",
+        "code-review"
+      ],
+      "checklists": [
+        "behaviour-not-implementation",
+        "determinism",
+        "coverage",
+        "test-data",
+        "ci-signal"
+      ],
+      "pairs_with": [
+        "dotnet-senior-architect",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/behaviour-not-implementation.md",
+        "checklists/ci-signal.md",
+        "checklists/coverage.md",
+        "checklists/determinism.md",
+        "checklists/test-data.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "security-reviewer",
+      "name": "Security Reviewer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "security-reviewer",
+      "domain": "security",
+      "seniority": "senior",
+      "deliverables": [
+        "security-review",
+        "threat-model",
+        "threat-model-review",
+        "dependency-audit",
+        "compliance-checklist"
+      ],
+      "checklists": [
+        "trust-boundaries",
+        "authn-authz",
+        "input-and-output",
+        "secrets-and-config",
+        "dependencies",
+        "logging-and-errors"
+      ],
+      "pairs_with": [
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/authn-authz.md",
+        "checklists/dependencies.md",
+        "checklists/input-and-output.md",
+        "checklists/logging-and-errors.md",
+        "checklists/secrets-and-config.md",
+        "checklists/trust-boundaries.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "sql-data-engineer",
+      "name": "SQL Data Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "data-engineer",
+      "domain": "data",
+      "seniority": "senior",
+      "languages": [
+        "sql"
+      ],
+      "stack": [
+        "postgres"
+      ],
+      "deliverables": [
+        "data-model",
+        "migration-plan",
+        "data-quality-report",
+        "performance-report"
+      ],
+      "checklists": [
+        "schema-design",
+        "migration-safety",
+        "query-performance",
+        "data-quality"
+      ],
+      "pairs_with": [
+        "dotnet-senior-architect",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/data-quality.md",
+        "checklists/migration-safety.md",
+        "checklists/query-performance.md",
+        "checklists/schema-design.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    }
+  ],
+  "crews": [
+    {
+      "schema": 1,
+      "slug": "api-hardening-crew",
+      "name": "API Hardening Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "devops-platform-engineer"
+      ],
+      "integrations": [
+        "github-mcp",
+        "playwright-mcp"
+      ],
+      "for_what": "Hardening an API that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path.",
+      "not_for": "A greenfield project, where there is nothing to harden yet and the decisions worth taking are architectural rather than defensive.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "saas-launch-crew",
+      "name": "SaaS Launch Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "dotnet-senior-architect",
+        "sql-data-engineer",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "sentry-mcp"
+      ],
+      "for_what": "Taking a multi-tenant SaaS from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate.",
+      "not_for": "A prototype, an internal tool, or anything single-tenant. Four experts on a project with no customers is four opinions nobody has time to reconcile.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    }
+  ],
+  "integrations": [
+    {
+      "schema": 1,
+      "slug": "chrome-devtools-mcp",
+      "name": "Chrome DevTools MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read the console, the network log and a performance trace from a running Chrome, from an agent.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "upstream_version": "1.9.0",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json chrome-devtools '{\"command\":\"npx\",\"args\":[\"-y\",\"chrome-devtools-mcp@1.9.0\"]}'",
+        "codex": "codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@1.9.0",
+        "gemini-cli": "gemini mcp add chrome-devtools npx -y chrome-devtools-mcp@1.9.0"
+      },
+      "permissions_summary": "Attaches to a Chrome instance and reads its console, network traffic and performance traces.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "context7-mcp",
+      "name": "Context7",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Library documentation at the version in use, fetched on demand instead of recalled from training.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/upstash/context7",
+      "upstream_version": "4.1.1",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json context7 '{\"command\":\"npx\",\"args\":[\"-y\",\"@upstash/context7-mcp@4.1.1\"]}'",
+        "codex": "codex mcp add context7 -- npx -y @upstash/context7-mcp@4.1.1",
+        "gemini-cli": "gemini mcp add context7 npx -y @upstash/context7-mcp@4.1.1"
+      },
+      "permissions_summary": "Sends the library name and your query to Context7's service and returns documentation.",
+      "fits": [
+        "software",
+        "docs"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "exa-mcp",
+      "name": "Exa Search MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Web search built for agents: results as content rather than as a list of links to fetch.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/exa-labs/exa-mcp-server",
+      "upstream_version": "3.4.1",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json exa '{\"command\":\"npx\",\"args\":[\"-y\",\"exa-mcp-server@3.4.1\"],\"env\":{\"EXA_API_KEY\":\"$EXA_API_KEY\"}}'",
+        "codex": "codex mcp add exa --env EXA_API_KEY=$EXA_API_KEY -- npx -y exa-mcp-server@3.4.1",
+        "gemini-cli": "gemini mcp add exa -e EXA_API_KEY=$EXA_API_KEY npx -y exa-mcp-server@3.4.1"
+      },
+      "needs_secrets": [
+        "EXA_API_KEY"
+      ],
+      "permissions_summary": "Sends your search query to Exa's service and returns page content.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "figma-mcp",
+      "name": "Figma Context MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read a Figma file's layout and styles as structured data, so generated UI matches the design.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/GLips/Figma-Context-MCP",
+      "upstream_version": "0.13.2",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json figma '{\"command\":\"npx\",\"args\":[\"-y\",\"figma-developer-mcp@0.13.2\",\"--stdio\"],\"env\":{\"FIGMA_API_KEY\":\"$FIGMA_API_KEY\"}}'",
+        "codex": "codex mcp add figma --env FIGMA_API_KEY=$FIGMA_API_KEY -- npx -y figma-developer-mcp@0.13.2 --stdio",
+        "gemini-cli": "gemini mcp add figma -e FIGMA_API_KEY=$FIGMA_API_KEY npx -y figma-developer-mcp@0.13.2 --stdio"
+      },
+      "needs_secrets": [
+        "FIGMA_API_KEY"
+      ],
+      "permissions_summary": "Reads the Figma files the access token can reach, through Figma's API.",
+      "fits": [
+        "design",
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "filesystem-mcp",
+      "name": "Filesystem MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read and write files under directories named on the command line, and nowhere else.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "upstream_version": "2026.8.31",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json filesystem '{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-filesystem@2026.8.31\",\"/path/to/allowed/dir\"]}'",
+        "codex": "codex mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem@2026.8.31 /path/to/allowed/dir",
+        "gemini-cli": "gemini mcp add filesystem npx -y @modelcontextprotocol/server-filesystem@2026.8.31 /path/to/allowed/dir"
+      },
+      "permissions_summary": "Reads and writes every file under the directories passed as arguments, with the privileges of the user running it.",
+      "fits": [
+        "software",
+        "data",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "github-mcp",
+      "name": "GitHub MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Issues, pull requests, Actions and code search on the repositories a token can reach.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/github/github-mcp-server",
+      "upstream_version": "v1.12.2",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json github '{\"type\":\"http\",\"url\":\"https://api.githubcopilot.com/mcp/\",\"headers\":{\"Authorization\":\"Bearer $GITHUB_PERSONAL_ACCESS_TOKEN\"}}'",
+        "gemini-cli": "gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header \"Authorization: Bearer $GITHUB_PERSONAL_ACCESS_TOKEN\""
+      },
+      "needs_secrets": [
+        "GITHUB_PERSONAL_ACCESS_TOKEN"
+      ],
+      "permissions_summary": "Reads and writes every repository the token can reach: issues, pull requests, workflow runs and file contents.",
+      "fits": [
+        "software",
+        "devops",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "memory-mcp",
+      "name": "Memory MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A local knowledge graph an agent writes to and reads back across sessions.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+      "upstream_version": "2026.8.31",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json memory '{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-memory@2026.8.31\"]}'",
+        "codex": "codex mcp add memory -- npx -y @modelcontextprotocol/server-memory@2026.8.31",
+        "gemini-cli": "gemini mcp add memory npx -y @modelcontextprotocol/server-memory@2026.8.31"
+      },
+      "permissions_summary": "Reads and writes a knowledge graph in a local file; reaches nothing else.",
+      "fits": [
+        "software",
+        "research",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "notion-mcp",
+      "name": "Notion MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read and write the Notion pages and databases an integration token has been granted.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/makenotion/notion-mcp-server",
+      "upstream_version": "2.5.2",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json notion '{\"command\":\"npx\",\"args\":[\"-y\",\"@notionhq/notion-mcp-server@2.5.2\"],\"env\":{\"NOTION_TOKEN\":\"$NOTION_TOKEN\"}}'",
+        "codex": "codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2",
+        "gemini-cli": "gemini mcp add notion -e NOTION_TOKEN=$NOTION_TOKEN npx -y @notionhq/notion-mcp-server@2.5.2"
+      },
+      "needs_secrets": [
+        "NOTION_TOKEN"
+      ],
+      "permissions_summary": "Reads and writes the pages and databases explicitly shared with the integration.",
+      "fits": [
+        "docs",
+        "product",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "playwright-mcp",
+      "name": "Playwright MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/microsoft/playwright-mcp",
+      "upstream_version": "0.0.82",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json playwright '{\"command\":\"npx\",\"args\":[\"-y\",\"@playwright/mcp@0.0.82\"]}'",
+        "codex": "codex mcp add playwright -- npx -y @playwright/mcp@0.0.82",
+        "gemini-cli": "gemini mcp add playwright npx -y @playwright/mcp@0.0.82"
+      },
+      "permissions_summary": "Launches a browser on this machine and visits whatever the agent asks it to, including local services.",
+      "fits": [
+        "software",
+        "quality",
+        "design"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "sentry-mcp",
+      "name": "Sentry MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read issues, events and stack traces from Sentry, so an agent debugs from the real error.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/getsentry/sentry-mcp",
+      "upstream_version": "0.39.0",
+      "verified_on": "2026-09-23",
+      "install": {
+        "claude-code": "claude mcp add-json sentry '{\"command\":\"npx\",\"args\":[\"-y\",\"@sentry/mcp-server@0.39.0\"],\"env\":{\"SENTRY_ACCESS_TOKEN\":\"$SENTRY_ACCESS_TOKEN\"}}'",
+        "codex": "codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.39.0",
+        "gemini-cli": "gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.39.0"
+      },
+      "needs_secrets": [
+        "SENTRY_ACCESS_TOKEN"
+      ],
+      "permissions_summary": "Reads issues, events and stack traces from the Sentry organisations the token can reach.",
+      "fits": [
+        "software",
+        "devops",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    }
   ]
 }
