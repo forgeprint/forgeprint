@@ -12,5 +12,6 @@
 /blueprints/dotnet-multitenant-saas-api/ @aliosmanmho
 /blueprints/dotnet-web-api/ @aliosmanmho
 /blueprints/fastapi-service/ @aliosmanmho
+/blueprints/node-cli/ @aliosmanmho
 /blueprints/python-mcp-server/ @aliosmanmho
 /blueprints/ts-mcp-server/ @aliosmanmho

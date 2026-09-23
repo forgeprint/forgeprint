@@ -570,6 +570,63 @@
       "i18n": []
     },
     {
+      "slug": "node-cli",
+      "name": "Node.js CLI",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Command-line tool in TypeScript on Commander, with the parsing tested in-process and a binary that runs from a checkout.",
+      "stack": [
+        "node",
+        "commander"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "cli",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=20"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-mcp-server",
       "name": "Python MCP Server",
       "version": "1.0.0",

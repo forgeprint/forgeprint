@@ -1,0 +1,19 @@
+schema: 1
+slug: node-cli
+name: 'Node.js CLI'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Command-line tool in TypeScript on Commander, with the parsing tested in-process and a binary that runs from a checkout.'
+stack: [node, commander]
+languages: [typescript]
+platforms: [windows, linux, macos]
+distribution: [open-source, internal]
+project_type: cli
+audience: [beginner, intermediate]
+requirements: [ci, testing]
+agents: [claude-code]
+requires_tools: [node>=20]
+deprecated: false
+supersedes: null
