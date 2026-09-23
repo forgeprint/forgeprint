@@ -48,14 +48,24 @@ export interface SkillFolder {
  */
 export function findSkills(root: string): SkillFolder[] {
   const parents = [root, ...listDirectories(repoPaths.blueprintsDir(root))];
-  return parents
+  const inSkillFolders = parents
     .flatMap((parent) => listDirectories(join(parent, 'skills')))
     .map((dir) => ({
       path: relative(root, dir),
       name: dir.split(sep).at(-1) ?? '',
       file: join(dir, 'SKILL.md'),
-    }))
-    .sort((a, b) => a.path.localeCompare(b.path));
+    }));
+
+  // An expert *is* a skill — its SKILL.md is the whole of how it works
+  // (ADR 0012) — so it is held to the format every other skill is held to,
+  // and its name shares the one namespace all skills address each other by.
+  const experts = listDirectories(repoPaths.unitsDir(root, 'experts')).map((dir) => ({
+    path: relative(root, dir),
+    name: dir.split(sep).at(-1) ?? '',
+    file: join(dir, 'SKILL.md'),
+  }));
+
+  return [...inSkillFolders, ...experts].sort((a, b) => a.path.localeCompare(b.path));
 }
 
 /**

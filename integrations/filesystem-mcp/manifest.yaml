@@ -1,0 +1,21 @@
+schema: 1
+slug: filesystem-mcp
+name: 'Filesystem MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Read and write files under directories named on the command line, and nowhere else.'
+kind: mcp
+upstream: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+upstream_version: '2026.8.31'
+verified_on: 2026-09-23
+install:
+  claude-code: 'claude mcp add-json filesystem ''{"command":"npx","args":["-y","@modelcontextprotocol/server-filesystem@2026.8.31","/path/to/allowed/dir"]}'''
+  codex: 'codex mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem@2026.8.31 /path/to/allowed/dir'
+  gemini-cli: 'gemini mcp add filesystem npx -y @modelcontextprotocol/server-filesystem@2026.8.31 /path/to/allowed/dir'
+permissions_summary: 'Reads and writes every file under the directories passed as arguments, with the privileges of the user running it.'
+fits: [software, data, operations]
+agents: [claude-code]
+deprecated: false
+supersedes: null

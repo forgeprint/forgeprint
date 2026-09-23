@@ -1,0 +1,21 @@
+schema: 1
+slug: playwright-mcp
+name: 'Playwright MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.'
+kind: mcp
+upstream: https://github.com/microsoft/playwright-mcp
+upstream_version: '0.0.82'
+verified_on: 2026-09-23
+install:
+  claude-code: 'claude mcp add-json playwright ''{"command":"npx","args":["-y","@playwright/mcp@0.0.82"]}'''
+  codex: 'codex mcp add playwright -- npx -y @playwright/mcp@0.0.82'
+  gemini-cli: 'gemini mcp add playwright npx -y @playwright/mcp@0.0.82'
+permissions_summary: 'Launches a browser on this machine and visits whatever the agent asks it to, including local services.'
+fits: [software, quality, design]
+agents: [claude-code]
+deprecated: false
+supersedes: null

@@ -1,7 +1,7 @@
 schema: 1
 slug: dotnet-multitenant-saas-api
 name: 'Multi-tenant SaaS API'
-version: 1.1.0
+version: 1.2.0
 tier: official
 maintainers: [aliosmanmho]
 summary: 'ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.'
@@ -17,5 +17,13 @@ options:
   database: [postgres, sqlserver]
   tenancy: [shared-db-tenant-column, db-per-tenant]
 requires_tools: [dotnet>=10, docker, curl]
+recommended_experts:
+  - dotnet-senior-architect
+  - sql-data-engineer
+  - security-reviewer
+recommended_crew: saas-launch-crew
+integrations:
+  - github-mcp
+  - sentry-mcp
 deprecated: false
 supersedes: null
