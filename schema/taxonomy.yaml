@@ -48,6 +48,8 @@ stack:
   maui: .NET MAUI
   # JavaScript and TypeScript
   node: Node.js
+  commander: Commander
+  hono: Hono
   express: Express
   fastify: Fastify
   nestjs: NestJS
@@ -59,8 +61,12 @@ stack:
   astro: Astro
   tailwind: Tailwind CSS
   vite: Vite
+  # Go
+  go: Go
+  cobra: Cobra
   # Python
   python: Python
+  typer: Typer
   django: Django
   fastapi: FastAPI
   flask: Flask
