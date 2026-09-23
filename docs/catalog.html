@@ -28,10 +28,15 @@
 
       <section class="catalog">
         <div class="catalog-head">
-          <h2>17 blueprints</h2>
-          <input id="filter" type="search" placeholder="Filter by language, stack, type…" autocomplete="off" aria-label="Filter blueprints" />
+          <div class="tabs" role="tablist" aria-label="What to browse">
+            <button type="button" role="tab" data-kind="blueprint" aria-selected="true">Blueprints <span class="count">17</span></button>
+            <button type="button" role="tab" data-kind="expert" aria-selected="false">Experts <span class="count">5</span></button>
+            <button type="button" role="tab" data-kind="crew" aria-selected="false">Crews <span class="count">2</span></button>
+            <button type="button" role="tab" data-kind="integration" aria-selected="false">Integrations <span class="count">10</span></button>
+          </div>
+          <input id="filter" type="search" placeholder="Filter by language, stack, role…" autocomplete="off" aria-label="Filter the catalog" />
         </div>
-        <div id="cards">
+        <div class="cards" data-kind="blueprint">
         <article class="card" data-terms="astro-content-site astro content site static content site in astro with tailwind, a typed content collection, and tests that assert the built html carries the seo and accessibility work. web typescript astro tailwind seo accessibility ci web linux macos windows open-source free">
           <h3><a href="b/astro-content-site.html">Astro Content Site</a> </h3>
           <p>Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.</p>
@@ -118,6 +123,106 @@
           <p class="tags"><span>TypeScript</span><span>AI agent or MCP server</span></p>
         </article>
 </div>
+        <div class="cards" data-kind="expert" hidden>
+        <article class="card" data-terms="devops-platform-engineer devops platform engineer pin by digest, give the build least privilege, make rollback a tested path, and define the slo before the dashboard. platform-engineer devops senior docker kubernetes terraform infrastructure-plan release-plan runbook slo-definition observability-plan cost-review">
+          <h3><a href="e/devops-platform-engineer.html">DevOps Platform Engineer</a> </h3>
+          <p>Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.</p>
+          <p class="tags"><span>devops</span><span>senior</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        <article class="card" data-terms="dotnet-senior-architect .net senior software architect decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove. software-architect software senior csharp dotnet aspnetcore efcore adr architecture-review c4-diagram api-design-review migration-plan">
+          <h3><a href="e/dotnet-senior-architect.html">.NET Senior Software Architect</a> </h3>
+          <p>Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.</p>
+          <p class="tags"><span>software</span><span>senior</span><span>csharp</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        <article class="card" data-terms="qa-automation-lead qa automation lead test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on. qa-automation-lead quality senior test-plan test-suite evaluation-harness code-review">
+          <h3><a href="e/qa-automation-lead.html">QA Automation Lead</a> </h3>
+          <p>Test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on.</p>
+          <p class="tags"><span>quality</span><span>senior</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        <article class="card" data-terms="security-reviewer security reviewer boundaries first, then authorization. every finding cites a control at a version, or it is an opinion and stays out. security-reviewer security senior security-review threat-model threat-model-review dependency-audit compliance-checklist">
+          <h3><a href="e/security-reviewer.html">Security Reviewer</a> </h3>
+          <p>Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.</p>
+          <p class="tags"><span>security</span><span>senior</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        <article class="card" data-terms="sql-data-engineer sql data engineer model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice. data-engineer data senior sql postgres data-model migration-plan data-quality-report performance-report">
+          <h3><a href="e/sql-data-engineer.html">SQL Data Engineer</a> </h3>
+          <p>Model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice.</p>
+          <p class="tags"><span>data</span><span>senior</span><span>sql</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        </div>
+        <div class="cards" data-kind="crew" hidden>
+        <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer">
+          <h3><a href="c/api-hardening-crew.html">API Hardening Crew</a> </h3>
+          <p class="byline-small">Assembled by @aliosmanmho</p>
+          <p>Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.</p>
+          <p class="tags"><span>security-reviewer</span><span>qa-automation-lead</span><span>devops-platform-engineer</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        <article class="card" data-terms="saas-launch-crew saas launch crew the four specialists a multi-tenant saas needs before its first customer, and the two integrations they all reach for. taking a multi-tenant saas from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate. dotnet-senior-architect sql-data-engineer security-reviewer qa-automation-lead">
+          <h3><a href="c/saas-launch-crew.html">SaaS Launch Crew</a> </h3>
+          <p class="byline-small">Assembled by @aliosmanmho</p>
+          <p>The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.</p>
+          <p class="tags"><span>dotnet-senior-architect</span><span>sql-data-engineer</span><span>security-reviewer</span><span>qa-automation-lead</span></p>
+          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+        </article>
+        </div>
+        <div class="cards" data-kind="integration" hidden>
+        <article class="card" data-terms="chrome-devtools-mcp chrome devtools mcp read the console, the network log and a performance trace from a running chrome, from an agent. mcp software quality">
+          <h3><a href="i/chrome-devtools-mcp.html">Chrome DevTools MCP</a> <span class="tier">mcp</span></h3>
+          <p>Read the console, the network log and a performance trace from a running Chrome, from an agent.</p>
+          <p class="tags"><span>pinned 1.9.0</span><span>software</span><span>quality</span></p>
+        </article>
+        <article class="card" data-terms="context7-mcp context7 library documentation at the version in use, fetched on demand instead of recalled from training. mcp software docs">
+          <h3><a href="i/context7-mcp.html">Context7</a> <span class="tier">mcp</span></h3>
+          <p>Library documentation at the version in use, fetched on demand instead of recalled from training.</p>
+          <p class="tags"><span>pinned 4.1.1</span><span>software</span><span>docs</span></p>
+        </article>
+        <article class="card" data-terms="exa-mcp exa search mcp web search built for agents: results as content rather than as a list of links to fetch. mcp research software marketing">
+          <h3><a href="i/exa-mcp.html">Exa Search MCP</a> <span class="tier">mcp</span></h3>
+          <p>Web search built for agents: results as content rather than as a list of links to fetch.</p>
+          <p class="tags"><span>pinned 3.4.1</span><span>research</span><span>software</span><span>marketing</span><span class="needs-secret">needs 1 secret</span></p>
+        </article>
+        <article class="card" data-terms="figma-mcp figma context mcp read a figma file's layout and styles as structured data, so generated ui matches the design. mcp design software">
+          <h3><a href="i/figma-mcp.html">Figma Context MCP</a> <span class="tier">mcp</span></h3>
+          <p>Read a Figma file's layout and styles as structured data, so generated UI matches the design.</p>
+          <p class="tags"><span>pinned 0.13.2</span><span>design</span><span>software</span><span class="needs-secret">needs 1 secret</span></p>
+        </article>
+        <article class="card" data-terms="filesystem-mcp filesystem mcp read and write files under directories named on the command line, and nowhere else. mcp software data operations">
+          <h3><a href="i/filesystem-mcp.html">Filesystem MCP</a> <span class="tier">mcp</span></h3>
+          <p>Read and write files under directories named on the command line, and nowhere else.</p>
+          <p class="tags"><span>pinned 2026.8.31</span><span>software</span><span>data</span><span>operations</span></p>
+        </article>
+        <article class="card" data-terms="github-mcp github mcp server issues, pull requests, actions and code search on the repositories a token can reach. mcp software devops product">
+          <h3><a href="i/github-mcp.html">GitHub MCP Server</a> <span class="tier">mcp</span></h3>
+          <p>Issues, pull requests, Actions and code search on the repositories a token can reach.</p>
+          <p class="tags"><span>pinned v1.12.2</span><span>software</span><span>devops</span><span>product</span><span class="needs-secret">needs 1 secret</span></p>
+        </article>
+        <article class="card" data-terms="memory-mcp memory mcp a local knowledge graph an agent writes to and reads back across sessions. mcp software research operations">
+          <h3><a href="i/memory-mcp.html">Memory MCP</a> <span class="tier">mcp</span></h3>
+          <p>A local knowledge graph an agent writes to and reads back across sessions.</p>
+          <p class="tags"><span>pinned 2026.8.31</span><span>software</span><span>research</span><span>operations</span></p>
+        </article>
+        <article class="card" data-terms="notion-mcp notion mcp read and write the notion pages and databases an integration token has been granted. mcp docs product operations">
+          <h3><a href="i/notion-mcp.html">Notion MCP</a> <span class="tier">mcp</span></h3>
+          <p>Read and write the Notion pages and databases an integration token has been granted.</p>
+          <p class="tags"><span>pinned 2.5.2</span><span>docs</span><span>product</span><span>operations</span><span class="needs-secret">needs 1 secret</span></p>
+        </article>
+        <article class="card" data-terms="playwright-mcp playwright mcp drive a real browser from an agent: navigate, fill, click and read the accessibility tree. mcp software quality design">
+          <h3><a href="i/playwright-mcp.html">Playwright MCP</a> <span class="tier">mcp</span></h3>
+          <p>Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.</p>
+          <p class="tags"><span>pinned 0.0.82</span><span>software</span><span>quality</span><span>design</span></p>
+        </article>
+        <article class="card" data-terms="sentry-mcp sentry mcp read issues, events and stack traces from sentry, so an agent debugs from the real error. mcp software devops quality">
+          <h3><a href="i/sentry-mcp.html">Sentry MCP</a> <span class="tier">mcp</span></h3>
+          <p>Read issues, events and stack traces from Sentry, so an agent debugs from the real error.</p>
+          <p class="tags"><span>pinned 0.39.0</span><span>software</span><span>devops</span><span>quality</span><span class="needs-secret">needs 1 secret</span></p>
+        </article>
+        </div>
         <p id="nothing" class="muted" hidden>Nothing matches that.</p>
       </section>
 
@@ -133,6 +238,17 @@
         </ul>
         <p class="muted" id="requests-empty">No open requests right now.</p>
         <p class="muted small" id="requests-source">Snapshot from 2026-09-22.</p>
+      </section>
+
+      
+      <section class="ask">
+        <h2>53 roles with no expert yet</h2>
+        <p>
+          The role list is wider than the catalog on purpose. Every name below is
+          a slot somebody could fill — <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">write one</a>
+          and it appears here instead.
+        </p>
+        <p class="tags open-roles"><span>API designer</span><span>Accessibility specialist</span><span>Agent designer</span><span>Analytics engineer</span><span>Application security engineer</span><span>Backend engineer</span><span>Business analyst</span><span>Cloud architect</span><span>Coding mentor</span><span>Compliance officer</span><span>Content strategist</span><span>Contract analyst</span><span>Curriculum designer</span><span>Data protection officer</span><span>Data scientist</span><span>Database administrator</span><span>Design systems lead</span><span>Developer advocate</span><span>Documentation architect</span><span>Embedded engineer</span><span>Financial analyst</span><span>Frontend engineer</span><span>Full-stack engineer</span><span>Game developer</span><span>Growth marketer</span><span>Incident commander</span><span>Instructional designer</span><span>Literature reviewer</span><span>MLOps engineer</span><span>Machine learning engineer</span><span>Mobile engineer</span><span>Observability engineer</span><span>Operations manager</span><span>Penetration tester</span><span>Performance engineer</span><span>Pricing analyst</span><span>Privacy engineer</span><span>Product manager</span><span>Project manager</span><span>Prompt engineer</span><span>Release manager</span><span>Research engineer</span><span>Revenue analyst</span><span>SEO specialist</span><span>Site reliability engineer</span><span>Supply chain analyst</span><span>Support engineer</span><span>Technical program manager</span><span>Technical writer</span><span>Test engineer</span><span>UI designer</span><span>UX designer</span><span>UX researcher</span></p>
       </section>
 
       <section class="contributors">
@@ -153,18 +269,37 @@
     <script>
 const filter = document.getElementById('filter');
       const nothing = document.getElementById('nothing');
-      if (filter) {
-        filter.addEventListener('input', () => {
-          const needle = filter.value.trim().toLowerCase();
-          let shown = 0;
-          for (const card of document.querySelectorAll('.card')) {
+      const panels = Array.from(document.querySelectorAll('.cards'));
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+      // One kind at a time. Without JavaScript every panel is visible, which
+      // makes for a longer page and not a broken one.
+      function apply() {
+        const active = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+        const kind = active ? active.dataset.kind : 'blueprint';
+        const needle = filter ? filter.value.trim().toLowerCase() : '';
+        let shown = 0;
+        for (const panel of panels) {
+          const visible = panel.dataset.kind === kind;
+          panel.hidden = !visible;
+          if (!visible) continue;
+          for (const card of panel.querySelectorAll('.card')) {
             const match = needle === '' || (card.dataset.terms || '').includes(needle);
             card.hidden = !match;
             if (match) shown += 1;
           }
-          if (nothing) nothing.hidden = shown > 0;
+        }
+        if (nothing) nothing.hidden = shown > 0;
+      }
+
+      for (const tab of tabs) {
+        tab.addEventListener('click', () => {
+          for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+          apply();
         });
       }
+      if (tabs.length > 0) apply();
+      if (filter) filter.addEventListener('input', apply);
 
       // The requests come from the issues API, read by the browser with no
       // token: the alternative was a workflow with write access to this

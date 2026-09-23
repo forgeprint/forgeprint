@@ -12,6 +12,14 @@
  */
 
 import type { BlueprintRequest, CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
+import {
+  crewCards,
+  expertCards,
+  integrationCards,
+  requestedExperts,
+  unitPages,
+  type IndexWithUnits,
+} from './units.js';
 
 export const REQUEST_URL =
   'https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml';
@@ -53,6 +61,7 @@ export function renderSite(index: CatalogIndex, context: SiteContext = NOTHING):
       path: `b/${entry.slug}.html`,
       html: renderBlueprintPage(entry, index.taxonomy),
     })),
+    ...unitPages(index as IndexWithUnits, page),
   ];
 }
 
@@ -60,6 +69,13 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
   const blueprints = [...index.blueprints].sort((a, b) => a.slug.localeCompare(b.slug));
   const cards = blueprints.map((entry) => card(entry, index.taxonomy)).join('\n');
   const empty = blueprints.length === 0;
+  const units = index as IndexWithUnits;
+  const counts = {
+    blueprint: blueprints.length,
+    expert: (units.experts ?? []).length,
+    crew: (units.crews ?? []).length,
+    integration: (units.integrations ?? []).length,
+  };
 
   return page({
     title: 'Forgeprint',
@@ -85,10 +101,21 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
 
       <section class="catalog">
         <div class="catalog-head">
-          <h2>${blueprints.length} blueprint${blueprints.length === 1 ? '' : 's'}</h2>
-          <input id="filter" type="search" placeholder="Filter by language, stack, type…" autocomplete="off" aria-label="Filter blueprints" />
+          <div class="tabs" role="tablist" aria-label="What to browse">
+${tabs(counts)}
+          </div>
+          <input id="filter" type="search" placeholder="Filter by language, stack, role…" autocomplete="off" aria-label="Filter the catalog" />
         </div>
-        ${empty ? '<p class="muted">The catalog is empty.</p>' : `<div id="cards">\n${cards}\n</div>`}
+        ${
+          empty
+            ? '<p class="muted">The catalog is empty.</p>'
+            : `<div class="cards" data-kind="blueprint">
+${cards}
+</div>`
+        }
+${panel('expert', expertCards(units))}
+${panel('crew', crewCards(units))}
+${panel('integration', integrationCards(units))}
         <p id="nothing" class="muted" hidden>Nothing matches that.</p>
       </section>
 
@@ -101,23 +128,44 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
         ${requestList(context.requests, context.requestsFrom)}
       </section>
 
+      ${requestedExperts(units)}
+
       ${contributors(context.featured)}
     `,
     script: `
       const filter = document.getElementById('filter');
       const nothing = document.getElementById('nothing');
-      if (filter) {
-        filter.addEventListener('input', () => {
-          const needle = filter.value.trim().toLowerCase();
-          let shown = 0;
-          for (const card of document.querySelectorAll('.card')) {
+      const panels = Array.from(document.querySelectorAll('.cards'));
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+      // One kind at a time. Without JavaScript every panel is visible, which
+      // makes for a longer page and not a broken one.
+      function apply() {
+        const active = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+        const kind = active ? active.dataset.kind : 'blueprint';
+        const needle = filter ? filter.value.trim().toLowerCase() : '';
+        let shown = 0;
+        for (const panel of panels) {
+          const visible = panel.dataset.kind === kind;
+          panel.hidden = !visible;
+          if (!visible) continue;
+          for (const card of panel.querySelectorAll('.card')) {
             const match = needle === '' || (card.dataset.terms || '').includes(needle);
             card.hidden = !match;
             if (match) shown += 1;
           }
-          if (nothing) nothing.hidden = shown > 0;
+        }
+        if (nothing) nothing.hidden = shown > 0;
+      }
+
+      for (const tab of tabs) {
+        tab.addEventListener('click', () => {
+          for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+          apply();
         });
       }
+      if (tabs.length > 0) apply();
+      if (filter) filter.addEventListener('input', apply);
 
       // The requests come from the issues API, read by the browser with no
       // token: the alternative was a workflow with write access to this
@@ -436,6 +484,30 @@ function card(entry: IndexEntry, taxonomy: Taxonomy): string {
         </article>`;
 }
 
+/** One tab per kind. A kind with nothing in it does not get a tab. */
+function tabs(counts: Record<string, number>): string {
+  const labels: Record<string, string> = {
+    blueprint: 'Blueprints',
+    expert: 'Experts',
+    crew: 'Crews',
+    integration: 'Integrations',
+  };
+  return Object.entries(counts)
+    .filter(([, count]) => count > 0)
+    .map(
+      ([kind, count], at) =>
+        `            <button type="button" role="tab" data-kind="${escape(kind)}" aria-selected="${at === 0 ? 'true' : 'false'}">${escape(labels[kind] ?? kind)} <span class="count">${String(count)}</span></button>`,
+    )
+    .join('\n');
+}
+
+function panel(kind: string, cards: string): string {
+  if (cards.trim() === '') return '';
+  return `        <div class="cards" data-kind="${escape(kind)}" hidden>
+${cards}
+        </div>`;
+}
+
 function tier(name: string): string {
   return name === 'community' ? '' : `<span class="tier ${escape(name)}">${escape(name)}</span>`;
 }
@@ -536,7 +608,6 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .catalog-head { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
 .catalog-head h2 { margin-bottom: 0; }
 #filter { flex: 1 1 14rem; padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); font: inherit; font-size: 0.95rem; }
-#cards { display: grid; gap: 0.9rem; margin-top: 1rem; }
 .card { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1rem 1.1rem; background: var(--panel); }
 .card p { margin: 0.35rem 0 0; color: var(--muted); }
 .card.deprecated { opacity: 0.6; }
@@ -562,4 +633,32 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .people { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.75rem; }
 .contributors .person { flex-direction: column; gap: 0.45rem; font-size: 0.9rem; }
 footer { margin-top: 4rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+
+/* Tabs. One kind at a time; without JavaScript every panel shows, which is a
+   longer page and not a broken one. */
+.tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tabs button {
+  font: inherit; font-size: 0.9rem; color: var(--muted); cursor: pointer;
+  background: none; border: 1px solid transparent; border-radius: 999px;
+  padding: 0.35rem 0.8rem; min-height: 2.75rem;
+  transition: color 150ms ease-out, border-color 150ms ease-out;
+}
+.tabs button:hover { color: var(--fg); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tabs button[aria-selected='true'] { color: var(--fg); border-color: var(--accent); }
+.tabs .count { color: var(--muted); font-variant-numeric: tabular-nums; }
+.tabs button[aria-selected='true'] .count { color: var(--accent); }
+.cards { display: grid; gap: 0.9rem; margin-top: 1rem; }
+
+/* Agent badges. Two states only — tested, or unknown — and the state is
+   carried by the mark and the label as well as by the colour. */
+.agents { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.6rem 0 0; }
+.agent {
+  font-size: 0.75rem; border-radius: 999px; padding: 0.05rem 0.5rem;
+  border: 1px solid var(--line); color: var(--muted);
+}
+.agent.tested { border-color: var(--accent); color: var(--accent); }
+.byline-small { color: var(--muted); font-size: 0.85rem; margin: 0 0 0.3rem; }
+.needs-secret { border-color: var(--accent) !important; color: var(--accent) !important; }
+.open-roles span { font-size: 0.75rem; color: var(--muted); }
 `;

@@ -57,7 +57,8 @@ describe('renderSite', () => {
 describe('the index page', () => {
   it('counts the catalog and lists every blueprint', () => {
     const html = renderIndexPage(INDEX);
-    assert.match(html, /2 blueprints/);
+    // The count moved into the tab when the catalog gained three more kinds.
+    assert.match(html, /Blueprints <span class="count">2<\/span>/);
     assert.match(html, /b\/sample-api\.html/);
     assert.match(html, /b\/old-api\.html/);
   });

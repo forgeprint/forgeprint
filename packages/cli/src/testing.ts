@@ -145,5 +145,5 @@ export function regenerate(root: string): void {
   } catch {
     blueprints = [];
   }
-  writeFileSync(repoPaths.index(root), renderIndex(blueprints, taxonomy), 'utf8');
+  writeFileSync(repoPaths.index(root), renderIndex(blueprints, taxonomy, root), 'utf8');
 }

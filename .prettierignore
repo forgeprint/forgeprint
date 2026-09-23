@@ -7,6 +7,9 @@ schema/manifest.schema.json
 docs/catalog.html
 docs/forgeprint.css
 docs/b/
+docs/e/
+docs/c/
+docs/i/
 
 # Maintainer-owned documents: formatting changes would churn the diff.
 CLAUDE.md
