@@ -1,0 +1,19 @@
+schema: 1
+slug: python-background-worker
+name: 'Python Background Worker'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Celery worker with Redis as the broker, retry and acknowledgement decided explicitly, and a check that puts a real job through a real worker.'
+stack: [python, celery, redis, docker]
+languages: [python]
+platforms: [linux, docker]
+distribution: [open-source, internal, saas]
+project_type: data
+audience: [intermediate]
+requirements: [background-jobs, ci, containerization]
+agents: [claude-code]
+requires_tools: [python>=3.10, docker]
+deprecated: false
+supersedes: null
