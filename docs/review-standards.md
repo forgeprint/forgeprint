@@ -53,6 +53,22 @@ roadmap carries the reminder.
 | [ASP.NET Core security documentation](https://learn.microsoft.com/aspnet/core/security/) | current at check | 2026-09-22 | Authentication and authorization, data protection, and the framework's own guidance on secrets. The `dotnet-*` blueprints are reviewed against it rather than against general advice |
 | [.NET secrets guidance](https://learn.microsoft.com/aspnet/core/security/app-secrets)    | current at check | 2026-09-22 | Where configuration belongs, and why a connection string is never in a committed file                                                                                                |
 
+## Accessibility and the web
+
+| Reference                                                    | Version                                                       | Checked    | What it is used for here                                                                                                                                                                                                                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/)    | **2.2**, W3C Recommendation 2023-10-05, updated 2024-12-12    | 2026-09-23 | For any blueprint claiming `requirements: accessibility`. A finding cites the success criterion, not "WCAG": 3.1.1 Language of Page, 1.1.1 Non-text Content, 2.4.1 Bypass Blocks, 1.4.3 Contrast, 2.4.3 Focus Order. Level AA is the bar unless a blueprint says otherwise |
+| [WCAG 3.0](https://www.w3.org/TR/wcag-3.0/)                  | Working Draft, last published 2026-09-10 — **not** a standard | 2026-09-23 | Not used in a review. Recorded so nobody cites a draft as though it were current: a Candidate Recommendation is anticipated in 2027 and Recommendation years later, after which it coexists with 2.2 rather than replacing it                                              |
+| [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) | current at check                                              | 2026-09-23 | Where a blueprint hand-builds a widget. The first question is whether it should have used a native element instead — most accessibility findings in a component are a `<div>` doing a `<button>`'s job                                                                     |
+
+**What a static check cannot reach.** A blueprint may assert the language
+attribute, the heading count, a skip link and the presence of `alt` by reading
+its own built HTML. It cannot assert contrast, focus order, keyboard traps, or
+whether alt text describes the image. A blueprint that claims `accessibility`
+and verifies only the first group is not wrong to claim it — it is wrong to
+claim it silently. The review asks whether the gap is disclosed where a reader
+looks, and treats an undisclosed gap as the finding.
+
 ## Architecture
 
 | Reference                                                                                           | Version            | Checked    | What it is used for here                                                                                                                                            |

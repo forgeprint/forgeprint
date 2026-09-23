@@ -54,10 +54,22 @@ A generic checklist produces generic findings. Derive it:
 | `project_type: agent`              | OWASP LLM 2025 and Agentic 2026, plus the MCP specification's security section                   |
 | `platforms: [docker]`              | The same CIS scope, plus what the container is allowed to reach                                  |
 | `requirements: [ci]`               | SSDF and SLSA: pinned actions, least-privilege permissions, what the build trusts                |
+| `requirements: [accessibility]`    | WCAG 2.2 by success criterion — and whether what the blueprint verifies is as wide as the word   |
+| `requirements: [seo]`              | Whether the claim is tested against the built output rather than against the templates           |
+| `project_type: web`                | What reaches the browser: third-party scripts, what they see, and what the reader gets with none |
 
 Whatever a blueprint does **not** claim is not a finding. A blueprint without
 `auth` is not missing authentication; it is a blueprint that says it does not
 do authentication, and `overview.md` has to say so under "What it is NOT for".
+
+The mirror of that rule: a claim wider than its verification **is** a finding,
+because `resolve` matches on `requirements` and sends people here on the
+strength of the word. `accessibility` is where this bites first — the part a
+build can assert (language, heading count, a skip link, `alt` present) is a
+fraction of what the word promises, and contrast, focus order and whether the
+alt text describes anything are invisible to it. Ask where the gap is
+disclosed. Disclosed in `overview.md` and in the tests is a `medium` worth
+recording; undisclosed is the finding itself.
 
 ## 3. The architecture questions
 
