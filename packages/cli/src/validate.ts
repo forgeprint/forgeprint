@@ -1,5 +1,12 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, sep } from 'node:path';
+import {
+  hasAgentRegistry,
+  loadAgentRegistry,
+  staleAgents,
+  STALE_AFTER_DAYS,
+  vocabularyMismatches,
+} from './agents.js';
 import { renderCodeowners } from './build-codeowners.js';
 import { renderIndex } from './build-index.js';
 import { buildManifestJsonSchema } from './build-schema.js';
@@ -27,6 +34,14 @@ export interface ValidationReport {
   readonly ok: boolean;
   readonly checked: number;
   readonly problems: readonly Problem[];
+  /**
+   * Things that are true but are nobody's pull request to fix.
+   *
+   * A registry entry going stale is a fact about the calendar. Failing an
+   * unrelated contributor's pull request over it would teach everybody to
+   * ignore a red build, so it is printed and the build stays green.
+   */
+  readonly warnings: readonly Problem[];
 }
 
 /**
@@ -35,11 +50,12 @@ export interface ValidationReport {
  */
 export function validateCatalog(root: string): ValidationReport {
   const problems: Problem[] = [];
+  const warnings: Problem[] = [];
   let taxonomy: Taxonomy;
   try {
     taxonomy = loadTaxonomy(root);
   } catch (error) {
-    return { ok: false, checked: 0, problems: [{ message: describeError(error) }] };
+    return { ok: false, checked: 0, problems: [{ message: describeError(error) }], warnings: [] };
   }
 
   const slugs = listBlueprintSlugs(root);
@@ -104,8 +120,41 @@ export function validateCatalog(root: string): ValidationReport {
     problems.push({ message: `${problem.file}: ${problem.message}` });
   }
 
+  const registry = checkAgentRegistry(root, taxonomy);
+  problems.push(...registry.problems);
+  warnings.push(...registry.warnings);
+
   problems.push(...generatedFileProblems(root, blueprints, taxonomy));
-  return { ok: problems.length === 0, checked: slugs.length, problems };
+  return { ok: problems.length === 0, checked: slugs.length, problems, warnings };
+}
+
+/**
+ * The agent registry against the vocabulary that derives from it (ADR 0013).
+ *
+ * A repository without a registry is not an error: the file arrived after the
+ * catalog did, and a fixture that predates it should still validate.
+ */
+function checkAgentRegistry(
+  root: string,
+  taxonomy: Taxonomy,
+  today: Date = new Date(),
+): { problems: Problem[]; warnings: Problem[] } {
+  if (!hasAgentRegistry(root)) return { problems: [], warnings: [] };
+  let registry: ReturnType<typeof loadAgentRegistry>;
+  try {
+    registry = loadAgentRegistry(root);
+  } catch (error) {
+    return { problems: [{ message: describeError(error) }], warnings: [] };
+  }
+  const problems: Problem[] = vocabularyMismatches(registry, taxonomy).map((message) => ({
+    message: `schema/agents.yaml: ${message}`,
+  }));
+  const warnings: Problem[] = staleAgents(registry, today).map((agent) => ({
+    message:
+      `schema/agents.yaml: "${agent.id}" was last checked on ${agent.last_checked}, ` +
+      `more than ${STALE_AFTER_DAYS} days ago — re-read ${agent.docs}`,
+  }));
+  return { problems, warnings };
 }
 
 /**

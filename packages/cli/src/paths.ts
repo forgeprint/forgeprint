@@ -24,6 +24,7 @@ export function findRepoRoot(startDir: string = process.cwd()): string {
 
 export const repoPaths = {
   taxonomy: (root: string): string => join(root, 'schema', 'taxonomy.yaml'),
+  agents: (root: string): string => join(root, 'schema', 'agents.yaml'),
   manifestSchema: (root: string): string => join(root, 'schema', 'manifest.schema.json'),
   blueprintsDir: (root: string): string => join(root, 'blueprints'),
   blueprintDir: (root: string, slug: string): string => join(root, 'blueprints', slug),

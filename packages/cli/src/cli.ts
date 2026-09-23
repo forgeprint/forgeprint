@@ -51,6 +51,10 @@ export function createProgram(): Command {
     .action(() => {
       const root = rootOf();
       const report = validateCatalog(root);
+      for (const warning of report.warnings) {
+        const where = warning.blueprint === undefined ? '' : `${warning.blueprint}: `;
+        console.error(`warn   ${where}${warning.message}`);
+      }
       for (const problem of report.problems) {
         const where = problem.blueprint === undefined ? '' : `${problem.blueprint}: `;
         console.error(`error  ${where}${problem.message}`);

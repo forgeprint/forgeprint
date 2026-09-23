@@ -246,10 +246,13 @@
         "type": "string",
         "enum": [
           "claude-code",
+          "cline",
           "codex",
           "copilot-cli",
           "cursor",
           "gemini-cli",
+          "kiro",
+          "opencode",
           "windsurf"
         ]
       },

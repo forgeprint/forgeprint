@@ -281,10 +281,13 @@
     },
     "agents": {
       "claude-code": "Claude Code",
-      "codex": "Codex",
-      "copilot-cli": "Copilot CLI",
+      "cline": "Cline",
+      "codex": "Codex CLI",
+      "copilot-cli": "GitHub Copilot CLI",
       "cursor": "Cursor",
       "gemini-cli": "Gemini CLI",
+      "kiro": "Kiro",
+      "opencode": "OpenCode",
       "windsurf": "Windsurf"
     },
     "tier": {

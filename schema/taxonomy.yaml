@@ -351,12 +351,20 @@ integration_kind:
   connector: Connector
 
 # Coding agents a blueprint has been exercised with.
+#
+# Derived from schema/agents.yaml: the registry is where an agent's context
+# files, MCP support and install command are recorded, and `forgeprint validate`
+# refuses the two lists to drift apart (ADR 0013). Adding an agent means adding
+# a verified registry entry, not a line here.
 agents:
   claude-code: Claude Code
-  codex: Codex
-  copilot-cli: Copilot CLI
+  cline: Cline
+  codex: Codex CLI
+  copilot-cli: GitHub Copilot CLI
   cursor: Cursor
   gemini-cli: Gemini CLI
+  kiro: Kiro
+  opencode: OpenCode
   windsurf: Windsurf
 
 # Trust level. `verified` requires a maintainer to have run the setup; `official`
