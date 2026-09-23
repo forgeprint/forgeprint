@@ -1,0 +1,9 @@
+{
+  "name": "crew-author",
+  "description": "Assemble a named package of experts and integrations as a Forgeprint crew.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Forgeprint",
+    "url": "https://github.com/forgeprint/forgeprint"
+  }
+}

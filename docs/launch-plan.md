@@ -275,7 +275,7 @@ There is no central registry, no approval, and no listing process: a
 marketplace is a file in a repository, and users add it directly. So this was
 not a submission but a feature to ship, and it is shipped.
 
-`.claude-plugin/marketplace.json` offers both catalog skills as plugins, each
+`.claude-plugin/marketplace.json` offers the catalog skills as plugins, each
 with its own `.claude-plugin/plugin.json`. The skill folders keep their
 `SKILL.md` at the plugin root, which the documented single-skill shortcut
 loads as that plugin's only skill — no duplicated files, and the same folders
@@ -327,3 +327,33 @@ step and every verification.**
 
 Link the site, not the repository — the site shows the catalog and the install
 line, and the repository is one click further.
+
+---
+
+## 12. Per-agent channels
+
+_Added with ADR 0013. Forgeprint is not a Claude Code product; Claude Code is
+the first client verified end to end, and the channels should say so._
+
+Nine agents are registered in `schema/agents.yaml`. Each has a place where its
+users look for context files, and none of them is the MCP registries above.
+
+| Agent               | Channel                         | What to post                                                                                                                              |
+| ------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Cursor              | `PatrickJS/awesome-cursorrules` | That `forgeprint render --agent cursor` writes a `.cursor/rules/*.mdc` with the frontmatter Cursor needs — the rule file, not the catalog |
+| GitHub Copilot      | `github/awesome-copilot`        | The generated `.github/copilot-instructions.md` for one blueprint                                                                         |
+| Gemini CLI          | Gemini CLI extensions           | The MCP server, and the `context.fileName` note — `AGENTS.md` works there only once it is added to that setting                           |
+| Cline               | Cline marketplace               | The MCP server                                                                                                                            |
+| OpenCode, Codex CLI | Their own registries            | The MCP server; both read `AGENTS.md` directly                                                                                            |
+| Windsurf, Kiro      | Their own docs channels         | The rendered rule file, and the 12,000-character cap Windsurf truncates at                                                                |
+
+**The honest line, and it leads.** `agents[]` in a manifest means somebody ran
+it with that agent. Today every entry claims one agent. Posting to a channel
+for an agent nobody has verified is a claim the catalog cannot back, so each
+of these waits for a recorded `agent-verification` pull request — which is
+also the cheapest way for somebody in that community to contribute.
+
+**Materials per agent**, when the verification exists: one command, one
+screenshot of the file it wrote, and the sentence about what `render` is for —
+content written once, agent-specific files generated, never a hand-written
+copy per agent.

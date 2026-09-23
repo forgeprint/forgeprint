@@ -1,6 +1,6 @@
 {
   "name": "forgeprint",
-  "description": "The skills behind the Forgeprint catalog: writing a blueprint, and reviewing one.",
+  "description": "The skills behind the Forgeprint catalog: writing a blueprint, an expert or a crew, and reviewing one.",
   "owner": {
     "name": "Forgeprint",
     "url": "https://github.com/forgeprint"
@@ -15,6 +15,16 @@
       "name": "blueprint-review",
       "source": "./skills/blueprint-review",
       "description": "Review a blueprint contribution for duplication and quality, and reach one verdict."
+    },
+    {
+      "name": "crew-author",
+      "source": "./skills/crew-author",
+      "description": "Assemble a named package of experts and integrations as a Forgeprint crew."
+    },
+    {
+      "name": "expert-author",
+      "source": "./skills/expert-author",
+      "description": "Turn how somebody actually works into a Forgeprint expert that passes the quality gate."
     }
   ]
 }

@@ -18,6 +18,32 @@ wrong.
 
 ---
 
+## Four things you can contribute
+
+The catalog answers three questions, and each has its own unit (ADR 0012). One
+folder is one contribution, whichever kind it is.
+
+| Kind            | The question it answers             | Folder                 | Skill to start from                                    |
+| --------------- | ----------------------------------- | ---------------------- | ------------------------------------------------------ |
+| **Blueprint**   | What are you building?              | `blueprints/<slug>/`   | [`blueprint-author`](skills/blueprint-author/SKILL.md) |
+| **Expert**      | How should the agent work?          | `experts/<slug>/`      | [`expert-author`](skills/expert-author/SKILL.md)       |
+| **Crew**        | Who belongs together on this job?   | `crews/<slug>/`        | [`crew-author`](skills/crew-author/SKILL.md)           |
+| **Integration** | How do I install this tool, safely? | `integrations/<slug>/` | —                                                      |
+
+Two smaller contributions are worth knowing about before you write anything
+large:
+
+- **Agent verification.** You ran an existing entry with an agent that is not on
+  its list. Add it to `agents[]`, bump the version, and put the evidence in the
+  pull request. `agents[]` means _tested_, so the evidence is the whole review.
+- **An empty role.** The site publishes every role in the taxonomy with no
+  expert behind it. The list is long on purpose — the vocabulary is wider than
+  the catalog so an empty role reads as a contribution call. Pick one you
+  actually do.
+
+Everything below is about blueprints unless it says otherwise; the three other
+kinds have their rules in the skills above and in CLAUDE.md §3.1b.
+
 ## What a blueprint is
 
 One folder under `blueprints/` that gives a coding agent everything it needs to
@@ -183,21 +209,24 @@ pnpm run build
 pnpm forgeprint validate
 ```
 
-| Command                             | What it does                                     | Available |
-| ----------------------------------- | ------------------------------------------------ | --------- |
-| `pnpm forgeprint validate`          | schema, taxonomy, required files, catalog rules  | now       |
-| `pnpm forgeprint build-index`       | regenerate `docs/index.json`                     | now       |
-| `pnpm forgeprint build-schema`      | regenerate `schema/manifest.schema.json`         | now       |
-| `pnpm forgeprint build-codeowners`  | regenerate `.github/CODEOWNERS`                  | now       |
-| `pnpm forgeprint build-requests`    | regenerate `docs/requests.json` from open issues | now       |
-| `pnpm run build-site`               | regenerate the site in `docs/`                   | now       |
-| `pnpm forgeprint similarity <slug>` | duplicate report against the closest blueprint   | now       |
-| `pnpm forgeprint similarity --all`  | the same, for every blueprint                    | now       |
-| `pnpm forgeprint lint-setup <slug>` | setup.md structure and safety rules              | now       |
-| `pnpm forgeprint lint-setup --all`  | the same, for every blueprint                    | now       |
-| `pnpm forgeprint test-setup <slug>` | run the recipe for real and verify every step    | now       |
-| `pnpm forgeprint test-setup --all`  | the same, one option combination per blueprint   | now       |
-| `... --changed-since main`          | only the blueprints your branch changed          | now       |
+| Command                                      | What it does                                     | Available |
+| -------------------------------------------- | ------------------------------------------------ | --------- |
+| `pnpm forgeprint validate`                   | schema, taxonomy, required files, catalog rules  | now       |
+| `pnpm forgeprint similarity --expert <slug>` | the duplicate report, for an expert              | now       |
+| `pnpm forgeprint render-check`               | every entry renders for every registered agent   | now       |
+| `pnpm forgeprint get <slug> --agent <id>`    | write an entry to disk without an MCP client     | now       |
+| `pnpm forgeprint build-index`                | regenerate `docs/index.json`                     | now       |
+| `pnpm forgeprint build-schema`               | regenerate `schema/manifest.schema.json`         | now       |
+| `pnpm forgeprint build-codeowners`           | regenerate `.github/CODEOWNERS`                  | now       |
+| `pnpm forgeprint build-requests`             | regenerate `docs/requests.json` from open issues | now       |
+| `pnpm run build-site`                        | regenerate the site in `docs/`                   | now       |
+| `pnpm forgeprint similarity <slug>`          | duplicate report against the closest blueprint   | now       |
+| `pnpm forgeprint similarity --all`           | the same, for every blueprint                    | now       |
+| `pnpm forgeprint lint-setup <slug>`          | setup.md structure and safety rules              | now       |
+| `pnpm forgeprint lint-setup --all`           | the same, for every blueprint                    | now       |
+| `pnpm forgeprint test-setup <slug>`          | run the recipe for real and verify every step    | now       |
+| `pnpm forgeprint test-setup --all`           | the same, one option combination per blueprint   | now       |
+| `... --changed-since main`                   | only the blueprints your branch changed          | now       |
 
 `docs/index.json`, `schema/manifest.schema.json` and the site under `docs/`
 are generated **and committed**. After changing a blueprint or the taxonomy, run the matching
