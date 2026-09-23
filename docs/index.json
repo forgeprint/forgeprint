@@ -1914,6 +1914,51 @@
     },
     {
       "schema": 1,
+      "slug": "product-manager",
+      "name": "Product Manager",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "product-manager",
+      "domain": "product",
+      "seniority": "senior",
+      "deliverables": [
+        "product-brief",
+        "user-story-set",
+        "roadmap",
+        "research-summary"
+      ],
+      "checklists": [
+        "problem-first",
+        "measurable",
+        "ready-to-build"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "technical-writer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/measurable.md",
+        "checklists/problem-first.md",
+        "checklists/ready-to-build.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "qa-automation-lead",
       "name": "QA Automation Lead",
       "version": "1.0.0",
@@ -2060,6 +2105,50 @@
         "checklists/migration-safety.md",
         "checklists/query-performance.md",
         "checklists/schema-design.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "technical-writer",
+      "name": "Technical Writer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "technical-writer",
+      "domain": "docs",
+      "seniority": "senior",
+      "deliverables": [
+        "documentation-set",
+        "tutorial",
+        "content-outline",
+        "research-summary"
+      ],
+      "checklists": [
+        "document-type",
+        "accuracy",
+        "deletion"
+      ],
+      "pairs_with": [
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/accuracy.md",
+        "checklists/deletion.md",
+        "checklists/document-type.md",
         "manifest.yaml",
         "overview.md",
         "references.md"

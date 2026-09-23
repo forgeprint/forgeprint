@@ -1,6 +1,6 @@
 ---
 name: catalog-research
-description: Decide what the Forgeprint catalog should hold next, from evidence rather than taste. Use when choosing which blueprint to write or commission, when triaging blueprint requests, when asked "what is missing from the catalog", or before opening a good-first-blueprint issue.
+description: Decide what the Forgeprint catalog should hold next — blueprints and experts — from evidence rather than taste. Use when choosing which blueprint or expert to write or commission, when triaging requests, when asked "what is missing from the catalog", or before opening a good-first issue.
 license: CC-BY-4.0
 ---
 
@@ -144,6 +144,49 @@ Nothing is drafted before the core maintainer picks it from the candidate list.
 Research produces candidates; picking is not research (CLAUDE.md §10).
 
 ---
+
+## 5. Roles, which are the same question about a different unit
+
+The taxonomy holds 58 roles and the catalog fills a handful. The role list is
+deliberately wider than the content, so **an empty role is not a gap, it is a
+slot** — and the question is which empty ones have evidence rather than which
+sound important (ADR 0012).
+
+The bar, and it is narrower than it looks:
+
+> An expert is worth writing when somebody is already asking an agent to do
+> that job and getting an unopinionated answer. Not when the role is important.
+
+Almost every role is important. That is why the bar is the first half.
+
+**Where the evidence is:**
+
+1. **The open-roles list on the site**, and the issues opened against it.
+   Demand stated by the person who has it beats demand inferred from a survey,
+   every time. Read this first.
+2. **Surveys of what people actually use agents for.** DORA's annual report is
+   the usable one because it names task categories rather than sentiment. Take
+   the task list, not the headline number.
+3. **What the existing experts defer to.** Every `references.md` has a
+   "deferred to elsewhere" section naming a role nobody has filled. Those are
+   gaps the catalog found by using itself, which is the strongest signal
+   available short of a request.
+
+**Two filters, both of which reject most candidates:**
+
+- **Is it checkable?** An expert has to be able to name what it produces and
+  what it checks, each row citing a source. A role whose expertise is taste —
+  and several are — cannot pass the quality gate, and writing one anyway
+  produces the persona this catalog refuses.
+- **Can anybody here verify it?** Outside software, usually not. That entry
+  gets `community` and `provenance: generated`, says so on its page, and never
+  `official` (ADR 0011). If that sounds too weak to be worth publishing, do not
+  publish it.
+
+Write the round up as a dated report under `docs/research/`, the way the
+blueprint demand report is written: the numbers with their sources and dates,
+what follows, **and what the round deliberately did not do and why**. The last
+section is the one that keeps the next round honest.
 
 ## When to run this
 

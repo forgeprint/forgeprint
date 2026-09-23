@@ -1,0 +1,24 @@
+schema: 1
+slug: product-manager
+name: 'Product Manager'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built.'
+role: product-manager
+domain: product
+seniority: senior
+deliverables:
+  - product-brief
+  - user-story-set
+  - roadmap
+  - research-summary
+checklists:
+  - problem-first
+  - measurable
+  - ready-to-build
+pairs_with: [qa-automation-lead, technical-writer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
