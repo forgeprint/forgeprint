@@ -60,6 +60,7 @@ stack:
   tailwind: Tailwind CSS
   vite: Vite
   # Python
+  python: Python
   django: Django
   fastapi: FastAPI
   flask: Flask
