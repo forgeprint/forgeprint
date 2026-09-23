@@ -147,12 +147,147 @@
       "monorepo": "Monorepo layout",
       "migrations": "Database migrations"
     },
+    "domains": {
+      "software": "Software engineering",
+      "data": "Data and analytics",
+      "ai": "AI and machine learning",
+      "security": "Security",
+      "devops": "DevOps and platform",
+      "quality": "Quality engineering",
+      "product": "Product management",
+      "design": "Design",
+      "docs": "Technical writing",
+      "research": "Research",
+      "finance": "Finance and analytics",
+      "legal": "Legal and compliance",
+      "education": "Education and training",
+      "marketing": "Marketing",
+      "operations": "Operations",
+      "support": "Customer support"
+    },
+    "roles": {
+      "software-architect": "Software architect",
+      "backend-engineer": "Backend engineer",
+      "frontend-engineer": "Frontend engineer",
+      "fullstack-engineer": "Full-stack engineer",
+      "mobile-engineer": "Mobile engineer",
+      "game-developer": "Game developer",
+      "embedded-engineer": "Embedded engineer",
+      "api-designer": "API designer",
+      "performance-engineer": "Performance engineer",
+      "data-engineer": "Data engineer",
+      "data-scientist": "Data scientist",
+      "analytics-engineer": "Analytics engineer",
+      "database-administrator": "Database administrator",
+      "ml-engineer": "Machine learning engineer",
+      "mlops-engineer": "MLOps engineer",
+      "prompt-engineer": "Prompt engineer",
+      "agent-designer": "Agent designer",
+      "security-reviewer": "Security reviewer",
+      "appsec-engineer": "Application security engineer",
+      "penetration-tester": "Penetration tester",
+      "privacy-engineer": "Privacy engineer",
+      "platform-engineer": "Platform engineer",
+      "site-reliability-engineer": "Site reliability engineer",
+      "cloud-architect": "Cloud architect",
+      "release-manager": "Release manager",
+      "observability-engineer": "Observability engineer",
+      "qa-automation-lead": "QA automation lead",
+      "test-engineer": "Test engineer",
+      "accessibility-specialist": "Accessibility specialist",
+      "product-manager": "Product manager",
+      "technical-program-manager": "Technical program manager",
+      "business-analyst": "Business analyst",
+      "ux-designer": "UX designer",
+      "ui-designer": "UI designer",
+      "design-systems-lead": "Design systems lead",
+      "ux-researcher": "UX researcher",
+      "technical-writer": "Technical writer",
+      "documentation-architect": "Documentation architect",
+      "developer-advocate": "Developer advocate",
+      "research-engineer": "Research engineer",
+      "literature-reviewer": "Literature reviewer",
+      "financial-analyst": "Financial analyst",
+      "pricing-analyst": "Pricing analyst",
+      "revenue-analyst": "Revenue analyst",
+      "compliance-officer": "Compliance officer",
+      "contract-analyst": "Contract analyst",
+      "data-protection-officer": "Data protection officer",
+      "curriculum-designer": "Curriculum designer",
+      "instructional-designer": "Instructional designer",
+      "coding-mentor": "Coding mentor",
+      "content-strategist": "Content strategist",
+      "growth-marketer": "Growth marketer",
+      "seo-specialist": "SEO specialist",
+      "operations-manager": "Operations manager",
+      "project-manager": "Project manager",
+      "supply-chain-analyst": "Supply chain analyst",
+      "support-engineer": "Support engineer",
+      "incident-commander": "Incident commander"
+    },
+    "seniority": {
+      "mid": "Mid-level",
+      "senior": "Senior",
+      "principal": "Principal"
+    },
+    "deliverables": {
+      "adr": "Architecture decision record",
+      "architecture-review": "Architecture review",
+      "c4-diagram": "C4 diagram",
+      "sequence-diagram": "Sequence diagram",
+      "data-model": "Data model",
+      "api-design-review": "API design review",
+      "api-spec": "API specification",
+      "threat-model": "Threat model",
+      "threat-model-review": "Threat model review",
+      "security-review": "Security review",
+      "dependency-audit": "Dependency audit",
+      "code-review": "Code review",
+      "refactoring-plan": "Refactoring plan",
+      "performance-report": "Performance report",
+      "test-plan": "Test plan",
+      "test-suite": "Test suite",
+      "accessibility-audit": "Accessibility audit",
+      "runbook": "Runbook",
+      "incident-review": "Incident review",
+      "slo-definition": "SLO definition",
+      "observability-plan": "Observability plan",
+      "release-plan": "Release plan",
+      "migration-plan": "Migration plan",
+      "infrastructure-plan": "Infrastructure plan",
+      "cost-review": "Cost review",
+      "product-brief": "Product brief",
+      "user-story-set": "User story set",
+      "roadmap": "Roadmap",
+      "research-summary": "Research summary",
+      "usability-review": "Usability review",
+      "design-spec": "Design specification",
+      "content-outline": "Content outline",
+      "documentation-set": "Documentation set",
+      "tutorial": "Tutorial",
+      "compliance-checklist": "Compliance checklist",
+      "privacy-review": "Privacy review",
+      "data-quality-report": "Data quality report",
+      "analysis-notebook": "Analysis notebook",
+      "dashboard-spec": "Dashboard specification",
+      "pricing-model": "Pricing model",
+      "evaluation-harness": "Evaluation harness",
+      "prompt-suite": "Prompt suite"
+    },
+    "integration_kind": {
+      "mcp": "MCP server",
+      "plugin": "Plugin",
+      "connector": "Connector"
+    },
     "agents": {
       "claude-code": "Claude Code",
-      "codex": "Codex",
-      "copilot-cli": "Copilot CLI",
+      "cline": "Cline",
+      "codex": "Codex CLI",
+      "copilot-cli": "GitHub Copilot CLI",
       "cursor": "Cursor",
       "gemini-cli": "Gemini CLI",
+      "kiro": "Kiro",
+      "opencode": "OpenCode",
       "windsurf": "Windsurf"
     },
     "tier": {
@@ -296,6 +431,9 @@
         "node>=22.12"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -358,6 +496,9 @@
         "node>=20"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -426,6 +567,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -496,6 +640,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -560,6 +707,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -616,6 +766,9 @@
         "go>=1.22"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -676,6 +829,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -732,6 +888,9 @@
         "python>=3.10"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -793,6 +952,9 @@
         "docker"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -850,6 +1012,9 @@
         "node>=20"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -910,6 +1075,9 @@
         "docker"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -967,6 +1135,9 @@
         "python>=3.10"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1029,6 +1200,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1087,6 +1261,9 @@
         "terraform>=1.9"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1147,6 +1324,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1202,6 +1382,9 @@
         "node>=20"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1264,6 +1447,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [

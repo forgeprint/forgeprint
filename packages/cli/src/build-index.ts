@@ -48,6 +48,10 @@ export interface IndexEntry {
     readonly verified_on: string;
     readonly note?: string | undefined;
   };
+  /** Who to work with and what to install alongside it (ADR 0012). */
+  readonly recommended_experts: readonly string[];
+  readonly recommended_crew: string | null;
+  readonly integrations: readonly string[];
   readonly deprecated: boolean;
   readonly supersedes: string | null;
   readonly files: readonly string[];
@@ -85,6 +89,9 @@ export function indexEntry(blueprint: Blueprint): IndexEntry {
     // Absent rather than empty: a blueprint written from scratch has no
     // source, and an empty object would read as an unanswered question.
     ...(m.derived_from === undefined ? {} : { derived_from: m.derived_from }),
+    recommended_experts: m.recommended_experts ?? [],
+    recommended_crew: m.recommended_crew,
+    integrations: m.integrations ?? [],
     deprecated: m.deprecated,
     supersedes: m.supersedes,
     files: blueprint.files,

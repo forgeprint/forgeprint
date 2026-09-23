@@ -182,13 +182,189 @@ requirements:
   monorepo: Monorepo layout
   migrations: Database migrations
 
+# The field an expert works in. Answers "whose problem is this?", where `role`
+# answers "who solves it".
+#
+# This list is deliberately wider than the catalog. An empty domain is not an
+# embarrassment, it is a call for contributions: the site lists every role that
+# has no expert behind it yet as a requested expert, and a contributor fills
+# the slot. Broad vocabulary, narrow content — every expert still passes the
+# same quality gates.
+domains:
+  software: Software engineering
+  data: Data and analytics
+  ai: AI and machine learning
+  security: Security
+  devops: DevOps and platform
+  quality: Quality engineering
+  product: Product management
+  design: Design
+  docs: Technical writing
+  research: Research
+  finance: Finance and analytics
+  legal: Legal and compliance
+  education: Education and training
+  marketing: Marketing
+  operations: Operations
+  support: Customer support
+
+# The role an expert embodies: the job somebody does, not a personality.
+#
+# An expert is a way of working, measured by what it produces and which
+# checklists it applies (ADR 0012). The identifier here is that job title;
+# `domain` says where it sits and `seniority` says how far along.
+roles:
+  # Software engineering
+  software-architect: Software architect
+  backend-engineer: Backend engineer
+  frontend-engineer: Frontend engineer
+  fullstack-engineer: Full-stack engineer
+  mobile-engineer: Mobile engineer
+  game-developer: Game developer
+  embedded-engineer: Embedded engineer
+  api-designer: API designer
+  performance-engineer: Performance engineer
+  # Data and analytics
+  data-engineer: Data engineer
+  data-scientist: Data scientist
+  analytics-engineer: Analytics engineer
+  database-administrator: Database administrator
+  # AI and machine learning
+  ml-engineer: Machine learning engineer
+  mlops-engineer: MLOps engineer
+  prompt-engineer: Prompt engineer
+  agent-designer: Agent designer
+  # Security
+  security-reviewer: Security reviewer
+  appsec-engineer: Application security engineer
+  penetration-tester: Penetration tester
+  privacy-engineer: Privacy engineer
+  # DevOps and platform
+  platform-engineer: Platform engineer
+  site-reliability-engineer: Site reliability engineer
+  cloud-architect: Cloud architect
+  release-manager: Release manager
+  observability-engineer: Observability engineer
+  # Quality engineering
+  qa-automation-lead: QA automation lead
+  test-engineer: Test engineer
+  accessibility-specialist: Accessibility specialist
+  # Product management
+  product-manager: Product manager
+  technical-program-manager: Technical program manager
+  business-analyst: Business analyst
+  # Design
+  ux-designer: UX designer
+  ui-designer: UI designer
+  design-systems-lead: Design systems lead
+  ux-researcher: UX researcher
+  # Technical writing
+  technical-writer: Technical writer
+  documentation-architect: Documentation architect
+  developer-advocate: Developer advocate
+  # Research
+  research-engineer: Research engineer
+  literature-reviewer: Literature reviewer
+  # Finance and analytics
+  financial-analyst: Financial analyst
+  pricing-analyst: Pricing analyst
+  revenue-analyst: Revenue analyst
+  # Legal and compliance
+  compliance-officer: Compliance officer
+  contract-analyst: Contract analyst
+  data-protection-officer: Data protection officer
+  # Education and training
+  curriculum-designer: Curriculum designer
+  instructional-designer: Instructional designer
+  coding-mentor: Coding mentor
+  # Marketing
+  content-strategist: Content strategist
+  growth-marketer: Growth marketer
+  seo-specialist: SEO specialist
+  # Operations
+  operations-manager: Operations manager
+  project-manager: Project manager
+  supply-chain-analyst: Supply chain analyst
+  # Customer support
+  support-engineer: Support engineer
+  incident-commander: Incident commander
+
+# How far along an expert is. Three steps, because a finer scale asks a
+# contributor to make a distinction nobody can review.
+seniority:
+  mid: Mid-level
+  senior: Senior
+  principal: Principal
+
+# What an expert produces. An expert that names no deliverable is a job title
+# with nothing behind it, so this is the field that makes the claim checkable.
+deliverables:
+  adr: Architecture decision record
+  architecture-review: Architecture review
+  c4-diagram: C4 diagram
+  sequence-diagram: Sequence diagram
+  data-model: Data model
+  api-design-review: API design review
+  api-spec: API specification
+  threat-model: Threat model
+  threat-model-review: Threat model review
+  security-review: Security review
+  dependency-audit: Dependency audit
+  code-review: Code review
+  refactoring-plan: Refactoring plan
+  performance-report: Performance report
+  test-plan: Test plan
+  test-suite: Test suite
+  accessibility-audit: Accessibility audit
+  runbook: Runbook
+  incident-review: Incident review
+  slo-definition: SLO definition
+  observability-plan: Observability plan
+  release-plan: Release plan
+  migration-plan: Migration plan
+  infrastructure-plan: Infrastructure plan
+  cost-review: Cost review
+  product-brief: Product brief
+  user-story-set: User story set
+  roadmap: Roadmap
+  research-summary: Research summary
+  usability-review: Usability review
+  design-spec: Design specification
+  content-outline: Content outline
+  documentation-set: Documentation set
+  tutorial: Tutorial
+  compliance-checklist: Compliance checklist
+  privacy-review: Privacy review
+  data-quality-report: Data quality report
+  analysis-notebook: Analysis notebook
+  dashboard-spec: Dashboard specification
+  pricing-model: Pricing model
+  evaluation-harness: Evaluation harness
+  prompt-suite: Prompt suite
+
+# What an integration is, for the recipe that installs it. Forgeprint hosts no
+# code here: an integration is a pinned, permission-documented way to install
+# something somebody else already publishes (ADR 0012).
+integration_kind:
+  mcp: MCP server
+  plugin: Plugin
+  connector: Connector
+
 # Coding agents a blueprint has been exercised with.
+#
+# Derived from schema/agents.yaml: the registry is where an agent's context
+# files, MCP support and install command are recorded, and `forgeprint validate`
+# refuses the two lists to drift apart (ADR 0013). Adding an agent means adding
+# a verified registry entry, not a line here.
 agents:
   claude-code: Claude Code
-  codex: Codex
-  copilot-cli: Copilot CLI
+  cline: Cline
+  codex: Codex CLI
+  copilot-cli: GitHub Copilot CLI
   cursor: Cursor
   gemini-cli: Gemini CLI
+  kiro: Kiro
+  opencode: OpenCode
   windsurf: Windsurf
 
 # Trust level. `verified` requires a maintainer to have run the setup; `official`

@@ -1,0 +1,320 @@
+# Forgeprint agent registry — the coding agents the catalog can be delivered to.
+#
+# Forgeprint is agent-agnostic (ADR 0013). Claude Code is the first client that
+# was verified end to end; it is not the target. This file is what makes that
+# claim checkable: every entry records what one agent actually reads, how it
+# installs an MCP server, and where its secrets come from, with the date the
+# vendor's own documentation was last read.
+#
+# Rules:
+#   - Nothing here is written from memory. Every field traces to the `docs` URL
+#     on the same entry, read on `last_checked`. An entry nobody has re-read in
+#     90 days is stale, and `forgeprint validate` says so.
+#   - `id` is the identifier used in a manifest's `agents` list. The `agents`
+#     vocabulary in taxonomy.yaml derives from this file and must match it
+#     exactly, in both directions.
+#   - A field nobody has verified is `null`, never a guess. `null` reads as
+#     "not established"; a wrong value reads as a fact.
+#   - Presence here is not a claim that any blueprint works with the agent.
+#     That claim lives in a manifest's `agents` list and means "tested".
+
+version: 1
+
+agents:
+  - id: claude-code
+    name: Claude Code
+    vendor: Anthropic
+    kind: cli
+    mcp:
+      stdio: true
+      http: true
+      sse: true
+    # The first path is what `forgeprint render` writes for this agent.
+    context_files:
+      - CLAUDE.md
+      - .claude/CLAUDE.md
+      - .claude/rules/*.md
+      - AGENTS.md
+    # AGENTS.md is read on its own only when no CLAUDE.md exists at or above the
+    # working directory; with both present, CLAUDE.md wins unless the project
+    # instructions setting says otherwise. A blueprint that ships both should
+    # make CLAUDE.md import AGENTS.md rather than duplicate it.
+    context_note: >-
+      AGENTS.md is read directly from v2.1.277; where it is not available, a
+      CLAUDE.md that imports it covers the same ground.
+    skill_format: SKILL.md
+    skill_path: .claude/skills/<name>/SKILL.md
+    install_mcp: claude mcp add-json <name> '<json>'
+    secrets_via: [env, oauth, ui]
+    headless: true
+    headless_command: claude -p "<prompt>"
+    limits: >-
+      Project instruction loading is configurable, so which file an agent reads
+      depends on a setting the catalog cannot see.
+    render:
+      path: CLAUDE.md
+      frontmatter: null
+      max_chars: null
+    docs: https://code.claude.com/docs/en/memory
+    last_checked: 2026-09-23
+
+  - id: codex
+    name: Codex CLI
+    vendor: OpenAI
+    kind: cli
+    mcp:
+      stdio: true
+      http: true
+      sse: false
+    context_files:
+      - AGENTS.md
+      - .codex/config.toml
+    context_note: >-
+      Instructions are read from ~/.codex/AGENTS.md, then each AGENTS.md on the
+      way down to the working directory; AGENTS.override.md replaces broader
+      guidance for one subtree.
+    skill_format: null
+    skill_path: null
+    install_mcp: codex mcp add <name> --env KEY=VALUE -- <command>
+    secrets_via: [env, oauth, headers]
+    headless: true
+    headless_command: codex exec "<prompt>"
+    limits: >-
+      Project-scoped .codex/config.toml only loads in a trusted directory; the
+      first encounter in an untrusted one prompts before any server starts.
+    render:
+      path: AGENTS.md
+      frontmatter: null
+      max_chars: null
+    docs: https://learn.chatgpt.com/docs/extend/mcp?surface=cli
+    last_checked: 2026-09-23
+
+  - id: copilot-cli
+    name: GitHub Copilot CLI
+    vendor: GitHub
+    kind: cli
+    mcp:
+      stdio: true
+      http: true
+      sse: false
+    context_files:
+      - .github/copilot-instructions.md
+      - .github/instructions/**/*.instructions.md
+      - AGENTS.md
+    context_note: >-
+      Repository instructions are included automatically for prompts entered in
+      that repository.
+    skill_format: null
+    skill_path: null
+    install_mcp: copilot mcp add --transport http <name> <url>
+    secrets_via: [env, ui]
+    headless: true
+    headless_command: copilot -p "<prompt>" -s
+    limits: >-
+      Ships with the GitHub MCP server already configured; servers live in
+      ~/.copilot/mcp-config.json. Grant tools individually with --allow-tool
+      rather than --allow-all-tools.
+    render:
+      path: .github/copilot-instructions.md
+      frontmatter: null
+      max_chars: null
+    docs: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli
+    last_checked: 2026-09-23
+
+  - id: cursor
+    name: Cursor
+    vendor: Anysphere
+    kind: ide
+    mcp:
+      stdio: true
+      http: true
+      sse: true
+    context_files:
+      - .cursor/rules/*.mdc
+      - AGENTS.md
+    context_note: >-
+      A rule file needs YAML frontmatter with description, globs and
+      alwaysApply; a plain .md in .cursor/rules has none and is ignored. Nested
+      AGENTS.md files apply to their own subtree, most specific first.
+    skill_format: null
+    skill_path: null
+    install_mcp: null
+    secrets_via: [env, ui]
+    headless: false
+    headless_command: null
+    limits: >-
+      An editor, not a CLI: setup recipes that assume a terminal agent have to
+      be run by the user. MCP servers are added through the settings UI.
+    render:
+      path: .cursor/rules/{slug}.mdc
+      # A .cursor/rules file without frontmatter is ignored entirely, so this
+      # is not decoration: it is the difference between a rule and a dead file.
+      frontmatter:
+        description: '{summary}'
+        alwaysApply: 'true'
+      max_chars: null
+    docs: https://cursor.com/docs/rules
+    last_checked: 2026-09-23
+
+  - id: gemini-cli
+    name: Gemini CLI
+    vendor: Google
+    kind: cli
+    mcp:
+      stdio: true
+      http: true
+      sse: true
+    context_files:
+      - GEMINI.md
+      - .gemini/settings.json
+    context_note: >-
+      The context file name is the `context.fileName` setting and takes a list,
+      so AGENTS.md can be added alongside GEMINI.md rather than replacing it.
+    skill_format: SKILL.md
+    skill_path: .gemini/skills/<name>/SKILL.md
+    install_mcp: gemini mcp add <name> <commandOrUrl> [args...]
+    secrets_via: [env, headers, oauth]
+    headless: true
+    headless_command: gemini -p "<prompt>" --output-format json
+    limits: >-
+      Environment variables are expanded in the config with $VAR or ${VAR}, and
+      %VAR% on Windows only.
+    render:
+      path: GEMINI.md
+      frontmatter: null
+      max_chars: null
+    docs: https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md
+    last_checked: 2026-09-23
+
+  - id: windsurf
+    name: Windsurf
+    vendor: Cognition
+    kind: ide
+    mcp:
+      stdio: true
+      http: true
+      sse: true
+    context_files:
+      - .windsurf/rules/*.md
+      - .devin/rules/*.md
+      - AGENTS.md
+    context_note: >-
+      Rule files carry a `trigger` frontmatter field — always_on,
+      model_decision, glob or manual. A root AGENTS.md has no frontmatter and
+      is always on.
+    skill_format: null
+    skill_path: null
+    install_mcp: null
+    secrets_via: [env, oauth, ui]
+    headless: false
+    headless_command: null
+    limits: >-
+      Workspace rule files are capped at 12,000 characters and global ones at
+      6,000, so a long AGENTS.md is silently truncated. OAuth is unavailable
+      for stdio servers. Documentation now redirects to docs.devin.ai and the
+      config path has moved with it; the legacy path was
+      ~/.codeium/windsurf/mcp_config.json.
+    render:
+      path: .windsurf/rules/{slug}.md
+      frontmatter:
+        trigger: always_on
+      # Windsurf truncates past this without saying so. `render` refuses
+      # instead, because a silently half-delivered context is worse than none.
+      max_chars: 12000
+    docs: https://docs.devin.ai/windsurf/plugins/cascade/mcp
+    last_checked: 2026-09-23
+
+  - id: cline
+    name: Cline
+    vendor: Cline
+    kind: ide
+    mcp:
+      stdio: true
+      http: true
+      sse: true
+    context_files:
+      - .clinerules/
+      - .cline/rules/
+      - AGENTS.md
+    context_note: >-
+      Reads a workspace AGENTS.md and a cross-tool ~/.agents/AGENTS.md as the
+      standard format for compatibility with other agents.
+    skill_format: null
+    skill_path: null
+    install_mcp: null
+    secrets_via: [env, headers]
+    headless: true
+    headless_command: cline config mcp --json
+    limits: >-
+      MCP servers live in ~/.cline/mcp.json for the CLI and in the panel for
+      the extensions. SSE is legacy; use streamableHttp for new servers.
+    render:
+      path: .clinerules/{slug}.md
+      frontmatter: null
+      max_chars: null
+    docs: https://docs.cline.bot/features/cline-rules
+    last_checked: 2026-09-23
+
+  - id: opencode
+    name: OpenCode
+    vendor: SST
+    kind: cli
+    mcp:
+      stdio: true
+      http: true
+      sse: false
+    context_files:
+      - AGENTS.md
+      - opencode.json
+    context_note: >-
+      AGENTS.md is preferred and CLAUDE.md is the fallback; the first match
+      wins per category. `instructions` in opencode.json adds more files, and
+      accepts globs and remote URLs.
+    skill_format: null
+    skill_path: null
+    install_mcp: null
+    secrets_via: [env, headers, oauth]
+    headless: true
+    headless_command: opencode run "<prompt>" --format json
+    limits: >-
+      MCP servers are declared in opencode.json under `mcp` with type local or
+      remote; there is no add subcommand, the file is edited.
+    render:
+      path: AGENTS.md
+      frontmatter: null
+      max_chars: null
+    docs: https://opencode.ai/docs/mcp-servers/
+    last_checked: 2026-09-23
+
+  - id: kiro
+    name: Kiro
+    vendor: AWS
+    kind: ide
+    mcp:
+      stdio: true
+      http: true
+      sse: false
+    context_files:
+      - .kiro/steering/*.md
+      - AGENTS.md
+    context_note: >-
+      Steering files use an `inclusion` frontmatter field — always, fileMatch,
+      manual or auto — which must be the first content in the file. An
+      AGENTS.md needs no inclusion mode and is always included.
+    skill_format: null
+    skill_path: null
+    install_mcp: null
+    secrets_via: [env, oauth]
+    headless: false
+    headless_command: null
+    limits: >-
+      MCP servers live in .kiro/settings/mcp.json, and an environment variable
+      is only expanded after it is added to the approved-variables setting.
+    render:
+      path: .kiro/steering/{slug}.md
+      # The inclusion mode must be the first content in the file.
+      frontmatter:
+        inclusion: always
+      max_chars: null
+    docs: https://kiro.dev/docs/steering/
+    last_checked: 2026-09-23
