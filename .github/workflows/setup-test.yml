@@ -74,6 +74,14 @@ jobs:
         with:
           python-version: '3.13'
 
+      # Go is already on the runner; Terraform is not. `terraform_wrapper:
+      # false` because the wrapper rewrites stdout, and a recipe that reads
+      # `terraform show -json` gets the wrapper's annotations instead of JSON.
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: '1.9.8'
+          terraform_wrapper: false
+
       - name: Install pnpm
         run: npm install --global pnpm@12.5.1
 
