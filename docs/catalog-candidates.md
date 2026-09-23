@@ -4,6 +4,11 @@ What the catalog should hold next, and why. Produced with
 [`catalog-research`](../skills/catalog-research/SKILL.md) from
 [the demand report of 2026-09-23](research/2026-09-23-demand.md).
 
+> Two of the five below — `python-mcp-server` and `astro-content-site` — have
+> since been written and merged. The wider map, covering all nine
+> `project_type` values rather than the five strongest candidates, is
+> [the catalog plan](research/2026-09-23-catalog-plan.md).
+
 **These are candidates, not commitments.** Nothing here is written until the
 core maintainer picks it, and a candidate nobody picks was correctly identified
 as not urgent. No draft exists for any of them.
