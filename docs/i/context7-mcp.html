@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Context7 — Forgeprint</title>
+    <meta name="description" content="Library documentation at the version in use, fetched on demand instead of recalled from training." />
+    <link rel="icon" href="../brand/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../forgeprint.css" />
+  </head>
+  <body>
+    <main>
+<p class="back"><a href="../catalog.html">← Catalog</a></p>
+      <p class="slug">integrations/context7-mcp</p>
+      <h1>Context7 <span class="tier">mcp</span></h1>
+      <p class="tagline">Library documentation at the version in use, fetched on demand instead of recalled from training.</p>
+
+      <p class="warn">
+        <strong>Third-party software.</strong> Forgeprint hosts none of this code: it is an
+        installation recipe for a project somebody else publishes and maintains. Review the
+        permissions below before installing.
+      </p>
+
+      <h2>Upstream</h2>
+      <table class="facts">
+        <tr><th>Project</th><td><a href="https://github.com/upstash/context7">upstash/context7</a></td></tr>
+        <tr><th>Pinned at</th><td><code>4.1.1</code></td></tr>
+        <tr><th>Verified on</th><td>2026-09-23</td></tr>
+      </table>
+
+      <h2>What it can reach</h2>
+      <p>Sends the library name and your query to Context7's service and returns documentation.</p>
+      <p class="muted">It needs no secret.</p>
+
+      <h2>Install</h2>
+      <h3>claude-code</h3>
+      <pre class="install"><code>claude mcp add-json context7 '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@upstash/context7-mcp@4.1.1&quot;]}'</code></pre>
+      <h3>codex</h3>
+      <pre class="install"><code>codex mcp add context7 -- npx -y @upstash/context7-mcp@4.1.1</code></pre>
+      <h3>gemini-cli</h3>
+      <pre class="install"><code>gemini mcp add context7 npx -y @upstash/context7-mcp@4.1.1</code></pre>
+      <p class="muted small">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</p>
+
+      <h2>Read it</h2>
+      <p><a href="https://github.com/forgeprint/forgeprint/tree/main/integrations/context7-mcp/README.md">README.md</a></p>
+    </main>
+    <footer>
+      <a href="https://github.com/forgeprint/forgeprint">Repository</a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="../index.json">index.json</a>
+      <p class="muted">
+        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
+        catalog content under CC BY 4.0.
+      </p>
+    </footer>
+  </body>
+</html>
