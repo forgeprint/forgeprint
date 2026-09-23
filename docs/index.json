@@ -570,6 +570,62 @@
       "i18n": []
     },
     {
+      "slug": "go-cli",
+      "name": "Go CLI",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Command-line tool in Go on Cobra, with commands tested through the real parser and a binary that builds from a checkout.",
+      "stack": [
+        "go",
+        "cobra"
+      ],
+      "languages": [
+        "go"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "cli",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "go>=1.22"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "node-cli",
       "name": "Node.js CLI",
       "version": "1.0.0",
