@@ -218,15 +218,30 @@ export function isReleaseVersion(version: string): boolean {
  */
 const MAX_OUTPUT_BYTES = 64 * 1024 * 1024;
 
+/**
+ * Quote an argument for the Windows shell.
+ *
+ * `shell: true` hands the whole line to cmd, which does not quote anything for
+ * you: `-m Forgeprint 0.2.8` arrives as two arguments and `git tag` refuses.
+ * The shell is needed on Windows because most of what this runs — npm, pnpm,
+ * gh — is a `.cmd` shim that cannot be executed directly.
+ */
+export function quoteForShell(argument: string): string {
+  if (argument === '') return '""';
+  if (!/[\s"^&|<>()%!]/.test(argument)) return argument;
+  return `"${argument.replace(/"/g, '\\"')}"`;
+}
+
 /** Run a command and return its combined output, never throwing. */
 export function run(command: string, args: string[], cwd: string): { ok: boolean; output: string } {
+  const shell = process.platform === 'win32';
   try {
-    const output = execFileSync(command, args, {
+    const output = execFileSync(command, shell ? args.map(quoteForShell) : args, {
       cwd,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
       maxBuffer: MAX_OUTPUT_BYTES,
-      shell: process.platform === 'win32',
+      shell,
     });
     return { ok: true, output };
   } catch (error) {

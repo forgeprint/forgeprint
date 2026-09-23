@@ -3,6 +3,18 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.9 — 2026-09-23
+
+- **`release` quotes its arguments on Windows.** The shell is needed there
+  because npm, pnpm and gh are `.cmd` shims that cannot be executed directly,
+  and `shell: true` hands the line to cmd without quoting anything: `git tag -m
+Forgeprint 0.2.8` arrived as two arguments and the tag was never created.
+  Same class as the `C:\Program Files` split fixed in the tool check.
+- **A failed git step prints what git said.** It reported "could not create
+  v0.2.8" and threw the output away, which sent the maintainer looking for a
+  tag that did not exist. That is twice now that swallowing a command's output
+  cost more than the bug did.
+
 ## 0.2.8 — 2026-09-23
 
 - No change to the tooling. The version follows the workspace.

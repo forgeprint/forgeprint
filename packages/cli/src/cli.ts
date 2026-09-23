@@ -25,7 +25,7 @@ import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy } from './taxonomy.js';
 import { validateCatalog } from './validate.js';
 
-export const VERSION = '0.2.8';
+export const VERSION = '0.2.9';
 
 interface GlobalOptions {
   root?: string;

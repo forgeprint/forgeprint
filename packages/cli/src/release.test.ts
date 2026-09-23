@@ -9,6 +9,7 @@ import {
   hasChangelogEntry,
   isReleaseVersion,
   publishable,
+  quoteForShell,
   type WorkspacePackage,
 } from './release.js';
 
@@ -217,5 +218,33 @@ describe('failureLines', () => {
   it('does not repeat a line that is both marked and in the tail', () => {
     const lines = failureLines('not ok 1 - only failure', 5);
     assert.equal(lines.filter((l) => l === 'not ok 1 - only failure').length, 1);
+  });
+});
+
+describe('quoteForShell', () => {
+  it('quotes an argument with a space', () => {
+    // The failure this exists for: `git tag -m Forgeprint 0.2.8` reaching cmd
+    // as two arguments, and the tag never being created.
+    assert.equal(quoteForShell('Forgeprint 0.2.8'), '"Forgeprint 0.2.8"');
+  });
+
+  it('leaves a plain argument alone', () => {
+    assert.equal(quoteForShell('--access'), '--access');
+    assert.equal(quoteForShell('v0.2.8'), 'v0.2.8');
+  });
+
+  it('quotes the characters cmd would otherwise act on', () => {
+    for (const argument of ['a&b', 'a|b', 'a>b', 'a(b)', 'a%b%', 'a^b', 'a!b']) {
+      assert.equal(quoteForShell(argument), `"${argument}"`, argument);
+    }
+  });
+
+  it('escapes an embedded quote', () => {
+    assert.equal(quoteForShell('say "hi"'), '"say \\"hi\\""');
+  });
+
+  it('turns an empty argument into an empty quoted one', () => {
+    // Dropped entirely otherwise, which silently shifts every later argument.
+    assert.equal(quoteForShell(''), '""');
   });
 });

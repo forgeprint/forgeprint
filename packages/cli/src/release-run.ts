@@ -298,10 +298,17 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
 
   // 7. Do it, one step at a time, saying which step failed if one does.
   const notesBody = readFileSync(notes, 'utf8');
-  if (!run('git', ['tag', '-a', tag, '-m', `Forgeprint ${version}`], root).ok) {
-    fail(`could not create ${tag}`);
-  }
-  if (!run('git', ['push', 'origin', tag], root).ok) fail(`could not push ${tag}`);
+  // Print what the command said. "could not create v0.2.8" sent the maintainer
+  // looking for a tag that already existed, when the real answer was in the
+  // output being thrown away.
+  const created = run('git', ['tag', '-a', tag, '-m', `Forgeprint ${version}`], root);
+  if (!created.ok)
+    fail(`could not create ${tag}:
+${created.output.trim()}`);
+  const pushed = run('git', ['push', 'origin', tag], root);
+  if (!pushed.ok)
+    fail(`could not push ${tag}:
+${pushed.output.trim()}`);
   say(`  ok     ${tag} pushed`);
 
   if (run('gh', ['release', 'view', tag], root).ok) {

@@ -4,6 +4,10 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.2.9 — 2026-09-23
+
+- No change to the server. The version follows the workspace.
+
 ## 0.2.8 — 2026-09-23
 
 - **`suggested_alongside` in `get_blueprint`, `resolve` and
