@@ -189,6 +189,10 @@ TypeScript, `@modelcontextprotocol/sdk`, stdio + streamable HTTP. Data source: `
 | `compare_blueprints` | slugs (2–4), locale? | pros/cons comparison table generated from `overview.md` files |
 | `validate_blueprint` | folder contents | schema errors + similarity report (for contributors) |
 | `request_blueprint` | profile + rationale | GitHub issue payload when nothing matches (demand signal; the catalog grows by demand) |
+| `recommend_experts` | task, domains?, languages? | at most **one crew** or at most **three experts**, each with a reason, and how many were left out |
+| `get_expert` | slug, agent?, locale? | manifest + SKILL.md + checklists + references, and the file paths that agent reads |
+| `get_crew` | slug, agent?, locale? | members as full entries + the install command for each integration, for that agent |
+| `get_integration` | slug, agent?, locale? | pinned upstream, install command, secrets and what they reach. No command for an agent nobody verified |
 
 `resolve` behavior:
 - If the profile is incomplete, it does not pick a blueprint; it returns `questions[]` (known languages, platform, distribution model, 2D/3D, …). The tool description embeds the instruction: *"Ask the user the returned questions before recommending anything."* The **user's agent** runs the conversation; Forgeprint only returns structured data.
@@ -196,6 +200,7 @@ TypeScript, `@modelcontextprotocol/sdk`, stdio + streamable HTTP. Data source: `
 - Never returns more than one blueprint. When scores are close, it returns the top 2 candidates with rationale as a **question**; the user chooses. "Explain the options" routes to `compare_blueprints`.
 - When nothing matches it says so, names the closest blueprint and why it does not fit, and suggests `request_blueprint`. It never fabricates a match.
 - `locale` is a presentation hint passed back to the agent ("present this in <locale>"); catalog content stays in English (§9).
+- `intent` (`project | expert | crew | integration`) **routes rather than answers**. `resolve` returns one blueprint or nothing; returning an expert from it would break that quietly, so a non-project intent comes back as "use this tool, pass this".
 
 Example flow: "I want to build a mobile game" → `resolve` returns questions (language? platform? free or ad-supported? 2D/3D?) → "C#, free, 2D" → `resolve` returns one blueprint + rationale → "explain the alternatives" → `compare_blueprints` → choice → `get_blueprint` → setup.
 
@@ -326,6 +331,13 @@ a decision behind an empty box is how the decision gets made again.
 - [x] Compatibility tests for `npx skills add` / `gh skills install` (ADR 0006)
 - [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand. `forgeprint release` cut the manual work down; the token on the maintainer's machine is what is left
 - [ ] Re-check `docs/review-standards.md` every 90 days: each reference's current version, and whether a new one belongs on the list (§5c). First one due 2026-12-21
+
+### Phase E — Experts, crews, integrations, agent independence
+- [x] **E1** — ADR 0012 and 0013, `expert`/`crew`/`integration` schemas, `roles`/`domains`/`seniority`/`deliverables` in the taxonomy, `schema/agents.yaml` verified from the vendors' own docs, `validate`/`similarity`/`lint` extended, `forgeprint render --agent`
+- [x] **E2** — 5 experts, 2 crews, 10 integrations, and the three original blueprints linked to them. All `community` + `generated`: a tool drafted them, and ADR 0011 says what that is worth
+- [x] **E3** — `recommend_experts`, `get_expert`, `get_crew`, `get_integration`, `resolve.intent`; `forgeprint get` for agents with no MCP client; `render-check` as the agent dimension of the matrix; site tabs, unit pages, agent badges and the open-roles list
+- [ ] **E4** — `expert-author` and `crew-author` skills, `/review-pr` extended to three kinds, the `agent-verification` pull request type, creator kit and launch plan
+- [ ] **E5** — the domains outside software, as demand appears in the open-roles list. `community` + `provenance`, never `official` for something nobody here can verify by hand
 
 ### Phase 4 — Community
 - [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
