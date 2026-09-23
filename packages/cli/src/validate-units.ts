@@ -11,6 +11,7 @@ import {
 import { crewCombinationKey, crewSchema, type Crew } from './crew.js';
 import { expertCombinationKey, expertSchema, type Expert } from './expert.js';
 import { integrationCombinationKey, integrationSchema, type Integration } from './integration.js';
+import { lintIntegration } from './lint-integration.js';
 import { describeError, SLUG_PATTERN, type Taxonomy } from './taxonomy.js';
 import { UNIT_DIRECTORY, type UnitKind } from './unit.js';
 
@@ -100,6 +101,18 @@ export function validateUnits(root: string, taxonomy: Taxonomy): UnitCatalog {
           message: `integration "${integration}" is not in the catalog`,
         });
       }
+    }
+  }
+
+  for (const { slug, manifest } of integrations) {
+    // The schema checks the fields; this checks the command text, which is
+    // what a user actually pastes into a shell (rule 20, §5b).
+    for (const problem of lintIntegration(manifest)) {
+      problems.push({
+        kind: 'integration',
+        slug,
+        message: `install.${problem.agent}: ${problem.message} (${problem.rule})`,
+      });
     }
   }
 
