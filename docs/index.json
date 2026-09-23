@@ -983,6 +983,61 @@
       "i18n": []
     },
     {
+      "slug": "ts-library",
+      "name": "TypeScript Library",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Publishable TypeScript library with an exports map, type declarations, a test suite, and a release workflow that publishes from a tag with npm provenance.",
+      "stack": [
+        "node"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source"
+      ],
+      "project_type": "lib",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "cd",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=20"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "ts-mcp-server",
       "name": "TypeScript MCP Server",
       "version": "1.1.0",

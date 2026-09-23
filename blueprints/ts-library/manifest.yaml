@@ -1,0 +1,19 @@
+schema: 1
+slug: ts-library
+name: 'TypeScript Library'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Publishable TypeScript library with an exports map, type declarations, a test suite, and a release workflow that publishes from a tag with npm provenance.'
+stack: [node]
+languages: [typescript]
+platforms: [windows, linux, macos]
+distribution: [open-source]
+project_type: lib
+audience: [intermediate]
+requirements: [ci, cd, testing]
+agents: [claude-code]
+requires_tools: [node>=20]
+deprecated: false
+supersedes: null
