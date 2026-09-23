@@ -237,6 +237,70 @@
   },
   "blueprints": [
     {
+      "slug": "astro-content-site",
+      "name": "Astro Content Site",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.",
+      "stack": [
+        "astro",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "distribution": [
+        "open-source",
+        "free"
+      ],
+      "project_type": "web",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "seo",
+        "accessibility",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {
+        "content": [
+          "markdown",
+          "mdx"
+        ]
+      },
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "dotnet-mcp-server",
       "name": "C# MCP Server",
       "version": "1.1.0",
