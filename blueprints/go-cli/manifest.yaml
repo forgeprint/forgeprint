@@ -1,0 +1,19 @@
+schema: 1
+slug: go-cli
+name: 'Go CLI'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Command-line tool in Go on Cobra, with commands tested through the real parser and a binary that builds from a checkout.'
+stack: [go, cobra]
+languages: [go]
+platforms: [windows, linux, macos]
+distribution: [open-source, internal]
+project_type: cli
+audience: [intermediate]
+requirements: [ci, testing]
+agents: [claude-code]
+requires_tools: [go>=1.22]
+deprecated: false
+supersedes: null
