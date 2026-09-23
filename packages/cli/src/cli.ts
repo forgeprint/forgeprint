@@ -37,7 +37,7 @@ import { renderForAgent, writeRendered, type RenderInput } from './render.js';
 import { validateCatalog } from './validate.js';
 import { validateUnits } from './validate-units.js';
 
-export const VERSION = '0.2.10';
+export const VERSION = '0.3.0';
 
 interface GlobalOptions {
   root?: string;

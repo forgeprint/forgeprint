@@ -4,6 +4,29 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.3.0 — 2026-09-24
+
+Four new tools, for the two questions the catalog answers besides "what are you
+building" (ADR 0012).
+
+- **`recommend_experts`** returns at most one crew **or** at most three
+  experts, each with a reason, and says how many it left out. A crew wins only
+  when the task is plainly the whole job it is assembled for.
+- **`get_expert`** returns the manifest, `SKILL.md`, the checklists and the
+  references, plus the file paths the named agent reads.
+- **`get_crew`** resolves members to full entries and returns the install
+  command for each integration, for that agent.
+- **`get_integration`** returns the pinned upstream, the permissions, the
+  secrets and the install command — and says so plainly when an agent has no
+  verified syntax, rather than guessing one.
+- **`resolve` gains `intent`**, which routes rather than answers. This tool
+  returns one blueprint or nothing; handing back an expert would break that
+  rule quietly, so a non-project intent comes back as "use this tool, pass
+  this".
+
+`FORGEPRINT_FILES_URL` now points at the repository root rather than at
+`blueprints/`, because reading a file needs a kind.
+
 ## 0.2.10 — 2026-09-23
 
 - No change to the server. The version follows the workspace.
