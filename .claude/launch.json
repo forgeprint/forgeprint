@@ -1,0 +1,22 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      // This repository has no dev server. The three packages are a CLI, an
+      // MCP server that speaks over stdio, and a generator that writes static
+      // files into docs/ — so the only thing there is to preview is the
+      // published site, served from disk.
+      //
+      // Run `pnpm run build-site` first, or after any change to a blueprint or
+      // to packages/site: this serves what is on disk and rebuilds nothing.
+      //
+      // `serve` is fetched by npx rather than added to package.json. It is a
+      // preview convenience, not a dependency of the project (CLAUDE.md
+      // rule 3).
+      "name": "site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "docs", "--listen", "4321", "--no-clipboard"],
+      "port": 4321
+    }
+  ]
+}
