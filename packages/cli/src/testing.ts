@@ -36,6 +36,20 @@ requirements:
   auth: Authentication
   ci: Continuous integration
   multi-tenant: Multi-tenancy
+domains:
+  software: Software engineering
+  security: Security
+roles:
+  software-architect: Software architect
+  security-reviewer: Security reviewer
+seniority:
+  senior: Senior
+  principal: Principal
+deliverables:
+  adr: Architecture decision record
+  threat-model: Threat model
+integration_kind:
+  mcp: MCP server
 agents:
   claude-code: Claude Code
 tier:
