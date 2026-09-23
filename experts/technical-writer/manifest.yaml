@@ -1,0 +1,24 @@
+schema: 1
+slug: technical-writer
+name: 'Technical Writer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add."
+role: technical-writer
+domain: docs
+seniority: senior
+deliverables:
+  - documentation-set
+  - tutorial
+  - content-outline
+  - research-summary
+checklists:
+  - document-type
+  - accuracy
+  - deletion
+pairs_with: [dotnet-senior-architect]
+agents: [claude-code]
+deprecated: false
+supersedes: null

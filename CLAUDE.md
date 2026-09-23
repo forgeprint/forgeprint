@@ -337,13 +337,13 @@ a decision behind an empty box is how the decision gets made again.
 - [x] **E2** — 5 experts, 2 crews, 10 integrations, and the three original blueprints linked to them. All `community` + `generated`: a tool drafted them, and ADR 0011 says what that is worth
 - [x] **E3** — `recommend_experts`, `get_expert`, `get_crew`, `get_integration`, `resolve.intent`; `forgeprint get` for agents with no MCP client; `render-check` as the agent dimension of the matrix; site tabs, unit pages, agent badges and the open-roles list
 - [ ] **E4** — `expert-author` and `crew-author` skills, `/review-pr` extended to three kinds, the `agent-verification` pull request type, creator kit and launch plan
-- [ ] **E5** — the domains outside software, as demand appears in the open-roles list. `community` + `provenance`, never `official` for something nobody here can verify by hand
+- [x] **E5** — the first two experts outside software, chosen from evidence rather than taste ([role research](docs/research/2026-09-23-roles.md)), and `catalog-research` extended to roles so the next round is demand-driven too. `community` + `provenance: generated`; the other nine empty domains wait for a signal
 
 ### Phase 4 — Community
 - [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
 - [ ] Orphan/stale bot, co-maintainer bot. The rules are in GOVERNANCE.md and are applied by hand; a bot needs a second maintainer to be worth writing
 - [ ] Optional community translations of `overview.md` (§9), when somebody wants to write one
-- [ ] Re-run `skills/catalog-research` monthly: a dated report under `docs/research/`, and the candidate list refreshed from it. Next due 2026-10-23
+- [ ] Re-run `skills/catalog-research` monthly, for blueprints **and** roles: a dated report under `docs/research/`, and the candidate lists refreshed from it. Next due 2026-10-23
 - [ ] ~~Anonymous resolve counter~~ — **not planned.** It means the server learning something about the people who use it, and PRIVACY.md says it collects nothing. If it is ever revisited it is anonymous and opt-in, and that file already says so
 
 ---
