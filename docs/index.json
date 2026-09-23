@@ -806,6 +806,66 @@
       "i18n": []
     },
     {
+      "slug": "python-background-worker",
+      "name": "Python Background Worker",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Celery worker with Redis as the broker, retry and acknowledgement decided explicitly, and a check that puts a real job through a real worker.",
+      "stack": [
+        "python",
+        "celery",
+        "redis",
+        "docker"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "open-source",
+        "internal",
+        "saas"
+      ],
+      "project_type": "data",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "background-jobs",
+        "ci",
+        "containerization"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.10",
+        "docker"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-cli",
       "name": "Python CLI",
       "version": "1.0.0",
