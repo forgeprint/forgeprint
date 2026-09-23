@@ -627,6 +627,63 @@
       "i18n": []
     },
     {
+      "slug": "python-cli",
+      "name": "Python CLI",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Command-line tool in Python on Typer, with commands tested through the real parser and a module that runs with python -m.",
+      "stack": [
+        "python",
+        "typer"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "cli",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.10"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-mcp-server",
       "name": "Python MCP Server",
       "version": "1.0.0",
