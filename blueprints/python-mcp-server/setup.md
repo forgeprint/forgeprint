@@ -61,6 +61,7 @@ Requires Python 3.10 or newer.
 6. Create `app/__init__.py` with:
 
    ```python
+
    ```
 
    Verify: `test -f app/__init__.py`
