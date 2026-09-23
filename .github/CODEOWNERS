@@ -18,5 +18,6 @@
 /blueprints/node-cli/ @aliosmanmho
 /blueprints/python-cli/ @aliosmanmho
 /blueprints/python-mcp-server/ @aliosmanmho
+/blueprints/terraform-module/ @aliosmanmho
 /blueprints/ts-http-service/ @aliosmanmho
 /blueprints/ts-mcp-server/ @aliosmanmho
