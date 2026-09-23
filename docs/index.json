@@ -47,6 +47,8 @@
       "cobra": "Cobra",
       "python": "Python",
       "typer": "Typer",
+      "celery": "Celery",
+      "langgraph": "LangGraph",
       "django": "Django",
       "fastapi": "FastAPI",
       "flask": "Flask",
