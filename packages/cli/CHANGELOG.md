@@ -3,6 +3,35 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.3.0 — 2026-09-24
+
+The catalog holds four kinds now, and so does the tooling (ADR 0012, ADR 0013).
+
+- **Three new manifest schemas** — expert, crew and integration — each governed
+  the way a blueprint is, plus what makes each one mean something: a checklist
+  name must have a file behind it, a crew holds at most six members, an
+  integration pins its upstream and keeps that pin separate from its own
+  version.
+- **`validate` extended** to all four kinds, their cross-references, and the
+  agent registry against the vocabulary that derives from it. A recommendation
+  pointing at nothing now fails, because it breaks no build and costs the
+  reader everything.
+- **`similarity --expert`** applies rule 10 to `SKILL.md` and the checklists.
+  The scoring engine is written once and each kind says what to feed it.
+- **`render --agent <id>`** writes one entry in the layout one agent reads,
+  from the single source. It refuses past an agent's silent cap rather than
+  letting the content be truncated.
+- **`render-check`** renders every entry for every registered agent — the half
+  of an agent matrix a machine can actually prove.
+- **`get <slug> --agent <id>`** is the path for agents with no MCP client,
+  deliberately the same code as `render`.
+- **`lint-integration`** holds an install command to a setup step's standards:
+  no pipe into a shell, no privilege escalation, no moving tag, no literal
+  credential, and no declared secret the command never passes.
+- The published index now carries experts, crews, integrations and the agent
+  registry, because the MCP server and the site read that file and nothing
+  else.
+
 ## 0.2.10 — 2026-09-23
 
 - No change beyond 0.2.9, which was tagged and released on GitHub and never

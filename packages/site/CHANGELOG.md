@@ -4,6 +4,19 @@ The static site generator behind https://forgeprint.github.io/forgeprint. It is
 private: the site is generated into `docs/` and committed, so Pages deploys
 from the branch and needs no build service (ADR 0002).
 
+## 0.3.0 — 2026-09-24
+
+- **Four tabs**, one panel at a time, with the filter applying to whichever is
+  open. Without JavaScript every panel shows: a longer page, not a broken one.
+- **A page per expert, crew and integration.** Each leads with the half a
+  reader needs — what an expert produces and whether it was verified, where a
+  crew is wrong, and for an integration the third-party warning, the pin, the
+  permissions and the sentence that an agent never enters a secret.
+- **Agent badges** with two states and no third: tested or unknown. The state
+  is carried by a mark and by the label, not by colour alone.
+- **The open roles are published.** Every role in the taxonomy with no expert
+  behind it, because an empty role is a contribution call rather than a gap.
+
 ## 0.2.10 — 2026-09-23
 
 - No change to the site beyond 0.2.9. The version follows the workspace.
