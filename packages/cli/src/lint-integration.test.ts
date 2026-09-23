@@ -34,7 +34,7 @@ describe('integration install commands', () => {
   it('refuses something shaped like a credential', () => {
     // Being wrong here costs a contributor a sentence; being silent costs a
     // reader their credentials.
-    assert.deepEqual(rules({ codex: 'x --token ghp_A1b2C3d4E5f6G7h8I9j0K1l2M3n4' }), [
+    assert.deepEqual(rules({ codex: 'x --token EXAMPLE-NOT-A-REAL-TOKEN-0000000000' }), [
       'literal-secret',
     ]);
   });
