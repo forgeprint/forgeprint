@@ -349,6 +349,36 @@
       ],
       "additionalProperties": false
     },
+    "recommended_experts": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "recommended_crew": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "integrations": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "uniqueItems": true
+    },
     "deprecated": {
       "default": false,
       "type": "boolean"
@@ -383,6 +413,7 @@
     "requirements",
     "agents",
     "provenance",
+    "recommended_crew",
     "deprecated",
     "supersedes"
   ],

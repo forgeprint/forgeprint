@@ -431,6 +431,9 @@
         "node>=22.12"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -493,6 +496,9 @@
         "node>=20"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -561,6 +567,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -631,6 +640,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -695,6 +707,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -751,6 +766,9 @@
         "go>=1.22"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -811,6 +829,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -867,6 +888,9 @@
         "python>=3.10"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -928,6 +952,9 @@
         "docker"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -985,6 +1012,9 @@
         "node>=20"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1045,6 +1075,9 @@
         "docker"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1102,6 +1135,9 @@
         "python>=3.10"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1164,6 +1200,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1222,6 +1261,9 @@
         "terraform>=1.9"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1282,6 +1324,9 @@
         "curl"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1337,6 +1382,9 @@
         "node>=20"
       ],
       "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1399,6 +1447,9 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
       "deprecated": false,
       "supersedes": null,
       "files": [

@@ -4,6 +4,7 @@ import { parse } from 'yaml';
 import { repoPaths, REQUIRED_BLUEPRINT_FILES } from './paths.js';
 import { manifestSchema, type Manifest } from './manifest.js';
 import { describeError, type Taxonomy } from './taxonomy.js';
+import { REQUIRED_FILES, UNIT_DIRECTORY, type UnitKind } from './unit.js';
 
 export interface BlueprintFolder {
   /** Folder name under `blueprints/`. */
@@ -69,4 +70,38 @@ export function translations(folder: BlueprintFolder): string[] {
 
 function toPosix(path: string): string {
   return sep === '/' ? path : path.split(sep).join('/');
+}
+
+/**
+ * The same three reads, for the kinds of thing that arrived after blueprints
+ * (ADR 0012). A blueprint keeps its own helpers above because the rest of the
+ * pipeline is written against them; everything new goes through these.
+ */
+export function listUnitSlugs(root: string, kind: UnitKind): string[] {
+  const dir = repoPaths.unitsDir(root, UNIT_DIRECTORY[kind]);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+}
+
+export function readUnitFolder(root: string, kind: UnitKind, slug: string): BlueprintFolder {
+  const dir = repoPaths.unitDir(root, UNIT_DIRECTORY[kind], slug);
+  if (!existsSync(dir) || !statSync(dir).isDirectory()) {
+    throw new Error(`No such ${kind}: ${slug}`);
+  }
+  const files = readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => toPosix(relative(dir, join(entry.parentPath, entry.name))))
+    .sort();
+  return { slug, dir, files };
+}
+
+export function missingUnitFiles(folder: BlueprintFolder, kind: UnitKind): string[] {
+  return REQUIRED_FILES[kind].filter((file) => !folder.files.includes(file));
+}
+
+export function readUnitFile(folder: BlueprintFolder, file: string): string {
+  return readFileSync(join(folder.dir, ...file.split('/')), 'utf8');
 }

@@ -114,6 +114,18 @@ export function manifestObjectSchema(taxonomy: Taxonomy) {
         })
         .strict()
         .optional(),
+      /**
+       * Who to work with, and what to install alongside it (ADR 0012).
+       *
+       * These are suggestions and nothing in a setup recipe may depend on
+       * them: a recipe that needed an expert to exist would stop being
+       * deterministic, which is the one property the recipe format sells.
+       * `validate` checks that what is named exists; `get_blueprint` returns
+       * it as a recommendation, not a requirement.
+       */
+      recommended_experts: uniqueArray(slug).optional(),
+      recommended_crew: slug.nullable().default(null),
+      integrations: uniqueArray(slug).optional(),
       deprecated: z.boolean().default(false),
       supersedes: slug.nullable().default(null),
     })

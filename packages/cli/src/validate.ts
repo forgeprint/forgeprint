@@ -23,6 +23,7 @@ import { combinationKey } from './manifest.js';
 import { repoPaths } from './paths.js';
 import { checkSkills } from './skills.js';
 import { SLUG_PATTERN, describeError, loadTaxonomy, type Taxonomy } from './taxonomy.js';
+import { unitLabel, validateUnits } from './validate-units.js';
 
 export interface Problem {
   /** Blueprint slug, or undefined for a catalog-wide problem. */
@@ -120,12 +121,56 @@ export function validateCatalog(root: string): ValidationReport {
     problems.push({ message: `${problem.file}: ${problem.message}` });
   }
 
+  // Experts, crews and integrations: the same rules, three more kinds, plus
+  // the cross-references composition introduces (ADR 0012).
+  const units = validateUnits(root, taxonomy);
+  for (const problem of units.problems) {
+    problems.push({ message: `${unitLabel(problem)}: ${problem.message}` });
+  }
+  problems.push(...danglingRecommendations(blueprints, units));
+
   const registry = checkAgentRegistry(root, taxonomy);
   problems.push(...registry.problems);
   warnings.push(...registry.warnings);
 
   problems.push(...generatedFileProblems(root, blueprints, taxonomy));
   return { ok: problems.length === 0, checked: slugs.length, problems, warnings };
+}
+
+/**
+ * Recommendations that point at nothing.
+ *
+ * A blueprint may recommend an expert or a crew and never require one
+ * (ADR 0012), so a missing one breaks no setup — which is exactly why it would
+ * go unnoticed. The reader is the one who loses: they are told to work with
+ * somebody who does not exist.
+ */
+function danglingRecommendations(
+  blueprints: readonly Blueprint[],
+  units: ReturnType<typeof validateUnits>,
+): Problem[] {
+  const experts = new Set(units.experts.map((expert) => expert.slug));
+  const crews = new Set(units.crews.map((crew) => crew.slug));
+  const integrations = new Set(units.integrations.map((integration) => integration.slug));
+
+  const problems: Problem[] = [];
+  for (const { slug, manifest } of blueprints) {
+    const check = (named: readonly string[], known: Set<string>, what: string): void => {
+      for (const name of named) {
+        if (!known.has(name)) {
+          problems.push({ blueprint: slug, message: `${what} "${name}" is not in the catalog` });
+        }
+      }
+    };
+    check(manifest.recommended_experts ?? [], experts, 'recommended_experts');
+    check(
+      manifest.recommended_crew === null ? [] : [manifest.recommended_crew],
+      crews,
+      'recommended_crew',
+    );
+    check(manifest.integrations ?? [], integrations, 'integrations');
+  }
+  return problems;
 }
 
 /**
