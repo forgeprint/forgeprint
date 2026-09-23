@@ -3,6 +3,13 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.2.10 — 2026-09-23
+
+- No change beyond 0.2.9, which was tagged and released on GitHub and never
+  reached npm. Finishing it needed the resume fix in 0.2.9 itself, and that fix
+  changed this package — so the tag stopped describing what npm would get, and
+  the command said to bump. It was right.
+
 ## 0.2.9 — 2026-09-23
 
 - **`release` quotes its arguments on Windows.** The shell is needed there
