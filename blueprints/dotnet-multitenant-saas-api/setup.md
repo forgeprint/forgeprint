@@ -19,7 +19,7 @@ Requires the .NET SDK 10 and Docker.
 2. Create the solution: `dotnet new sln -n Saas`
    Verify: `dotnet sln list`
 
-3. Create the API project: `dotnet new webapi -o src/Saas.Api -f net10.0`
+3. Create the API project. The build prints warning NU1903 for the template's `Microsoft.OpenApi` dependency; that is expected, and step 5 removes it: `dotnet new webapi -o src/Saas.Api -f net10.0`
    Verify: `dotnet build src/Saas.Api`
 
 4. Add the project to the solution: `dotnet sln add src/Saas.Api`
@@ -420,7 +420,7 @@ Requires the .NET SDK 10 and Docker.
 
 <!-- if options.database == postgres -->
 
-19. Create `src/Saas.Api/appsettings.Development.json` with:
+19. Replace `src/Saas.Api/appsettings.Development.json`, which the template created in step 3, with:
 
     ```json
     {
@@ -882,7 +882,7 @@ Requires the .NET SDK 10 and Docker.
 32. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force saas-api-check 2>/dev/null || true`
     Verify: `test -z "$(docker ps --all --filter name=saas-api-check --quiet)"`
 
-33. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string or its authentication settings, so they are supplied here — which also shows the `__` form the application expects; the liveness endpoint never touches the database: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -e Oidc__Authority="https://localhost/issuer" -e Oidc__Audience="saas-api" -p 127.0.0.1::8080 saas-api:dev`
+33. Start the container and check that it answers. The image takes its configuration from the environment, and the API refuses to start without a connection string or its authentication settings, so they are supplied here — which also shows the `__` form the application expects; the liveness endpoint never touches the database. The verification retries while the container starts, so a `curl: (52) Empty reply from server` printed before `Healthy` is expected; only the exit code decides: `docker run -d --name saas-api-check -e ConnectionStrings__Default="Host=db;Database=app;Username=app;Password=local-development-only" -e Oidc__Authority="https://localhost/issuer" -e Oidc__Audience="saas-api" -p 127.0.0.1::8080 saas-api:dev`
     Verify: `curl -fsS --retry 30 --retry-delay 1 --retry-all-errors "http://$(docker port saas-api-check 8080)/health"`
 
 34. Stop the check container: `docker rm --force saas-api-check`

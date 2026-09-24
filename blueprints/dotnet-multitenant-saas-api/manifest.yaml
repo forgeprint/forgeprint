@@ -1,7 +1,7 @@
 schema: 1
 slug: dotnet-multitenant-saas-api
 name: 'Multi-tenant SaaS API'
-version: 1.2.0
+version: 1.2.1
 tier: official
 maintainers: [aliosmanmho]
 summary: 'ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.'
