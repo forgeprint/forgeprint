@@ -13,6 +13,7 @@
 
 import type { BlueprintRequest, CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
 import { attr, languageSwitch, t } from './chrome.js';
+import { blueprintData, catalogData, headTags } from './seo.js';
 import {
   crewCards,
   expertCards,
@@ -79,10 +80,11 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
   };
 
   return page({
-    title: 'Forgeprint',
+    title: 'Forgeprint catalog: blueprints, experts, crews and integrations',
     description:
       'Resolved, AI-ready project blueprints for coding agents. One MCP call returns the right context and a tested setup recipe.',
-    depth: 0,
+    path: 'catalog.html',
+    data: catalogData(units),
     body: `
       <header class="hero">
         <h1>Forgeprint</h1>
@@ -290,14 +292,15 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
   return page({
     title: `${entry.name} — Forgeprint`,
     description: entry.summary,
-    depth: 1,
+    path: `b/${entry.slug}.html`,
+    data: blueprintData(entry),
     body: `
       <p class="back"><a href="../catalog.html#blueprints">${t('allBlueprints')}</a></p>
 
       <header class="hero blueprint">
         <p class="slug">${escape(entry.slug)}</p>
         <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
-        <p class="tagline">${escape(entry.summary)}</p>
+        <p class="tagline" lang="en">${escape(entry.summary)}</p>
         ${entry.deprecated ? `<p class="warn">${t('deprecated')}</p>` : ''}
         ${entry.supersedes === null ? '' : `<p class="muted">${t('supersedes')} <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
         ${byline(entry.maintainers)}
@@ -500,7 +503,7 @@ function card(entry: IndexEntry, taxonomy: Taxonomy): string {
 
   return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="b/${escape(entry.slug)}.html">${escape(entry.name)}</a> ${tier(entry.tier)}</h3>
-          <p>${escape(entry.summary)}</p>
+          <p lang="en">${escape(entry.summary)}</p>
           <p class="tags">${tags.map((tag) => `<span>${escape(tag)}</span>`).join('')}</p>
         </article>`;
 }
@@ -536,14 +539,16 @@ function tier(name: string): string {
 interface PageParts {
   readonly title: string;
   readonly description: string;
-  /** How deep the page sits, so the stylesheet link resolves. */
-  readonly depth: number;
+  /** Where the page is published under docs/, e.g. `e/some-expert.html`. */
+  readonly path: string;
+  /** schema.org fields for the page's JSON-LD. */
+  readonly data: Record<string, unknown>;
   readonly body: string;
   readonly script?: string;
 }
 
-function page({ title, description, depth, body, script }: PageParts): string {
-  const up = '../'.repeat(depth);
+function page({ title, description, path, data, body, script }: PageParts): string {
+  const up = '../'.repeat(path.split('/').length - 1);
   return `<!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -553,6 +558,7 @@ function page({ title, description, depth, body, script }: PageParts): string {
     <meta name="description" content="${escape(description)}" />
     <link rel="icon" href="${up}brand/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="${up}forgeprint.css" />
+${headTags({ path, title, description, data })}
   </head>
   <body>
     <header class="topbar">
@@ -562,6 +568,7 @@ function page({ title, description, depth, body, script }: PageParts): string {
         ${languageSwitch()}
       </nav>
     </header>
+    ${t('contentNote', {}, 'p class="lang-note"')}
     <main>
 ${body.trim()}
     </main>
@@ -628,6 +635,9 @@ export const STYLESHEET = `:root {
 .lang button:hover { color: var(--fg); }
 .lang button[aria-pressed=true] { background: var(--accent); color: #fff; }
 .topbar a:focus-visible, .lang button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* In any language but English, say once that entries stay in English. */
+.lang-note { display: none; max-width: 54rem; margin: -1.25rem auto 2rem; font-size: 0.9rem; color: var(--muted); border-left: 3px solid var(--accent); padding-left: 0.8rem; }
+html:not([lang="en"]) .lang-note { display: block; }
 /* The switch needs its script; without it, it is not offered. */
 .no-js .lang { display: none; }
 @media (prefers-reduced-motion: reduce) { .lang button { transition: none; } }

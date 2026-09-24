@@ -138,6 +138,7 @@ export const CHROME = {
   secretRest:
     'Create it at the upstream with the narrowest scope that works and put it in your environment — an agent never enters a secret for you.',
   install: 'Install',
+  contentNote: 'Catalog entries are written once, in English. Your browser can translate them.',
   installNote:
     'Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.',
 } as const;
@@ -166,9 +167,13 @@ function args(values: Values): string {
     .join('');
 }
 
-/** Translatable text: an element the script can swap, English inside. */
+/**
+ * Translatable text: an element the script can swap, English inside. `tag` may
+ * carry attributes (`p class="note"`); the closing tag uses the name alone.
+ */
 export function t(key: ChromeKey, values: Values = {}, tag = 'span'): string {
-  return `<${tag} data-i18n="site.${key}"${args(values)}>${escapeText(fill(CHROME[key], values))}</${tag}>`;
+  const name = tag.split(' ')[0] ?? 'span';
+  return `<${tag} data-i18n="site.${key}"${args(values)}>${escapeText(fill(CHROME[key], values))}</${name}>`;
 }
 
 /** A translatable attribute, English as its value, e.g. placeholder or title. */

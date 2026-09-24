@@ -7,6 +7,16 @@
     <meta name="description" content="Read and write the Notion pages and databases an integration token has been granted." />
     <link rel="icon" href="../brand/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../forgeprint.css" />
+    <link rel="canonical" href="https://forgeprint.github.io/forgeprint/i/notion-mcp.html" />
+    <link rel="alternate" type="application/json" href="../index.json" title="The catalog as JSON" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Forgeprint" />
+    <meta property="og:title" content="Notion MCP — Forgeprint" />
+    <meta property="og:description" content="Read and write the Notion pages and databases an integration token has been granted." />
+    <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/notion-mcp.html" />
+    <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Notion MCP","name":"Notion MCP","description":"Read and write the Notion pages and databases an integration token has been granted.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/notion-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/notion-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -19,11 +29,12 @@
         </div>
       </nav>
     </header>
+    <p class="lang-note" data-i18n="site.contentNote">Catalog entries are written once, in English. Your browser can translate them.</p>
     <main>
 <p class="back"><a href="../catalog.html#integrations"><span data-i18n="site.allIntegrations">← all integrations</span></a></p>
       <p class="slug">integrations/notion-mcp</p>
       <h1>Notion MCP <span class="tier">mcp</span></h1>
-      <p class="tagline">Read and write the Notion pages and databases an integration token has been granted.</p>
+      <p class="tagline" lang="en">Read and write the Notion pages and databases an integration token has been granted.</p>
 
       <p class="warn">
         <strong data-i18n="site.thirdPartyTitle">Third-party software.</strong> <span data-i18n="site.thirdParty">Forgeprint hosts none of this code: it is an installation recipe for a project somebody else publishes and maintains. Review the permissions below before installing.</span>
@@ -37,15 +48,15 @@
       </table>
 
       <h2><span data-i18n="site.reach">What it can reach</span></h2>
-      <p>Reads and writes the pages and databases explicitly shared with the integration.</p>
+      <p lang="en">Reads and writes the pages and databases explicitly shared with the integration.</p>
       <p><span data-i18n="site.needsIntro">It needs</span> <code>NOTION_TOKEN</code>. <span data-i18n="site.secretRest">Create it at the upstream with the narrowest scope that works and put it in your environment — an agent never enters a secret for you.</span></p>
 
       <h2><span data-i18n="site.install">Install</span></h2>
-      <h3>claude-code</h3>
+      <h3>Claude Code</h3>
       <pre class="install"><code>claude mcp add-json notion '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@notionhq/notion-mcp-server@2.5.2&quot;],&quot;env&quot;:{&quot;NOTION_TOKEN&quot;:&quot;$NOTION_TOKEN&quot;}}'</code></pre>
-      <h3>codex</h3>
+      <h3>Codex CLI</h3>
       <pre class="install"><code>codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2</code></pre>
-      <h3>gemini-cli</h3>
+      <h3>Gemini CLI</h3>
       <pre class="install"><code>gemini mcp add notion -e NOTION_TOKEN=$NOTION_TOKEN npx -y @notionhq/notion-mcp-server@2.5.2</code></pre>
       <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
 
