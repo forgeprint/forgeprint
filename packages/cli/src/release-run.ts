@@ -1,21 +1,24 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createInterface } from 'node:readline/promises';
 import { dirname, join } from 'node:path';
 import { listBlueprintSlugs } from './catalog.js';
 import { repoPaths } from './paths.js';
 import {
   changelogEntry,
+  checkDistributionVersions,
   checkVersions,
   classifyPublishError,
   draftNotes,
   failureLines,
   isReleaseVersion,
+  mcpRegistryVersion,
   notesPath,
   publishable,
   publishedCodeUnchanged,
   readWorkspacePackages,
   registryVersion,
   run,
+  type DistributionManifest,
   type PublishOutcome,
   type WorkspacePackage,
 } from './release.js';
@@ -236,6 +239,95 @@ function readChangelog(dir: string): string | undefined {
   return existsSync(file) ? readFileSync(file, 'utf8') : undefined;
 }
 
+/**
+ * Every manifest outside `packages/` that carries the release version.
+ *
+ * Read from disk rather than listed in a constant, so a fifth skill is covered
+ * the day it is added rather than the day somebody remembers this file.
+ */
+function readDistributionManifests(root: string): DistributionManifest[] {
+  const manifests: DistributionManifest[] = [];
+
+  const serverPath = join(root, 'server.json');
+  if (existsSync(serverPath)) {
+    const server = JSON.parse(readFileSync(serverPath, 'utf8')) as {
+      version?: string;
+      packages?: { identifier?: string; version?: string }[];
+    };
+    const versions: { field: string; value: string }[] = [];
+    if (typeof server.version === 'string')
+      versions.push({ field: 'version', value: server.version });
+    for (const pkg of server.packages ?? []) {
+      if (typeof pkg.version === 'string') {
+        versions.push({ field: `packages[${pkg.identifier ?? '?'}].version`, value: pkg.version });
+      }
+    }
+    manifests.push({ path: 'server.json', versions });
+  }
+
+  const skillsDir = join(root, 'skills');
+  if (existsSync(skillsDir)) {
+    for (const entry of readdirSync(skillsDir).sort()) {
+      const relative = `skills/${entry}/.claude-plugin/plugin.json`;
+      const file = join(root, relative);
+      if (!existsSync(file)) continue;
+      const plugin = JSON.parse(readFileSync(file, 'utf8')) as { version?: string };
+      manifests.push({
+        path: relative,
+        versions:
+          typeof plugin.version === 'string' ? [{ field: 'version', value: plugin.version }] : [],
+      });
+    }
+  }
+
+  return manifests;
+}
+
+/** The server name the MCP Registry knows this repository by. */
+function mcpServerName(root: string): string | undefined {
+  const file = join(root, 'server.json');
+  if (!existsSync(file)) return undefined;
+  const server = JSON.parse(readFileSync(file, 'utf8')) as { name?: string };
+  return server.name;
+}
+
+/**
+ * Publish to the MCP Registry, which used to be a line of text at the end.
+ *
+ * It was printed as a reminder for eight releases and done for none of them:
+ * the registry served 0.2.1 on the day npm served 0.3.0, so anybody who found
+ * Forgeprint that way installed a catalog from before the work worth finding.
+ *
+ * Authentication is the maintainer's, exactly as npm's is, so a login this
+ * cannot perform is reported as the one remaining step rather than as a
+ * failure — the release itself is done by the time this runs.
+ */
+async function publishToMcpRegistry(root: string, version: string): Promise<void> {
+  const name = mcpServerName(root);
+  if (name === undefined) return;
+
+  const served = await mcpRegistryVersion(name);
+  if (served === version) {
+    say(`  ok     the MCP Registry already serves ${name}@${version}`);
+    return;
+  }
+
+  say(`  publishing ${name}@${version} to the MCP Registry`);
+  const result = run('mcp-publisher', ['publish', 'server.json'], root);
+  if (result.ok) {
+    say(`  ok     ${name}@${version} published to the MCP Registry`);
+    return;
+  }
+
+  const text = result.output.toLowerCase();
+  const reason = /login|auth|token|credential|unauthor|401|403/.test(text)
+    ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
+    : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
+  say();
+  say(`  note   the MCP Registry still serves ${served ?? 'an older version'}. ${reason}`);
+  say('           mcp-publisher publish server.json');
+}
+
 export async function release(root: string, options: ReleaseOptions): Promise<void> {
   const { version } = options;
   if (!isReleaseVersion(version)) fail(`not a release version: ${version}`);
@@ -276,12 +368,17 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
   }
 
   // 2. The versions and changelogs agree with what is being released.
-  const problems = checkVersions(packages, version, (p) => readChangelog(p.dir));
+  const manifests = readDistributionManifests(root);
+  const problems = [
+    ...checkVersions(packages, version, (p) => readChangelog(p.dir)),
+    ...checkDistributionVersions(manifests, version),
+  ];
   if (problems.length > 0) {
     for (const p of problems) process.stderr.write(`error  ${p.package}: ${p.problem}\n`);
     fail('fix the versions and changelogs first');
   }
   say(`  ok     ${packages.length} package(s) at ${version}, each with a changelog entry`);
+  say(`  ok     ${manifests.length} distribution manifest(s) at ${version}`);
 
   // 3. The notes exist and a human has seen them.
   const notes = notesPath(root, version);
@@ -430,8 +527,9 @@ ${pushed.output.trim()}`);
     }
   }
 
+  await publishToMcpRegistry(root, version);
+
   say();
   say('Released. What is left is outside this command:');
-  say('  mcp-publisher publish server.json     (the MCP registry reads the npm package)');
   say('  docs/dogfood.md                       (if a first-time user would notice this release)');
 }
