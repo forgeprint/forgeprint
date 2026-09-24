@@ -2499,7 +2499,7 @@
       "install": {
         "claude-code": "claude mcp add-json exa '{\"command\":\"npx\",\"args\":[\"-y\",\"exa-mcp-server@3.4.1\"],\"env\":{\"EXA_API_KEY\":\"${EXA_API_KEY}\"}}'",
         "codex": "codex mcp add exa --env EXA_API_KEY=$EXA_API_KEY -- npx -y exa-mcp-server@3.4.1",
-        "gemini-cli": "gemini mcp add exa -e EXA_API_KEY=$EXA_API_KEY npx -y exa-mcp-server@3.4.1"
+        "gemini-cli": "gemini mcp add exa -e 'EXA_API_KEY=${EXA_API_KEY}' npx -y exa-mcp-server@3.4.1"
       },
       "needs_secrets": [
         "EXA_API_KEY"

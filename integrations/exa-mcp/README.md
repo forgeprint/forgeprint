@@ -33,10 +33,16 @@ claude mcp add-json exa '{"command":"npx","args":["-y","exa-mcp-server@3.4.1"],"
 codex mcp add exa --env EXA_API_KEY=$EXA_API_KEY -- npx -y exa-mcp-server@3.4.1
 ```
 
+`codex mcp add --env` stores the value the shell expanded, so the key is
+written in plain text to `~/.codex/config.toml`. To keep only its name there,
+add the server by hand with `env_vars = ["EXA_API_KEY"]` instead of
+`env`: Codex then forwards the variable from your environment when it starts
+the server.
+
 **gemini-cli**
 
 ```bash
-gemini mcp add exa -e EXA_API_KEY=$EXA_API_KEY npx -y exa-mcp-server@3.4.1
+gemini mcp add exa -e 'EXA_API_KEY=${EXA_API_KEY}' npx -y exa-mcp-server@3.4.1
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent
