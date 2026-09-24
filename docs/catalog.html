@@ -10,7 +10,8 @@
   </head>
   <body>
     <main>
-<header class="hero">
+<p class="back"><a href="./">← Forgeprint home</a></p>
+      <header class="hero">
         <h1>Forgeprint</h1>
         <p class="tagline">
           Tell your agent who you are and what you are building — get back one blueprint
@@ -36,7 +37,7 @@
           </div>
           <input id="filter" type="search" placeholder="Filter by language, stack, role…" autocomplete="off" aria-label="Filter the catalog" />
         </div>
-        <div class="cards" data-kind="blueprint">
+        <div class="cards" id="blueprints" data-kind="blueprint">
         <article class="card" data-terms="astro-content-site astro content site static content site in astro with tailwind, a typed content collection, and tests that assert the built html carries the seo and accessibility work. web typescript astro tailwind seo accessibility ci web linux macos windows open-source free">
           <h3><a href="b/astro-content-site.html">Astro Content Site</a> </h3>
           <p>Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.</p>
@@ -123,7 +124,7 @@
           <p class="tags"><span>TypeScript</span><span>AI agent or MCP server</span></p>
         </article>
 </div>
-        <div class="cards" data-kind="expert" hidden>
+        <div class="cards" id="experts" data-kind="expert" hidden>
         <article class="card" data-terms="devops-platform-engineer devops platform engineer pin by digest, give the build least privilege, make rollback a tested path, and define the slo before the dashboard. platform-engineer devops senior docker kubernetes terraform infrastructure-plan release-plan runbook slo-definition observability-plan cost-review">
           <h3><a href="e/devops-platform-engineer.html">DevOps Platform Engineer</a> </h3>
           <p>Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.</p>
@@ -173,15 +174,15 @@
           <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" data-kind="crew" hidden>
-        <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer">
+        <div class="cards" id="crews" data-kind="crew" hidden>
+        <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer github-mcp playwright-mcp">
           <h3><a href="c/api-hardening-crew.html">API Hardening Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
           <p>Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.</p>
           <p class="tags"><span>security-reviewer</span><span>qa-automation-lead</span><span>devops-platform-engineer</span></p>
           <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
-        <article class="card" data-terms="saas-launch-crew saas launch crew the four specialists a multi-tenant saas needs before its first customer, and the two integrations they all reach for. taking a multi-tenant saas from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate. dotnet-senior-architect sql-data-engineer security-reviewer qa-automation-lead">
+        <article class="card" data-terms="saas-launch-crew saas launch crew the four specialists a multi-tenant saas needs before its first customer, and the two integrations they all reach for. taking a multi-tenant saas from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate. dotnet-senior-architect sql-data-engineer security-reviewer qa-automation-lead github-mcp sentry-mcp">
           <h3><a href="c/saas-launch-crew.html">SaaS Launch Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
           <p>The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.</p>
@@ -189,7 +190,7 @@
           <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" data-kind="integration" hidden>
+        <div class="cards" id="integrations" data-kind="integration" hidden>
         <article class="card" data-terms="chrome-devtools-mcp chrome devtools mcp read the console, the network log and a performance trace from a running chrome, from an agent. mcp software quality">
           <h3><a href="i/chrome-devtools-mcp.html">Chrome DevTools MCP</a> <span class="tier">mcp</span></h3>
           <p>Read the console, the network log and a performance trace from a running Chrome, from an agent.</p>
@@ -310,13 +311,31 @@ const filter = document.getElementById('filter');
         if (nothing) nothing.hidden = shown > 0;
       }
 
+      function select(kind) {
+        const tab = tabs.find((candidate) => candidate.dataset.kind === kind);
+        if (!tab) return false;
+        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        apply();
+        return true;
+      }
+
+      // The address names the tab (catalog.html#experts), so a unit page can
+      // link back to where its reader came from, and a tab can be shared.
+      function fromAddress() {
+        select(location.hash.slice(1).replace(/s$/, ''));
+      }
+
       for (const tab of tabs) {
         tab.addEventListener('click', () => {
-          for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
-          apply();
+          select(tab.dataset.kind);
+          history.replaceState(null, '', '#' + tab.dataset.kind + 's');
         });
       }
-      if (tabs.length > 0) apply();
+      window.addEventListener('hashchange', fromAddress);
+      if (tabs.length > 0) {
+        apply();
+        fromAddress();
+      }
       if (filter) filter.addEventListener('input', apply);
 
       // The requests come from the issues API, read by the browser with no

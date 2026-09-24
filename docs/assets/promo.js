@@ -964,6 +964,9 @@
     if (index === null) return; // still loading; skeletons stay
     list.removeAttribute('aria-busy');
     list.setAttribute('aria-labelledby', `cat-tab-${catalogKind}`);
+    // The full catalog opens on the same tab.
+    const full = $('.templates-foot a');
+    if (full) full.setAttribute('href', `catalog.html#${catalogKind}s`);
 
     if (index === 'error') {
       list.innerHTML = stateBlock(

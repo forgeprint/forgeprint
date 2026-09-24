@@ -18,6 +18,9 @@
   }
 }
 * { box-sizing: border-box; }
+/* Author display rules (.cards is a grid) beat the browser's own [hidden], so
+   without this a hidden panel stays on screen and the tabs do nothing. */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   padding: 3rem 1rem 4rem;

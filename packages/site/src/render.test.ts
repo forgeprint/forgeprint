@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { buildIndex, loadBlueprints, loadTaxonomy, type CatalogIndex } from 'forgeprint';
 import { makeRepo, validManifest, type BlueprintFixture } from 'forgeprint/testing';
-import { escape, renderBlueprintPage, renderIndexPage, renderSite } from './render.js';
+import { escape, renderBlueprintPage, renderIndexPage, renderSite, STYLESHEET } from './render.js';
 
 const CONTEXT = {
   requests: [
@@ -87,6 +87,14 @@ describe('a blueprint page', () => {
     const html = renderBlueprintPage(entry, INDEX.taxonomy);
     assert.match(html, /get_blueprint \{ "slug": "sample-api"/);
     assert.match(html, /"database": "postgres"/);
+  });
+
+  it('goes back to the blueprints tab of the catalog', () => {
+    assert.ok(entry !== undefined);
+    assert.match(
+      renderBlueprintPage(entry, INDEX.taxonomy),
+      /href="\.\.\/catalog\.html#blueprints"/,
+    );
   });
 
   it('shows the tags as labels rather than identifiers', () => {
@@ -246,5 +254,14 @@ describe('what a blueprint suggests alongside itself', () => {
       INDEX.taxonomy,
     );
     assert.doesNotMatch(html, /Suggested alongside/);
+  });
+});
+
+describe('STYLESHEET', () => {
+  it('keeps the hidden attribute stronger than any display rule', () => {
+    // The catalog tabs hide panels with `hidden`, and `.cards` sets
+    // display: grid. Without this rule every panel stays visible and the tabs
+    // appear to do nothing.
+    assert.ok(STYLESHEET.includes('[hidden] { display: none !important; }'));
   });
 });
