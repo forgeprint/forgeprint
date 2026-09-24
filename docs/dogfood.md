@@ -40,7 +40,7 @@ claude mcp add forgeprint "--" npx -y forgeprint-mcp
 
 **Run it isolated.** `claude mcp add` leaves every other server connected, and
 a working setup usually has several. That is a different test: with three
-hundred tools in the session, Forgeprint's six are competing for attention, and
+hundred tools in the session, Forgeprint's ten are competing for attention, and
 a run where the agent never calls `resolve` tells you nothing about `resolve`.
 Write this file somewhere outside the working directory:
 
@@ -58,7 +58,7 @@ and start the session with nothing else loaded:
 claude --strict-mcp-config --mcp-config /path/to/forgeprint-only.json
 ```
 
-Check it with `/mcp`: exactly one server, `forgeprint`, connected, six tools.
+Check it with `/mcp`: exactly one server, `forgeprint`, connected, ten tools.
 
 **Clear the memory too.** An agent that already remembers "the user knows C#"
 and "the user is building a multi-tenant SaaS API" learns nothing from your
@@ -71,7 +71,11 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\projects\C--Project-dogfoo
 ```
 
 (The folder is named after the working directory, with the separators replaced
-by dashes.) `--bare` also disables memory, but it disables OAuth with it, so it
+by dashes.) **The simplest way to get both preconditions at once is a new directory
+for every run** — `dogfood-0.3.0`, then `dogfood-0.3.1`. It is empty, and the
+memory folder named after it does not exist yet, so nothing needs deleting and
+no earlier run can leak in. Reusing a directory is how a half-built project
+and a remembered profile both end up in the next run. `--bare` also disables memory, but it disables OAuth with it, so it
 is not an option on a subscription.
 
 **If the agent says anything like "already in memory from earlier", stop.**
@@ -81,14 +85,18 @@ The crowded case is worth testing too — most people have other servers — but
 test it **second**, and as its own question: does `resolve` still get picked
 when it is one of three hundred tools?
 
-Check that it is the only one, and that all six tools are there:
+Check that it is the only one, and that all ten tools are there:
 
 ```
 /mcp
 ```
 
-Expect `forgeprint` connected, with `search_blueprints`, `get_blueprint`,
-`resolve`, `compare_blueprints`, `validate_blueprint` and `request_blueprint`.
+Expect `forgeprint` connected, with the six blueprint tools — `resolve`,
+`search_blueprints`, `get_blueprint`, `compare_blueprints`, `validate_blueprint`,
+`request_blueprint` — and, since 0.3.0, the four for experts, crews and
+integrations: `recommend_experts`, `get_expert`, `get_crew`, `get_integration`.
+This test exercises the first six; the other four being present is still part
+of the check.
 
 > To test a local checkout instead of the published catalog, add
 > `--env FORGEPRINT_CATALOG="/path/to/forgeprint"`. Do the real run against the
@@ -202,7 +210,7 @@ Say:
 Go ahead and set it up here.
 ```
 
-Then **do not help.** Watch it work through the 31 steps. It should run each
+Then **do not help.** Watch it work through the 34 steps. It should run each
 command and its verification, in order, in this directory.
 
 Checkpoints worth watching for:
@@ -211,8 +219,8 @@ Checkpoints worth watching for:
 | ------ | ---------------------------------------------------------------------------------------------- |
 | early  | `global.json` pinning the SDK, then the solution and projects                                  |
 | middle | files written whole — `AppDbContext.cs`, `ProviderRegistration.cs`, `Program.cs`               |
-| ~28    | `dotnet test` green: the tenant isolation suite                                                |
-| ~29–32 | image built, container started on a port the OS picked, `/health` answering, container removed |
+| 30     | `dotnet test` green: the tenant isolation suite                                                |
+| 31–34  | image built, container started on a port the OS picked, `/health` answering, container removed |
 
 **Record as a defect if:**
 
