@@ -327,6 +327,13 @@ deliverables:
   product-brief: Product brief
   user-story-set: User story set
   roadmap: Roadmap
+  # Coordinating work split across several people or agents (ADR 0014). A
+  # delivery plan is a task graph in which every task has an owner, the paths it
+  # may write, acceptance criteria and the command that verifies them — which
+  # is what separates it from a roadmap.
+  delivery-plan: Delivery plan
+  assumption-log: Assumption log
+  delivery-report: Delivery report
   research-summary: Research summary
   usability-review: Usability review
   design-spec: Design specification
