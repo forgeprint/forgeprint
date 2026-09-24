@@ -3,7 +3,7 @@
   "name": "io.github.forgeprint/forgeprint",
   "title": "Forgeprint",
   "description": "Resolve a developer profile to exactly one project blueprint and return its CI-tested setup recipe.",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "repository": {
     "url": "https://github.com/forgeprint/forgeprint",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "forgeprint-mcp",
-      "version": "0.2.10",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       }
