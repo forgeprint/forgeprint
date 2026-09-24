@@ -51,11 +51,14 @@ is held to it too.
 
 For the reference task:
 
-1. `npm test` passes, with at least one test per route and per refusal
+1. `npm test` passes, with at least one test per route and per refusal —
+   counted in its output, because the blueprint runs `node --test dist/*.test.js`
+   and a test file in a subdirectory is never run, so never fails
 2. The route-table test passes: no new route is public
 3. Deleting a project that has tasks does what the agent's own design says it
    does, and a test proves it
-4. `npm run build` and the linter pass with no new suppressions
+4. `npm run build` passes, with no new `@ts-ignore` or `@ts-expect-error`.
+   The blueprint has no linter; do not count one
 5. A request with a malformed body to each create route answers 400, not 500
 
 ## What to record
