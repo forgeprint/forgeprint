@@ -1,7 +1,7 @@
 schema: 1
 slug: sentry-mcp
 name: 'Sentry MCP'
-version: 1.1.0
+version: 1.2.0
 tier: community
 provenance: generated
 maintainers: [aliosmanmho]
@@ -11,7 +11,7 @@ upstream: https://github.com/getsentry/sentry-mcp
 upstream_version: '0.40.0'
 verified_on: 2026-09-24
 install:
-  claude-code: 'claude mcp add-json sentry ''{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"$SENTRY_ACCESS_TOKEN"}}'''
+  claude-code: 'claude mcp add-json sentry ''{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"${SENTRY_ACCESS_TOKEN}"}}'''
   codex: 'codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0'
   gemini-cli: 'gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0'
 needs_secrets: [SENTRY_ACCESS_TOKEN]

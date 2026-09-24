@@ -24,7 +24,7 @@ Reads issues, events and stack traces, and can update issues (assign, unassign, 
 **claude-code**
 
 ```bash
-claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"$SENTRY_ACCESS_TOKEN"}}'
+claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"${SENTRY_ACCESS_TOKEN}"}}'
 ```
 
 **codex**
