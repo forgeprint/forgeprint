@@ -2691,7 +2691,7 @@
       "install": {
         "claude-code": "claude mcp add-json notion '{\"command\":\"npx\",\"args\":[\"-y\",\"@notionhq/notion-mcp-server@2.5.2\"],\"env\":{\"NOTION_TOKEN\":\"${NOTION_TOKEN}\"}}'",
         "codex": "codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2",
-        "gemini-cli": "gemini mcp add notion -e NOTION_TOKEN=$NOTION_TOKEN npx -y @notionhq/notion-mcp-server@2.5.2"
+        "gemini-cli": "gemini mcp add notion -e 'NOTION_TOKEN=${NOTION_TOKEN}' npx -y @notionhq/notion-mcp-server@2.5.2"
       },
       "needs_secrets": [
         "NOTION_TOKEN"
