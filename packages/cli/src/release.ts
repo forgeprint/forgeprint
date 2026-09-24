@@ -38,6 +38,8 @@ export type PublishOutcome =
   | { kind: 'published' }
   | { kind: 'already-published' }
   | { kind: 'unauthorized' }
+  | { kind: 'stage-only' }
+  | { kind: 'needs-interactive' }
   | { kind: 'failed'; detail: string };
 
 /**
@@ -130,6 +132,18 @@ export function classifyPublishError(output: string): PublishOutcome {
   }
   if (text.includes('you cannot publish over the previously published versions')) {
     return { kind: 'already-published' };
+  }
+  // A token created with "Read and write (stage only)" is refused here and
+  // nowhere else: `npm whoami` succeeds, and `npm token list` reports the same
+  // permissions a working token reports. This 403 is the only place the
+  // difference is visible, and it lands after the tag is already pushed.
+  if (text.includes('e_stage_required') || text.includes('can only publish to a staging area')) {
+    return { kind: 'stage-only' };
+  }
+  // 2FA without a bypass token is a browser challenge, which cannot happen in
+  // a subprocess. Not a credential problem — the same token works by hand.
+  if (text.includes('not running in an interactive terminal')) {
+    return { kind: 'needs-interactive' };
   }
   // npm answers an unauthorized request for a package you cannot write with
   // 404, so a missing-package error is almost always a rejected token.

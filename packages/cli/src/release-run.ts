@@ -124,8 +124,30 @@ function ciState(root: string): { known: boolean; green: boolean; detail: string
 
 /** How often to ask GitHub again while a workflow is still running. */
 const CI_POLL_SECONDS = 30;
+
 /** Longer than the matrix takes, short enough that a stuck run is not forever. */
 const CI_WAIT_MINUTES = 45;
+
+/**
+ * How long to keep asking the registry after a publish.
+ *
+ * Six attempts thirty seconds apart is two and a half minutes. 0.3.0 took
+ * ninety seconds to become visible, and the previous version of this loop —
+ * five attempts with no wait at all — would have called that a failed publish.
+ */
+const REGISTRY_ATTEMPTS = 6;
+const REGISTRY_POLL_SECONDS = 30;
+
+/**
+ * The outcomes worth waiting on. A rejected token, a stage-only token and a
+ * 2FA challenge nobody can answer all mean the registry never received the
+ * package, so re-asking it only delays the answer.
+ */
+const CAN_STILL_LAND: ReadonlySet<PublishOutcome['kind']> = new Set([
+  'published',
+  'already-published',
+  'failed',
+]);
 
 /**
  * Wait for CI rather than making the maintainer poll it.
@@ -169,7 +191,11 @@ async function waitForCi(
  * after it has accepted a new one, so this asks more than once before it
  * believes the bad news.
  */
-function publishOne(pkg: WorkspacePackage, root: string, version: string): PublishOutcome {
+async function publishOne(
+  pkg: WorkspacePackage,
+  root: string,
+  version: string,
+): Promise<PublishOutcome> {
   const before = registryVersion(pkg.name, root);
   if (before === version) return { kind: 'already-published' };
 
@@ -179,13 +205,22 @@ function publishOne(pkg: WorkspacePackage, root: string, version: string): Publi
     ? ({ kind: 'published' } as const)
     : classifyPublishError(result.output);
 
-  // Whatever it said, the registry decides. Up to five attempts: the gap
-  // between a publish landing and `npm view` admitting it has been minutes.
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  // A refusal is a refusal. Waiting on the registry for something it was never
+  // sent turns a clear diagnosis into a two-minute pause before the same one.
+  if (!CAN_STILL_LAND.has(outcome.kind)) return outcome;
+
+  // Whatever it said, the registry decides. 0.3.0 reported success and then
+  // served 404 for that version for about ninety seconds, so this waits
+  // between attempts rather than asking five times in as many seconds.
+  for (let attempt = 0; attempt < REGISTRY_ATTEMPTS; attempt += 1) {
     if (registryVersion(pkg.name, root) === version) {
       return outcome.kind === 'published' ? { kind: 'published' } : { kind: 'already-published' };
     }
-    if (attempt < 4) run('npm', ['cache', 'clean', '--force'], root);
+    if (attempt < REGISTRY_ATTEMPTS - 1) {
+      run('npm', ['cache', 'clean', '--force'], root);
+      if (attempt === 0) say('  note   published; waiting for the registry to serve it');
+      await new Promise((resolve) => setTimeout(resolve, REGISTRY_POLL_SECONDS * 1000));
+    }
   }
   if (outcome.kind === 'published') {
     return {
@@ -352,7 +387,7 @@ ${pushed.output.trim()}`);
   }
 
   for (const pkg of pending) {
-    const outcome = publishOne(pkg, root, version);
+    const outcome = await publishOne(pkg, root, version);
     switch (outcome.kind) {
       case 'published':
         say(`  ok     ${pkg.name}@${version} published`);
@@ -365,6 +400,26 @@ ${pushed.output.trim()}`);
           `npm rejected your credentials while publishing ${pkg.name}. ` +
             'Run `npm whoami`; a 401 there means log in again. ' +
             'The tag and release are done — rerun this command afterwards to finish.',
+        );
+        break;
+      case 'stage-only':
+        fail(
+          `npm refused to publish ${pkg.name}: your token can only stage (403 E_STAGE_REQUIRED).\n` +
+            'Nothing on this machine can tell a stage-only token from a working one — ' +
+            '`npm whoami` and `npm token list` report the same thing for both, ' +
+            'so this 403 is the first place the difference shows.\n' +
+            'Generate a granular access token with "Read and write" — the option with ' +
+            'nothing in parentheses — and leave "Bypass two-factor authentication" unchecked. ' +
+            'See docs/releasing.md §7.\n' +
+            'The tag and release are done. Swap the token and rerun; published packages are skipped.',
+        );
+        break;
+      case 'needs-interactive':
+        fail(
+          `npm asked ${pkg.name} for a browser 2FA challenge, which cannot happen inside this command.\n` +
+            'Your token is fine; it just is not a bypass-2FA token, and this runs pnpm as a subprocess.\n' +
+            `Publish it by hand: pnpm publish --filter ${pkg.name} --access public\n` +
+            'The tag and release are done. Do that for each remaining package, then rerun to verify.',
         );
         break;
       case 'failed':
