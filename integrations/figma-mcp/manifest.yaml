@@ -13,7 +13,7 @@ verified_on: 2026-09-23
 install:
   claude-code: 'claude mcp add-json figma ''{"command":"npx","args":["-y","figma-developer-mcp@0.13.2","--stdio"],"env":{"FIGMA_API_KEY":"${FIGMA_API_KEY}"}}'''
   codex: 'codex mcp add figma --env FIGMA_API_KEY=$FIGMA_API_KEY -- npx -y figma-developer-mcp@0.13.2 --stdio'
-  gemini-cli: 'gemini mcp add figma -e FIGMA_API_KEY=$FIGMA_API_KEY npx -y figma-developer-mcp@0.13.2 --stdio'
+  gemini-cli: "gemini mcp add figma -e 'FIGMA_API_KEY=${FIGMA_API_KEY}' npx -y figma-developer-mcp@0.13.2 --stdio"
 needs_secrets: [FIGMA_API_KEY]
 permissions_summary: "Reads the Figma files the access token can reach, through Figma's API."
 fits: [design, software]
