@@ -360,8 +360,19 @@ async function publishToMcpRegistry(root: string, version: string): Promise<void
         'the registry granted only your personal namespace. The device-flow login cannot see ' +
         'the organization; log in with a classic PAT scoped to read:org instead. ' +
         'See docs/releasing.md, "Publishing under the organization". Then:'
-      : /login|auth|token|credential|unauthor|401|403/.test(text)
-        ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
+      : /login|auth|token|credential|unauthor|expired|401|403/.test(text)
+        ? // Usually an expired registry token: they are short-lived, and the
+          // one from the last release is gone by the next. Plain
+          // `login github` is the wrong advice for an organization namespace —
+          // the device flow cannot see the organization, and 0.3.1's release
+          // pointed straight at it.
+          // Nothing in the name says whether io.github.<x> is a person or an
+          // organization, so the message says both rather than guessing.
+          'mcp-publisher is not logged in, or its registry token has expired. ' +
+          'Under an organization namespace the browser login cannot see the organization: ' +
+          'set MCP_GITHUB_TOKEN to a classic PAT scoped to read:org, run `mcp-publisher login github`, ' +
+          'then unset it (docs/releasing.md, "Publishing under the organization"). ' +
+          'Under your own namespace, `mcp-publisher login github` alone is enough. Then:'
         : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
   say();
   say(`  note   the MCP Registry still serves ${served ?? 'an older version'}. ${reason}`);
