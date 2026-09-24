@@ -30,7 +30,7 @@ claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/
 **gemini-cli**
 
 ```bash
-gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header "Authorization: Bearer $GITHUB_PERSONAL_ACCESS_TOKEN"
+gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header 'Authorization: Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}'
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent

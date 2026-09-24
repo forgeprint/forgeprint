@@ -12,7 +12,7 @@ upstream_version: 'v1.12.2'
 verified_on: 2026-09-23
 install:
   claude-code: 'claude mcp add-json github ''{"type":"http","url":"https://api.githubcopilot.com/mcp/","headers":{"Authorization":"Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"}}'''
-  gemini-cli: 'gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header "Authorization: Bearer $GITHUB_PERSONAL_ACCESS_TOKEN"'
+  gemini-cli: "gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header 'Authorization: Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}'"
 needs_secrets: [GITHUB_PERSONAL_ACCESS_TOKEN]
 permissions_summary: 'Reads and writes every repository the token can reach: issues, pull requests, workflow runs and file contents.'
 fits: [software, devops, product]
