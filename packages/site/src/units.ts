@@ -168,7 +168,7 @@ export function integrationCards(index: IndexWithUnits): string {
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="i/${escape(entry.slug)}.html">${escape(entry.name)}</a> <span class="tier">${escape(entry.kind)}</span></h3>
           <p lang="en">${escape(entry.summary)}</p>
-          <p class="tags">${t('pinned', { version: entry.upstream_version })}${entry.fits.map((fit) => `<span>${escape(fit)}</span>`).join('')}${secrets === 0 ? '' : secrets === 1 ? t('needsSecret').replace('<span ', '<span class="needs-secret" ') : t('needsSecrets', { n: secrets }).replace('<span ', '<span class="needs-secret" ')}</p>
+          <p class="tags">${entry.upstream_version === 'hosted' ? t('hosted', { date: entry.verified_on }) : t('pinned', { version: entry.upstream_version })}${entry.fits.map((fit) => `<span>${escape(fit)}</span>`).join('')}${secrets === 0 ? '' : secrets === 1 ? t('needsSecret').replace('<span ', '<span class="needs-secret" ') : t('needsSecrets', { n: secrets }).replace('<span ', '<span class="needs-secret" ')}</p>
         </article>`;
     })
     .join('\n');
@@ -354,7 +354,7 @@ function integrationBody(entry: IntegrationEntry, agents: readonly AgentEntry[])
       <h2>${t('upstream')}</h2>
       <table class="facts">
         <tr><th>${t('project')}</th><td><a href="${escape(entry.upstream)}">${escape(entry.upstream.replace('https://github.com/', ''))}</a></td></tr>
-        <tr><th>${t('pinnedAt')}</th><td><code>${escape(entry.upstream_version)}</code></td></tr>
+        <tr><th>${t('pinnedAt')}</th><td>${entry.upstream_version === 'hosted' ? t('hostedCannotPin') : `<code>${escape(entry.upstream_version)}</code>`}</td></tr>
         <tr><th>${t('verifiedOn')}</th><td>${escape(entry.verified_on)}</td></tr>
       </table>
 

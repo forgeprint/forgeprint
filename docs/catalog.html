@@ -48,14 +48,14 @@
       <section class="catalog">
         <div class="catalog-head">
           <div class="tabs" role="tablist" aria-label="What to browse" data-i18n-aria-label="site.tabsLabel">
-            <button type="button" role="tab" data-kind="blueprint" aria-selected="true"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">17</span></button>
-            <button type="button" role="tab" data-kind="expert" aria-selected="false"><span data-i18n="site.tabExpert">Experts</span> <span class="count">10</span></button>
-            <button type="button" role="tab" data-kind="crew" aria-selected="false"><span data-i18n="site.tabCrew">Crews</span> <span class="count">2</span></button>
-            <button type="button" role="tab" data-kind="integration" aria-selected="false"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">10</span></button>
+            <button type="button" role="tab" id="tab-blueprints" aria-controls="blueprints" data-kind="blueprint" aria-selected="true" tabindex="0"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">17</span></button>
+            <button type="button" role="tab" id="tab-experts" aria-controls="experts" data-kind="expert" aria-selected="false" tabindex="-1"><span data-i18n="site.tabExpert">Experts</span> <span class="count">10</span></button>
+            <button type="button" role="tab" id="tab-crews" aria-controls="crews" data-kind="crew" aria-selected="false" tabindex="-1"><span data-i18n="site.tabCrew">Crews</span> <span class="count">2</span></button>
+            <button type="button" role="tab" id="tab-integrations" aria-controls="integrations" data-kind="integration" aria-selected="false" tabindex="-1"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">10</span></button>
           </div>
           <input id="filter" type="search" placeholder="Filter by language, stack, role…" data-i18n-placeholder="site.filterPlaceholder" autocomplete="off" aria-label="Filter the catalog" data-i18n-aria-label="site.filterLabel" />
         </div>
-        <div class="cards" id="blueprints" data-kind="blueprint">
+        <div class="cards" id="blueprints" data-kind="blueprint" role="tabpanel" aria-labelledby="tab-blueprints" tabindex="0">
         <article class="card" data-terms="astro-content-site astro content site static content site in astro with tailwind, a typed content collection, and tests that assert the built html carries the seo and accessibility work. web typescript astro tailwind seo accessibility ci web linux macos windows open-source free">
           <h3><a href="b/astro-content-site.html">Astro Content Site</a> </h3>
           <p lang="en">Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.</p>
@@ -142,7 +142,7 @@
           <p class="tags"><span>TypeScript</span><span>AI agent or MCP server</span></p>
         </article>
 </div>
-        <div class="cards" id="experts" data-kind="expert" hidden>
+        <div class="cards" id="experts" data-kind="expert" role="tabpanel" aria-labelledby="tab-experts" tabindex="0" hidden>
         <article class="card" data-terms="devops-platform-engineer devops platform engineer pin by digest, give the build least privilege, make rollback a tested path, and define the slo before the dashboard. platform-engineer devops senior docker kubernetes terraform infrastructure-plan release-plan runbook slo-definition observability-plan cost-review">
           <h3><a href="e/devops-platform-engineer.html">DevOps Platform Engineer</a> </h3>
           <p lang="en">Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.</p>
@@ -204,7 +204,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="crews" data-kind="crew" hidden>
+        <div class="cards" id="crews" data-kind="crew" role="tabpanel" aria-labelledby="tab-crews" tabindex="0" hidden>
         <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer github-mcp playwright-mcp">
           <h3><a href="c/api-hardening-crew.html">API Hardening Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
@@ -220,7 +220,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="integrations" data-kind="integration" hidden>
+        <div class="cards" id="integrations" data-kind="integration" role="tabpanel" aria-labelledby="tab-integrations" tabindex="0" hidden>
         <article class="card" data-terms="chrome-devtools-mcp chrome devtools mcp read the console, the network log and a performance trace from a running chrome, from an agent. mcp software quality">
           <h3><a href="i/chrome-devtools-mcp.html">Chrome DevTools MCP</a> <span class="tier">mcp</span></h3>
           <p lang="en">Read the console, the network log and a performance trace from a running Chrome, from an agent.</p>
@@ -341,10 +341,31 @@ const filter = document.getElementById('filter');
       function select(kind) {
         const tab = tabs.find((candidate) => candidate.dataset.kind === kind);
         if (!tab) return false;
-        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        for (const other of tabs) {
+          other.setAttribute('aria-selected', String(other === tab));
+          // Roving tabindex: only the selected tab is in the tab order, and
+          // the arrow keys move between the others (WAI-ARIA APG, Tabs).
+          other.tabIndex = other === tab ? 0 : -1;
+        }
         apply();
         return true;
       }
+
+      const KEYS = { ArrowRight: 1, ArrowLeft: -1 };
+      tabs.forEach((tab, position) => {
+        tab.addEventListener('keydown', (event) => {
+          let next = -1;
+          if (event.key in KEYS) next = (position + KEYS[event.key] + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          if (next < 0) return;
+          event.preventDefault();
+          const target = tabs[next];
+          select(target.dataset.kind);
+          history.replaceState(null, '', '#' + target.dataset.kind + 's');
+          target.focus();
+        });
+      });
 
       // The address names the tab (catalog.html#experts), so a unit page can
       // link back to where its reader came from, and a tab can be shared.
