@@ -24,7 +24,7 @@ Reads the Figma files the access token can reach, through Figma's API.
 **claude-code**
 
 ```bash
-claude mcp add-json figma '{"command":"npx","args":["-y","figma-developer-mcp@0.13.2","--stdio"],"env":{"FIGMA_API_KEY":"$FIGMA_API_KEY"}}'
+claude mcp add-json figma '{"command":"npx","args":["-y","figma-developer-mcp@0.13.2","--stdio"],"env":{"FIGMA_API_KEY":"${FIGMA_API_KEY}"}}'
 ```
 
 **codex**
