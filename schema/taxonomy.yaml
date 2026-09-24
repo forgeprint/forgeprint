@@ -336,8 +336,10 @@ deliverables:
   test-plan: Test plan
   test-suite: Test suite
   accessibility-audit: Accessibility audit
+  seo-audit: SEO audit
   runbook: Runbook
   incident-review: Incident review
+  root-cause-analysis: Root-cause analysis
   slo-definition: SLO definition
   observability-plan: Observability plan
   release-plan: Release plan
@@ -345,6 +347,7 @@ deliverables:
   infrastructure-plan: Infrastructure plan
   cost-review: Cost review
   product-brief: Product brief
+  requirements-spec: Requirements specification
   user-story-set: User story set
   roadmap: Roadmap
   # Coordinating work split across several people or agents (ADR 0014). A
