@@ -49,8 +49,17 @@ export type Expert = z.infer<ReturnType<typeof expertObjectSchema>>;
 
 /**
  * The combination that must be unique across the catalog (rule 9, extended by
- * ADR 0012): two experts may not claim the same role, domain and seniority.
+ * ADR 0012 and widened by ADR 0015): two experts may not claim the same role,
+ * domain, seniority and languages. The languages are a set, so their order does
+ * not matter, and an expert that names none is the stack-neutral one for its
+ * triple — of which there is still only one.
  */
-export function expertCombinationKey(expert: Expert): string {
-  return `${expert.role}|${expert.domain}|${expert.seniority}`;
+export function expertCombinationKey(expert: {
+  role: string;
+  domain: string;
+  seniority: string;
+  languages?: readonly string[] | undefined;
+}): string {
+  const languages = [...(expert.languages ?? [])].sort().join(',');
+  return `${expert.role}|${expert.domain}|${expert.seniority}|${languages}`;
 }

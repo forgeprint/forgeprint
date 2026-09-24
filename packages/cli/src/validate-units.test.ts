@@ -125,7 +125,48 @@ describe('experts', () => {
       { kind: 'expert', manifest: expert() },
       { kind: 'expert', manifest: expert({ slug: 'other-architect', name: 'Other Architect' }) },
     ]);
-    assert.match(messages.join('\n'), /same role \+ domain \+ seniority as "other-architect"/);
+    assert.match(
+      messages.join('\n'),
+      /same role \+ domain \+ seniority \+ languages as "other-architect"/,
+    );
+  });
+
+  it('allows the same role, domain and seniority for another language (ADR 0015)', () => {
+    const { messages } = check([
+      { kind: 'expert', manifest: expert({ languages: ['csharp'] }) },
+      {
+        kind: 'expert',
+        manifest: expert({
+          slug: 'python-architect',
+          name: 'Python Architect',
+          languages: ['python'],
+        }),
+      },
+    ]);
+    assert.deepEqual(messages, []);
+  });
+
+  it('allows one stack-neutral expert beside the language-specific ones', () => {
+    const { messages } = check([
+      { kind: 'expert', manifest: expert({ languages: ['csharp'] }) },
+      { kind: 'expert', manifest: expert({ slug: 'any-architect', name: 'Any Architect' }) },
+    ]);
+    assert.deepEqual(messages, []);
+  });
+
+  it('refuses the same languages in a different order', () => {
+    const { messages } = check([
+      { kind: 'expert', manifest: expert({ languages: ['csharp', 'python'] }) },
+      {
+        kind: 'expert',
+        manifest: expert({
+          slug: 'other-architect',
+          name: 'Other Architect',
+          languages: ['python', 'csharp'],
+        }),
+      },
+    ]);
+    assert.match(messages.join('\n'), /same role \+ domain \+ seniority \+ languages/);
   });
 
   it('allows the same role at a different seniority', () => {

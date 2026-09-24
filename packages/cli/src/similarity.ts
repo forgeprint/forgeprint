@@ -8,6 +8,7 @@
  */
 
 import { readBlueprintFile, type Blueprint } from './catalog.js';
+import { expertCombinationKey } from './expert.js';
 
 /**
  * What comparing needs: the tag fields, and the text of the two files whose
@@ -64,7 +65,7 @@ export const EXPERT_LABELS: ReportLabels = {
   unit: 'expert',
   primary: 'SKILL.md',
   secondary: 'checklists',
-  combination: 'role + domain + seniority',
+  combination: 'role + domain + seniority + languages',
 };
 
 /** Read a blueprint on disk into a comparable subject. */
@@ -368,7 +369,7 @@ export function documentFromExpert(
     slug,
     name: manifest.name,
     tags,
-    combination: `${manifest.role}|${manifest.domain}|${manifest.seniority}`,
+    combination: expertCombinationKey(manifest),
     primary: skillMarkdown,
     secondary: checklistMarkdown,
   };

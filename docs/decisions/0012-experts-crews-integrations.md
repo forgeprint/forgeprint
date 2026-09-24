@@ -66,6 +66,7 @@ recipe. The agent never enters a secret; it tells the user where to get one
 (rule 21 — the server returns text, it does not act).
 
 **4. Rule 9 extends to all three.** One expert per `role + domain + seniority`
+(widened by [ADR 0015](0015-experts-per-language.md) to include `languages`)
 triple, one crew per member-and-integration set, one integration per upstream.
 A better one replaces the old one through `supersedes`, exactly as for
 blueprints. `similarity` gains the corresponding comparisons.
