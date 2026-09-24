@@ -260,12 +260,29 @@ Then ask the agent one more thing, to see whether the context survived the
 setup:
 
 ```
-Add a Customers endpoint that only returns the current tenant's rows.
+Add invoices: an endpoint to list the current tenant's invoices and one to create an invoice.
 ```
 
-**What should happen:** it reads `AGENTS.md`, puts the query behind the global
-query filter rather than adding a `WHERE TenantId =` by hand, and does not
-touch the tenant resolution. That is what the context file is for.
+It has to be something the recipe does not build. The recipe already ships
+`Customer` and `GET /customers` — they exist to make the isolation tests
+concrete — so asking for customers measures nothing, and a correct agent
+answers that it is already there. This test asked exactly that until
+2026-09-24.
+
+**What should happen** is the five steps under "When you are asked to add an
+endpoint" in the blueprint's `AGENTS.md`, and each leaves something you can
+check:
+
+| The agent should                                                                                  | Check                                                                        |
+| ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| make `Invoice` tenant-owned, with its column, composite index and query filter in the same change | `grep -n "Invoice" src/Saas.Api/Data/AppDbContext.cs` shows `HasQueryFilter` |
+| filter by tenant nowhere in the endpoints                                                         | no `TenantId` in the new endpoint code                                       |
+| take the tenant from nobody but the token — the create request has no tenant field                | the request type has no `TenantId`; `SaveChanges` stamps it                  |
+| leave the default authorization policy in place                                                   | no `AllowAnonymous` on the new endpoints                                     |
+| add an isolation test for `Invoice` — tenant A writes, tenant B cannot read — and run the suite   | a new test names `Invoice`; `dotnet test` is green and one test larger       |
+
+The last row is the one the blueprint insists on: a green suite with no
+isolation test for the new entity is not evidence of anything.
 
 ---
 
@@ -291,12 +308,64 @@ against the skill tools.
 
 ## Runs
 
-| Date       | Agent                         | Catalog                            | Result                                                                                                                                                                                 |
-| ---------- | ----------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 1–3 passed, clean.** Fresh directory, no `CLAUDE.md`, no memory. Found and called `resolve` unprompted, asked only the blueprint's options, stopped before writing anything    |
-| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 4–5 passed; step 1 not valid.** Recipe 34/34, then build and tests checked independently. The session was started inside the Forgeprint repository. Customers prompt not asked |
-| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0                    | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside                                                                     |
-| 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1                    | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                                                                                            |
+| Date       | Agent                         | Catalog                            | Result                                                                                                                                                                                                   |
+| ---------- | ----------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | **published 0.3.1**                | **Steps 1–5 passed without help — clean.** Recipe project, build clean, 7/7 by hand. Invoices added behind the filter, 17/17 by hand. The first step 5 prompt was a defect in this file, not the catalog |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 1–3 passed, clean.** Fresh directory, no `CLAUDE.md`, no memory. Found and called `resolve` unprompted, asked only the blueprint's options, stopped before writing anything                      |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 4–5 passed; step 1 not valid.** Recipe 34/34, then build and tests checked independently. The session was started inside the Forgeprint repository. Customers prompt not asked                   |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0                    | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside                                                                                       |
+| 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1                    | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                                                                                                              |
+
+### 2026-09-24, fourth run — against the published 0.3.1
+
+The first run against a published package with the fix in it, in a directory
+and memory that had never held anything, with no `CLAUDE.md` loaded.
+
+**Order.** The session's first message was the step 5 prompt, sent by mistake
+into an empty directory; the agent looked around, found nothing, and asked what
+to build. The profile sentence came second. It is recorded because it shaped
+what followed: `resolve`'s `goal` carried the Customers request, and the agent
+started the recipe **before** "Go ahead and set it up here", because the first
+message had already asked it to build something. Neither is counted as a
+defect — the agent was doing what it had been asked — but neither is step 4 as
+written.
+
+**What held.** `resolve` was found and called unprompted, only the blueprint's
+options were asked, and the recipe ran without help. The directory is the
+recipe's; step 5 by hand: `dotnet build` 0 warnings, 0 errors, `dotnet test`
+7 of 7. "Go ahead", arriving after the setup had finished, was read as the
+recipe's own "After setup" note — a first migration, a design-time context
+factory, the compose database started. A fair reading of an instruction that
+came late.
+
+**What it found is in this file.** The step 5 prompt asked for a Customers
+endpoint, and the recipe builds one — `Customer` exists to make the isolation
+tests concrete, and the recipe's closing note says so. The agent answered that
+it was already there, pointed at the file and line of the endpoint and of the
+filter, and did not add a second. Correct, and useless as a test: the prompt
+could not show whether the context survived the setup. It now asks for
+invoices, which the recipe does not build, and says what to check.
+
+**Step 5, asked again.** The invoices prompt, in the same session. All five
+checks held, read from the code rather than the agent's summary: `Invoice`
+implements `ITenantOwned` and has its own `HasQueryFilter`; neither endpoint
+mentions `TenantId`, and the create request has no tenant field —
+`SaveChangesAsync` stamps it; nothing new is `AllowAnonymous`, and two new
+authorization tests say so; and the isolation tests grew by three, one per
+attack, beside a five-case validation test. `dotnet test` by hand: 17 of 17,
+up from 7.
+
+It went past the checks in two places worth keeping. It named the risk the
+checks do not — a `POST` carrying another tenant's `customerId` — and closed it
+twice: the endpoint looks the customer up through the filter, and the foreign
+key includes `TenantId`, so the database refuses the row too. And it removed
+its own customer check for a moment to watch the new test fail before trusting
+it. The second is `AGENTS.md`'s own "watch it fail", done after the test was
+written rather than before; the first is the agent's.
+
+**Clean, by this file's definition**: no defect above cosmetic in the catalog,
+and steps 1 and 4 needed no help. The stray first message is the one
+reservation, and it is the tester's, not the agent's.
 
 ### 2026-09-24, third run — step 1 passes with the fix
 
