@@ -232,7 +232,7 @@
       { "who": "tool", "text": "get_integration { slug: \"sentry-mcp\", agent: \"{agent}\" }" },
       {
         "who": "agent",
-        "text": "sentry-mcp, pinned to 0.39.0. It reads issues, events and stack traces from the Sentry organisations its token can reach. It needs SENTRY_ACCESS_TOKEN: create it in Sentry yourself and set it in your environment — I never type a secret. Then:"
+        "text": "sentry-mcp, pinned to 0.40.0. It reads issues, events and stack traces from the Sentry organisations its token can reach. It needs SENTRY_ACCESS_TOKEN: create it in Sentry yourself and set it in your environment — I never type a secret. Then:"
       },
       { "who": "code", "text": "{install}" }
     ]

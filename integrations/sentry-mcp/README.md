@@ -3,7 +3,7 @@
 > **Third-party software.** Forgeprint hosts no code here: this is an
 > installation recipe for a project somebody else publishes and maintains.
 > The upstream is [getsentry/sentry-mcp](https://github.com/getsentry/sentry-mcp),
-> pinned at `0.39.0` and verified on 2026-09-23.
+> pinned at `0.40.0` and verified on 2026-09-24.
 > **Review the permissions below before installing.**
 
 ## What it does
@@ -12,7 +12,7 @@ Puts the actual error in front of the agent: the stack trace, the breadcrumbs, h
 
 ## What it can reach
 
-Reads issues, events and stack traces from the Sentry organisations the token can reach.
+Reads issues, events and stack traces, and can update issues (assign, unassign, resolve), in the Sentry organisations the token can reach.
 
 ## Secrets it needs
 
@@ -24,19 +24,19 @@ Reads issues, events and stack traces from the Sentry organisations the token ca
 **claude-code**
 
 ```bash
-claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.39.0"],"env":{"SENTRY_ACCESS_TOKEN":"$SENTRY_ACCESS_TOKEN"}}'
+claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"$SENTRY_ACCESS_TOKEN"}}'
 ```
 
 **codex**
 
 ```bash
-codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.39.0
+codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0
 ```
 
 **gemini-cli**
 
 ```bash
-gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.39.0
+gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent
@@ -47,6 +47,10 @@ command in a pull request rather than guessing one.
 ## Before you install it
 
 Sentry events routinely contain user data — request bodies, headers, occasionally a token somebody logged by accident. Everything the agent reads here may be personal data, and it leaves your organisation if the agent is not local. Scope the token to one project.
+
+The scopes upstream documents for this transport include writes — `project:write`, `team:write` and `event:write` — because some tools change issues. If the agent only needs to read, create the token with the read scopes and expect those tools to fail, or drop tool groups with `MCP_DISABLE_SKILLS`.
+
+The AI-powered search tools (`search_events`, `search_issues`) send your query to an LLM provider, and only work when one is configured. Without one they are simply unavailable.
 
 ## Updating
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0 — 2026-09-24
+
+Update: pinned at `0.40.0`, and a permissions summary that says what the
+server can change.
+
+- `0.40.0` read from npm and the upstream commit log on 2026-09-24: retries on
+  transient errors, time series in `search_events`, unassigning issues, and a
+  `get_sentry_mcp_info` tool.
+- **The summary said "reads".** Some tools update issues, and the scopes
+  upstream documents include `project:write`, `team:write` and `event:write`.
+  The summary and the README now say so, with what to do for a read-only
+  token.
+- The README notes that the AI search tools send queries to an LLM provider.
+
 ## 1.0.0 — 2026-09-23
 
 First recipe for Sentry MCP, pinned at `0.39.0`.

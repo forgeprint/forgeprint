@@ -262,7 +262,7 @@
       },
       {
         "who": "agent",
-        "text": "sentry-mcp, 0.39.0'a pinli. Token'ının erişebildiği Sentry organizasyonlarındaki issue'ları, event'leri ve stack trace'leri okuyor. SENTRY_ACCESS_TOKEN gerekiyor: Sentry'de kendin oluştur ve ortamına koy — ben asla secret yazmam. Sonra:"
+        "text": "sentry-mcp, 0.40.0'a pinli. Token'ının erişebildiği Sentry organizasyonlarındaki issue'ları, event'leri ve stack trace'leri okuyor. SENTRY_ACCESS_TOKEN gerekiyor: Sentry'de kendin oluştur ve ortamına koy — ben asla secret yazmam. Sonra:"
       },
       {
         "who": "code",
