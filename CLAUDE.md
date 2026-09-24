@@ -342,6 +342,9 @@ a decision behind an empty box is how the decision gets made again.
 - [ ] **Scenario D** — the same task done by one agent, by agents splitting the work, and by agents splitting it with the `technical-program-manager` expert, measured by hand ([protocol](docs/scenario-d.md)). Its result decides whether [ADR 0014](docs/decisions/0014-crew-runtime-deferred.md) reopens
 - [ ] ~~Crew runtime~~ (`.forgeprint/` workspace, `forgeprint crew *`, hierarchical crews) — **deferred** by ADR 0014. The principles ship as an expert; the runtime waits for Scenario D, an issue trail, or demand, and the ADR says which evidence counts
 
+### Phase F — Catalog expansion from the 2026-09-24 research
+- [ ] Every candidate the four reports found, in ten phases: groundwork (ADR for per-language experts, taxonomy, pin updates), then experts, integrations, blueprints and crews. The phases, the conflicts decided along the way and the refusals are in [docs/research/2026-09-24-expansion-plan.md](docs/research/2026-09-24-expansion-plan.md); an item is ticked there when its pull request opens
+
 ### Phase 4 — Community
 - [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
 - [ ] Orphan/stale bot, co-maintainer bot. The rules are in GOVERNANCE.md and are applied by hand; a bot needs a second maintainer to be worth writing
