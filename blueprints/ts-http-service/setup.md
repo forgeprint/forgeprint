@@ -210,6 +210,29 @@ Requires Node.js 22 or newer and Docker.
      it('a protected route accepts a valid token', async () => {
        assert.equal((await call('/items', await token(settings.secret))).status, 200);
      });
+
+     // A route is authenticated by where it is declared, and nothing stops
+     // somebody declaring one on `app` instead of on `protectedRoutes`. Hono
+     // exposes its route table, so the convention can be a check rather than a
+     // habit. Middleware registrations come back as `ALL` and are not routes.
+     it('every route outside the allow-list needs a token', async () => {
+       const publicRoutes = new Set(['GET /health']);
+       const routes = createApp(settings).routes.filter((r) => r.method !== 'ALL');
+
+       // A loop over an empty list passes without asserting anything, which is
+       // the way this kind of test fails silently.
+       assert.ok(routes.length > 0, 'the route table is empty');
+
+       for (const route of routes) {
+         const name = `${route.method} ${route.path}`;
+         if (publicRoutes.has(name)) continue;
+
+         const response = await createApp(settings).request(route.path, {
+           method: route.method,
+         });
+         assert.equal(response.status, 401, `${name} answered without a token`);
+       }
+     });
    });
    ```
 
