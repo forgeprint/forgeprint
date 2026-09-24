@@ -57,7 +57,7 @@
       <h3>Codex CLI</h3>
       <pre class="install"><code>codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0</code></pre>
       <h3>Gemini CLI</h3>
-      <pre class="install"><code>gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0</code></pre>
+      <pre class="install"><code>gemini mcp add sentry -e 'SENTRY_ACCESS_TOKEN=${SENTRY_ACCESS_TOKEN}' npx -y @sentry/mcp-server@0.40.0</code></pre>
       <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
 
       <h2><span data-i18n="site.readIt">Read it</span></h2>

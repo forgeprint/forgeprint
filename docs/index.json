@@ -2768,7 +2768,7 @@
       "install": {
         "claude-code": "claude mcp add-json sentry '{\"command\":\"npx\",\"args\":[\"-y\",\"@sentry/mcp-server@0.40.0\"],\"env\":{\"SENTRY_ACCESS_TOKEN\":\"${SENTRY_ACCESS_TOKEN}\"}}'",
         "codex": "codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0",
-        "gemini-cli": "gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0"
+        "gemini-cli": "gemini mcp add sentry -e 'SENTRY_ACCESS_TOKEN=${SENTRY_ACCESS_TOKEN}' npx -y @sentry/mcp-server@0.40.0"
       },
       "needs_secrets": [
         "SENTRY_ACCESS_TOKEN"
