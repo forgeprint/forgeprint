@@ -13,7 +13,9 @@ the route works, the tests pass, and the endpoint is public.
 - **`TestEveryRouteOutsideTheAllowListNeedsAToken`** walks `router.Routes()`,
   which Gin exposes, and fails on any route that answers a request with no
   token. `GET /health` is the allow-list, written out, so making a route public
-  is now a line somebody has to add on purpose.
+  is now a line somebody has to add on purpose. It also refuses to pass on an
+  empty route table: a loop over nothing asserts nothing, which is how a check
+  like this stops working without ever failing.
 
 No change to the service. The recipe gains one test and no step.
 

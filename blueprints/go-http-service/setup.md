@@ -226,7 +226,15 @@ Requires Go 1.25 or newer and Docker.
    func TestEveryRouteOutsideTheAllowListNeedsAToken(t *testing.T) {
    	public := map[string]bool{"GET /health": true}
 
-   	for _, route := range New(settings).Routes() {
+   	routes := New(settings).Routes()
+
+   	// A loop over an empty list passes without asserting anything, which is
+   	// the way this kind of test stops working without ever failing.
+   	if len(routes) == 0 {
+   		t.Fatal("the route table is empty")
+   	}
+
+   	for _, route := range routes {
    		name := route.Method + " " + route.Path
    		if public[name] {
    			continue
