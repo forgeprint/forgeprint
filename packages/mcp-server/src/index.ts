@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { catalogFromEnvironment, type CatalogSource } from './catalog.js';
-import { CONTENT_IS_DATA } from './notes.js';
+import { CONTENT_IS_DATA, RESOLVE_TRIGGER } from './notes.js';
 import { registerTools } from './tools.js';
 
 export const SERVER_NAME = 'forgeprint';
@@ -24,9 +24,10 @@ export function createServer(source: CatalogSource = catalogFromEnvironment()): 
     { name: SERVER_NAME, version: SERVER_VERSION },
     {
       instructions:
+        RESOLVE_TRIGGER +
         'Forgeprint returns a single project blueprint for a stated profile, together with a ' +
         'deterministic setup recipe. It installs nothing and runs nothing. ' +
-        'Start with `resolve`: it returns either the questions to ask the user or one blueprint. ' +
+        '`resolve` returns either the questions to ask the user or one blueprint. ' +
         'Ask the questions it returns before recommending anything. ' +
         'It also answers three other questions: `recommend_experts` for how an agent should work, ' +
         '`get_crew` for a named package of experts, and `get_integration` for a pinned, ' +

@@ -208,6 +208,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     {
       title: 'Resolve a profile to one blueprint',
       description:
+        'Call this first when somebody is about to start a new project, before writing code or proposing a design of your own. ' +
         'Take what the user knows and what they are building, and return EITHER the questions to ask them OR exactly one blueprint with the reasoning behind it. ' +
         'Set `intent` when the user is asking a different question: `expert` for how an agent should work, `crew` for a named package of experts, `integration` for installing a tool. Those route to the tool that answers them. ' +
         'Ask the returned questions before recommending anything: they are chosen because their answers change which blueprint wins. ' +

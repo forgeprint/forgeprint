@@ -242,7 +242,19 @@ dotnet build
 dotnet test
 ```
 
-Both green, no warnings. That is the test passed.
+Both green, no warnings — **and first, check it is the recipe's project and not
+the agent's own.** A capable agent can build a working multi-tenant API from
+what it already knows, and from the outside that looks exactly like a pass:
+
+```bash
+test -f global.json && test -f Saas.slnx && test -f Dockerfile && echo "the recipe's project"
+```
+
+If any of the three is missing, the agent did not follow `setup.md`, whatever
+the tests say. Then check the transcript for a `resolve` call: without one,
+step 1 failed and steps 4 and 5 were never tested.
+
+Only then: that is the test passed.
 
 Then ask the agent one more thing, to see whether the context survived the
 setup:
@@ -279,9 +291,38 @@ against the skill tools.
 
 ## Runs
 
-| Date       | Agent                       | Catalog         | Result                                                                      |
-| ---------- | --------------------------- | --------------- | --------------------------------------------------------------------------- |
-| 2026-09-22 | Claude Code 2.1.278, Opus 5 | published 0.2.1 | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet |
+| Date       | Agent                         | Catalog         | Result                                                                                                             |
+| ---------- | ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0 | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside |
+| 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1 | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                        |
+
+### 2026-09-24, failed at step 1
+
+Reported as "every step passed", and from outside it looked that way: a
+multi-tenant ASP.NET Core API, tenant isolation tests green, and a Customers
+endpoint behind the query filter. The transcript said otherwise. Of 38 tool
+calls, none was Forgeprint's — no `resolve`, no `get_blueprint`. The project
+was the agent's own: `SaasApi.slnx` rather than the recipe's `Saas.slnx`, no
+`global.json`, no `Dockerfile`, and a `compose.yaml` and EF migrations the
+recipe does not have. Steps 4 and 5 tested the agent, not the catalog.
+
+**Why it could happen.** The server was connected and all ten tools were in
+the session — but Claude Code now loads MCP tools lazily: it lists their names
+among dozens of others and fetches a schema only if it decides to. The server
+instructions are then the only Forgeprint text read before that decision, and
+they said what Forgeprint does and not **when** to use it. "I know C#, I'm
+building a multi-tenant SaaS API" read as a request to start. The agent's first
+actions were saving the profile to memory and exploring the machine.
+
+**How often.** A headless check — a fresh directory, only Forgeprint's tools and
+`ToolSearch` allowed, the same sentence — reached `resolve` in 9 of 10 runs
+against 0.3.0. The miss offered "schema per tenant" from its own knowledge,
+which is the tell step 1 names. The instructions now open with the trigger
+(`RESOLVE_TRIGGER` in `packages/mcp-server`), and the same check reached
+`resolve` in 10 of 10. That is weak evidence in both directions: the headless
+runs mostly succeed either way, and the failure was in an interactive session.
+**The next interactive run is the test of the fix**, and step 5 now checks that
+the project is the recipe's before counting a pass.
 
 ### 2026-09-22, steps 1–3
 
