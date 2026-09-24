@@ -2115,6 +2115,52 @@
     },
     {
       "schema": 1,
+      "slug": "technical-program-manager",
+      "name": "Technical Program Manager",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "technical-program-manager",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "delivery-plan",
+        "assumption-log",
+        "delivery-report"
+      ],
+      "checklists": [
+        "before-fan-out",
+        "handoff",
+        "before-done"
+      ],
+      "pairs_with": [
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/before-done.md",
+        "checklists/before-fan-out.md",
+        "checklists/handoff.md",
+        "examples/assumption-log.md",
+        "examples/delivery-plan.yaml",
+        "examples/delivery-report.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "technical-writer",
       "name": "Technical Writer",
       "version": "1.0.0",
