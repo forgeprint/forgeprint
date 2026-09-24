@@ -314,7 +314,7 @@ Requires Node.js 20 or newer.
 13. Confirm the package would ship the built files and nothing else. `npm pack --dry-run` lists exactly what a consumer receives, and this is the step that catches a `files` field that quietly excludes the types: `npm pack --dry-run --json > packed.json`
     Verify: `grep -q '"path": "dist/index.d.ts"' packed.json`
 
-14. Confirm no source or test file is in the tarball. A published library that ships its tests is a library whose consumers download them forever: `grep -c '"path": "src/' packed.json > sources.count || true`
+14. Confirm no source or test file is in the tarball. A published library that ships its tests is a library whose consumers download them forever. This reads the JSON rather than matching a string: the assertion is about an absence, and a grep for one cannot tell "no sources shipped" from "no such field" — which is what a change to npm's output would look like: `node --input-type=module -e "import { readFileSync } from 'node:fs'; const [pack] = JSON.parse(readFileSync('packed.json', 'utf8')); if (!Array.isArray(pack?.files)) throw new Error('packed.json has no files array'); console.log(pack.files.filter((entry) => entry.path.startsWith('src/')).length);" > sources.count`
     Verify: `grep -qx "0" sources.count`
 
 15. Confirm the package can be imported by the path its exports map advertises, resolved the way a consumer resolves it: `node --input-type=module -e "import { slugify } from './dist/index.js'; if (slugify('Çınar') !== 'cinar') { process.exit(1); }"`
