@@ -123,7 +123,7 @@ export function checkVersions(
  * skip a version number that was never stuck.
  */
 export function classifyPublishError(output: string): PublishOutcome {
-  const text = output.toLowerCase();
+  const text = flattenReport(output);
   // "Cannot publish over previously staged version" is npm's phrasing for
   // "this version already exists". Nothing is staged and nothing is waiting
   // for approval — see npm/cli#9889. It arrives after a publish that worked.
@@ -151,6 +151,20 @@ export function classifyPublishError(output: string): PublishOutcome {
     return { kind: 'unauthorized' };
   }
   return { kind: 'failed', detail: output.trim().split('\n').slice(-5).join('\n') };
+}
+
+/**
+ * A publish error as one lower-case line, whatever the client did to it.
+ *
+ * pnpm wraps its error report to the terminal width and prefixes every
+ * continuation line with a box-drawing character, so "not running in an
+ * interactive terminal" arrives as "not running\n  │ in an interactive
+ * terminal". A phrase match against the raw text misses it — which is exactly
+ * how 0.3.1's release printed a raw error instead of the instruction written
+ * for it. Match phrases against this, never against the raw output.
+ */
+export function flattenReport(output: string): string {
+  return output.replace(/[─-╿]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 /**
