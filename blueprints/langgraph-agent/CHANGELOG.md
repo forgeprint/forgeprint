@@ -1,5 +1,28 @@
 # Changelog — langgraph-agent
 
+## 1.1.0 — 2026-09-24
+
+Where the human checkpoint goes, from the architecture review
+([2026-09-23](../../docs/reviews/langgraph-agent/2026-09-23.md), finding 1).
+
+The review called this the single most valuable addition the blueprint could
+take, and the reason is what gets copied rather than what ships: the tool here
+reads a file, so it needs no approval, and the next tool somebody writes into
+this shape will not read a file.
+
+- **`build_graph` carries `interrupt_before=["tools"]` commented out**, on the
+  line it goes on, with the checkpointer it requires and the resume call the
+  caller has to make. A reader who needs it finds it where they are already
+  looking instead of in someone else's documentation.
+- **"Adding a tool" gained a sixth step** — ask whether the tool needs a
+  person — and says why refusals are not enough on their own: refusals are
+  decided when the tool is written, and the arguments belong to the model.
+- **"What this does not do" no longer just lists the absence.** It says which
+  line closes it.
+
+No behaviour changed and no step was added. The recipe produces the same
+working agent it did in 1.0.0.
+
 ## 1.0.0 — 2026-09-23
 
 First version, and the catalog's first `agent` blueprint that is not an MCP

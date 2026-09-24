@@ -172,6 +172,18 @@ Requires Python 3.10 or newer.
        graph.add_conditional_edges("assistant", route, {"tools": "tools", END: END})
        graph.add_edge("tools", "assistant")
 
+       # A tool that writes, spends or sends needs a person between the model
+       # and the action, and this is where that checkpoint goes:
+       #
+       #     return graph.compile(
+       #         checkpointer=InMemorySaver(),
+       #         interrupt_before=["tools"],
+       #     )
+       #
+       # interrupt_before needs a checkpointer, because the graph has to be
+       # able to stop and be resumed. The caller then invokes with a thread id,
+       # shows the pending tool call to a person, and calls invoke(None, config)
+       # to continue. Reading a note does not need this. The next tool might.
        return graph.compile()
    ```
 

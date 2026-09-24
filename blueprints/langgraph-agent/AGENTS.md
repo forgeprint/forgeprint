@@ -64,13 +64,28 @@ Which provider you use is your decision; the blueprint stays out of it.
 4. Bound anything unbounded: size, count, time.
 5. Register it in the tool node and give the model a description that says what
    it will refuse, not only what it does.
+6. **Ask whether it needs a person.** A tool that writes, spends, sends or
+   deletes does; reading a note does not. The checkpoint is
+   `interrupt_before=["tools"]` on `graph.compile()`, which needs a
+   checkpointer so the graph can stop and be resumed, and a caller that invokes
+   with a thread id and calls `invoke(None, config)` once somebody has
+   approved. `build_graph` carries it commented out, at the line it goes on.
+
+The refusals in step 2 bound what a tool may do. Step 6 is the other half:
+refusals are decided when the tool is written, and the checkpoint is decided
+when the tool runs. A tool whose blast radius depends on its arguments — a
+payment, a delete, an email — cannot be made safe by refusals alone, because
+the arguments are the model's.
 
 ## What this does not do
 
-No persistence between runs, no checkpointer, no human-in-the-loop interrupt,
-no streaming, no observability, no rate limiting, no cost accounting, no
-system prompt. `MAX_TOOL_CALLS` bounds a single invocation and nothing bounds
-how many invocations happen.
+No persistence between runs, no checkpointer, no streaming, no observability,
+no rate limiting, no cost accounting, no system prompt. `MAX_TOOL_CALLS` bounds
+a single invocation and nothing bounds how many invocations happen.
+
+There is no human-in-the-loop interrupt either, because the one tool here reads
+a file. The line it goes on is in `build_graph`, commented, and step 6 of
+"Adding a tool" says when it stops being optional.
 
 There is also no defence against prompt injection beyond the tool boundary, and
 that is deliberate: the tool boundary is the only defence that works. Filtering
