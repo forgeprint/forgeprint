@@ -174,13 +174,22 @@
     "agentNote": "{agent} olarak gösteriliyor. Sayfanın başından başka bir agent seç — konuşma da katalog da aynı kalıyor.",
     "noInstall": "{agent} için doğrulanmış bir kurulum komutu henüz yok, bu yüzden get_integration tahmin yürütmek yerine hiçbir şey dönmüyor. Integration'ın sayfası upstream'i söylüyor, gerisini agent'ının kendi MCP ayarları hallediyor.",
     "project": [
-      { "who": "you", "text": "C# biliyorum. Multi-tenant bir SaaS API yazmak istiyorum." },
-      { "who": "tool", "text": "resolve { languages: [\"C#\"], goal: \"multi-tenant SaaS API\" }" },
+      {
+        "who": "you",
+        "text": "C# biliyorum. Multi-tenant bir SaaS API yazmak istiyorum."
+      },
+      {
+        "who": "tool",
+        "text": "resolve { languages: [\"C#\"], goal: \"multi-tenant SaaS API\" }"
+      },
       {
         "who": "agent",
         "text": "Tek bir blueprint uyuyor: dotnet-multitenant-saas-api — C# yazdığın için seçildi ve multi-tenancy'yi kapsıyor. İki şey hâlâ açık: Postgres mi SQL Server mı, ve tenant kolonlu tek ortak database mi, her tenant'a ayrı database mi?"
       },
-      { "who": "you", "text": "Postgres, tek ortak database." },
+      {
+        "who": "you",
+        "text": "Postgres, tek ortak database."
+      },
       {
         "who": "tool",
         "text": "get_blueprint { slug: \"dotnet-multitenant-saas-api\", options: { database: \"postgres\", tenancy: \"shared-db-tenant-column\" } }"
@@ -191,7 +200,10 @@
       }
     ],
     "expert": [
-      { "who": "you", "text": "Yayına almadan önce bu API'yi güvenlik açısından incele." },
+      {
+        "who": "you",
+        "text": "Yayına almadan önce bu API'yi güvenlik açısından incele."
+      },
       {
         "who": "tool",
         "text": "recommend_experts { task: \"security review of an API before launch\" }"
@@ -200,8 +212,14 @@
         "who": "agent",
         "text": "Tek bir expert uyuyor: security-reviewer. Önce sınırlar, sonra yetkilendirme, ve her bulgu bir sürümdeki bir kontrole dayanıyor — dayanmıyorsa rapora girmiyor. Yükleyeyim mi?"
       },
-      { "who": "you", "text": "Evet." },
-      { "who": "tool", "text": "get_expert { slug: \"security-reviewer\", agent: \"{agent}\" }" },
+      {
+        "who": "you",
+        "text": "Evet."
+      },
+      {
+        "who": "tool",
+        "text": "get_expert { slug: \"security-reviewer\", agent: \"{agent}\" }"
+      },
       {
         "who": "agent",
         "text": "Yüklendi, altı checklist'iyle — trust boundary'ler, authn/authz, girdi ve çıktı, secret'lar ve config, bağımlılıklar, loglama ve hatalar. İsteklerin bir trust boundary'yi geçtiği yerden başlıyorum."
@@ -220,21 +238,36 @@
         "who": "agent",
         "text": "saas-launch-crew tam bunun için kurulmuş: bir mimar, bir data engineer, bir security reviewer ve bir QA lead, GitHub ve Sentry ile. Prototip ya da iç araç için olmadığını söylüyor — bu ikisi de değil."
       },
-      { "who": "you", "text": "Al." },
-      { "who": "tool", "text": "get_crew { slug: \"saas-launch-crew\", agent: \"{agent}\" }" },
+      {
+        "who": "you",
+        "text": "Al."
+      },
+      {
+        "who": "tool",
+        "text": "get_crew { slug: \"saas-launch-crew\", agent: \"{agent}\" }"
+      },
       {
         "who": "agent",
         "text": "Dört expert yüklendi. İki integration'ı onaylamak sana kalmış, Sentry de bir token istiyor — ben girmem. Nerede oluşturacağını söyleyeyim."
       }
     ],
     "integration": [
-      { "who": "you", "text": "Sentry'yi bağla, gerçek hatadan debug edebilesin." },
-      { "who": "tool", "text": "get_integration { slug: \"sentry-mcp\", agent: \"{agent}\" }" },
+      {
+        "who": "you",
+        "text": "Sentry'yi bağla, gerçek hatadan debug edebilesin."
+      },
+      {
+        "who": "tool",
+        "text": "get_integration { slug: \"sentry-mcp\", agent: \"{agent}\" }"
+      },
       {
         "who": "agent",
         "text": "sentry-mcp, 0.39.0'a pinli. Token'ının erişebildiği Sentry organizasyonlarındaki issue'ları, event'leri ve stack trace'leri okuyor. SENTRY_ACCESS_TOKEN gerekiyor: Sentry'de kendin oluştur ve ortamına koy — ben asla secret yazmam. Sonra:"
       },
-      { "who": "code", "text": "{install}" }
+      {
+        "who": "code",
+        "text": "{install}"
+      }
     ]
   },
   "tools": {
@@ -377,7 +410,11 @@
     "members": "{n} expert · {m} integration",
     "installFor": "Kurulumu doğrulanan",
     "needsSecret": "token gerekiyor",
-    "tier": { "official": "Official", "verified": "Verified", "community": "Community" },
+    "tier": {
+      "official": "Official",
+      "verified": "Verified",
+      "community": "Community"
+    },
     "tierHint": {
       "official": "Önce kendisi kurmuş bir maintainer yazdı; mimari ve güvenlik review'undan geçti.",
       "verified": "Bir maintainer koştu ve doğruladı.",
@@ -452,14 +489,26 @@
         "path": "experts/<slug>/",
         "body": "Agent nasıl çalışır: SKILL.md, checklist'ler, kaynaklar"
       },
-      { "path": "crews/<slug>/", "body": "Expert ve integration'ların isimli paketleri" },
+      {
+        "path": "crews/<slug>/",
+        "body": "Expert ve integration'ların isimli paketleri"
+      },
       {
         "path": "integrations/<slug>/",
         "body": "Üçüncü taraf MCP server'lar için pinli kurulum recipe'leri"
       },
-      { "path": "schema/", "body": "Manifest schema'ları, taxonomy ve agents.yaml" },
-      { "path": "packages/", "body": "CLI, MCP server ve katalog sayfaları" },
-      { "path": "docs/decisions/", "body": "Her mimari karar, gerekçesiyle birlikte" }
+      {
+        "path": "schema/",
+        "body": "Manifest schema'ları, taxonomy ve agents.yaml"
+      },
+      {
+        "path": "packages/",
+        "body": "CLI, MCP server ve katalog sayfaları"
+      },
+      {
+        "path": "docs/decisions/",
+        "body": "Her mimari karar, gerekçesiyle birlikte"
+      }
     ]
   },
   "faq": {
@@ -530,5 +579,110 @@
     "tagline": "Coding agent'lar için blueprint, expert ve crew'lar.",
     "note": "Source-available, PolyForm Shield 1.0.0 altında. Katalog içeriği CC BY 4.0 altında.",
     "built": "Bu sayfa build adımı olmayan, elle yazılmış HTML, CSS ve JavaScript."
+  },
+  "site": {
+    "home": "Forgeprint",
+    "catalog": "Katalog",
+    "language": "Dil",
+    "languageHint": "Arayüz dili. Katalog girdileri İngilizce kalıyor.",
+    "repository": "Repo",
+    "contribute": "Katkı ver",
+    "licence": "Source-available, OSI open source değil: tooling PolyForm Shield 1.0.0, katalog içeriği CC BY 4.0 altında.",
+    "tagline": "Agent'ına kim olduğunu ve ne yazdığını söyle — tek bir blueprint ve çalıştırabileceği bir setup recipe al.",
+    "installOther": "Başka bir agent mı kullanıyorsun? Ana sayfada dokuzunun da komutu var.",
+    "windows": "Windows PowerShell'de ayıracı tırnakla:",
+    "pointOneTitle": "Tek cevap",
+    "pointOne": "Kendini ve hedefini anlat. Resolver tek bir blueprint dönüyor ya da hâlâ cevaplanması gereken soruları — asla elenecek bir liste değil.",
+    "pointTwoTitle": "Açıklama değil, recipe",
+    "pointTwo": "Her adım bir komut ve arkasından bir doğrulama, sürümler pinli. Recipe'leri CI koşuyor; setup'ı kırılan blueprint merge edilmiyor.",
+    "pointThreeTitle": "Toplanmış değil, seçilmiş",
+    "pointThree": "Stack, proje türü ve gereksinim başına tek blueprint. Daha iyisi eskisinin yanına değil, yerine geçiyor.",
+    "tabsLabel": "Neye göz atılsın",
+    "tabBlueprint": "Blueprint'ler",
+    "tabExpert": "Expert'ler",
+    "tabCrew": "Crew'lar",
+    "tabIntegration": "Integration'lar",
+    "filterPlaceholder": "Dil, stack, rol ile filtrele…",
+    "filterLabel": "Kataloğu filtrele",
+    "catalogEmpty": "Katalog boş.",
+    "nothingMatches": "Buna uyan bir şey yok.",
+    "nothingFits": "Hiçbiri uymuyor mu?",
+    "growsByDemand": "Katalog talebe göre büyüyor.",
+    "requestBlueprint": "Blueprint talep et",
+    "requestRest": "ve neyin eksik olduğunu yaz — talepler herkese açık, seninkini biri üstlenebilir.",
+    "requestedBlueprints": "Talep edilen blueprint'ler",
+    "askedBy": "@{who} istedi",
+    "noRequests": "Şu an açık talep yok.",
+    "snapshotFrom": "{date} tarihli anlık görüntü.",
+    "featuredTitle": "Öne çıkan katkıcılar",
+    "featuredBody": "Katalog insanlar tarafından yazılıyor. İçindekileri yazanlar bunlar.",
+    "rolesOpen": "Henüz expert'i olmayan {n} rol",
+    "rolesBody": "Rol listesi bilerek kataloğun daha genişi. Aşağıdaki her isim birinin doldurabileceği bir yer —",
+    "rolesWrite": "bir tane yaz",
+    "rolesRest": "ve burada onun yerine o görünsün.",
+    "pinned": "{version} sürümüne pinli",
+    "needsSecret": "1 secret gerekiyor",
+    "needsSecrets": "{n} secret gerekiyor",
+    "agentVerification": "Agent doğrulaması",
+    "testedWith": "{agent} ile test edildi",
+    "notTested": "{agent}: test edilmedi",
+    "allBlueprints": "← tüm blueprint'ler",
+    "allExperts": "← tüm expert'ler",
+    "allCrews": "← tüm crew'lar",
+    "allIntegrations": "← tüm integration'lar",
+    "whatItIs": "Nedir",
+    "useIt": "Kullan",
+    "readIt": "Oku",
+    "maintainers": "Maintainer'lar",
+    "languages": "Diller",
+    "stack": "Stack",
+    "generatedShort": "Generated, elle doğrulanmadı.",
+    "communityShort": "Community girdisi: güvenmeden önce oku.",
+    "deprecated": "Deprecated. Resolver artık bunu önermiyor.",
+    "supersedes": "Yerine geçtiği:",
+    "blueprintBy": "Blueprint'i yazan:",
+    "generatedNotice": "Generated, CI'da test edildi, elle doğrulanmadı. Setup adımları çalışıyor; kimse onları elle review etmedi.",
+    "derivedFrom": "Kaynağı:",
+    "read": "{date} tarihinde okundu.",
+    "suggestedAlongside": "Yanında önerilenler",
+    "mcpServers": "MCP server'lar",
+    "skills": "Skill'ler",
+    "useBlueprint": "Agent'ından adıyla iste, ya da resolve profilinden bulsun.",
+    "options": "Seçenekler",
+    "projectType": "Proje türü",
+    "platforms": "Platformlar",
+    "distribution": "Dağıtım",
+    "setsUp": "Kurduğu",
+    "audience": "Kimin için",
+    "testedWithRow": "Test edildiği agent'lar",
+    "needs": "Gerektirdiği",
+    "files": "Dosyalar",
+    "version": "Sürüm {version}",
+    "changelog": "changelog",
+    "folder": "GitHub'daki klasörü",
+    "role": "Rol",
+    "domain": "Alan",
+    "seniority": "Kıdem",
+    "produces": "Ne üretiyor",
+    "checks": "Neyi kontrol ediyor",
+    "pairsWith": "Birlikte çalıştığı",
+    "useExpert": "Ya da Forgeprint MCP'ye bağlı bir agent'tan get_expert iste.",
+    "forWhat": "Ne için",
+    "whereWrong": "Nerede yanlış seçim",
+    "members": "Üyeler",
+    "integrations": "Integration'lar",
+    "useCrew": "Forgeprint MCP'ye bağlı bir agent'tan bu slug ile get_crew iste. Crew üzerinde isim olan bir öneri, zorunluluk değil.",
+    "thirdPartyTitle": "Üçüncü taraf yazılım.",
+    "thirdParty": "Forgeprint bu kodun hiçbirini barındırmıyor: başkasının yayınlayıp bakımını yaptığı bir proje için kurulum recipe'i. Kurmadan önce aşağıdaki izinleri incele.",
+    "upstream": "Upstream",
+    "project": "Proje",
+    "pinnedAt": "Pinli sürüm",
+    "verifiedOn": "Doğrulandığı tarih",
+    "reach": "Nelere erişebiliyor",
+    "noSecret": "Hiç secret gerektirmiyor.",
+    "needsIntro": "Gerektirdiği:",
+    "secretRest": "Upstream'de, işe yarayan en dar yetkiyle oluştur ve ortamına koy — bir agent senin yerine asla secret girmez.",
+    "install": "Kurulum",
+    "installNote": "Sadece komut sözdizimi doğrulanmış agent'lar listeleniyor. Listede olmayan bir agent, çalışmayan değil, henüz kimsenin doğrulamadığı agent."
   }
 }

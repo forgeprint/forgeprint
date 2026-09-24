@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { loadConfig, readRequests } from 'forgeprint';
+import { SITE_SCRIPT } from './chrome.js';
 import { renderSite, STYLESHEET, type Page } from './render.js';
 import { loadIndex } from './index.js';
 
@@ -10,7 +11,7 @@ export interface BuildResult {
   readonly written: readonly string[];
 }
 
-/** Every file the site is made of: the pages plus the one stylesheet. */
+/** Every file the site is made of: the pages, the stylesheet and the language switch. */
 export function siteFiles(root: string): Page[] {
   // The requests come from outside the repository and the contributors from
   // configuration; both are optional, and a missing one renders as empty
@@ -21,7 +22,11 @@ export function siteFiles(root: string): Page[] {
     requestsFrom: snapshot.generated_on,
     featured: loadConfig(root).featured_contributors ?? [],
   };
-  return [...renderSite(loadIndex(root), context), { path: 'forgeprint.css', html: STYLESHEET }];
+  return [
+    ...renderSite(loadIndex(root), context),
+    { path: 'forgeprint.css', html: STYLESHEET },
+    { path: 'site.js', html: SITE_SCRIPT },
+  ];
 }
 
 /**

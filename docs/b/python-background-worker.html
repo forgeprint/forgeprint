@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,8 +9,18 @@
     <link rel="stylesheet" href="../forgeprint.css" />
   </head>
   <body>
+    <header class="topbar">
+      <a class="home" href="../"><svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/><path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor"/></svg><span>Forgeprint</span></a>
+      <nav class="topnav">
+        <a href="../catalog.html"><span data-i18n="site.catalog">Catalog</span></a>
+        <div class="lang" role="group" aria-label="Language" data-i18n-aria-label="site.language" title="Interface language. Catalog entries stay in English." data-i18n-title="site.languageHint">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+      </nav>
+    </header>
     <main>
-<p class="back"><a href="../catalog.html#blueprints">← all blueprints</a></p>
+<p class="back"><a href="../catalog.html#blueprints"><span data-i18n="site.allBlueprints">← all blueprints</span></a></p>
 
       <header class="hero blueprint">
         <p class="slug">python-background-worker</p>
@@ -18,38 +28,38 @@
         <p class="tagline">Celery worker with Redis as the broker, retry and acknowledgement decided explicitly, and a check that puts a real job through a real worker.</p>
         
         
-        <p class="byline">Blueprint by <a class="person" href="https://github.com/aliosmanmho"><img class="avatar" src="https://github.com/aliosmanmho.png?size=64" width="32" height="32" loading="lazy" alt="" /><span>@aliosmanmho</span></a></p>
-        <p class="notice">Generated, CI-tested, not manually verified. The setup steps run; nobody has reviewed them by hand.</p>
+        <p class="byline"><span data-i18n="site.blueprintBy">Blueprint by</span> <a class="person" href="https://github.com/aliosmanmho"><img class="avatar" src="https://github.com/aliosmanmho.png?size=64" width="32" height="32" loading="lazy" alt="" /><span>@aliosmanmho</span></a></p>
+        <p class="notice"><span data-i18n="site.generatedNotice">Generated, CI-tested, not manually verified. The setup steps run; nobody has reviewed them by hand.</span></p>
         
       </header>
 
       
 
       <section>
-        <h2>Use it</h2>
-        <p>Ask your agent for it by name, or let <code>resolve</code> find it from your profile.</p>
+        <h2><span data-i18n="site.useIt">Use it</span></h2>
+        <p><span data-i18n="site.useBlueprint">Ask your agent for it by name, or let resolve find it from your profile.</span></p>
         <pre class="install"><code>get_blueprint { "slug": "python-background-worker" }</code></pre>
       </section>
 
       
 
       <section>
-        <h2>What it is</h2>
+        <h2><span data-i18n="site.whatItIs">What it is</span></h2>
         <table class="facts">
-          <tr><th>Languages</th><td>Python</td></tr>
-          <tr><th>Project type</th><td>Data or analytics</td></tr>
-          <tr><th>Stack</th><td>Python, Celery, Redis, Docker</td></tr>
-          <tr><th>Platforms</th><td>Linux, Docker</td></tr>
-          <tr><th>Distribution</th><td>Open source, Internal, SaaS</td></tr>
-          <tr><th>Sets up</th><td>Background jobs, Continuous integration, Containerization</td></tr>
-          <tr><th>Audience</th><td>Intermediate</td></tr>
-          <tr><th>Tested with</th><td>Claude Code</td></tr>
-          <tr><th>Needs</th><td>python&gt;=3.10, docker</td></tr>
+          <tr><th><span data-i18n="site.languages">Languages</span></th><td>Python</td></tr>
+          <tr><th><span data-i18n="site.projectType">Project type</span></th><td>Data or analytics</td></tr>
+          <tr><th><span data-i18n="site.stack">Stack</span></th><td>Python, Celery, Redis, Docker</td></tr>
+          <tr><th><span data-i18n="site.platforms">Platforms</span></th><td>Linux, Docker</td></tr>
+          <tr><th><span data-i18n="site.distribution">Distribution</span></th><td>Open source, Internal, SaaS</td></tr>
+          <tr><th><span data-i18n="site.setsUp">Sets up</span></th><td>Background jobs, Continuous integration, Containerization</td></tr>
+          <tr><th><span data-i18n="site.audience">Audience</span></th><td>Intermediate</td></tr>
+          <tr><th><span data-i18n="site.testedWithRow">Tested with</span></th><td>Claude Code</td></tr>
+          <tr><th><span data-i18n="site.needs">Needs</span></th><td>python&gt;=3.10, docker</td></tr>
         </table>
       </section>
 
       <section>
-        <h2>Files</h2>
+        <h2><span data-i18n="site.files">Files</span></h2>
         <ul class="files">
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/AGENTS.md"><code>AGENTS.md</code></a></li>
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/CHANGELOG.md"><code>CHANGELOG.md</code></a></li>
@@ -57,17 +67,15 @@
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/overview.md"><code>overview.md</code></a></li>
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/setup.md"><code>setup.md</code></a></li>
         </ul>
-        <p class="muted">Version 1.1.0 · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/CHANGELOG.md">changelog</a> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker">folder on GitHub</a></p>
+        <p class="muted"><span data-i18n="site.version" data-arg-version="1.1.0">Version 1.1.0</span> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker/CHANGELOG.md"><span data-i18n="site.changelog">changelog</span></a> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/python-background-worker"><span data-i18n="site.folder">folder on GitHub</span></a></p>
       </section>
     </main>
     <footer>
-      <a href="https://github.com/forgeprint/forgeprint">Repository</a> ·
-      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="https://github.com/forgeprint/forgeprint"><span data-i18n="site.repository">Repository</span></a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"><span data-i18n="site.contribute">Contribute</span></a> ·
       <a href="../index.json">index.json</a>
-      <p class="muted">
-        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
-        catalog content under CC BY 4.0.
-      </p>
+      <p class="muted"><span data-i18n="site.licence">Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0, catalog content under CC BY 4.0.</span></p>
     </footer>
+    <script src="../site.js"></script>
   </body>
 </html>
