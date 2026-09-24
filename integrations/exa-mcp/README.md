@@ -24,7 +24,7 @@ Sends your search query to Exa's service and returns page content.
 **claude-code**
 
 ```bash
-claude mcp add-json exa '{"command":"npx","args":["-y","exa-mcp-server@3.4.1"],"env":{"EXA_API_KEY":"$EXA_API_KEY"}}'
+claude mcp add-json exa '{"command":"npx","args":["-y","exa-mcp-server@3.4.1"],"env":{"EXA_API_KEY":"${EXA_API_KEY}"}}'
 ```
 
 **codex**

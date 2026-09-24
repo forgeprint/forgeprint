@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/exa-mcp.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Exa Search MCP","name":"Exa Search MCP","description":"Web search built for agents: results as content rather than as a list of links to fetch.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/exa-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/exa-mcp.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Exa Search MCP","name":"Exa Search MCP","description":"Web search built for agents: results as content rather than as a list of links to fetch.","version":"1.1.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/exa-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/exa-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -53,7 +53,7 @@
 
       <h2><span data-i18n="site.install">Install</span></h2>
       <h3>Claude Code</h3>
-      <pre class="install"><code>claude mcp add-json exa '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;exa-mcp-server@3.4.1&quot;],&quot;env&quot;:{&quot;EXA_API_KEY&quot;:&quot;$EXA_API_KEY&quot;}}'</code></pre>
+      <pre class="install"><code>claude mcp add-json exa '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;exa-mcp-server@3.4.1&quot;],&quot;env&quot;:{&quot;EXA_API_KEY&quot;:&quot;${EXA_API_KEY}&quot;}}'</code></pre>
       <h3>Codex CLI</h3>
       <pre class="install"><code>codex mcp add exa --env EXA_API_KEY=$EXA_API_KEY -- npx -y exa-mcp-server@3.4.1</code></pre>
       <h3>Gemini CLI</h3>
