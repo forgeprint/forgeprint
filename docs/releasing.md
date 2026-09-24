@@ -50,15 +50,62 @@ If it is missing, either add its directory to that shell's PATH or call it by
 full path. `release` reports this case by name rather than as a failed publish,
 because the tool is not what went wrong.
 
-Authentication is separate and is the maintainer's, like npm's:
+### Publishing under the organization
+
+`server.json` is named `io.github.forgeprint/forgeprint`, and that namespace
+belongs to the organization, not to a person. Two things decide whether you may
+publish into it, and the error you get when either is wrong names neither.
+
+**You must be an Owner of the organization.** Since July 2026 the registry
+grants an organization namespace only to members whose role is `admin`;
+ordinary membership no longer counts. Check it:
 
 ```bash
-mcp-publisher login github
+gh api user/memberships/orgs/forgeprint --jq .role
 ```
 
-`login github-oidc` exists too, and is the path that ends this step — GitHub
-Actions authenticating without a credential on anybody's laptop. The same
-answer as npm trusted publishing, and the same open roadmap item.
+**The registry must be able to see that.** This is the one that cost 0.3.0 half
+an hour. `mcp-publisher login github` runs a device flow as a GitHub App, and a
+GitHub App that is not installed on the organization cannot read your
+membership in it. The login succeeds, the publish is refused, and the refusal
+says:
+
+```
+You have permission to publish: io.github.<you>/*.
+Attempting to publish: io.github.forgeprint/forgeprint.
+... you may need to make your organization membership public
+```
+
+**The advice at the end is out of date.** Public membership was the rule before
+the Owner-only change, and making it public changes nothing now. Logging in
+again changes nothing either — the same login gives the same answer.
+
+What works is a classic personal access token with **only** `read:org`, which
+is not bound to an app installation and can read your role directly:
+
+1. Create one at `https://github.com/settings/tokens/new?scopes=read:org`.
+   Tick nothing else: the registry never reads or writes code, and a token with
+   `repo` in it would be handed to a third party for no reason.
+2. Log in with it. **`login` reads the variable; `publish` does not** — `publish`
+   uses the registry token that `login` stored, so setting the variable and
+   going straight to `publish` retries with the old login:
+
+   ```bash
+   export MCP_GITHUB_TOKEN=<token>     # PowerShell: $env:MCP_GITHUB_TOKEN = "<token>"
+   mcp-publisher login github           # no browser opens; that is how you know it read the variable
+   mcp-publisher publish server.json
+   ```
+
+3. Unset the variable and delete the token. The registry token `login` stored is
+   what later publishes use.
+
+`release` recognises this refusal and says so rather than telling you to log in
+again.
+
+`login github-oidc` is the path that ends all of this — GitHub Actions
+authenticating as the repository, with no credential on anybody's laptop and no
+app installation to reason about. The same answer as npm trusted publishing,
+and the same open roadmap item.
 
 The rest of this file is what the command does, in case it is unavailable or
 you want to do a step by hand.
