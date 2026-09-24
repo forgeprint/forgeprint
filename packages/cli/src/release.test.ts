@@ -39,15 +39,32 @@ describe('classifyPublishError', () => {
       expected: 'already-published',
     },
     {
+      // Verbatim from pnpm, wrapping and box characters included. The first
+      // versions of these two cases were tidied into one line, passed, and
+      // matched nothing pnpm actually prints: 0.3.1's release fell through to
+      // the raw error because of it. Fixtures here are pasted, never retyped.
       name: 'a stage-only token, which is invisible until exactly this moment',
-      output:
-        'Error: ERR_PNPM_FAILED_TO_PUBLISH\n  (status 403 Forbidden):\n  {"success":false,"error":"This token can only publish to a staging area. Run `npm stage publish` to publish this version, then approve it. (E_STAGE_REQUIRED)"}',
+      output: [
+        'Error: ERR_PNPM_FAILED_TO_PUBLISH',
+        '',
+        '  × Failed to publish package forgeprint@0.3.0       ',
+        '  │ (status 403 Forbidden):',
+        '  │ {"success":false,"error":"This token can only    ',
+        '  │ publish to a staging area. Run `npm stage        ',
+        '  │ publish` to publish this version, then approve   ',
+        '  │ it. (E_STAGE_REQUIRED)"}',
+      ].join('\n'),
       expected: 'stage-only',
     },
     {
       name: 'a 2FA challenge nobody can answer from inside a subprocess',
-      output:
-        'error forgeprint did not publish: × The registry requires additional authentication, but pnpm is not running in an interactive terminal',
+      output: [
+        '  × The registry requires additional authentication, but pnpm is not running',
+        '  │ in an interactive terminal',
+        '  help: Re-run this command in an interactive terminal to complete',
+        '        authentication, or provide the --otp option if you are using a classic',
+        '        one-time password (OTP)',
+      ].join('\n'),
       expected: 'needs-interactive',
     },
     {

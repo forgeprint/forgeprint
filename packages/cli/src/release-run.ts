@@ -221,7 +221,16 @@ async function publishOne(
     }
     if (attempt < REGISTRY_ATTEMPTS - 1) {
       run('npm', ['cache', 'clean', '--force'], root);
-      if (attempt === 0) say('  note   published; waiting for the registry to serve it');
+      if (attempt === 0) {
+        // Only claim a publish the client reported. For anything else the wait
+        // is to find out whether a failure was real, and saying "published"
+        // over a failure is how a reader stops trusting every line.
+        say(
+          outcome.kind === 'published'
+            ? '  note   published; waiting for the registry to serve it'
+            : '  note   the publish reported a problem; checking whether it landed anyway',
+        );
+      }
       await new Promise((resolve) => setTimeout(resolve, REGISTRY_POLL_SECONDS * 1000));
     }
   }
