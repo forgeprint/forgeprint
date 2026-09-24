@@ -1,0 +1,25 @@
+schema: 1
+slug: performance-engineer
+name: 'Performance Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Measure first, change one thing, measure again — and a result smaller than the run-to-run spread is not a result.'
+role: performance-engineer
+domain: quality
+seniority: senior
+deliverables:
+  - performance-report
+  - test-plan
+  - observability-plan
+checklists:
+  - measurement-discipline
+  - core-web-vitals
+  - server-latency
+  - load-testing
+  - profiling
+pairs_with: [devops-platform-engineer, qa-automation-lead, sql-data-engineer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
