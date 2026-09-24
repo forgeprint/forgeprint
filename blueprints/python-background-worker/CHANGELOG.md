@@ -1,5 +1,29 @@
 # Changelog — python-background-worker
 
+## 1.1.0 — 2026-09-24
+
+What the broker actually is, from the architecture review
+([2026-09-23](../../docs/reviews/python-background-worker/2026-09-23.md),
+findings 1 and 2).
+
+Celery has no authentication of its own: anything that can write to the broker
+can run any registered task with any arguments. The shipped configuration is
+`redis://localhost` and is fine, and the blueprint never said **why** it was
+fine — so nothing marked the moment that reasoning stops holding.
+
+- **`AGENTS.md` gained a section of its own**, before the rules rather than
+  among them, because it is the trust boundary and not a setting. It names the
+  three controls a shared broker needs: a password and TLS (`rediss://`), a
+  network only the producers are on, and validation inside the task.
+- **It closes finding 2 in the same paragraph.** Task arguments arrive from the
+  broker, so they are input in the sense every other input is.
+
+The framing is deliberate: this is not about a stolen password. It is about a
+shared broker acquiring a second producer that nobody meant to give
+task-execution rights to.
+
+No change to the recipe or the code.
+
 ## 1.0.0 — 2026-09-23
 
 First version, and the catalog's first `data` blueprint.

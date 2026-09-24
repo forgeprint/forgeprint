@@ -15,6 +15,31 @@ scripts/enqueue.py  one job through the real queue, result read back
 compose.yaml        Redis, on a port the operating system chooses
 ```
 
+## The broker is the authentication boundary
+
+Celery has no authentication of its own. **Anything that can write to the
+broker can run any registered task, with any arguments.** There is no second
+check: the worker takes a message off the queue and calls the function.
+
+What ships here is `redis://localhost` — one machine, no network — and that is
+the only reason it needs no password. The moment the broker is shared, that
+reasoning stops holding and three things become the controls:
+
+- **A password and TLS.** `rediss://` rather than `redis://`, with the password
+  from the environment, because the connection string is now carrying the only
+  credential in the system.
+- **A network the producers are on and nothing else is.** A broker reachable
+  from a tier that never enqueues anything has more clients than it has reasons
+  for.
+- **Validation inside the task.** Arguments arrive from the broker, so they are
+  input in the sense every other input is. `resize` checks its arguments and
+  raises rather than trusting them; a task that touches a filesystem, a
+  database or a URL needs the same and more.
+
+This is not about a stolen password. It is about the ordinary case: a shared
+broker acquires a second producer, and the second producer is a service nobody
+meant to give task-execution rights to.
+
 ## Rules that are not style preferences
 
 **Give every task an explicit `name`.** The name is on the wire. Rename the
