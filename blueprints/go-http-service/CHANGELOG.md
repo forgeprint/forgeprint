@@ -1,5 +1,24 @@
 # Changelog — go-http-service
 
+## 1.1.0 — 2026-09-24
+
+The routing convention became a check, from the architecture review
+([2026-09-23](../../docs/reviews/go-http-service/2026-09-23.md), finding 1).
+
+Every route is protected by where it is declared — inside the group that
+carries `RequireBearer` — and nothing stopped somebody declaring one outside
+it. That is the single mistake the convention cannot prevent, and it is silent:
+the route works, the tests pass, and the endpoint is public.
+
+- **`TestEveryRouteOutsideTheAllowListNeedsAToken`** walks `router.Routes()`,
+  which Gin exposes, and fails on any route that answers a request with no
+  token. `GET /health` is the allow-list, written out, so making a route public
+  is now a line somebody has to add on purpose. It also refuses to pass on an
+  empty route table: a loop over nothing asserts nothing, which is how a check
+  like this stops working without ever failing.
+
+No change to the service. The recipe gains one test and no step.
+
 ## 1.0.0 — 2026-09-23
 
 First version.
