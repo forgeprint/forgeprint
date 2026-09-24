@@ -4,6 +4,29 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.3.1 — 2026-09-24
+
+**The server now says when to use it, not only what it does.**
+
+The 0.3.0 dogfood run failed at step 1 in a way nobody would have seen from
+outside: the agent built a working multi-tenant API, tests green, without ever
+calling Forgeprint. Claude Code now loads MCP tools lazily — names in a long
+list, a schema only if the agent decides to fetch one — so the server
+instructions are the one piece of Forgeprint text read before that decision.
+They described Forgeprint and gave no trigger, and a stated profile read as a
+request to start coding.
+
+- **`RESOLVE_TRIGGER` opens the instructions:** when somebody is about to start
+  a new project and says what they know and what they want to build, call
+  `resolve` before writing code, creating files or proposing a design.
+- **`resolve`'s description** gains the same first sentence, which is what a
+  tool search matches against.
+
+Measured before release: headless, 9 of 10 runs reached `resolve` before and 10
+of 10 after; then one clean interactive run, fresh directory and no memory,
+that found `resolve` unprompted and stopped to ask before building
+([docs/dogfood.md](../../docs/dogfood.md)).
+
 ## 0.3.0 — 2026-09-24
 
 Four new tools, for the two questions the catalog answers besides "what are you

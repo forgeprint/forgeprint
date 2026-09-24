@@ -3,6 +3,29 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.3.1 — 2026-09-24
+
+`release`, taught by what publishing 0.3.0 actually took.
+
+- **Two publish failures are named.** `403 E_STAGE_REQUIRED` is a token created
+  "Read and write (stage only)" — invisible locally, since `npm whoami` and
+  `npm token list` report it exactly like a working one — and the message says
+  what to generate instead. "Not running in an interactive terminal" is a
+  browser 2FA challenge in a subprocess, and the message gives the by-hand
+  command. Neither waits on the registry for a package it never received.
+- **The registry wait loop actually waits.** It asked `npm view` five times in
+  a row with no pause, which takes seconds; 0.3.0 was invisible for about
+  ninety. Six attempts, thirty seconds apart.
+- **Distribution manifests are part of the version gate.** `server.json` and
+  every `plugin.json` must carry the release version before anything is
+  tagged, and a missing version field is a problem rather than agreement. They
+  had drifted eight releases behind npm with nothing noticing.
+- **`release` publishes to the MCP Registry itself**, instead of printing a
+  reminder nobody followed for eight releases. It skips when the registry
+  already serves the version, names a missing `mcp-publisher` as a PATH
+  problem, and recognises the registry's 403 for an organization namespace —
+  whose advice to "make your membership public" is out of date.
+
 ## 0.3.0 — 2026-09-24
 
 The catalog holds four kinds now, and so does the tooling (ADR 0012, ADR 0013).
