@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.1 — 2026-09-24
+
+Three wording fixes from the first dogfood run to execute this recipe end to end
+(34 of 34 steps, build and tests green). None blocked the run; each is a place
+where a careful agent could reasonably have stopped.
+
+- **Step 3** now says the build prints NU1903 for the template's
+  `Microsoft.OpenApi` dependency, and that step 5 removes it. Verification passed
+  next to a "known high severity vulnerability" warning with nothing saying why.
+- **Step 19** says "Replace", not "Create". `dotnet new webapi` already generates
+  `appsettings.Development.json`, and an agent whose file tool will not
+  overwrite an unread file stopped there once.
+- **Step 33** says the `curl: (52) Empty reply from server` printed while the
+  container starts is expected. The verification retries and exits 0, but an
+  error next to a success reads like a failure. `-S` stays: without it, a
+  verification that fails on every attempt would fail silently.
+
+No change to the project the recipe builds.
+
 ## 1.2.0 — 2026-09-23
 
 Recommends `dotnet-senior-architect`, `sql-data-engineer` and

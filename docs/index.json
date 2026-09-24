@@ -522,7 +522,7 @@
     {
       "slug": "dotnet-multitenant-saas-api",
       "name": "Multi-tenant SaaS API",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "tier": "official",
       "maintainers": [
         "aliosmanmho"
