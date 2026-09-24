@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 — 2026-09-25
+
+Fix: the Claude Code command now writes `${VAR}`, which Claude Code expands.
+
+- **The secret never arrived.** Claude Code expands environment variables in
+  an MCP server's `env`, `url` and `headers` only in the `${VAR}` form. The
+  command wrapped the JSON in single quotes, so the shell left `$VAR` alone
+  and Claude Code stored and sent the literal text instead of the value.
+- The other agents' commands are unchanged: there the shell expands the
+  variable before the agent sees it.
+
 ## 1.0.0 — 2026-09-23
 
 First recipe for GitHub MCP Server, pinned at `v1.12.2`.

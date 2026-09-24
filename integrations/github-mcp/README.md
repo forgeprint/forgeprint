@@ -24,7 +24,7 @@ Reads and writes every repository the token can reach: issues, pull requests, wo
 **claude-code**
 
 ```bash
-claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/mcp/","headers":{"Authorization":"Bearer $GITHUB_PERSONAL_ACCESS_TOKEN"}}'
+claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/mcp/","headers":{"Authorization":"Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"}}'
 ```
 
 **gemini-cli**
