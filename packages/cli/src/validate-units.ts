@@ -52,7 +52,7 @@ export function validateUnits(root: string, taxonomy: Taxonomy): UnitCatalog {
   const integrations = loadKind(root, 'integration', integrationSchema(taxonomy), problems);
 
   problems.push(
-    ...duplicates('expert', experts, expertCombinationKey, 'role + domain + seniority'),
+    ...duplicates('expert', experts, expertCombinationKey, 'role + domain + seniority + languages'),
   );
   problems.push(...duplicates('crew', crews, crewCombinationKey, 'members + integrations'));
   problems.push(...duplicates('integration', integrations, integrationCombinationKey, 'upstream'));

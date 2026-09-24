@@ -84,7 +84,7 @@ forgeprint/
 │       └── i18n/<lang>/        # optional – community translations of overview.md (never required, see §9)
 ├── experts/                    # Contribution unit: one folder = one expert
 │   └── <slug>/
-│       ├── manifest.yaml       # REQUIRED – role + domain + seniority, deliverables, checklists
+│       ├── manifest.yaml       # REQUIRED – role + domain + seniority (+ languages), deliverables, checklists
 │       ├── SKILL.md            # REQUIRED – Agent Skills spec
 │       ├── overview.md         # REQUIRED – what it fits / doesn't
 │       ├── references.md       # REQUIRED – source + version + date last checked
@@ -165,7 +165,7 @@ Blueprints may also carry `recommended_experts`, `recommended_crew` and `integra
 
 The same governance as a blueprint — semver that moves every PR, a CHANGELOG entry behind it, a maintainer, a tier, `provenance` — plus what makes each kind mean something:
 
-- **Expert:** `role` + `domain` + `seniority` is the triple rule 9 makes unique. `deliverables` and `checklists` are required, and every checklist name must have a `checklists/<name>.md` behind it. An expert with nothing under it is refused.
+- **Expert:** `role` + `domain` + `seniority` + `languages` is what rule 9 makes unique (ADR 0015): one stack-neutral expert per triple, and one per language beside it. `deliverables` and `checklists` are required, and every checklist name must have a `checklists/<name>.md` behind it. An expert with nothing under it is refused.
 - **Crew:** at most **6** members, named by slug. `for_what` and `not_for` are both required; a crew that is right for everything is a catalog with a title.
 - **Integration:** `upstream` (https) and `upstream_version` (pinned; `latest` refused) are separate from the recipe's own `version`. `permissions_summary` is required. `install` is a map keyed by agent id. The install command is linted like a setup step: no pipe-to-shell, no `sudo`, no `rm -rf`, no moving tag, no literal credential.
 
@@ -236,7 +236,7 @@ A project that depends on hosted CI locks up when CI is unavailable. Therefore:
 
 ### Blueprint quality rules (the source of CONTRIBUTING.md)
 8. **No variants.** Fields like `extends`, `inherits`, `fork_of` do not exist in the schema and will not be added. Variation happens through `options`: at most 3 values per field, at most 3 fields. A crew is **composition**, not inheritance: it names members by slug and copies nothing, so it does not touch this rule. A hand-written agent-specific copy of any content is the same violation in a second costume — use `forgeprint render` (ADR 0013).
-9. **One slug per combination.** A second blueprint for the same `stack + project_type + requirements` triple is rejected. A better one replaces the old one via `supersedes`. The same rule, per kind: one expert per `role + domain + seniority`, one crew per member-and-integration set, one integration per upstream.
+9. **One slug per combination.** A second blueprint for the same `stack + project_type + requirements` triple is rejected. A better one replaces the old one via `supersedes`. The same rule, per kind: one expert per `role + domain + seniority + languages` (ADR 0015: a stack-neutral expert names no languages, and there is one of those per triple), one crew per member-and-integration set, one integration per upstream.
 10. **Duplicate report on every PR.** `forgeprint similarity <slug>` runs: tag overlap, text similarity of `AGENTS.md`/`setup.md` (TF-IDF), diff summary against the closest blueprint. Above 70% similarity = red flag.
 11. Required PR template section: *"Closest existing blueprint, what is different, and why didn't you open a PR against it?"* Empty = CI red.
 12. Merge decisions are made **only by the core maintainer** (repo owner). Blueprint maintainers approve; they do not merge.

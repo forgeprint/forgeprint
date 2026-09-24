@@ -46,7 +46,8 @@ mechanism or a runtime, it is usually an `option` on the existing blueprint,
 not a new slug. If yours is simply better, replace the old one: set
 `supersedes: <old-slug>` and mark the old one `deprecated: true`.
 
-The same rule, per kind: one expert per role + domain + seniority, one crew per
+The same rule, per kind: one expert per role + domain + seniority + languages
+(ADR 0015), one crew per
 member-and-integration set, one integration per upstream.
 -->
 

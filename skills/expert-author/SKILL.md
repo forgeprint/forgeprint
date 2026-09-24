@@ -50,7 +50,7 @@ are least ready for. Ask for concrete examples, not principles.
 
 ```
 experts/<slug>/
-├── manifest.yaml       # role + domain + seniority, deliverables, checklists
+├── manifest.yaml       # role + domain + seniority (+ languages), deliverables, checklists
 ├── SKILL.md            # how it works — the Agent Skills format
 ├── overview.md         # what it fits, what it does not, pros and cons
 ├── references.md       # every source with a version and a date checked
@@ -114,9 +114,11 @@ Three things `validate` will refuse, and they are the three that matter:
 
 - A `checklists` name with no `checklists/<name>.md` behind it. An expert with
   nothing under it is the thing this unit type exists to refuse.
-- A second expert with the same `role + domain + seniority` (rule 9). If yours
-  is better, `supersedes` the old one; if it is different, one of the three
-  fields is wrong.
+- A second expert with the same `role + domain + seniority + languages`
+  (rule 9, ADR 0015). If yours is better, `supersedes` the old one; if it is
+  different, one of the four fields is wrong. A language-specific expert is
+  allowed beside the stack-neutral one only when its checklists are about the
+  language — ones that would read differently with the language swapped.
 - `provenance: generated` with `tier: official`. A tool drafted it and CI
   checked it is a different claim from a person standing behind it (ADR 0011).
 
@@ -156,7 +158,7 @@ only answer that settles it.
 | Restating a standard the catalog already tracks      | Two copies, one of them eventually wrong                                      |
 | "You are a senior X" with no procedure               | A title, not a way of working                                                 |
 | No "what it does not fit"                            | Not thought about, and the reader has no way to decide                        |
-| A role, domain and seniority that already exist      | Rule 9. Improve or supersede                                                  |
+| A role, domain, seniority and languages that exist   | Rule 9. Improve or supersede                                                  |
 | `agents` listing agents nobody ran it with           | `agents` means tested, and a wrong claim there is worse than a short list     |
 
 ---
