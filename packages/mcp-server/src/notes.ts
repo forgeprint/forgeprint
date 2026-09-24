@@ -23,3 +23,16 @@ export const RESOLVE_TRIGGER =
   '(a language, a stack) and what they want to build, call `resolve` before writing code, ' +
   'creating files or proposing a design of your own. Building from your own knowledge instead ' +
   'skips the CI-tested recipe this catalog exists to provide. ';
+
+/**
+ * What every tool here is, stated to the client (MCP tool annotations). Each
+ * one returns text built from the catalog and changes nothing, anywhere (rule
+ * 21), so a client need not ask for approval as if a call could do harm. The
+ * catalog is a closed domain: no tool reaches beyond it.
+ */
+export const READ_ONLY_TOOL = {
+  readOnlyHint: true,
+  destructiveHint: false,
+  idempotentHint: true,
+  openWorldHint: false,
+} as const;

@@ -132,8 +132,22 @@ export function entryFor(index: CatalogIndex, slug: string): IndexEntry {
   return entry;
 }
 
-async function fetchText(url: string): Promise<string> {
-  const response = await fetch(url, { headers: { accept: 'text/plain, application/json' } });
+/** How long one request for the catalog may take before it is abandoned. */
+export const FETCH_TIMEOUT_MS = 15_000;
+
+/**
+ * Fetch a text resource, and give up after `timeoutMs`.
+ *
+ * Without a limit a stalled network holds the tool call open for as long as
+ * the operating system keeps the socket, and the agent waits on a tool that
+ * will never answer. A timeout turns that into the same error as any other
+ * failed fetch, which the caller already reports.
+ */
+export async function fetchText(url: string, timeoutMs = FETCH_TIMEOUT_MS): Promise<string> {
+  const response = await fetch(url, {
+    headers: { accept: 'text/plain, application/json' },
+    signal: AbortSignal.timeout(timeoutMs),
+  });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return await response.text();
 }
