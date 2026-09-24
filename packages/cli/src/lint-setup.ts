@@ -51,6 +51,18 @@ const ALLOWED_HOSTS = new Set([
   'repo.maven.apache.org',
   'rubygems.org',
   'packagist.org',
+  // Dart and Flutter packages.
+  'pub.dev',
+  // Elixir packages, and the installers `mix` fetches Hex and Rebar from.
+  'hex.pm',
+  'repo.hex.pm',
+  'builds.hex.pm',
+  // Gradle's plugin portal and the wrapper's distribution download.
+  'plugins.gradle.org',
+  'services.gradle.org',
+  // Google's Maven repository and the Android SDK repository.
+  'maven.google.com',
+  'dl.google.com',
   'mcr.microsoft.com',
   'ghcr.io',
   'docker.io',
