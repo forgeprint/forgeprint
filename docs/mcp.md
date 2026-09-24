@@ -11,14 +11,22 @@ keeps no state beyond a five-minute cache of the catalog index.
 
 ## The tools
 
-| Tool                 | What it does                                                                                                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `resolve`            | The one to start with. Returns **either** the questions to ask the user **or** exactly one blueprint with its rationale, the tools its setup needs, and the options still to decide |
-| `get_blueprint`      | The manifest and files for a slug, with the chosen option branches already resolved out of `setup.md`                                                                               |
-| `search_blueprints`  | Scored matches with reasons, for when the user wants to look themselves                                                                                                             |
-| `compare_blueprints` | Two to four blueprints side by side, built from their overview files — including what each one is explicitly not for                                                                |
-| `validate_blueprint` | Schema, taxonomy, setup-recipe and duplication checks on a draft that is not in the catalog yet                                                                                     |
-| `request_blueprint`  | A GitHub issue payload when nothing fits. It does not file the issue                                                                                                                |
+Ten tools. The first six are about projects; the last four about how the agent
+works and with which tools. `resolve` routes a request for an expert, a crew or
+an integration to the right one of those instead of answering it.
+
+| Tool                 | What it does                                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `resolve`            | The one to start with. Returns **either** the questions to ask the user **or** exactly one blueprint with its rationale, the tools its setup needs, and the options still to decide    |
+| `get_blueprint`      | The manifest and files for a slug, with the chosen option branches already resolved out of `setup.md`                                                                                  |
+| `search_blueprints`  | Scored matches with reasons, for when the user wants to look themselves                                                                                                                |
+| `compare_blueprints` | Two to four blueprints side by side, built from their overview files — including what each one is explicitly not for                                                                   |
+| `validate_blueprint` | Schema, taxonomy, setup-recipe and duplication checks on a draft that is not in the catalog yet                                                                                        |
+| `request_blueprint`  | A GitHub issue payload when nothing fits. It does not file the issue                                                                                                                   |
+| `recommend_experts`  | For a task, at most one crew or at most three experts, each with a reason, and a sentence about what was left out. Never a list to browse                                              |
+| `get_expert`         | One expert: manifest, `SKILL.md`, checklists and references. With `agent`, also the file paths that agent reads                                                                        |
+| `get_crew`           | One crew: its members as full expert entries, and the install command for each integration it names, for the given `agent`                                                             |
+| `get_integration`    | One install recipe for third-party software: pinned upstream, the command for the given `agent`, the secrets it needs and what they reach. No command for an agent nobody has verified |
 
 ### How `resolve` behaves
 
@@ -119,7 +127,7 @@ npx -y forgeprint-mcp
 ```
 
 It prints nothing and waits: that is correct, it is waiting for a request. Send
-an `initialize`, then `tools/list`, and a working server answers with the six
+an `initialize`, then `tools/list`, and a working server answers with the ten
 tools above.
 
 If `npx` reports a 404 for a package that does exist, it is reusing a cached
