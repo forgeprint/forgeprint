@@ -58,7 +58,7 @@ describe('the index page', () => {
   it('counts the catalog and lists every blueprint', () => {
     const html = renderIndexPage(INDEX);
     // The count moved into the tab when the catalog gained three more kinds.
-    assert.match(html, /Blueprints <span class="count">2<\/span>/);
+    assert.match(html, /Blueprints<\/span> <span class="count">2<\/span>/);
     assert.match(html, /b\/sample-api\.html/);
     assert.match(html, /b\/old-api\.html/);
   });
@@ -205,7 +205,10 @@ describe('provenance on a blueprint page', () => {
     );
     assert.match(html, /Derived from/);
     assert.match(html, /href="https:\/\/github\.com\/example\/starter"/);
-    assert.match(html, /\(MIT\), read 2026-09-22/);
+    assert.match(
+      html,
+      /\(MIT\), <span data-i18n="site\.read" data-arg-date="2026-09-22">read 2026-09-22\./,
+    );
     assert.match(html, /The auth wiring\./);
   });
 

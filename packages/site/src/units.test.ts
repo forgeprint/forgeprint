@@ -109,7 +109,7 @@ describe('the catalog page', () => {
 
   it('has a tab per non-empty kind, and exactly one selected', () => {
     for (const label of ['Experts', 'Crews', 'Integrations']) {
-      assert.match(html, new RegExp(`>${label} <span class="count"`));
+      assert.match(html, new RegExp(`>${label}</span> <span class="count"`));
     }
     assert.equal((html.match(/aria-selected="true"/g) ?? []).length, 1);
   });
@@ -192,7 +192,7 @@ describe('navigation between pages', () => {
   });
 
   it('links the catalog back to the landing page', () => {
-    assert.match(pageAt('catalog.html'), /<a href="\.\/">/);
+    assert.match(pageAt('catalog.html'), /<a class="home" href="\.\/">/);
   });
 });
 

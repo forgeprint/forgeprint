@@ -7,6 +7,7 @@
  */
 
 import type { CatalogIndex, Taxonomy } from 'forgeprint';
+import { attr, t } from './chrome.js';
 
 export interface ExpertEntry {
   slug: string;
@@ -92,11 +93,11 @@ export function agentBadges(claimed: readonly string[], agents: readonly AgentEn
   const chips = agents
     .map((agent) => {
       const yes = tested.has(agent.id);
-      const label = yes ? `Tested with ${agent.name}` : `${agent.name}: not tested`;
-      return `<span class="agent${yes ? ' tested' : ''}" title="${escape(label)}"><span aria-hidden="true">${yes ? '✓' : '·'}</span> ${escape(agent.name)}</span>`;
+      const title = attr('title', yes ? 'testedWith' : 'notTested', { agent: agent.name });
+      return `<span class="agent${yes ? ' tested' : ''}"${title}><span aria-hidden="true">${yes ? '✓' : '·'}</span> ${escape(agent.name)}</span>`;
     })
     .join('');
-  return `<p class="agents" aria-label="Agent verification">${chips}</p>`;
+  return `<p class="agents"${attr('aria-label', 'agentVerification')}>${chips}</p>`;
 }
 
 /** Cards for one kind, for the catalog page. */
@@ -166,7 +167,7 @@ export function integrationCards(index: IndexWithUnits): string {
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="i/${escape(entry.slug)}.html">${escape(entry.name)}</a> <span class="tier">${escape(entry.kind)}</span></h3>
           <p>${escape(entry.summary)}</p>
-          <p class="tags"><span>pinned ${escape(entry.upstream_version)}</span>${entry.fits.map((fit) => `<span>${escape(fit)}</span>`).join('')}${secrets > 0 ? `<span class="needs-secret">needs ${String(secrets)} secret${secrets === 1 ? '' : 's'}</span>` : ''}</p>
+          <p class="tags">${t('pinned', { version: entry.upstream_version })}${entry.fits.map((fit) => `<span>${escape(fit)}</span>`).join('')}${secrets === 0 ? '' : secrets === 1 ? t('needsSecret').replace('<span ', '<span class="needs-secret" ') : t('needsSecrets', { n: secrets }).replace('<span ', '<span class="needs-secret" ')}</p>
         </article>`;
     })
     .join('\n');
@@ -191,11 +192,10 @@ export function requestedExperts(index: IndexWithUnits): string {
 
   return `
       <section class="ask">
-        <h2>${String(open.length)} roles with no expert yet</h2>
+        ${t('rolesOpen', { n: open.length }, 'h2')}
         <p>
-          The role list is wider than the catalog on purpose. Every name below is
-          a slot somebody could fill — <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">write one</a>
-          and it appears here instead.
+          ${t('rolesBody')} <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">${t('rolesWrite')}</a>
+          ${t('rolesRest')}
         </p>
         <p class="tags open-roles">${open.map((role) => `<span>${escape(role)}</span>`).join('')}</p>
       </section>`;
@@ -257,67 +257,67 @@ function expertBody(entry: ExpertEntry, agents: readonly AgentEntry[], taxonomy:
   const stack = entry.stack ?? [];
   const pairs = entry.pairs_with ?? [];
   return `
-      <p class="back"><a href="../catalog.html#experts">← all experts</a></p>
+      <p class="back"><a href="../catalog.html#experts">${t('allExperts')}</a></p>
       <p class="slug">experts/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
       <p class="tagline">${escape(entry.summary)}</p>
       ${provenanceNote(entry.provenance, entry.tier)}
       ${agentBadges(entry.agents, agents)}
 
-      <h2>What it is</h2>
+      <h2>${t('whatItIs')}</h2>
       <table class="facts">
-        <tr><th>Role</th><td>${escape(label(taxonomy.roles, entry.role))}</td></tr>
-        <tr><th>Domain</th><td>${escape(label(taxonomy.domains, entry.domain))}</td></tr>
-        <tr><th>Seniority</th><td>${escape(label(taxonomy.seniority, entry.seniority))}</td></tr>
-        ${languages.length === 0 ? '' : `<tr><th>Languages</th><td>${languages.map((id) => escape(label(taxonomy.languages, id))).join(', ')}</td></tr>`}
-        ${stack.length === 0 ? '' : `<tr><th>Stack</th><td>${stack.map((id) => escape(label(taxonomy.stack, id))).join(', ')}</td></tr>`}
-        <tr><th>Maintainers</th><td>${entry.maintainers.map((who) => `<a href="https://github.com/${escape(who)}">@${escape(who)}</a>`).join(', ')}</td></tr>
+        <tr><th>${t('role')}</th><td>${escape(label(taxonomy.roles, entry.role))}</td></tr>
+        <tr><th>${t('domain')}</th><td>${escape(label(taxonomy.domains, entry.domain))}</td></tr>
+        <tr><th>${t('seniority')}</th><td>${escape(label(taxonomy.seniority, entry.seniority))}</td></tr>
+        ${languages.length === 0 ? '' : `<tr><th>${t('languages')}</th><td>${languages.map((id) => escape(label(taxonomy.languages, id))).join(', ')}</td></tr>`}
+        ${stack.length === 0 ? '' : `<tr><th>${t('stack')}</th><td>${stack.map((id) => escape(label(taxonomy.stack, id))).join(', ')}</td></tr>`}
+        <tr><th>${t('maintainers')}</th><td>${entry.maintainers.map((who) => `<a href="https://github.com/${escape(who)}">@${escape(who)}</a>`).join(', ')}</td></tr>
       </table>
 
-      <h2>What it produces</h2>
+      <h2>${t('produces')}</h2>
       <p class="tags">${entry.deliverables.map((one) => `<span>${escape(label(taxonomy.deliverables, one))}</span>`).join('')}</p>
 
-      <h2>What it checks</h2>
+      <h2>${t('checks')}</h2>
       <ul class="files">${entry.checklists.map((one) => `<li><a href="${SOURCE}/experts/${escape(entry.slug)}/checklists/${escape(one)}.md">${escape(one)}</a></li>`).join('')}</ul>
 
-      ${pairs.length === 0 ? '' : `<h2>Pairs with</h2>\n      <p class="tags">${pairs.map((one) => `<span><a href="${escape(one)}.html">${escape(one)}</a></span>`).join('')}</p>`}
+      ${pairs.length === 0 ? '' : `<h2>${t('pairsWith')}</h2>\n      <p class="tags">${pairs.map((one) => `<span><a href="${escape(one)}.html">${escape(one)}</a></span>`).join('')}</p>`}
 
-      <h2>Read it</h2>
+      <h2>${t('readIt')}</h2>
       <p><a href="${SOURCE}/experts/${escape(entry.slug)}/SKILL.md">SKILL.md</a> ·
          <a href="${SOURCE}/experts/${escape(entry.slug)}/overview.md">overview.md</a> ·
          <a href="${SOURCE}/experts/${escape(entry.slug)}/references.md">references.md</a></p>
 
-      <h2>Use it</h2>
+      <h2>${t('useIt')}</h2>
       <pre class="install"><code>npx forgeprint get ${escape(entry.slug)} --expert --agent claude-code</code></pre>
-      <p class="muted small">Or ask an agent connected to the Forgeprint MCP for <code>get_expert</code>.</p>`;
+      <p class="muted small">${t('useExpert')}</p>`;
 }
 
 function crewBody(entry: CrewEntry, agents: readonly AgentEntry[]): string {
   const integrations = entry.integrations ?? [];
   return `
-      <p class="back"><a href="../catalog.html#crews">← all crews</a></p>
+      <p class="back"><a href="../catalog.html#crews">${t('allCrews')}</a></p>
       <p class="slug">crews/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
       <p class="byline">${escape(entry.byline)}</p>
       <p class="tagline">${escape(entry.summary)}</p>
       ${agentBadges(entry.agents, agents)}
 
-      <h2>What it is for</h2>
+      <h2>${t('forWhat')}</h2>
       <p>${escape(entry.for_what)}</p>
 
-      <h2>Where it is wrong</h2>
+      <h2>${t('whereWrong')}</h2>
       <p class="warn">${escape(entry.not_for)}</p>
 
-      <h2>Members</h2>
+      <h2>${t('members')}</h2>
       <ul class="files">${entry.members.map((member) => `<li><a href="../e/${escape(member)}.html">${escape(member)}</a></li>`).join('')}</ul>
 
-      ${integrations.length === 0 ? '' : `<h2>Integrations</h2>\n      <ul class="files">${integrations.map((one) => `<li><a href="../i/${escape(one)}.html">${escape(one)}</a></li>`).join('')}</ul>`}
+      ${integrations.length === 0 ? '' : `<h2>${t('integrations')}</h2>\n      <ul class="files">${integrations.map((one) => `<li><a href="../i/${escape(one)}.html">${escape(one)}</a></li>`).join('')}</ul>`}
 
-      <h2>Read it</h2>
+      <h2>${t('readIt')}</h2>
       <p><a href="${SOURCE}/crews/${escape(entry.slug)}/README.md">README.md</a></p>
 
-      <h2>Use it</h2>
-      <p class="muted">Ask an agent connected to the Forgeprint MCP for <code>get_crew</code> with <code>${escape(entry.slug)}</code>. A crew is a recommendation with a name on it, not a requirement.</p>`;
+      <h2>${t('useIt')}</h2>
+      <p class="muted">${t('useCrew')} <code>get_crew { "slug": "${escape(entry.slug)}" }</code></p>`;
 }
 
 function integrationBody(entry: IntegrationEntry): string {
@@ -331,45 +331,43 @@ function integrationBody(entry: IntegrationEntry): string {
     .join('\n      ');
 
   return `
-      <p class="back"><a href="../catalog.html#integrations">← all integrations</a></p>
+      <p class="back"><a href="../catalog.html#integrations">${t('allIntegrations')}</a></p>
       <p class="slug">integrations/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} <span class="tier">${escape(entry.kind)}</span></h1>
       <p class="tagline">${escape(entry.summary)}</p>
 
       <p class="warn">
-        <strong>Third-party software.</strong> Forgeprint hosts none of this code: it is an
-        installation recipe for a project somebody else publishes and maintains. Review the
-        permissions below before installing.
+        ${t('thirdPartyTitle', {}, 'strong')} ${t('thirdParty')}
       </p>
 
-      <h2>Upstream</h2>
+      <h2>${t('upstream')}</h2>
       <table class="facts">
-        <tr><th>Project</th><td><a href="${escape(entry.upstream)}">${escape(entry.upstream.replace('https://github.com/', ''))}</a></td></tr>
-        <tr><th>Pinned at</th><td><code>${escape(entry.upstream_version)}</code></td></tr>
-        <tr><th>Verified on</th><td>${escape(entry.verified_on)}</td></tr>
+        <tr><th>${t('project')}</th><td><a href="${escape(entry.upstream)}">${escape(entry.upstream.replace('https://github.com/', ''))}</a></td></tr>
+        <tr><th>${t('pinnedAt')}</th><td><code>${escape(entry.upstream_version)}</code></td></tr>
+        <tr><th>${t('verifiedOn')}</th><td>${escape(entry.verified_on)}</td></tr>
       </table>
 
-      <h2>What it can reach</h2>
+      <h2>${t('reach')}</h2>
       <p>${escape(entry.permissions_summary)}</p>
       ${
         secrets.length === 0
-          ? '<p class="muted">It needs no secret.</p>'
-          : `<p>It needs ${secrets.map((secret) => `<code>${escape(secret)}</code>`).join(', ')}. Create it at the upstream with the narrowest scope that works and put it in your environment — <strong>an agent never enters a secret for you</strong>.</p>`
+          ? `<p class="muted">${t('noSecret')}</p>`
+          : `<p>${t('needsIntro')} ${secrets.map((secret) => `<code>${escape(secret)}</code>`).join(', ')}. ${t('secretRest')}</p>`
       }
 
-      <h2>Install</h2>
+      <h2>${t('install')}</h2>
       ${commands}
-      <p class="muted small">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</p>
+      <p class="muted small">${t('installNote')}</p>
 
-      <h2>Read it</h2>
+      <h2>${t('readIt')}</h2>
       <p><a href="${SOURCE}/integrations/${escape(entry.slug)}/README.md">README.md</a></p>`;
 }
 
 function provenanceNote(provenance: string | undefined, tierName: string): string {
   const notes: string[] = [];
-  if (provenance === 'generated') notes.push('Generated, not manually verified.');
-  if (tierName === 'community') notes.push('Community entry: read it before you rely on it.');
-  return notes.length === 0 ? '' : `<p class="warn">${escape(notes.join(' '))}</p>`;
+  if (provenance === 'generated') notes.push(t('generatedShort'));
+  if (tierName === 'community') notes.push(t('communityShort'));
+  return notes.length === 0 ? '' : `<p class="warn">${notes.join(' ')}</p>`;
 }
 
 function tier(name: string): string {

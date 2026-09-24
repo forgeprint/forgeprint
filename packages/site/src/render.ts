@@ -12,6 +12,7 @@
  */
 
 import type { BlueprintRequest, CatalogIndex, IndexEntry, Taxonomy } from 'forgeprint';
+import { attr, languageSwitch, t } from './chrome.js';
 import {
   crewCards,
   expertCards,
@@ -83,33 +84,30 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
       'Resolved, AI-ready project blueprints for coding agents. One MCP call returns the right context and a tested setup recipe.',
     depth: 0,
     body: `
-      <p class="back"><a href="./">← Forgeprint home</a></p>
       <header class="hero">
         <h1>Forgeprint</h1>
-        <p class="tagline">
-          Tell your agent who you are and what you are building — get back one blueprint
-          and a setup recipe it can execute.
-        </p>
+        <p class="tagline">${t('tagline')}</p>
         <pre class="install"><code>claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
-        <p class="muted small">On Windows PowerShell, quote the separator: <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
+        <p class="muted small">${t('windows')} <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
+        <p class="muted small"><a href="./#what">${t('installOther')}</a></p>
       </header>
 
       <section class="points">
-        <div><h2>One answer</h2><p>Describe yourself and your goal. The resolver returns a single blueprint, or the questions it still needs answered — never a list to sift through.</p></div>
-        <div><h2>A recipe, not a description</h2><p>Every step is one command with a verification after it, versions pinned. CI runs the recipes; a blueprint whose setup fails is not merged.</p></div>
-        <div><h2>Curated, not collected</h2><p>One blueprint per stack, project type and requirements. A better one replaces the old one instead of sitting next to it.</p></div>
+        <div><h2>${t('pointOneTitle')}</h2><p>${t('pointOne')}</p></div>
+        <div><h2>${t('pointTwoTitle')}</h2><p>${t('pointTwo')}</p></div>
+        <div><h2>${t('pointThreeTitle')}</h2><p>${t('pointThree')}</p></div>
       </section>
 
       <section class="catalog">
         <div class="catalog-head">
-          <div class="tabs" role="tablist" aria-label="What to browse">
+          <div class="tabs" role="tablist"${attr('aria-label', 'tabsLabel')}>
 ${tabs(counts)}
           </div>
-          <input id="filter" type="search" placeholder="Filter by language, stack, role…" autocomplete="off" aria-label="Filter the catalog" />
+          <input id="filter" type="search"${attr('placeholder', 'filterPlaceholder')} autocomplete="off"${attr('aria-label', 'filterLabel')} />
         </div>
         ${
           empty
-            ? '<p class="muted">The catalog is empty.</p>'
+            ? `<p class="muted">${t('catalogEmpty')}</p>`
             : `<div class="cards" id="blueprints" data-kind="blueprint">
 ${cards}
 </div>`
@@ -117,14 +115,14 @@ ${cards}
 ${panel('expert', expertCards(units))}
 ${panel('crew', crewCards(units))}
 ${panel('integration', integrationCards(units))}
-        <p id="nothing" class="muted" hidden>Nothing matches that.</p>
+        <p id="nothing" class="muted" hidden>${t('nothingMatches')}</p>
       </section>
 
       <section class="ask">
-        <h2>Nothing fits?</h2>
+        <h2>${t('nothingFits')}</h2>
         <p>
-          The catalog grows by demand. <a href="${REQUEST_URL}">Request a blueprint</a> and
-          say what is missing — requests are public, and somebody may pick yours up.
+          ${t('growsByDemand')} <a href="${REQUEST_URL}">${t('requestBlueprint')}</a>
+          ${t('requestRest')}
         </p>
         ${requestList(context.requests, context.requestsFrom)}
       </section>
@@ -213,7 +211,10 @@ ${panel('integration', integrationCards(units))}
             if (item.author) {
               const by = document.createElement('span');
               by.className = 'muted';
-              by.textContent = ' asked by @' + item.author;
+              by.setAttribute('data-i18n', 'site.askedBy');
+              by.setAttribute('data-arg-who', item.author);
+              by.textContent = 'asked by @' + item.author;
+              li.appendChild(document.createTextNode(' '));
               li.appendChild(by);
             }
             list.appendChild(li);
@@ -221,6 +222,7 @@ ${panel('integration', integrationCards(units))}
           list.hidden = items.length === 0;
           if (empty) empty.hidden = items.length > 0;
           if (source) source.remove();
+          if (window.forgeprintI18n) window.forgeprintI18n.translate(list);
         }
 
         function cached() {
@@ -274,15 +276,15 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
 
   const options = Object.entries(entry.options);
   const rows = [
-    ['Languages', entry.languages.map((id) => label('languages', id)).join(', ')],
-    ['Project type', label('project_type', entry.project_type)],
-    ['Stack', entry.stack.map((id) => label('stack', id)).join(', ')],
-    ['Platforms', entry.platforms.map((id) => label('platforms', id)).join(', ')],
-    ['Distribution', entry.distribution.map((id) => label('distribution', id)).join(', ')],
-    ['Sets up', entry.requirements.map((id) => label('requirements', id)).join(', ')],
-    ['Audience', entry.audience.map((id) => label('audience', id)).join(', ')],
-    ['Tested with', entry.agents.map((id) => label('agents', id)).join(', ')],
-    ['Needs', entry.requires_tools.join(', ') || '—'],
+    ['languages', entry.languages.map((id) => label('languages', id)).join(', ')],
+    ['projectType', label('project_type', entry.project_type)],
+    ['stack', entry.stack.map((id) => label('stack', id)).join(', ')],
+    ['platforms', entry.platforms.map((id) => label('platforms', id)).join(', ')],
+    ['distribution', entry.distribution.map((id) => label('distribution', id)).join(', ')],
+    ['setsUp', entry.requirements.map((id) => label('requirements', id)).join(', ')],
+    ['audience', entry.audience.map((id) => label('audience', id)).join(', ')],
+    ['testedWithRow', entry.agents.map((id) => label('agents', id)).join(', ')],
+    ['needs', entry.requires_tools.join(', ') || '—'],
   ] as const;
 
   return page({
@@ -290,14 +292,14 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
     description: entry.summary,
     depth: 1,
     body: `
-      <p class="back"><a href="../catalog.html#blueprints">← all blueprints</a></p>
+      <p class="back"><a href="../catalog.html#blueprints">${t('allBlueprints')}</a></p>
 
       <header class="hero blueprint">
         <p class="slug">${escape(entry.slug)}</p>
         <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
         <p class="tagline">${escape(entry.summary)}</p>
-        ${entry.deprecated ? '<p class="warn">Deprecated. It is no longer offered by the resolver.</p>' : ''}
-        ${entry.supersedes === null ? '' : `<p class="muted">Supersedes <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
+        ${entry.deprecated ? `<p class="warn">${t('deprecated')}</p>` : ''}
+        ${entry.supersedes === null ? '' : `<p class="muted">${t('supersedes')} <a href="${escape(entry.supersedes)}.html">${escape(entry.supersedes)}</a>.</p>`}
         ${byline(entry.maintainers)}
         ${generatedNotice(entry.provenance)}
         ${derivedFrom(entry.derived_from)}
@@ -306,8 +308,8 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
       ${suggested(entry)}
 
       <section>
-        <h2>Use it</h2>
-        <p>Ask your agent for it by name, or let <code>resolve</code> find it from your profile.</p>
+        <h2>${t('useIt')}</h2>
+        <p>${t('useBlueprint')}</p>
         <pre class="install"><code>get_blueprint { "slug": "${escape(entry.slug)}"${
           options.length === 0
             ? ''
@@ -319,7 +321,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
         options.length === 0
           ? ''
           : `<section>
-        <h2>Options</h2>
+        <h2>${t('options')}</h2>
         <dl class="options">
           ${options
             .map(
@@ -332,17 +334,17 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
       }
 
       <section>
-        <h2>What it is</h2>
+        <h2>${t('whatItIs')}</h2>
         <table class="facts">
           ${rows
             .filter(([, value]) => value.length > 0)
-            .map(([name, value]) => `<tr><th>${name}</th><td>${escape(value)}</td></tr>`)
+            .map(([name, value]) => `<tr><th>${t(name)}</th><td>${escape(value)}</td></tr>`)
             .join('\n          ')}
         </table>
       </section>
 
       <section>
-        <h2>Files</h2>
+        <h2>${t('files')}</h2>
         <ul class="files">
           ${entry.files
             .map(
@@ -351,7 +353,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
             )
             .join('\n          ')}
         </ul>
-        <p class="muted">Version ${escape(entry.version)} · <a href="${folder}/CHANGELOG.md">changelog</a> · <a href="${folder}">folder on GitHub</a></p>
+        <p class="muted">${t('version', { version: entry.version })} · <a href="${folder}/CHANGELOG.md">${t('changelog')}</a> · <a href="${folder}">${t('folder')}</a></p>
       </section>
     `,
   });
@@ -372,7 +374,7 @@ function byline(maintainers: readonly string[]): string {
         `<a class="person" href="https://github.com/${escape(handle)}">${avatar(handle)}<span>@${escape(handle)}</span></a>`,
     )
     .join('');
-  return `<p class="byline">Blueprint by ${people}</p>`;
+  return `<p class="byline">${t('blueprintBy')} ${people}</p>`;
 }
 
 /**
@@ -406,25 +408,25 @@ function suggested(entry: IndexEntry): string {
       ? ''
       : `<dt>${label}</dt><dd>${values.map((value) => `<code>${escape(value)}</code>`).join(' · ')}</dd>`;
   return `<section>
-        <h2>Suggested alongside</h2>
+        <h2>${t('suggestedAlongside')}</h2>
         <dl class="options">
-          ${row('MCP servers', mcp)}
-          ${row('Skills', skills)}
+          ${row(t('mcpServers'), mcp)}
+          ${row(t('skills'), skills)}
         </dl>
       </section>`;
 }
 
 function generatedNotice(provenance: IndexEntry['provenance']): string {
   if (provenance !== 'generated') return '';
-  return `<p class="notice">Generated, CI-tested, not manually verified. The setup steps run; nobody has reviewed them by hand.</p>`;
+  return `<p class="notice">${t('generatedNotice')}</p>`;
 }
 
 function derivedFrom(source: IndexEntry['derived_from']): string {
   if (source === undefined) return '';
   const note = source.note === undefined ? '' : ` ${escape(source.note)}`;
-  return `<p class="muted small">Derived from <a href="${escape(source.url)}">${escape(
+  return `<p class="muted small">${t('derivedFrom')} <a href="${escape(source.url)}">${escape(
     source.url.replace(/^https:\/\//, ''),
-  )}</a> (${escape(source.license)}), read ${escape(source.verified_on)}.${note}</p>`;
+  )}</a> (${escape(source.license)}), ${t('read', { date: source.verified_on })}${note}</p>`;
 }
 
 function avatar(handle: string, size = 32): string {
@@ -447,18 +449,18 @@ function requestList(requests: readonly BlueprintRequest[], from: string): strin
         `<li><a href="${escape(request.url)}">${escape(request.title)}</a>${
           request.author === ''
             ? ''
-            : ` <span class="muted">asked by @${escape(request.author)}</span>`
+            : ` ${t('askedBy', { who: request.author }).replace('<span ', '<span class="muted" ')}`
         }</li>`,
     )
     .join('\n          ');
 
   const empty = requests.length === 0;
-  return `<h3>Requested blueprints</h3>
+  return `<h3>${t('requestedBlueprints')}</h3>
         <ul class="requests" id="requests"${empty ? ' hidden' : ''}>
           ${items}
         </ul>
-        <p class="muted" id="requests-empty"${empty ? '' : ' hidden'}>No open requests right now.</p>
-        ${from === '' ? '' : `<p class="muted small" id="requests-source">Snapshot from ${escape(from)}.</p>`}`;
+        <p class="muted" id="requests-empty"${empty ? '' : ' hidden'}>${t('noRequests')}</p>
+        ${from === '' ? '' : `<p class="muted small" id="requests-source">${t('snapshotFrom', { date: from })}</p>`}`;
 }
 
 function contributors(featured: readonly string[]): string {
@@ -470,8 +472,8 @@ function contributors(featured: readonly string[]): string {
     )
     .join('');
   return `<section class="contributors">
-        <h2>Featured contributors</h2>
-        <p class="muted">The catalog is written by people. These are the ones who wrote what is in it.</p>
+        <h2>${t('featuredTitle')}</h2>
+        <p class="muted">${t('featuredBody')}</p>
         <div class="people">${people}</div>
       </section>`;
 }
@@ -505,17 +507,17 @@ function card(entry: IndexEntry, taxonomy: Taxonomy): string {
 
 /** One tab per kind. A kind with nothing in it does not get a tab. */
 function tabs(counts: Record<string, number>): string {
-  const labels: Record<string, string> = {
-    blueprint: 'Blueprints',
-    expert: 'Experts',
-    crew: 'Crews',
-    integration: 'Integrations',
-  };
+  const labels = {
+    blueprint: 'tabBlueprint',
+    expert: 'tabExpert',
+    crew: 'tabCrew',
+    integration: 'tabIntegration',
+  } as const;
   return Object.entries(counts)
     .filter(([, count]) => count > 0)
     .map(
       ([kind, count], at) =>
-        `            <button type="button" role="tab" data-kind="${escape(kind)}" aria-selected="${at === 0 ? 'true' : 'false'}">${escape(labels[kind] ?? kind)} <span class="count">${String(count)}</span></button>`,
+        `            <button type="button" role="tab" data-kind="${escape(kind)}" aria-selected="${at === 0 ? 'true' : 'false'}">${kind in labels ? t(labels[kind as keyof typeof labels]) : escape(kind)} <span class="count">${String(count)}</span></button>`,
     )
     .join('\n');
 }
@@ -543,7 +545,7 @@ interface PageParts {
 function page({ title, description, depth, body, script }: PageParts): string {
   const up = '../'.repeat(depth);
   return `<!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -553,18 +555,23 @@ function page({ title, description, depth, body, script }: PageParts): string {
     <link rel="stylesheet" href="${up}forgeprint.css" />
   </head>
   <body>
+    <header class="topbar">
+      <a class="home" href="${up === '' ? './' : up}">${MARK}<span>Forgeprint</span></a>
+      <nav class="topnav">
+        <a href="${up}catalog.html">${t('catalog')}</a>
+        ${languageSwitch()}
+      </nav>
+    </header>
     <main>
 ${body.trim()}
     </main>
     <footer>
-      <a href="${REPOSITORY_URL}">Repository</a> ·
-      <a href="${REPOSITORY_URL}/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="${REPOSITORY_URL}">${t('repository')}</a> ·
+      <a href="${REPOSITORY_URL}/blob/main/CONTRIBUTING.md">${t('contribute')}</a> ·
       <a href="${up}index.json">index.json</a>
-      <p class="muted">
-        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
-        catalog content under CC BY 4.0.
-      </p>
-    </footer>${
+      <p class="muted">${t('licence')}</p>
+    </footer>
+    <script src="${up}site.js"></script>${
       script === undefined
         ? ''
         : `
@@ -576,6 +583,10 @@ ${script.trim()}
 </html>
 `;
 }
+
+/** The mark from brand/forgeprint-mark.svg, inline so it takes the accent colour. */
+const MARK =
+  '<svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/><path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor"/></svg>';
 
 export function escape(text: string): string {
   return text
@@ -605,6 +616,21 @@ export const STYLESHEET = `:root {
   }
 }
 * { box-sizing: border-box; }
+/* The bar every generated page shares: home, catalog, language. */
+.topbar { max-width: 54rem; margin: -1.5rem auto 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.topbar .home { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px; color: var(--fg); font-weight: 650; text-decoration: none; }
+.topbar .mark { color: var(--accent); }
+.topnav { display: flex; align-items: center; gap: 1rem; }
+.topnav > a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-decoration: none; }
+.topnav > a:hover { color: var(--fg); }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang button { font: inherit; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; min-width: 44px; min-height: 44px; padding: 0 0.75rem; border: 0; background: transparent; color: var(--muted); cursor: pointer; transition: background 140ms ease-out, color 140ms ease-out; }
+.lang button:hover { color: var(--fg); }
+.lang button[aria-pressed=true] { background: var(--accent); color: #fff; }
+.topbar a:focus-visible, .lang button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* The switch needs its script; without it, it is not offered. */
+.no-js .lang { display: none; }
+@media (prefers-reduced-motion: reduce) { .lang button { transition: none; } }
 /* Author display rules (.cards is a grid) beat the browser's own [hidden], so
    without this a hidden panel stays on screen and the tabs do nothing. */
 [hidden] { display: none !important; }

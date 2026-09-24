@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,33 +9,40 @@
     <link rel="stylesheet" href="forgeprint.css" />
   </head>
   <body>
+    <header class="topbar">
+      <a class="home" href="./"><svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/><path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor"/></svg><span>Forgeprint</span></a>
+      <nav class="topnav">
+        <a href="catalog.html"><span data-i18n="site.catalog">Catalog</span></a>
+        <div class="lang" role="group" aria-label="Language" data-i18n-aria-label="site.language" title="Interface language. Catalog entries stay in English." data-i18n-title="site.languageHint">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+      </nav>
+    </header>
     <main>
-<p class="back"><a href="./">← Forgeprint home</a></p>
-      <header class="hero">
+<header class="hero">
         <h1>Forgeprint</h1>
-        <p class="tagline">
-          Tell your agent who you are and what you are building — get back one blueprint
-          and a setup recipe it can execute.
-        </p>
+        <p class="tagline"><span data-i18n="site.tagline">Tell your agent who you are and what you are building — get back one blueprint and a setup recipe it can execute.</span></p>
         <pre class="install"><code>claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
-        <p class="muted small">On Windows PowerShell, quote the separator: <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
+        <p class="muted small"><span data-i18n="site.windows">On Windows PowerShell, quote the separator:</span> <code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></p>
+        <p class="muted small"><a href="./#what"><span data-i18n="site.installOther">Using another agent? The home page has the command for each of the nine.</span></a></p>
       </header>
 
       <section class="points">
-        <div><h2>One answer</h2><p>Describe yourself and your goal. The resolver returns a single blueprint, or the questions it still needs answered — never a list to sift through.</p></div>
-        <div><h2>A recipe, not a description</h2><p>Every step is one command with a verification after it, versions pinned. CI runs the recipes; a blueprint whose setup fails is not merged.</p></div>
-        <div><h2>Curated, not collected</h2><p>One blueprint per stack, project type and requirements. A better one replaces the old one instead of sitting next to it.</p></div>
+        <div><h2><span data-i18n="site.pointOneTitle">One answer</span></h2><p><span data-i18n="site.pointOne">Describe yourself and your goal. The resolver returns a single blueprint, or the questions it still needs answered — never a list to sift through.</span></p></div>
+        <div><h2><span data-i18n="site.pointTwoTitle">A recipe, not a description</span></h2><p><span data-i18n="site.pointTwo">Every step is one command with a verification after it, versions pinned. CI runs the recipes; a blueprint whose setup fails is not merged.</span></p></div>
+        <div><h2><span data-i18n="site.pointThreeTitle">Curated, not collected</span></h2><p><span data-i18n="site.pointThree">One blueprint per stack, project type and requirements. A better one replaces the old one instead of sitting next to it.</span></p></div>
       </section>
 
       <section class="catalog">
         <div class="catalog-head">
-          <div class="tabs" role="tablist" aria-label="What to browse">
-            <button type="button" role="tab" data-kind="blueprint" aria-selected="true">Blueprints <span class="count">17</span></button>
-            <button type="button" role="tab" data-kind="expert" aria-selected="false">Experts <span class="count">8</span></button>
-            <button type="button" role="tab" data-kind="crew" aria-selected="false">Crews <span class="count">2</span></button>
-            <button type="button" role="tab" data-kind="integration" aria-selected="false">Integrations <span class="count">10</span></button>
+          <div class="tabs" role="tablist" aria-label="What to browse" data-i18n-aria-label="site.tabsLabel">
+            <button type="button" role="tab" data-kind="blueprint" aria-selected="true"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">17</span></button>
+            <button type="button" role="tab" data-kind="expert" aria-selected="false"><span data-i18n="site.tabExpert">Experts</span> <span class="count">8</span></button>
+            <button type="button" role="tab" data-kind="crew" aria-selected="false"><span data-i18n="site.tabCrew">Crews</span> <span class="count">2</span></button>
+            <button type="button" role="tab" data-kind="integration" aria-selected="false"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">10</span></button>
           </div>
-          <input id="filter" type="search" placeholder="Filter by language, stack, role…" autocomplete="off" aria-label="Filter the catalog" />
+          <input id="filter" type="search" placeholder="Filter by language, stack, role…" data-i18n-placeholder="site.filterPlaceholder" autocomplete="off" aria-label="Filter the catalog" data-i18n-aria-label="site.filterLabel" />
         </div>
         <div class="cards" id="blueprints" data-kind="blueprint">
         <article class="card" data-terms="astro-content-site astro content site static content site in astro with tailwind, a typed content collection, and tests that assert the built html carries the seo and accessibility work. web typescript astro tailwind seo accessibility ci web linux macos windows open-source free">
@@ -129,49 +136,49 @@
           <h3><a href="e/devops-platform-engineer.html">DevOps Platform Engineer</a> </h3>
           <p>Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.</p>
           <p class="tags"><span>devops</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="dotnet-senior-architect .net senior software architect decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove. software-architect software senior csharp dotnet aspnetcore efcore adr architecture-review c4-diagram api-design-review migration-plan">
           <h3><a href="e/dotnet-senior-architect.html">.NET Senior Software Architect</a> </h3>
           <p>Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.</p>
           <p class="tags"><span>software</span><span>senior</span><span>csharp</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="product-manager product manager the problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built. product-manager product senior product-brief user-story-set roadmap research-summary">
           <h3><a href="e/product-manager.html">Product Manager</a> </h3>
           <p>The problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built.</p>
           <p class="tags"><span>product</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="qa-automation-lead qa automation lead test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on. qa-automation-lead quality senior test-plan test-suite evaluation-harness code-review">
           <h3><a href="e/qa-automation-lead.html">QA Automation Lead</a> </h3>
           <p>Test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on.</p>
           <p class="tags"><span>quality</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="security-reviewer security reviewer boundaries first, then authorization. every finding cites a control at a version, or it is an opinion and stays out. security-reviewer security senior security-review threat-model threat-model-review dependency-audit compliance-checklist">
           <h3><a href="e/security-reviewer.html">Security Reviewer</a> </h3>
           <p>Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.</p>
           <p class="tags"><span>security</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="sql-data-engineer sql data engineer model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice. data-engineer data senior sql postgres data-model migration-plan data-quality-report performance-report">
           <h3><a href="e/sql-data-engineer.html">SQL Data Engineer</a> </h3>
           <p>Model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice.</p>
           <p class="tags"><span>data</span><span>senior</span><span>sql</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="technical-program-manager technical program manager split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done. technical-program-manager software senior delivery-plan assumption-log delivery-report">
           <h3><a href="e/technical-program-manager.html">Technical Program Manager</a> </h3>
           <p>Split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done.</p>
           <p class="tags"><span>software</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="technical-writer technical writer decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add. technical-writer docs senior documentation-set tutorial content-outline research-summary">
           <h3><a href="e/technical-writer.html">Technical Writer</a> </h3>
           <p>Decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add.</p>
           <p class="tags"><span>docs</span><span>senior</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
         <div class="cards" id="crews" data-kind="crew" hidden>
@@ -180,111 +187,108 @@
           <p class="byline-small">Assembled by @aliosmanmho</p>
           <p>Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.</p>
           <p class="tags"><span>security-reviewer</span><span>qa-automation-lead</span><span>devops-platform-engineer</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         <article class="card" data-terms="saas-launch-crew saas launch crew the four specialists a multi-tenant saas needs before its first customer, and the two integrations they all reach for. taking a multi-tenant saas from an empty repository to a first paying customer, where the decisions that are expensive to reverse are taken before there is data to migrate. dotnet-senior-architect sql-data-engineer security-reviewer qa-automation-lead github-mcp sentry-mcp">
           <h3><a href="c/saas-launch-crew.html">SaaS Launch Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
           <p>The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.</p>
           <p class="tags"><span>dotnet-senior-architect</span><span>sql-data-engineer</span><span>security-reviewer</span><span>qa-automation-lead</span></p>
-          <p class="agents" aria-label="Agent verification"><span class="agent tested" title="Tested with Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested"><span aria-hidden="true">·</span> Kiro</span></p>
+          <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
         <div class="cards" id="integrations" data-kind="integration" hidden>
         <article class="card" data-terms="chrome-devtools-mcp chrome devtools mcp read the console, the network log and a performance trace from a running chrome, from an agent. mcp software quality">
           <h3><a href="i/chrome-devtools-mcp.html">Chrome DevTools MCP</a> <span class="tier">mcp</span></h3>
           <p>Read the console, the network log and a performance trace from a running Chrome, from an agent.</p>
-          <p class="tags"><span>pinned 1.9.0</span><span>software</span><span>quality</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="1.9.0">pinned 1.9.0</span><span>software</span><span>quality</span></p>
         </article>
         <article class="card" data-terms="context7-mcp context7 library documentation at the version in use, fetched on demand instead of recalled from training. mcp software docs">
           <h3><a href="i/context7-mcp.html">Context7</a> <span class="tier">mcp</span></h3>
           <p>Library documentation at the version in use, fetched on demand instead of recalled from training.</p>
-          <p class="tags"><span>pinned 4.1.1</span><span>software</span><span>docs</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="4.1.1">pinned 4.1.1</span><span>software</span><span>docs</span></p>
         </article>
         <article class="card" data-terms="exa-mcp exa search mcp web search built for agents: results as content rather than as a list of links to fetch. mcp research software marketing">
           <h3><a href="i/exa-mcp.html">Exa Search MCP</a> <span class="tier">mcp</span></h3>
           <p>Web search built for agents: results as content rather than as a list of links to fetch.</p>
-          <p class="tags"><span>pinned 3.4.1</span><span>research</span><span>software</span><span>marketing</span><span class="needs-secret">needs 1 secret</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="3.4.1">pinned 3.4.1</span><span>research</span><span>software</span><span>marketing</span><span class="needs-secret" data-i18n="site.needsSecret">needs 1 secret</span></p>
         </article>
         <article class="card" data-terms="figma-mcp figma context mcp read a figma file's layout and styles as structured data, so generated ui matches the design. mcp design software">
           <h3><a href="i/figma-mcp.html">Figma Context MCP</a> <span class="tier">mcp</span></h3>
           <p>Read a Figma file's layout and styles as structured data, so generated UI matches the design.</p>
-          <p class="tags"><span>pinned 0.13.2</span><span>design</span><span>software</span><span class="needs-secret">needs 1 secret</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="0.13.2">pinned 0.13.2</span><span>design</span><span>software</span><span class="needs-secret" data-i18n="site.needsSecret">needs 1 secret</span></p>
         </article>
         <article class="card" data-terms="filesystem-mcp filesystem mcp read and write files under directories named on the command line, and nowhere else. mcp software data operations">
           <h3><a href="i/filesystem-mcp.html">Filesystem MCP</a> <span class="tier">mcp</span></h3>
           <p>Read and write files under directories named on the command line, and nowhere else.</p>
-          <p class="tags"><span>pinned 2026.8.31</span><span>software</span><span>data</span><span>operations</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="2026.8.31">pinned 2026.8.31</span><span>software</span><span>data</span><span>operations</span></p>
         </article>
         <article class="card" data-terms="github-mcp github mcp server issues, pull requests, actions and code search on the repositories a token can reach. mcp software devops product">
           <h3><a href="i/github-mcp.html">GitHub MCP Server</a> <span class="tier">mcp</span></h3>
           <p>Issues, pull requests, Actions and code search on the repositories a token can reach.</p>
-          <p class="tags"><span>pinned v1.12.2</span><span>software</span><span>devops</span><span>product</span><span class="needs-secret">needs 1 secret</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="v1.12.2">pinned v1.12.2</span><span>software</span><span>devops</span><span>product</span><span class="needs-secret" data-i18n="site.needsSecret">needs 1 secret</span></p>
         </article>
         <article class="card" data-terms="memory-mcp memory mcp a local knowledge graph an agent writes to and reads back across sessions. mcp software research operations">
           <h3><a href="i/memory-mcp.html">Memory MCP</a> <span class="tier">mcp</span></h3>
           <p>A local knowledge graph an agent writes to and reads back across sessions.</p>
-          <p class="tags"><span>pinned 2026.8.31</span><span>software</span><span>research</span><span>operations</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="2026.8.31">pinned 2026.8.31</span><span>software</span><span>research</span><span>operations</span></p>
         </article>
         <article class="card" data-terms="notion-mcp notion mcp read and write the notion pages and databases an integration token has been granted. mcp docs product operations">
           <h3><a href="i/notion-mcp.html">Notion MCP</a> <span class="tier">mcp</span></h3>
           <p>Read and write the Notion pages and databases an integration token has been granted.</p>
-          <p class="tags"><span>pinned 2.5.2</span><span>docs</span><span>product</span><span>operations</span><span class="needs-secret">needs 1 secret</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="2.5.2">pinned 2.5.2</span><span>docs</span><span>product</span><span>operations</span><span class="needs-secret" data-i18n="site.needsSecret">needs 1 secret</span></p>
         </article>
         <article class="card" data-terms="playwright-mcp playwright mcp drive a real browser from an agent: navigate, fill, click and read the accessibility tree. mcp software quality design">
           <h3><a href="i/playwright-mcp.html">Playwright MCP</a> <span class="tier">mcp</span></h3>
           <p>Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.</p>
-          <p class="tags"><span>pinned 0.0.82</span><span>software</span><span>quality</span><span>design</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="0.0.82">pinned 0.0.82</span><span>software</span><span>quality</span><span>design</span></p>
         </article>
         <article class="card" data-terms="sentry-mcp sentry mcp read issues, events and stack traces from sentry, so an agent debugs from the real error. mcp software devops quality">
           <h3><a href="i/sentry-mcp.html">Sentry MCP</a> <span class="tier">mcp</span></h3>
           <p>Read issues, events and stack traces from Sentry, so an agent debugs from the real error.</p>
-          <p class="tags"><span>pinned 0.39.0</span><span>software</span><span>devops</span><span>quality</span><span class="needs-secret">needs 1 secret</span></p>
+          <p class="tags"><span data-i18n="site.pinned" data-arg-version="0.39.0">pinned 0.39.0</span><span>software</span><span>devops</span><span>quality</span><span class="needs-secret" data-i18n="site.needsSecret">needs 1 secret</span></p>
         </article>
         </div>
-        <p id="nothing" class="muted" hidden>Nothing matches that.</p>
+        <p id="nothing" class="muted" hidden><span data-i18n="site.nothingMatches">Nothing matches that.</span></p>
       </section>
 
       <section class="ask">
-        <h2>Nothing fits?</h2>
+        <h2><span data-i18n="site.nothingFits">Nothing fits?</span></h2>
         <p>
-          The catalog grows by demand. <a href="https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml">Request a blueprint</a> and
-          say what is missing — requests are public, and somebody may pick yours up.
+          <span data-i18n="site.growsByDemand">The catalog grows by demand.</span> <a href="https://github.com/forgeprint/forgeprint/issues/new?template=blueprint-request.yml"><span data-i18n="site.requestBlueprint">Request a blueprint</span></a>
+          <span data-i18n="site.requestRest">and say what is missing — requests are public, and somebody may pick yours up.</span>
         </p>
-        <h3>Requested blueprints</h3>
+        <h3><span data-i18n="site.requestedBlueprints">Requested blueprints</span></h3>
         <ul class="requests" id="requests" hidden>
           
         </ul>
-        <p class="muted" id="requests-empty">No open requests right now.</p>
-        <p class="muted small" id="requests-source">Snapshot from 2026-09-22.</p>
+        <p class="muted" id="requests-empty"><span data-i18n="site.noRequests">No open requests right now.</span></p>
+        <p class="muted small" id="requests-source"><span data-i18n="site.snapshotFrom" data-arg-date="2026-09-22">Snapshot from 2026-09-22.</span></p>
       </section>
 
       
       <section class="ask">
-        <h2>50 roles with no expert yet</h2>
+        <h2 data-i18n="site.rolesOpen" data-arg-n="50">50 roles with no expert yet</h2>
         <p>
-          The role list is wider than the catalog on purpose. Every name below is
-          a slot somebody could fill — <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">write one</a>
-          and it appears here instead.
+          <span data-i18n="site.rolesBody">The role list is wider than the catalog on purpose. Every name below is a slot somebody could fill —</span> <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"><span data-i18n="site.rolesWrite">write one</span></a>
+          <span data-i18n="site.rolesRest">and it appears here instead.</span>
         </p>
         <p class="tags open-roles"><span>API designer</span><span>Accessibility specialist</span><span>Agent designer</span><span>Analytics engineer</span><span>Application security engineer</span><span>Backend engineer</span><span>Business analyst</span><span>Cloud architect</span><span>Coding mentor</span><span>Compliance officer</span><span>Content strategist</span><span>Contract analyst</span><span>Curriculum designer</span><span>Data protection officer</span><span>Data scientist</span><span>Database administrator</span><span>Design systems lead</span><span>Developer advocate</span><span>Documentation architect</span><span>Embedded engineer</span><span>Financial analyst</span><span>Frontend engineer</span><span>Full-stack engineer</span><span>Game developer</span><span>Growth marketer</span><span>Incident commander</span><span>Instructional designer</span><span>Literature reviewer</span><span>MLOps engineer</span><span>Machine learning engineer</span><span>Mobile engineer</span><span>Observability engineer</span><span>Operations manager</span><span>Penetration tester</span><span>Performance engineer</span><span>Pricing analyst</span><span>Privacy engineer</span><span>Project manager</span><span>Prompt engineer</span><span>Release manager</span><span>Research engineer</span><span>Revenue analyst</span><span>SEO specialist</span><span>Site reliability engineer</span><span>Supply chain analyst</span><span>Support engineer</span><span>Test engineer</span><span>UI designer</span><span>UX designer</span><span>UX researcher</span></p>
       </section>
 
       <section class="contributors">
-        <h2>Featured contributors</h2>
-        <p class="muted">The catalog is written by people. These are the ones who wrote what is in it.</p>
+        <h2><span data-i18n="site.featuredTitle">Featured contributors</span></h2>
+        <p class="muted"><span data-i18n="site.featuredBody">The catalog is written by people. These are the ones who wrote what is in it.</span></p>
         <div class="people"><a class="person" href="https://github.com/aliosmanmho"><img class="avatar" src="https://github.com/aliosmanmho.png?size=96" width="48" height="48" loading="lazy" alt="" /><span>@aliosmanmho</span></a></div>
       </section>
     </main>
     <footer>
-      <a href="https://github.com/forgeprint/forgeprint">Repository</a> ·
-      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md">Contribute</a> ·
+      <a href="https://github.com/forgeprint/forgeprint"><span data-i18n="site.repository">Repository</span></a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"><span data-i18n="site.contribute">Contribute</span></a> ·
       <a href="index.json">index.json</a>
-      <p class="muted">
-        Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0,
-        catalog content under CC BY 4.0.
-      </p>
+      <p class="muted"><span data-i18n="site.licence">Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0, catalog content under CC BY 4.0.</span></p>
     </footer>
+    <script src="site.js"></script>
     <script>
 const filter = document.getElementById('filter');
       const nothing = document.getElementById('nothing');
@@ -365,7 +369,10 @@ const filter = document.getElementById('filter');
             if (item.author) {
               const by = document.createElement('span');
               by.className = 'muted';
-              by.textContent = ' asked by @' + item.author;
+              by.setAttribute('data-i18n', 'site.askedBy');
+              by.setAttribute('data-arg-who', item.author);
+              by.textContent = 'asked by @' + item.author;
+              li.appendChild(document.createTextNode(' '));
               li.appendChild(by);
             }
             list.appendChild(li);
@@ -373,6 +380,7 @@ const filter = document.getElementById('filter');
           list.hidden = items.length === 0;
           if (empty) empty.hidden = items.length > 0;
           if (source) source.remove();
+          if (window.forgeprintI18n) window.forgeprintI18n.translate(list);
         }
 
         function cached() {
