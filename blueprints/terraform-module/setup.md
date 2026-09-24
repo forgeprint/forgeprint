@@ -178,6 +178,26 @@ Requires Terraform 1.9 or newer.
      }
    }
 
+   # The two runs above use `command = apply`, which works because the only
+   # resource here is a random_pet. The day this module creates something real,
+   # apply needs an account and a plan does not — so these stop running in CI
+   # and the plan-only ones keep going. This is that form, written before it is
+   # needed: every output composed from inputs is known without creating
+   # anything, and asserting on it survives the swap.
+   run "composes_the_name_without_creating_anything" {
+     command = plan
+
+     variables {
+       name        = "invoices"
+       environment = "staging"
+     }
+
+     assert {
+       condition     = output.name == "invoices-staging"
+       error_message = "a name composed from inputs should be known at plan time"
+     }
+   }
+
    # expect_failures is the half most modules never write: it proves the
    # validation refuses, rather than proving the happy path twice.
    run "rejects_an_unknown_environment" {

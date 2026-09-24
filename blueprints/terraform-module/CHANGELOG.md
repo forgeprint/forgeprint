@@ -1,5 +1,25 @@
 # Changelog — terraform-module
 
+## 1.1.0 — 2026-09-24
+
+A plan-only test, from the architecture review
+([2026-09-23](../../docs/reviews/terraform-module/2026-09-23.md), finding 1).
+
+The assertions that check outputs use `command = apply`, which works here
+because the only resource is a `random_pet` and that needs no account. The day
+somebody copies this shape for a module that creates something real, apply
+stops running in CI and those tests go with it — and only prose said so.
+
+- **`composes_the_name_without_creating_anything` uses `command = plan`** and
+  asserts on an output composed from inputs, which Terraform knows without
+  creating anything. It is the form that survives the swap, written before it
+  is needed rather than described.
+
+The `apply` runs stay. They exercise the module for real and that is worth
+having while it is free.
+
+No change to the module. One test, no new step.
+
 ## 1.0.0 — 2026-09-23
 
 First version, and the catalog's first `infra` blueprint and first `iac`.
