@@ -1,0 +1,67 @@
+# Forgeprint
+
+> A catalog and MCP server for coding agents. Say what you know and what you are building; Forgeprint returns exactly one blueprint with a CI-tested, step-by-step setup recipe, and the experts, crews and integrations to work on it with. It installs nothing and runs nothing: every tool returns text.
+
+Connect an agent over MCP with `npx -y forgeprint-mcp` (for example `claude mcp add forgeprint -- npx -y forgeprint-mcp`). Start with the `resolve` tool before writing code for a new project. The whole catalog is also published as JSON: https://forgeprint.github.io/forgeprint/index.json
+
+Blueprints answer what is being built, experts how the agent should work, integrations with which tools, and a crew packages experts and integrations under a name. Catalog content is English and CC BY 4.0.
+
+## Blueprints
+
+- [Astro Content Site](https://forgeprint.github.io/forgeprint/b/astro-content-site.html): Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.
+- [C# MCP Server](https://forgeprint.github.io/forgeprint/b/dotnet-mcp-server.html): MCP server in C# on the official ModelContextProtocol SDK, over stdio or streamable HTTP.
+- [Multi-tenant SaaS API](https://forgeprint.github.io/forgeprint/b/dotnet-multitenant-saas-api.html): ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.
+- [ASP.NET Core REST API](https://forgeprint.github.io/forgeprint/b/dotnet-web-api.html): ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.
+- [FastAPI Service](https://forgeprint.github.io/forgeprint/b/fastapi-service.html): FastAPI service with SQLAlchemy, bearer token verification, a container image and CI.
+- [Go CLI](https://forgeprint.github.io/forgeprint/b/go-cli.html): Command-line tool in Go on Cobra, with commands tested through the real parser and a binary that builds from a checkout.
+- [Go HTTP Service](https://forgeprint.github.io/forgeprint/b/go-http-service.html): HTTP service in Go on Gin with bearer token verification, a distroless container, and tests that prove an unauthenticated request is refused.
+- [LangGraph Agent](https://forgeprint.github.io/forgeprint/b/langgraph-agent.html): Agent on LangGraph with one narrow tool, a bounded loop, and tests that drive the whole graph with a fake model — no API key needed.
+- [Next.js Full-stack App](https://forgeprint.github.io/forgeprint/b/nextjs-fullstack-app.html): Full-stack Next.js application with Tailwind and Postgres through Drizzle, with migrations generated, applied and proved by a test.
+- [Node.js CLI](https://forgeprint.github.io/forgeprint/b/node-cli.html): Command-line tool in TypeScript on Commander, with the parsing tested in-process and a binary that runs from a checkout.
+- [Python Background Worker](https://forgeprint.github.io/forgeprint/b/python-background-worker.html): Celery worker with Redis as the broker, retry and acknowledgement decided explicitly, and a check that puts a real job through a real worker.
+- [Python CLI](https://forgeprint.github.io/forgeprint/b/python-cli.html): Command-line tool in Python on Typer, with commands tested through the real parser and a module that runs with python -m.
+- [Python MCP Server](https://forgeprint.github.io/forgeprint/b/python-mcp-server.html): MCP server in Python on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol in-process.
+- [Terraform Module](https://forgeprint.github.io/forgeprint/b/terraform-module.html): Reusable Terraform module with validated inputs, an example, and native tests that prove both the outputs and the refusals without touching a cloud.
+- [TypeScript HTTP Service](https://forgeprint.github.io/forgeprint/b/ts-http-service.html): HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.
+- [TypeScript Library](https://forgeprint.github.io/forgeprint/b/ts-library.html): Publishable TypeScript library with an exports map, type declarations, a test suite, and a release workflow that publishes from a tag with npm provenance.
+- [TypeScript MCP Server](https://forgeprint.github.io/forgeprint/b/ts-mcp-server.html): MCP server in TypeScript on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol.
+
+## Experts
+
+- [DevOps Platform Engineer](https://forgeprint.github.io/forgeprint/e/devops-platform-engineer.html): Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.
+- [.NET Senior Software Architect](https://forgeprint.github.io/forgeprint/e/dotnet-senior-architect.html): Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.
+- [Product Manager](https://forgeprint.github.io/forgeprint/e/product-manager.html): The problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built.
+- [QA Automation Lead](https://forgeprint.github.io/forgeprint/e/qa-automation-lead.html): Test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on.
+- [Security Reviewer](https://forgeprint.github.io/forgeprint/e/security-reviewer.html): Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.
+- [SQL Data Engineer](https://forgeprint.github.io/forgeprint/e/sql-data-engineer.html): Model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice.
+- [Technical Program Manager](https://forgeprint.github.io/forgeprint/e/technical-program-manager.html): Split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done.
+- [Technical Writer](https://forgeprint.github.io/forgeprint/e/technical-writer.html): Decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add.
+
+## Crews
+
+- [API Hardening Crew](https://forgeprint.github.io/forgeprint/c/api-hardening-crew.html): Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.
+- [SaaS Launch Crew](https://forgeprint.github.io/forgeprint/c/saas-launch-crew.html): The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.
+
+## Integrations
+
+- [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
+- [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
+- [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
+- [Figma Context MCP](https://forgeprint.github.io/forgeprint/i/figma-mcp.html): Read a Figma file's layout and styles as structured data, so generated UI matches the design.
+- [Filesystem MCP](https://forgeprint.github.io/forgeprint/i/filesystem-mcp.html): Read and write files under directories named on the command line, and nowhere else.
+- [GitHub MCP Server](https://forgeprint.github.io/forgeprint/i/github-mcp.html): Issues, pull requests, Actions and code search on the repositories a token can reach.
+- [Memory MCP](https://forgeprint.github.io/forgeprint/i/memory-mcp.html): A local knowledge graph an agent writes to and reads back across sessions.
+- [Notion MCP](https://forgeprint.github.io/forgeprint/i/notion-mcp.html): Read and write the Notion pages and databases an integration token has been granted.
+- [Playwright MCP](https://forgeprint.github.io/forgeprint/i/playwright-mcp.html): Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.
+- [Sentry MCP](https://forgeprint.github.io/forgeprint/i/sentry-mcp.html): Read issues, events and stack traces from Sentry, so an agent debugs from the real error.
+
+## Docs
+
+- [How the MCP server behaves](https://github.com/forgeprint/forgeprint/blob/main/docs/mcp.md): the tools, how resolve decides, and how to connect each agent
+- [README](https://github.com/forgeprint/forgeprint/blob/main/README.md): what Forgeprint is and how it differs
+- [Contributing](https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md): what each kind of entry has to contain
+
+## Optional
+
+- [Catalog index](https://forgeprint.github.io/forgeprint/index.json): every entry with its manifest fields, as JSON
+- [Agent registry](https://github.com/forgeprint/forgeprint/blob/main/schema/agents.yaml): what each of the nine agents reads, and when it was last checked

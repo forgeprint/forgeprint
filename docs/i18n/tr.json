@@ -683,6 +683,7 @@
     "needsIntro": "Gerektirdiği:",
     "secretRest": "Upstream'de, işe yarayan en dar yetkiyle oluştur ve ortamına koy — bir agent senin yerine asla secret girmez.",
     "install": "Kurulum",
-    "installNote": "Sadece komut sözdizimi doğrulanmış agent'lar listeleniyor. Listede olmayan bir agent, çalışmayan değil, henüz kimsenin doğrulamadığı agent."
+    "installNote": "Sadece komut sözdizimi doğrulanmış agent'lar listeleniyor. Listede olmayan bir agent, çalışmayan değil, henüz kimsenin doğrulamadığı agent.",
+    "contentNote": "Katalog girdileri tek dilde, İngilizce yazılıyor. Tarayıcının çeviri özelliğiyle çevirebilirsin."
   }
 }

@@ -8,6 +8,7 @@
 
 import type { CatalogIndex, Taxonomy } from 'forgeprint';
 import { attr, t } from './chrome.js';
+import { unitData } from './seo.js';
 
 export interface ExpertEntry {
   slug: string;
@@ -122,7 +123,7 @@ export function expertCards(index: IndexWithUnits): string {
       const tags = [entry.domain, entry.seniority, ...(entry.languages ?? [])];
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="e/${escape(entry.slug)}.html">${escape(entry.name)}</a> ${tier(entry.tier)}</h3>
-          <p>${escape(entry.summary)}</p>
+          <p lang="en">${escape(entry.summary)}</p>
           <p class="tags">${tags.map((tag) => `<span>${escape(tag)}</span>`).join('')}</p>
           ${agentBadges(entry.agents, agents)}
         </article>`;
@@ -148,7 +149,7 @@ export function crewCards(index: IndexWithUnits): string {
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="c/${escape(entry.slug)}.html">${escape(entry.name)}</a> ${tier(entry.tier)}</h3>
           <p class="byline-small">${escape(entry.byline)}</p>
-          <p>${escape(entry.summary)}</p>
+          <p lang="en">${escape(entry.summary)}</p>
           <p class="tags">${entry.members.map((member) => `<span>${escape(member)}</span>`).join('')}</p>
           ${agentBadges(entry.agents, agents)}
         </article>`;
@@ -166,7 +167,7 @@ export function integrationCards(index: IndexWithUnits): string {
       const secrets = (entry.needs_secrets ?? []).length;
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
           <h3><a href="i/${escape(entry.slug)}.html">${escape(entry.name)}</a> <span class="tier">${escape(entry.kind)}</span></h3>
-          <p>${escape(entry.summary)}</p>
+          <p lang="en">${escape(entry.summary)}</p>
           <p class="tags">${t('pinned', { version: entry.upstream_version })}${entry.fits.map((fit) => `<span>${escape(fit)}</span>`).join('')}${secrets === 0 ? '' : secrets === 1 ? t('needsSecret').replace('<span ', '<span class="needs-secret" ') : t('needsSecrets', { n: secrets }).replace('<span ', '<span class="needs-secret" ')}</p>
         </article>`;
     })
@@ -204,7 +205,13 @@ export function requestedExperts(index: IndexWithUnits): string {
 /** Pages for the three kinds, keyed by their path under `docs/`. */
 export function unitPages(
   index: IndexWithUnits,
-  page: (parts: { title: string; description: string; depth: number; body: string }) => string,
+  page: (parts: {
+    title: string;
+    description: string;
+    path: string;
+    data: Record<string, unknown>;
+    body: string;
+  }) => string,
 ): { path: string; html: string }[] {
   const agents = index.agents ?? [];
   const pages: { path: string; html: string }[] = [];
@@ -215,7 +222,8 @@ export function unitPages(
       html: page({
         title: `${expert.name} — Forgeprint`,
         description: expert.summary,
-        depth: 1,
+        path: `e/${expert.slug}.html`,
+        data: unitData('expert', expert),
         body: expertBody(expert, agents, index.taxonomy),
       }),
     });
@@ -227,7 +235,8 @@ export function unitPages(
       html: page({
         title: `${crew.name} — Forgeprint`,
         description: crew.summary,
-        depth: 1,
+        path: `c/${crew.slug}.html`,
+        data: unitData('crew', crew),
         body: crewBody(crew, agents),
       }),
     });
@@ -239,8 +248,9 @@ export function unitPages(
       html: page({
         title: `${integration.name} — Forgeprint`,
         description: integration.summary,
-        depth: 1,
-        body: integrationBody(integration),
+        path: `i/${integration.slug}.html`,
+        data: unitData('integration', integration),
+        body: integrationBody(integration, agents),
       }),
     });
   }
@@ -260,7 +270,7 @@ function expertBody(entry: ExpertEntry, agents: readonly AgentEntry[], taxonomy:
       <p class="back"><a href="../catalog.html#experts">${t('allExperts')}</a></p>
       <p class="slug">experts/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
-      <p class="tagline">${escape(entry.summary)}</p>
+      <p class="tagline" lang="en">${escape(entry.summary)}</p>
       ${provenanceNote(entry.provenance, entry.tier)}
       ${agentBadges(entry.agents, agents)}
 
@@ -299,14 +309,14 @@ function crewBody(entry: CrewEntry, agents: readonly AgentEntry[]): string {
       <p class="slug">crews/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
       <p class="byline">${escape(entry.byline)}</p>
-      <p class="tagline">${escape(entry.summary)}</p>
+      <p class="tagline" lang="en">${escape(entry.summary)}</p>
       ${agentBadges(entry.agents, agents)}
 
       <h2>${t('forWhat')}</h2>
-      <p>${escape(entry.for_what)}</p>
+      <p lang="en">${escape(entry.for_what)}</p>
 
       <h2>${t('whereWrong')}</h2>
-      <p class="warn">${escape(entry.not_for)}</p>
+      <p class="warn" lang="en">${escape(entry.not_for)}</p>
 
       <h2>${t('members')}</h2>
       <ul class="files">${entry.members.map((member) => `<li><a href="../e/${escape(member)}.html">${escape(member)}</a></li>`).join('')}</ul>
@@ -320,13 +330,14 @@ function crewBody(entry: CrewEntry, agents: readonly AgentEntry[]): string {
       <p class="muted">${t('useCrew')} <code>get_crew { "slug": "${escape(entry.slug)}" }</code></p>`;
 }
 
-function integrationBody(entry: IntegrationEntry): string {
+function integrationBody(entry: IntegrationEntry, agents: readonly AgentEntry[]): string {
+  const nameOf = (id: string): string => agents.find((agent) => agent.id === id)?.name ?? id;
   const secrets = entry.needs_secrets ?? [];
   const commands = Object.entries(entry.install)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(
       ([agent, command]) =>
-        `<h3>${escape(agent)}</h3>\n      <pre class="install"><code>${escape(command)}</code></pre>`,
+        `<h3>${escape(nameOf(agent))}</h3>\n      <pre class="install"><code>${escape(command)}</code></pre>`,
     )
     .join('\n      ');
 
@@ -334,7 +345,7 @@ function integrationBody(entry: IntegrationEntry): string {
       <p class="back"><a href="../catalog.html#integrations">${t('allIntegrations')}</a></p>
       <p class="slug">integrations/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} <span class="tier">${escape(entry.kind)}</span></h1>
-      <p class="tagline">${escape(entry.summary)}</p>
+      <p class="tagline" lang="en">${escape(entry.summary)}</p>
 
       <p class="warn">
         ${t('thirdPartyTitle', {}, 'strong')} ${t('thirdParty')}
@@ -348,7 +359,7 @@ function integrationBody(entry: IntegrationEntry): string {
       </table>
 
       <h2>${t('reach')}</h2>
-      <p>${escape(entry.permissions_summary)}</p>
+      <p lang="en">${escape(entry.permissions_summary)}</p>
       ${
         secrets.length === 0
           ? `<p class="muted">${t('noSecret')}</p>`

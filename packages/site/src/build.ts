@@ -3,6 +3,8 @@ import { dirname, join } from 'node:path';
 import { loadConfig, readRequests } from 'forgeprint';
 import { SITE_SCRIPT } from './chrome.js';
 import { renderSite, STYLESHEET, type Page } from './render.js';
+import { llmsText, sitemap } from './seo.js';
+import type { IndexWithUnits } from './units.js';
 import { loadIndex } from './index.js';
 
 export interface BuildResult {
@@ -11,7 +13,7 @@ export interface BuildResult {
   readonly written: readonly string[];
 }
 
-/** Every file the site is made of: the pages, the stylesheet and the language switch. */
+/** Every file the site is made of: the pages, the stylesheet, the language switch, and what crawlers read. */
 export function siteFiles(root: string): Page[] {
   // The requests come from outside the repository and the contributors from
   // configuration; both are optional, and a missing one renders as empty
@@ -22,10 +24,15 @@ export function siteFiles(root: string): Page[] {
     requestsFrom: snapshot.generated_on,
     featured: loadConfig(root).featured_contributors ?? [],
   };
+  const index = loadIndex(root);
+  const pages = renderSite(index, context);
   return [
-    ...renderSite(loadIndex(root), context),
+    ...pages,
     { path: 'forgeprint.css', html: STYLESHEET },
     { path: 'site.js', html: SITE_SCRIPT },
+    // For crawlers: every page, and the catalog as a model would read it.
+    { path: 'sitemap.xml', html: sitemap(pages.map((page) => page.path)) },
+    { path: 'llms.txt', html: llmsText(index as IndexWithUnits) },
   ];
 }
 

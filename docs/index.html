@@ -21,6 +21,45 @@
       content="Blueprints, experts and crews for coding agents — resolved for you."
     />
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/" />
+    <meta property="og:site_name" content="Forgeprint" />
+    <meta
+      property="og:image"
+      content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png"
+    />
+    <meta name="twitter:card" content="summary" />
+    <link rel="alternate" type="application/json" href="index.json" title="The catalog as JSON" />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="llms.txt"
+      title="The catalog for language models"
+    />
+    <!-- What the page is, for crawlers: the site, and the MCP server it offers. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "name": "Forgeprint",
+            "url": "https://forgeprint.github.io/forgeprint/",
+            "description": "Blueprints, experts and crews for coding agents, resolved for you: a curated catalog and MCP server that returns one blueprint with a CI-tested setup recipe.",
+            "inLanguage": ["en", "tr"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "forgeprint-mcp",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any, with Node.js 20 or later",
+            "description": "An MCP server for coding agents. resolve returns exactly one project blueprint with a deterministic setup recipe; other tools return experts, crews and integrations. It returns text and runs nothing.",
+            "url": "https://www.npmjs.com/package/forgeprint-mcp",
+            "codeRepository": "https://github.com/forgeprint/forgeprint",
+            "license": "https://polyformproject.org/licenses/shield/1.0.0/",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="forgeprint.css" />
     <link rel="stylesheet" href="assets/promo.css" />
   </head>
