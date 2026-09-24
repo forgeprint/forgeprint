@@ -134,7 +134,14 @@ export function crewCards(index: IndexWithUnits): string {
   return [...(index.crews ?? [])]
     .sort((a, b) => a.slug.localeCompare(b.slug))
     .map((entry) => {
-      const terms = [entry.slug, entry.name, entry.summary, entry.for_what, ...entry.members]
+      const terms = [
+        entry.slug,
+        entry.name,
+        entry.summary,
+        entry.for_what,
+        ...entry.members,
+        ...(entry.integrations ?? []),
+      ]
         .join(' ')
         .toLowerCase();
       return `        <article class="card${entry.deprecated ? ' deprecated' : ''}" data-terms="${escape(terms)}">
@@ -250,7 +257,7 @@ function expertBody(entry: ExpertEntry, agents: readonly AgentEntry[], taxonomy:
   const stack = entry.stack ?? [];
   const pairs = entry.pairs_with ?? [];
   return `
-      <p class="back"><a href="../catalog.html">← Catalog</a></p>
+      <p class="back"><a href="../catalog.html#experts">← all experts</a></p>
       <p class="slug">experts/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
       <p class="tagline">${escape(entry.summary)}</p>
@@ -288,7 +295,7 @@ function expertBody(entry: ExpertEntry, agents: readonly AgentEntry[], taxonomy:
 function crewBody(entry: CrewEntry, agents: readonly AgentEntry[]): string {
   const integrations = entry.integrations ?? [];
   return `
-      <p class="back"><a href="../catalog.html">← Catalog</a></p>
+      <p class="back"><a href="../catalog.html#crews">← all crews</a></p>
       <p class="slug">crews/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} ${tier(entry.tier)}</h1>
       <p class="byline">${escape(entry.byline)}</p>
@@ -324,7 +331,7 @@ function integrationBody(entry: IntegrationEntry): string {
     .join('\n      ');
 
   return `
-      <p class="back"><a href="../catalog.html">← Catalog</a></p>
+      <p class="back"><a href="../catalog.html#integrations">← all integrations</a></p>
       <p class="slug">integrations/${escape(entry.slug)}</p>
       <h1>${escape(entry.name)} <span class="tier">${escape(entry.kind)}</span></h1>
       <p class="tagline">${escape(entry.summary)}</p>

@@ -83,6 +83,7 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
       'Resolved, AI-ready project blueprints for coding agents. One MCP call returns the right context and a tested setup recipe.',
     depth: 0,
     body: `
+      <p class="back"><a href="./">← Forgeprint home</a></p>
       <header class="hero">
         <h1>Forgeprint</h1>
         <p class="tagline">
@@ -109,7 +110,7 @@ ${tabs(counts)}
         ${
           empty
             ? '<p class="muted">The catalog is empty.</p>'
-            : `<div class="cards" data-kind="blueprint">
+            : `<div class="cards" id="blueprints" data-kind="blueprint">
 ${cards}
 </div>`
         }
@@ -158,13 +159,31 @@ ${panel('integration', integrationCards(units))}
         if (nothing) nothing.hidden = shown > 0;
       }
 
+      function select(kind) {
+        const tab = tabs.find((candidate) => candidate.dataset.kind === kind);
+        if (!tab) return false;
+        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        apply();
+        return true;
+      }
+
+      // The address names the tab (catalog.html#experts), so a unit page can
+      // link back to where its reader came from, and a tab can be shared.
+      function fromAddress() {
+        select(location.hash.slice(1).replace(/s$/, ''));
+      }
+
       for (const tab of tabs) {
         tab.addEventListener('click', () => {
-          for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
-          apply();
+          select(tab.dataset.kind);
+          history.replaceState(null, '', '#' + tab.dataset.kind + 's');
         });
       }
-      if (tabs.length > 0) apply();
+      window.addEventListener('hashchange', fromAddress);
+      if (tabs.length > 0) {
+        apply();
+        fromAddress();
+      }
       if (filter) filter.addEventListener('input', apply);
 
       // The requests come from the issues API, read by the browser with no
@@ -271,7 +290,7 @@ export function renderBlueprintPage(entry: IndexEntry, taxonomy: Taxonomy): stri
     description: entry.summary,
     depth: 1,
     body: `
-      <p class="back"><a href="../catalog.html">← all blueprints</a></p>
+      <p class="back"><a href="../catalog.html#blueprints">← all blueprints</a></p>
 
       <header class="hero blueprint">
         <p class="slug">${escape(entry.slug)}</p>
@@ -503,7 +522,7 @@ function tabs(counts: Record<string, number>): string {
 
 function panel(kind: string, cards: string): string {
   if (cards.trim() === '') return '';
-  return `        <div class="cards" data-kind="${escape(kind)}" hidden>
+  return `        <div class="cards" id="${escape(kind)}s" data-kind="${escape(kind)}" hidden>
 ${cards}
         </div>`;
 }
@@ -586,6 +605,9 @@ export const STYLESHEET = `:root {
   }
 }
 * { box-sizing: border-box; }
+/* Author display rules (.cards is a grid) beat the browser's own [hidden], so
+   without this a hidden panel stays on screen and the tabs do nothing. */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   padding: 3rem 1rem 4rem;

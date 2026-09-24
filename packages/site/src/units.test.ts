@@ -53,6 +53,7 @@ const INDEX = {
       summary: 'A sample crew.',
       byline: "Octocat's Sample Crew",
       members: ['sample-architect'],
+      integrations: ['sample-mcp'],
       for_what: 'Assembling a team.',
       not_for: 'Anything real.',
       agents: ['claude-code'],
@@ -167,5 +168,37 @@ describe('unit pages', () => {
     assert.ok(page);
     assert.ok(!page.html.includes('<script>alert(1)</script>'));
     assert.match(page.html, /&lt;script&gt;/);
+  });
+});
+
+describe('navigation between pages', () => {
+  it('sends each unit page back to its own tab of the catalog', () => {
+    assert.match(pageAt('e/sample-architect.html'), /href="\.\.\/catalog\.html#experts"/);
+    assert.match(pageAt('c/sample-crew.html'), /href="\.\.\/catalog\.html#crews"/);
+    assert.match(pageAt('i/sample-mcp.html'), /href="\.\.\/catalog\.html#integrations"/);
+  });
+
+  it('opens the catalog tab the address names, and keeps the address in step', () => {
+    const html = pageAt('catalog.html');
+    assert.match(html, /addEventListener\('hashchange'/);
+    assert.match(html, /history\.replaceState/);
+  });
+
+  it('gives each panel the id its address names, so the link works without the script', () => {
+    const html = pageAt('catalog.html');
+    for (const id of ['experts', 'crews', 'integrations']) {
+      assert.match(html, new RegExp(`class="cards" id="${id}"`));
+    }
+  });
+
+  it('links the catalog back to the landing page', () => {
+    assert.match(pageAt('catalog.html'), /<a href="\.\/">/);
+  });
+});
+
+describe('filtering crews', () => {
+  it('finds a crew by an integration it names, not only by its members', () => {
+    const card = pageAt('catalog.html').match(/data-terms="sample-crew[^"]*"/)?.[0] ?? '';
+    assert.ok(card.includes('sample-mcp'), card);
   });
 });
