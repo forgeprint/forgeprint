@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Chrome DevTools MCP","name":"Chrome DevTools MCP","description":"Read the console, the network log and a performance trace from a running Chrome, from an agent.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/chrome-devtools-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Chrome DevTools MCP","name":"Chrome DevTools MCP","description":"Read the console, the network log and a performance trace from a running Chrome, from an agent.","version":"1.1.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/chrome-devtools-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -43,21 +43,21 @@
       <h2><span data-i18n="site.upstream">Upstream</span></h2>
       <table class="facts">
         <tr><th><span data-i18n="site.project">Project</span></th><td><a href="https://github.com/ChromeDevTools/chrome-devtools-mcp">ChromeDevTools/chrome-devtools-mcp</a></td></tr>
-        <tr><th><span data-i18n="site.pinnedAt">Pinned at</span></th><td><code>1.9.0</code></td></tr>
-        <tr><th><span data-i18n="site.verifiedOn">Verified on</span></th><td>2026-09-23</td></tr>
+        <tr><th><span data-i18n="site.pinnedAt">Pinned at</span></th><td><code>1.10.1</code></td></tr>
+        <tr><th><span data-i18n="site.verifiedOn">Verified on</span></th><td>2026-09-24</td></tr>
       </table>
 
       <h2><span data-i18n="site.reach">What it can reach</span></h2>
-      <p lang="en">Attaches to a Chrome instance and reads its console, network traffic and performance traces.</p>
+      <p lang="en">Drives a Chrome instance: navigates, runs JavaScript in its pages, and reads their console, network traffic and performance traces.</p>
       <p class="muted"><span data-i18n="site.noSecret">It needs no secret.</span></p>
 
       <h2><span data-i18n="site.install">Install</span></h2>
       <h3>Claude Code</h3>
-      <pre class="install"><code>claude mcp add-json chrome-devtools '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;chrome-devtools-mcp@1.9.0&quot;]}'</code></pre>
+      <pre class="install"><code>claude mcp add-json chrome-devtools '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;chrome-devtools-mcp@1.10.1&quot;,&quot;--no-usage-statistics&quot;]}'</code></pre>
       <h3>Codex CLI</h3>
-      <pre class="install"><code>codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@1.9.0</code></pre>
+      <pre class="install"><code>codex mcp add chrome-devtools -- npx -y chrome-devtools-mcp@1.10.1 --no-usage-statistics</code></pre>
       <h3>Gemini CLI</h3>
-      <pre class="install"><code>gemini mcp add chrome-devtools npx -y chrome-devtools-mcp@1.9.0</code></pre>
+      <pre class="install"><code>gemini mcp add chrome-devtools npx -y chrome-devtools-mcp@1.10.1 --no-usage-statistics</code></pre>
       <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
 
       <h2><span data-i18n="site.readIt">Read it</span></h2>
