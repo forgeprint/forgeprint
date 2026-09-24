@@ -291,10 +291,35 @@ against the skill tools.
 
 ## Runs
 
-| Date       | Agent                         | Catalog         | Result                                                                                                             |
-| ---------- | ----------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0 | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside |
-| 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1 | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                        |
+| Date       | Agent                         | Catalog                            | Result                                                                                                                                                                                 |
+| ---------- | ----------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 4–5 passed; step 1 not valid.** Recipe 34/34, then build and tests checked independently. The session was started inside the Forgeprint repository. Customers prompt not asked |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0                    | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside                                                                     |
+| 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1                    | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                                                                                            |
+
+### 2026-09-24, second run — steps 4 and 5 pass
+
+**What it proves.** The recipe works as written, end to end, for the first
+time. All 34 steps ran with their verifications, no step failed, and the agent
+asked nothing during the setup. Step 5 was then run by hand rather than read
+from the agent's report: `dotnet build` 0 warnings and 0 errors, `dotnet test`
+7 of 7 — the five isolation tests and two authorization tests the blueprint
+claims. The directory was the recipe's (`global.json`, `Saas.slnx`,
+`Dockerfile`), and the image ran as a non-root user and answered `/health`.
+
+**What it does not.** The session was opened in the Forgeprint repository and
+pointed at an empty directory afterwards, so the agent had read this
+repository's `CLAUDE.md`, which describes `resolve` in detail. It called
+`resolve` first — but an agent that has read the manual finding the tool says
+nothing about whether a stranger's agent would. The tell was in the first
+reply: an English prompt answered in Turkish, because `CLAUDE.md` says to.
+**Step 1 is still untested with the fix**, and the Customers prompt that closes
+step 5 was not asked.
+
+**Three findings**, each confirmed against the recipe and fixed in 1.2.1:
+step 3 prints NU1903 without saying step 5 removes it, step 19 said "Create"
+for a file the template had already made, and step 33 prints a transient curl
+error next to its success. None blocked the run.
 
 ### 2026-09-24, failed at step 1
 
