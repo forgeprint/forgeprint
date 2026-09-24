@@ -56,14 +56,23 @@ stack:
   nextjs: Next.js
   react: React
   vue: Vue
+  nuxt: Nuxt
   svelte: Svelte
   angular: Angular
   astro: Astro
   tailwind: Tailwind CSS
   vite: Vite
+  tanstack: TanStack Start
+  ai-sdk: AI SDK
+  wxt: WXT
   # Go
   go: Go
   cobra: Cobra
+  # Rust
+  rust: Rust
+  clap: clap
+  sqlx: SQLx
+  tauri: Tauri
   # Python
   python: Python
   typer: Typer
@@ -72,6 +81,7 @@ stack:
   django: Django
   fastapi: FastAPI
   flask: Flask
+  streamlit: Streamlit
   # JVM
   spring-boot: Spring Boot
   ktor: Ktor
@@ -84,6 +94,7 @@ stack:
   # Mobile
   flutter: Flutter
   react-native: React Native
+  expo: Expo
   swiftui: SwiftUI
   jetpack-compose: Jetpack Compose
   # Games
@@ -91,6 +102,7 @@ stack:
   godot: Godot
   unreal: Unreal Engine
   bevy: Bevy
+  phaser: Phaser
   # Data stores
   postgres: PostgreSQL
   mysql: MySQL
@@ -98,6 +110,9 @@ stack:
   sqlserver: SQL Server
   mongodb: MongoDB
   redis: Redis
+  pgvector: pgvector
+  duckdb: DuckDB
+  dbt: dbt
   # Platform and infrastructure
   docker: Docker
   kubernetes: Kubernetes
@@ -145,6 +160,8 @@ project_type:
   data: Data or analytics
   agent: AI agent or MCP server
   infra: Infrastructure
+  desktop: Desktop application
+  extension: Browser extension
 
 # Who the blueprint is written for.
 audience:
@@ -224,6 +241,9 @@ roles:
   embedded-engineer: Embedded engineer
   api-designer: API designer
   performance-engineer: Performance engineer
+  code-reviewer: Code reviewer
+  debugger: Debugging specialist
+  modernization-engineer: Modernization engineer
   # Data and analytics
   data-engineer: Data engineer
   data-scientist: Data scientist
@@ -413,6 +433,9 @@ aliases:
     gha: github-actions
     actions: github-actions
     next: nextjs
+    nuxtjs: nuxt
+    tanstack-start: tanstack
+    vercel-ai-sdk: ai-sdk
     nest: nestjs
     rn: react-native
     ue: unreal
@@ -428,6 +451,11 @@ aliases:
     command-line: cli
     mcp-server: agent
     mcp: agent
+    desktop-app: desktop
+    electron: desktop
+    browser-extension: extension
+    chrome-extension: extension
+    web-extension: extension
   distribution:
     oss: open-source
     opensource: open-source
