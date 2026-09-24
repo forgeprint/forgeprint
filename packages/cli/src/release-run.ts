@@ -240,6 +240,14 @@ function readChangelog(dir: string): string | undefined {
 }
 
 /**
+ * What every shell says when it cannot find a command, in one place.
+ *
+ * Windows, Git Bash and POSIX shells each word it differently, and the
+ * difference between "not installed" and "failed" is the whole message.
+ */
+const MISSING_COMMAND = /not recognized|not found|command not found|enoent|no such file/;
+
+/**
  * Every manifest outside `packages/` that carries the release version.
  *
  * Read from disk rather than listed in a constant, so a fifth skill is covered
@@ -320,9 +328,17 @@ async function publishToMcpRegistry(root: string, version: string): Promise<void
   }
 
   const text = result.output.toLowerCase();
-  const reason = /login|auth|token|credential|unauthor|401|403/.test(text)
-    ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
-    : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
+  const reason = MISSING_COMMAND.test(text)
+    ? // It is a single downloaded binary rather than a package, so it lands
+      // wherever the maintainer put it. On Windows that is usually ~/bin,
+      // which Git Bash searches and PowerShell does not — so "not recognized"
+      // here means the shell, not the tool, and saying "failed" would send
+      // somebody looking for the wrong thing.
+      'mcp-publisher is not on this shell’s PATH. It is one binary, so it sits where you put it; ' +
+      'call it by full path or add that directory to PATH. See docs/releasing.md. Then:'
+    : /login|auth|token|credential|unauthor|401|403/.test(text)
+      ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
+      : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
   say();
   say(`  note   the MCP Registry still serves ${served ?? 'an older version'}. ${reason}`);
   say('           mcp-publisher publish server.json');
