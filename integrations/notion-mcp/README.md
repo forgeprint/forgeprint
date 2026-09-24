@@ -24,7 +24,7 @@ Reads and writes the pages and databases explicitly shared with the integration.
 **claude-code**
 
 ```bash
-claude mcp add-json notion '{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"$NOTION_TOKEN"}}'
+claude mcp add-json notion '{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"${NOTION_TOKEN}"}}'
 ```
 
 **codex**

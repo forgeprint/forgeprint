@@ -1,7 +1,7 @@
 schema: 1
 slug: notion-mcp
 name: 'Notion MCP'
-version: 1.0.0
+version: 1.1.0
 tier: community
 provenance: generated
 maintainers: [aliosmanmho]
@@ -11,7 +11,7 @@ upstream: https://github.com/makenotion/notion-mcp-server
 upstream_version: '2.5.2'
 verified_on: 2026-09-23
 install:
-  claude-code: 'claude mcp add-json notion ''{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"$NOTION_TOKEN"}}'''
+  claude-code: 'claude mcp add-json notion ''{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"${NOTION_TOKEN}"}}'''
   codex: 'codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2'
   gemini-cli: 'gemini mcp add notion -e NOTION_TOKEN=$NOTION_TOKEN npx -y @notionhq/notion-mcp-server@2.5.2'
 needs_secrets: [NOTION_TOKEN]

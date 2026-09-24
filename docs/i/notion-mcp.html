@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/notion-mcp.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Notion MCP","name":"Notion MCP","description":"Read and write the Notion pages and databases an integration token has been granted.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/notion-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/notion-mcp.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Notion MCP","name":"Notion MCP","description":"Read and write the Notion pages and databases an integration token has been granted.","version":"1.1.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/notion-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/notion-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -53,7 +53,7 @@
 
       <h2><span data-i18n="site.install">Install</span></h2>
       <h3>Claude Code</h3>
-      <pre class="install"><code>claude mcp add-json notion '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@notionhq/notion-mcp-server@2.5.2&quot;],&quot;env&quot;:{&quot;NOTION_TOKEN&quot;:&quot;$NOTION_TOKEN&quot;}}'</code></pre>
+      <pre class="install"><code>claude mcp add-json notion '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@notionhq/notion-mcp-server@2.5.2&quot;],&quot;env&quot;:{&quot;NOTION_TOKEN&quot;:&quot;${NOTION_TOKEN}&quot;}}'</code></pre>
       <h3>Codex CLI</h3>
       <pre class="install"><code>codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2</code></pre>
       <h3>Gemini CLI</h3>
