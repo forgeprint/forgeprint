@@ -1947,6 +1947,55 @@
     },
     {
       "schema": 1,
+      "slug": "performance-engineer",
+      "name": "Performance Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Measure first, change one thing, measure again — and a result smaller than the run-to-run spread is not a result.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "performance-engineer",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "performance-report",
+        "test-plan",
+        "observability-plan"
+      ],
+      "checklists": [
+        "measurement-discipline",
+        "core-web-vitals",
+        "server-latency",
+        "load-testing",
+        "profiling"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "qa-automation-lead",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/core-web-vitals.md",
+        "checklists/load-testing.md",
+        "checklists/measurement-discipline.md",
+        "checklists/profiling.md",
+        "checklists/server-latency.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "product-manager",
       "name": "Product Manager",
       "version": "1.0.0",

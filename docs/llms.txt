@@ -30,6 +30,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 - [DevOps Platform Engineer](https://forgeprint.github.io/forgeprint/e/devops-platform-engineer.html): Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.
 - [.NET Senior Software Architect](https://forgeprint.github.io/forgeprint/e/dotnet-senior-architect.html): Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.
+- [Performance Engineer](https://forgeprint.github.io/forgeprint/e/performance-engineer.html): Measure first, change one thing, measure again — and a result smaller than the run-to-run spread is not a result.
 - [Product Manager](https://forgeprint.github.io/forgeprint/e/product-manager.html): The problem before the solution, a metric that could come back negative, criteria somebody could fail, and what is not being built.
 - [QA Automation Lead](https://forgeprint.github.io/forgeprint/e/qa-automation-lead.html): Test the behaviour, make it deterministic, treat a flaky test as a failed one, and keep the signal worth acting on.
 - [Security Reviewer](https://forgeprint.github.io/forgeprint/e/security-reviewer.html): Boundaries first, then authorization. Every finding cites a control at a version, or it is an opinion and stays out.
