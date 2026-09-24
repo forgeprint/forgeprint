@@ -293,9 +293,31 @@ against the skill tools.
 
 | Date       | Agent                         | Catalog                            | Result                                                                                                                                                                                 |
 | ---------- | ----------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 1–3 passed, clean.** Fresh directory, no `CLAUDE.md`, no memory. Found and called `resolve` unprompted, asked only the blueprint's options, stopped before writing anything    |
 | 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | local build with `RESOLVE_TRIGGER` | **Steps 4–5 passed; step 1 not valid.** Recipe 34/34, then build and tests checked independently. The session was started inside the Forgeprint repository. Customers prompt not asked |
 | 2026-09-24 | Claude Code 2.1.281, Opus 5.5 | published 0.3.0                    | **Failed at step 1.** The agent never called Forgeprint and built its own project. Looked like a pass from outside                                                                     |
 | 2026-09-22 | Claude Code 2.1.278, Opus 5   | published 0.2.1                    | **Partial — steps 1–3.** Two defects, both fixed. Steps 4 and 5 not run yet                                                                                                            |
+
+### 2026-09-24, third run — step 1 passes with the fix
+
+The run the second one could not be: a directory that had never held anything,
+started there, with nothing loaded but the local build carrying
+`RESOLVE_TRIGGER`. The transcript confirms all three — no `CLAUDE.md`, an empty
+memory, and the trigger in the server instructions. An English prompt got an
+English answer.
+
+The agent searched for the tool, called `resolve` with `languages: ["csharp"]`,
+`project_type: api` and `requirements: ["multi-tenant"]` — the mapping the
+2026-09-22 run first failed — asked only the two options the blueprint has,
+called `get_blueprint` with both, checked the machine for the SDK and Docker,
+and stopped to ask before building. Its summary carried the overview's limits
+in its own words: isolation tests on the in-memory provider, no billing, no
+migrations.
+
+One interactive run, on top of ten headless ones. Enough to publish the fix;
+**not** the clean run that clears the announcement. That is still one run,
+against the published package, steps 1 to 5 in one session, with the Customers
+prompt asked.
 
 ### 2026-09-24, second run — steps 4 and 5 pass
 
