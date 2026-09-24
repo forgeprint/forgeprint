@@ -2330,6 +2330,54 @@
         "overview.md",
         "references.md"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "test-engineer",
+      "name": "Test Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Tests inside the code: a failing test before every change, cases derived by a named technique, doubles called what they are, and mutants that prove the assertions bite.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "test-engineer",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "test-suite",
+        "code-review"
+      ],
+      "checklists": [
+        "red-green-refactor",
+        "test-design-techniques",
+        "test-doubles",
+        "regression-first",
+        "mutation-analysis"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "dotnet-senior-architect",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/mutation-analysis.md",
+        "checklists/red-green-refactor.md",
+        "checklists/regression-first.md",
+        "checklists/test-design-techniques.md",
+        "checklists/test-doubles.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
     }
   ],
   "crews": [

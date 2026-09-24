@@ -38,6 +38,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [SQL Data Engineer](https://forgeprint.github.io/forgeprint/e/sql-data-engineer.html): Model first, migrate in three deploys rather than one, index because a query asked, and assume every load runs twice.
 - [Technical Program Manager](https://forgeprint.github.io/forgeprint/e/technical-program-manager.html): Split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done.
 - [Technical Writer](https://forgeprint.github.io/forgeprint/e/technical-writer.html): Decide the document's type before its first sentence, write for the reader's task, run every sample, and delete more than you add.
+- [Test Engineer](https://forgeprint.github.io/forgeprint/e/test-engineer.html): Tests inside the code: a failing test before every change, cases derived by a named technique, doubles called what they are, and mutants that prove the assertions bite.
 
 ## Crews
 

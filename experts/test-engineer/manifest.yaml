@@ -1,0 +1,24 @@
+schema: 1
+slug: test-engineer
+name: 'Test Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Tests inside the code: a failing test before every change, cases derived by a named technique, doubles called what they are, and mutants that prove the assertions bite.'
+role: test-engineer
+domain: quality
+seniority: senior
+deliverables:
+  - test-suite
+  - code-review
+checklists:
+  - red-green-refactor
+  - test-design-techniques
+  - test-doubles
+  - regression-first
+  - mutation-analysis
+pairs_with: [qa-automation-lead, dotnet-senior-architect, security-reviewer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
