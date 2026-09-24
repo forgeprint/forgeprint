@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   changelogEntry,
+  checkDistributionVersions,
   checkVersions,
   classifyPublishError,
   draftNotes,
@@ -11,6 +12,7 @@ import {
   publishable,
   publishedCodeUnchanged,
   quoteForShell,
+  type DistributionManifest,
   type WorkspacePackage,
 } from './release.js';
 
@@ -307,5 +309,45 @@ describe('publishedCodeUnchanged', () => {
       ),
       true,
     );
+  });
+});
+
+describe('checkDistributionVersions', () => {
+  // server.json and the plugin.json files drifted eight releases behind npm,
+  // because nothing read them back. These are the shapes that drift.
+  const manifest = (path: string, ...versions: string[]): DistributionManifest => ({
+    path,
+    versions: versions.map((value, index) => ({ field: `field${String(index)}`, value })),
+  });
+
+  it('accepts manifests that all match', () => {
+    const problems = checkDistributionVersions(
+      [
+        manifest('server.json', '0.3.0', '0.3.0'),
+        manifest('skills/a/.claude-plugin/plugin.json', '0.3.0'),
+      ],
+      '0.3.0',
+    );
+    assert.deepEqual(problems, []);
+  });
+
+  it('reports every field that does not, not only the first', () => {
+    const problems = checkDistributionVersions(
+      [
+        manifest('server.json', '0.2.10', '0.2.10'),
+        manifest('skills/a/.claude-plugin/plugin.json', '0.1.0'),
+      ],
+      '0.3.0',
+    );
+    assert.equal(problems.length, 3);
+    assert.match(problems[0]?.problem ?? '', /0\.2\.10.*0\.3\.0/);
+    assert.equal(problems[2]?.package, 'skills/a/.claude-plugin/plugin.json');
+  });
+
+  it('catches the version field that is simply absent', () => {
+    // A file with no version cannot disagree with the release, which is the
+    // way an absent field reads as success. It is a problem, not a pass.
+    const problems = checkDistributionVersions([{ path: 'server.json', versions: [] }], '0.3.0');
+    assert.deepEqual(problems, [{ package: 'server.json', problem: 'no version field' }]);
   });
 });

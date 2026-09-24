@@ -323,3 +323,67 @@ export function registryVersion(packageName: string, cwd: string): string | unde
   const value = result.output.trim();
   return value === '' ? undefined : value;
 }
+
+/**
+ * A manifest outside `packages/` that carries the release version.
+ *
+ * `server.json` is what the MCP Registry serves and every `plugin.json` is what
+ * the Claude Code marketplace serves. Nothing read them back, nothing compared
+ * them to anything, and they drifted eight releases behind npm — the registry
+ * was serving 0.2.1 on the day 0.3.0 went out. A reminder printed at the end of
+ * a release is not a check.
+ */
+export interface DistributionManifest {
+  /** Repository-relative path, which is what the maintainer has to open. */
+  path: string;
+  /** Every version field in the file, named so the message says which one. */
+  versions: { field: string; value: string }[];
+}
+
+/** Each version field in a distribution manifest that does not match. */
+export function checkDistributionVersions(
+  manifests: readonly DistributionManifest[],
+  version: string,
+): VersionProblem[] {
+  const problems: VersionProblem[] = [];
+  for (const manifest of manifests) {
+    if (manifest.versions.length === 0) {
+      problems.push({ package: manifest.path, problem: 'no version field' });
+      continue;
+    }
+    for (const { field, value } of manifest.versions) {
+      if (value !== version) {
+        problems.push({
+          package: manifest.path,
+          problem: `${field} says ${value}, the release is ${version}`,
+        });
+      }
+    }
+  }
+  return problems;
+}
+
+/**
+ * The version the MCP Registry serves, or undefined when it cannot be asked.
+ *
+ * Undefined is not "not published": the network is allowed to be absent
+ * (ADR 0002), so the caller treats it as unknown rather than as a reason to
+ * publish or to refuse.
+ */
+export async function mcpRegistryVersion(serverName: string): Promise<string | undefined> {
+  try {
+    const url = `https://registry.modelcontextprotocol.io/v0/servers?search=${encodeURIComponent(serverName)}`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    if (!response.ok) return undefined;
+    const body = (await response.json()) as {
+      servers?: { name?: string; version?: string; server?: { name?: string; version?: string } }[];
+    };
+    for (const entry of body.servers ?? []) {
+      const server = entry.server ?? entry;
+      if (server.name === serverName) return server.version;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
