@@ -1,144 +1,390 @@
 {
   "meta": {
     "lang": "tr",
-    "title": "Forgeprint — agent'a kim olduğunu söyle, projenin paketini al",
-    "description": "Küratörlü bir blueprint kataloğu ve MCP server. Kendini ve hedefini anlat; AGENTS.md'si, skill'leri, MCP config'i ve agent'ının çalıştırabileceği bir setup recipe'iyle birlikte tek bir blueprint al."
+    "title": "Forgeprint — coding agent'lar için blueprint, expert ve crew'lar",
+    "description": "Her coding agent için seçilmiş bir katalog ve MCP server. Ne bildiğini ve ne yazdığını söyle; CI'da test edilmiş bir setup recipe ile tek bir blueprint al, üzerinde çalışmak için de expert, crew ve integration'ları."
   },
   "nav": {
     "skip": "İçeriğe geç",
-    "what": "Nedir",
+    "units": "Dört birim",
     "how": "Nasıl çalışır",
-    "templates": "Şablonlar",
-    "use": "Kullanım",
-    "build": "Katkı",
+    "examples": "Örnekler",
+    "tools": "Tool'lar",
+    "agents": "Agent'lar",
+    "catalog": "Katalog",
+    "build": "Katkı ver",
     "faq": "SSS",
     "repo": "Repo'yu GitHub'da aç",
     "langLabel": "Dil",
-    "langHint": "Arayüz dili. Katalog içeriği İngilizce kalır."
+    "langHint": "Arayüz dili. Kataloğun kendisi İngilizce kalıyor."
   },
   "hero": {
-    "eyebrow": "Blueprint kataloğu + MCP server",
-    "title": "Agent'ına kim olduğunu söyle. Projenin paketini al.",
-    "lead": "Diğerleri eline iki yüz skill verip kolay gelsin diyor. Forgeprint ne bildiğini ve ne yazdığını soruyor, sonra <strong>tek bir</strong> blueprint dönüyor — AGENTS.md, skill'ler, MCP config'i ve agent'ının adım adım çalıştıracağı bir setup recipe.",
+    "eyebrow": "Katalog + MCP server · her coding agent için",
+    "title": "Coding agent'lar için blueprint, expert ve crew'lar — sana göre seçilmiş.",
+    "lead": "Ne bildiğini ve ne yazdığını söyle. Forgeprint <strong>tek bir</strong> blueprint dönüyor — kural dosyası, skill'ler, MCP config'i ve agent'ının adım adım çalıştıracağı bir setup recipe — istersen de üzerinde çalışacak expert'leri ve tool'ları.",
     "ctaPrimary": "Agent'ına bağla",
-    "ctaPrimaryHint": "Tek komut. MCP server'ı Claude Code'a ekler.",
+    "agentLabel": "Agent'ın",
+    "agentHint": "Bu sayfadaki örnekler seçtiğin agent'a göre değişiyor.",
+    "tested": "Uçtan uca test edildi: bir agent bununla bütün bir recipe'i koştu.",
+    "fromDocs": "Kaynak: {vendor} dokümanı, {date} tarihinde okundu. Henüz uçtan uca koşulmadı — nasıl gittiğini bize yaz.",
+    "notes": {
+      "claude-code": "Tek komut. Windows PowerShell'de ayıracı tırnakla: \"--\".",
+      "codex": "Tek komut. Windows PowerShell'de ayıracı tırnakla: \"--\".",
+      "gemini-cli": "Tek komut. Gemini CLI bunu kendi settings dosyasına yazıyor.",
+      "copilot-cli": "Bunu ~/.copilot/mcp-config.json'a ekle. Tool'lara tek tek --allow-tool ile izin ver.",
+      "cursor": "Cursor MCP server'ları settings'ten ekliyor: server'ın JSON'unu istediği yere bunu yapıştır.",
+      "windsurf": "Bunu Windsurf'ün MCP config'ine ekle. Yolu değişti; eskisi ~/.codeium/windsurf/mcp_config.json idi.",
+      "cline": "CLI için ~/.cline/mcp.json'a ekle, extension'da MCP panelinden.",
+      "opencode": "OpenCode'da add komutu yok: bunu opencode.json'a yaz.",
+      "kiro": "Bunu .kiro/settings/mcp.json'a ekle."
+    },
     "ctaSecondary": "Kataloğa göz at",
-    "status": "Pre-release · 7 blueprint · 3 dil",
+    "status": "Pre-release · 17 blueprint · 8 expert · 2 crew · 10 integration · 9 agent",
+    "statusLive": "Pre-release · {b} blueprint · {e} expert · {c} crew · {i} integration · {a} agent",
     "copy": "Kopyala",
     "copied": "Kopyalandı",
-    "copyFailed": "Kopyalanamadı — metni seçip alabilirsin",
-    "windows": "Windows PowerShell'de ayıracı tırnakla:"
+    "copyFailed": "Kopyalanamadı — metni seçip alabilirsin"
   },
   "problem": {
-    "title": "Her yeni proje sıfırdan başlıyor",
-    "lead": "Gereksinimleri araştırıyorsun, AGENTS.md'yi elle yazıyorsun, MCP server'ları tek tek bağlıyorsun, plugin'leri seçiyorsun ve setup adımlarını çalışana kadar iki kez yanlış yapıyorsun. Saatler sürüyor — ve bunu herkes, her projede baştan yaşıyor.",
-    "punch": "Bu bilgiyi yazmak zor değil. Sadece başka bir agent'ın kullanabileceği bir formatta hiç yazılmıyor.",
+    "title": "Her yeni proje soğuk başlıyor",
+    "lead": "Gereksinimleri topluyorsun, kural dosyasını elle yazıyorsun, MCP server'ları bağlıyorsun, plugin seçiyorsun, setup adımlarını çalışana kadar iki kez yanlış yapıyorsun. Saatler — herkes tarafından, her projede, her seferinde tekrar.",
+    "punch": "Bu bilgiyi yazmak zor değil. Sadece başka bir agent'ın kullanabileceği bir biçimde hiç yazılmıyor.",
     "beforeTitle": "Forgeprint olmadan",
     "before": [
-      "Başlangıç noktası ara, beş tane bul, elle karşılaştır",
-      "AGENTS.md'yi akıldan yaz, yarısını atla",
+      "Bir başlangıç noktası ara, beş tane bul, elle karşılaştır",
+      "AGENTS.md'yi hafızadan yaz, yarısını unut",
       "MCP server'ları tek tek, kendi README'lerinden bağla",
-      "Altı ay önce doğru olan setup adımlarını çalıştır",
-      "Eksikleri ancak bir şey patlayınca gör"
+      "Agent'a nasıl review edeceğini, test edeceğini, yayınlayacağını her projede yeniden anlat",
+      "Eksikleri ancak bir şey kırılınca fark et"
     ],
     "afterTitle": "Forgeprint ile",
     "after": [
-      "Kendini bir cümleyle anlat; resolver eksik kalanı sorar",
-      "Tek bir blueprint gelir, neden seçildiğinin gerekçesiyle",
-      "AGENTS.md, skill'ler ve MCP config'i birlikte gelir",
-      "Her setup adımının sürümü pinli ve sonunda doğrulama komutu var",
-      "Recipe sana gelmeden önce CI'da baştan sona koşuluyor"
+      "Kendini tek cümleyle anlat; resolver eksik ne varsa soruyor",
+      "Tek bir blueprint al, neden seçildiğiyle birlikte",
+      "Kural dosyası, skill'ler ve MCP config'i birlikte geliyor",
+      "Expert'ler arkasında checklist'ler ve kaynaklar olan bir çalışma biçimi getiriyor",
+      "Recipe sana ulaşmadan önce CI'da koşulmuş oluyor"
     ]
+  },
+  "units": {
+    "title": "Üç soru, dört birim",
+    "lead": "Blueprint ne yazdığını cevaplıyor. Aynı anda iki soru daha çıkıyor — agent nasıl çalışmalı, hangi tool'larla — ve her birinin kendi birimi var. Crew bu cevapları bir isim altında paketliyor.",
+    "items": [
+      {
+        "kind": "blueprint",
+        "q": "Ne yazıyorsun?",
+        "title": "Blueprint",
+        "body": "Bir proje paketi: AGENTS.md, skill'ler, MCP config'i ve setup.md — her adımı işe yaradığını kanıtlayan kontrolle biten bir recipe.",
+        "link": "Blueprint'lere göz at"
+      },
+      {
+        "kind": "expert",
+        "q": "Agent nasıl çalışmalı?",
+        "title": "Expert",
+        "body": "Bir persona değil, bir çalışma biçimi. Ne ürettiğini, hangi checklist'leri uyguladığını ve dayandığı kaynakları söylüyor.",
+        "link": "Expert'lere göz at"
+      },
+      {
+        "kind": "integration",
+        "q": "Hangi tool'larla?",
+        "title": "Integration",
+        "body": "Başkasının MCP server'ı için sürümü pinli, izinleri yazılı bir kurulum recipe'i. Forgeprint üçüncü taraf kodu barındırmıyor.",
+        "link": "Integration'lara göz at"
+      },
+      {
+        "kind": "crew",
+        "q": "Hepsi, tek isim altında?",
+        "title": "Crew",
+        "body": "En fazla altı expert ve integration'ları, slug ile anılıyor. Hiçbir şeyi kopyalamıyor; ne için olduğunu da, ne için olmadığını da söylüyor.",
+        "link": "Crew'lara göz at"
+      }
+    ],
+    "diagramTitle": "Birimler birbirini nasıl gösteriyor — katalogdan canlı",
+    "diagramAlt": "Bir blueprint bir crew öneriyor. Crew expert'lerini ve integration'larını slug ile anıyor, hiçbirini kopyalamıyor.",
+    "recommends": "öneriyor",
+    "bySlug": "slug ile anılıyor, asla kopyalanmıyor",
+    "experts": "Expert'ler",
+    "integrations": "Integration'lar"
   },
   "how": {
     "title": "Nasıl çalışır",
     "lead": "Agent'ınla normal konuşuyorsun. Forgeprint structured data dönüyor, işi agent yapıyor. Senin makinende hiçbir şey kurmuyor, hiçbir şey çalıştırmıyor — tool'ların hepsi sadece text dönüyor.",
+    "lanes": ["Sen", "Agent'ın", "Forgeprint MCP", "Projen"],
     "steps": [
       {
-        "title": "Kendini anlatıyorsun",
-        "body": "\"C# biliyorum, multi-tenant bir SaaS API yazıyorum.\" Doldurulacak form yok, taranacak katalog yok."
+        "label": "“C# biliyorum. Multi-tenant SaaS API.”",
+        "title": "Kim olduğunu söylüyorsun",
+        "body": "Kendi kelimelerinle. Form yok, okunacak katalog yok."
       },
       {
-        "title": "Resolver eksiği soruyor",
-        "body": "Eksik profile tahmin yürütmüyor. Agent'ının sana sorması gereken soruları dönüyor — hangi database, hangi auth, self-hosted mı cloud mu."
+        "label": "resolve { languages, goal }",
+        "title": "Agent'ın resolve'u çağırıyor",
+        "body": "Kendi başına tek satır yazmadan önce. Bildiğin dil en ağır basıyor."
       },
       {
+        "label": "tek blueprint + 2 açık seçenek",
         "title": "Tek bir blueprint dönüyor",
-        "body": "Liste değil. Neden seçildiği, makinende hangi tool'un eksik olduğu ve setup planıyla. İki aday gerçekten yakınsa seçimi sana bırakıyor."
+        "body": "Asla liste değil — gerekçesiyle ve hâlâ karar verilmemiş seçeneklerle."
       },
       {
-        "title": "Agent recipe'i koşuyor",
-        "body": "Numaralı adımlar, pinli sürümler ve her adımdan sonra bir doğrulama komutu. İlk başarısız kontrolde duruyor."
+        "label": "“Postgres mi SQL Server mı? …”",
+        "title": "Tahmin etmiyor, soruyor",
+        "body": "Sadece blueprint'in gerçekten sahip olduğu soruları."
+      },
+      {
+        "label": "“Postgres, tek ortak database.”",
+        "title": "Cevaplıyorsun",
+        "body": "Her biri bir iki kelime. Gerisine onu kuranlar karar vermiş."
+      },
+      {
+        "label": "get_blueprint { slug, options }",
+        "title": "Paketi çekiyor",
+        "body": "Recipe senin seçeneklerin çözülmüş halde geliyor."
+      },
+      {
+        "label": "AGENTS.md · skill'ler · setup.md",
+        "title": "Context ve recipe birlikte geliyor",
+        "body": "Blueprint içeriği agent için veri, agent'a verilmiş komut değil."
+      },
+      {
+        "label": "adım → kontrol ✓, adım → kontrol ✓ …",
+        "title": "Agent'ın recipe'i koşuyor",
+        "body": "Pinli sürümler, her adımdan sonra doğrulama, ilk kırmızıda durma."
       }
     ],
-    "diagramTitle": "Parçalar arasında ne gidip geliyor",
-    "diagramAlt": "Hedefini coding agent'ına anlatıyorsun. Agent Forgeprint MCP server'ını çağırıyor, server katalog index'ini okuyup tek bir blueprint dönüyor: AGENTS.md, skill'ler, MCP config'i ve setup.md. Sonra agent recipe'i senin projende koşuyor. Forgeprint senin makinene hiç dokunmuyor.",
-    "diagram": {
-      "you": "Sen",
-      "youSub": "\"C# biliyorum…\"",
-      "agent": "Agent'ın",
-      "agentSub": "Claude Code, Codex, Cursor",
-      "server": "Forgeprint MCP",
-      "serverSub": "resolve · get_blueprint",
-      "catalog": "Katalog",
-      "catalogSub": "review'dan geçmiş, CI'da test edilmiş",
-      "package": "Paketin",
-      "packageSub": "AGENTS.md · skill'ler · mcp.json · setup.md",
-      "project": "Projen",
-      "projectSub": "recipe'i agent koşuyor",
-      "note": "Forgeprint text dönüyor. Senin makinende hiçbir şey çalıştırmıyor."
-    }
+    "play": "Oynat",
+    "pause": "Duraklat",
+    "prev": "Önceki adım",
+    "next": "Sonraki adım",
+    "stepOf": "Adım {n} / {total}",
+    "diagramAlt": "Dört şerit arasında bir akış — sen, agent'ın, Forgeprint MCP server ve projen — diyagramın yanında listelenen sekiz adımda.",
+    "note": "Forgeprint text dönüyor. Senin makinende hiçbir şey çalıştırmıyor."
+  },
+  "examples": {
+    "title": "Nasıl görünüyor",
+    "lead": "Her birim için bir tane, dört konuşma. Tool çağrıları agent'ının yaptığı haliyle gösteriliyor.",
+    "tabsLabel": "Örnek konuşmalar",
+    "tabs": {
+      "project": "Proje başlat",
+      "expert": "Expert getir",
+      "crew": "Crew al",
+      "integration": "Integration ekle"
+    },
+    "you": "Sen",
+    "agentNote": "{agent} olarak gösteriliyor. Sayfanın başından başka bir agent seç — konuşma da katalog da aynı kalıyor.",
+    "noInstall": "{agent} için doğrulanmış bir kurulum komutu henüz yok, bu yüzden get_integration tahmin yürütmek yerine hiçbir şey dönmüyor. Integration'ın sayfası upstream'i söylüyor, gerisini agent'ının kendi MCP ayarları hallediyor.",
+    "project": [
+      { "who": "you", "text": "C# biliyorum. Multi-tenant bir SaaS API yazmak istiyorum." },
+      { "who": "tool", "text": "resolve { languages: [\"C#\"], goal: \"multi-tenant SaaS API\" }" },
+      {
+        "who": "agent",
+        "text": "Tek bir blueprint uyuyor: dotnet-multitenant-saas-api — C# yazdığın için seçildi ve multi-tenancy'yi kapsıyor. İki şey hâlâ açık: Postgres mi SQL Server mı, ve tenant kolonlu tek ortak database mi, her tenant'a ayrı database mi?"
+      },
+      { "who": "you", "text": "Postgres, tek ortak database." },
+      {
+        "who": "tool",
+        "text": "get_blueprint { slug: \"dotnet-multitenant-saas-api\", options: { database: \"postgres\", tenancy: \"shared-db-tenant-column\" } }"
+      },
+      {
+        "who": "agent",
+        "text": "Recipe elimde: numaralı adımlar, pinli sürümler ve her birinden sonra bir kontrol. .NET 10 SDK, Docker ve curl gerekiyor, üçü de burada var. Bu klasörde başlayayım mı?"
+      }
+    ],
+    "expert": [
+      { "who": "you", "text": "Yayına almadan önce bu API'yi güvenlik açısından incele." },
+      {
+        "who": "tool",
+        "text": "recommend_experts { task: \"security review of an API before launch\" }"
+      },
+      {
+        "who": "agent",
+        "text": "Tek bir expert uyuyor: security-reviewer. Önce sınırlar, sonra yetkilendirme, ve her bulgu bir sürümdeki bir kontrole dayanıyor — dayanmıyorsa rapora girmiyor. Yükleyeyim mi?"
+      },
+      { "who": "you", "text": "Evet." },
+      { "who": "tool", "text": "get_expert { slug: \"security-reviewer\", agent: \"{agent}\" }" },
+      {
+        "who": "agent",
+        "text": "Yüklendi, altı checklist'iyle — trust boundary'ler, authn/authz, girdi ve çıktı, secret'lar ve config, bağımlılıklar, loglama ve hatalar. İsteklerin bir trust boundary'yi geçtiği yerden başlıyorum."
+      }
+    ],
+    "crew": [
+      {
+        "who": "you",
+        "text": "Multi-tenant bir SaaS'ı boş bir repo'dan ilk ödeme yapan müşteriye kadar götürüyoruz."
+      },
+      {
+        "who": "tool",
+        "text": "recommend_experts { task: \"multi-tenant SaaS, empty repo to first paying customer\" }"
+      },
+      {
+        "who": "agent",
+        "text": "saas-launch-crew tam bunun için kurulmuş: bir mimar, bir data engineer, bir security reviewer ve bir QA lead, GitHub ve Sentry ile. Prototip ya da iç araç için olmadığını söylüyor — bu ikisi de değil."
+      },
+      { "who": "you", "text": "Al." },
+      { "who": "tool", "text": "get_crew { slug: \"saas-launch-crew\", agent: \"{agent}\" }" },
+      {
+        "who": "agent",
+        "text": "Dört expert yüklendi. İki integration'ı onaylamak sana kalmış, Sentry de bir token istiyor — ben girmem. Nerede oluşturacağını söyleyeyim."
+      }
+    ],
+    "integration": [
+      { "who": "you", "text": "Sentry'yi bağla, gerçek hatadan debug edebilesin." },
+      { "who": "tool", "text": "get_integration { slug: \"sentry-mcp\", agent: \"{agent}\" }" },
+      {
+        "who": "agent",
+        "text": "sentry-mcp, 0.39.0'a pinli. Token'ının erişebildiği Sentry organizasyonlarındaki issue'ları, event'leri ve stack trace'leri okuyor. SENTRY_ACCESS_TOKEN gerekiyor: Sentry'de kendin oluştur ve ortamına koy — ben asla secret yazmam. Sonra:"
+      },
+      { "who": "code", "text": "{install}" }
+    ]
+  },
+  "tools": {
+    "title": "On tool, üç iş",
+    "lead": "Forgeprint'in yaptığı her şey bu çağrılardan biri. Hepsi text dönüyor; hiçbiri bir şey çalıştırmıyor.",
+    "groups": [
+      {
+        "title": "Proje başlat",
+        "tools": [
+          {
+            "name": "resolve",
+            "does": "Profilin giriyor; ya sana sorulacak sorular ya da gerekçesiyle tek bir blueprint çıkıyor."
+          },
+          {
+            "name": "search_blueprints",
+            "does": "Stack, dil, tür ya da text giriyor; skorlarıyla eşleşen blueprint'ler çıkıyor."
+          },
+          {
+            "name": "compare_blueprints",
+            "does": "İki ile dört slug giriyor; kendi overview dosyalarından çıkarılmış artı-eksi tablosu çıkıyor."
+          },
+          {
+            "name": "get_blueprint",
+            "does": "Paket, recipe'in seçenek blokları senin seçimlerine göre çözülmüş halde."
+          }
+        ]
+      },
+      {
+        "title": "Doğru insanlarla çalış",
+        "tools": [
+          {
+            "name": "recommend_experts",
+            "does": "Bir görev giriyor; en fazla bir crew ya da üç expert, her biri gerekçesiyle çıkıyor."
+          },
+          {
+            "name": "get_expert",
+            "does": "SKILL.md, checklist'ler ve kaynaklar — ve agent'ının onları okuduğu yollar."
+          },
+          {
+            "name": "get_crew",
+            "does": "Her üye eksiksiz, ve her integration için senin agent'ına uygun kurulum komutu."
+          },
+          {
+            "name": "get_integration",
+            "does": "Pinli upstream, kurulum komutu, ve gerektirdiği secret'lar ile nelere eriştikleri."
+          }
+        ]
+      },
+      {
+        "title": "Kataloğu büyüt",
+        "tools": [
+          {
+            "name": "validate_blueprint",
+            "does": "Bir blueprint klasörü giriyor; schema hataları ve duplicate raporu çıkıyor."
+          },
+          {
+            "name": "request_blueprint",
+            "does": "Hiçbir şey uymadığında: bir issue payload'u. Katalog talebe göre büyüyor."
+          }
+        ]
+      }
+    ],
+    "note": "resolve'dan expert iste, uydurmuyor: agent'ına bunun yerine hangi tool'u çağıracağını söylüyor."
+  },
+  "agents": {
+    "title": "Bir kez yazılıyor. Dokuz agent için render ediliyor.",
+    "lead": "İçerik katalogda bir kez, AGENTS.md ve SKILL.md olarak duruyor. Her agent'ın kendi dosyası ondan üretiliyor — agent başına elle yazılmış kopya reddediliyor. Her agent'ın ne okuduğu ve dokümanının en son hangi gün kontrol edildiği kayıtlı.",
+    "source": "Bir kez yazılıyor",
+    "sourceSub": "AGENTS.md · SKILL.md",
+    "engine": "Agent başına render",
+    "engineSub": "forgeprint render --agent",
+    "targetsLabel": "Her agent ne alıyor",
+    "tested": "uçtan uca test edildi",
+    "docs": "vendor dokümanı · {date}",
+    "pick": "Örnekler için {agent} kullan",
+    "cap": "{n} karakterde kesiliyor",
+    "noMcpTitle": "MCP client'ın yok mu?",
+    "noMcp": "Aynı dosyalar, repo'nun bir clone'undan diske yazılıyor — iki giriş, tek cevap. Skill'ler zaten kullanıyor olabileceğin tool'larla da kuruluyor.",
+    "noMcpCmd": "pnpm forgeprint get dotnet-web-api --agent {agent}"
   },
   "different": {
     "title": "Farkı ne",
     "items": [
       {
         "title": "Liste değil, resolver",
-        "body": "Forgeprint'te arama yapmıyorsun. Tek bir blueprint dönüyor ve skorlama şöyle: zaten bildiğin bir dil her şeyi geçiyor. Uyan yoksa bunu söylüyor, en yakınını adıyla veriyor ve neden uymadığını yazıyor — uydurma match yapmıyor."
+        "body": "Tek cevap, zaten bildiğin dil her şeyin önüne geçecek şekilde ağırlıklandırılmış."
       },
       {
-        "title": "Doküman değil, recipe",
-        "body": "setup.md bir script. Her adım tek komut ya da tek dosya, sürümler pinli, her adımın sonunda çalıştığını kanıtlayan bir kontrol var. CI tamamını temiz bir container'da koşmadan hiçbir şey merge olmuyor."
+        "title": "Açıklama değil, recipe",
+        "body": "setup.md bir script: pinli sürümler, her adım işe yaradığını kanıtlayan kontrolle bitiyor."
       },
       {
-        "title": "Çekmece değil, quality gate",
-        "body": "Her PR schema validation'dan, gerçek bir setup koşusundan ve duplicate raporundan geçiyor. İki blueprint aynı stack + project_type + requirements üçlüsünü alamaz — daha iyisi eskisini supersede eder."
+        "title": "Çöp çekmecesi değil, kapı",
+        "body": "Her PR'da schema doğrulama, gerçek bir setup koşusu ve duplicate raporu."
       },
       {
         "title": "Yeni format değil, standartlar",
-        "body": "AGENTS.md, SKILL.md ve marketplace.json zaten var oldukları haliyle. Çıktı kullandığın tool'lara doğrudan düşüyor, skill'ler alışıldık kanallardan install edilmeye devam ediyor."
+        "body": "AGENTS.md, SKILL.md ve marketplace.json, zaten var oldukları haliyle."
+      },
+      {
+        "title": "Kopya değil, bileşim",
+        "body": "Crew expert'leri ve integration'ları slug ile anıyor. En fazla altı üye, ve ne için olmadığını söyleyen bir satır."
+      },
+      {
+        "title": "Her agent, kayıtlı",
+        "body": "Dokuz agent, vendor'larının kendi dokümanından, her biri tarihiyle. Test edildi demek test edildi demek."
       }
     ]
   },
-  "templates": {
-    "title": "Şablonlar",
-    "lead": "Kataloğdaki bütün blueprint'ler. Her biri adı konmuş güvenlik ve mimari standartlarına karşı review'dan geçti, ve setup recipe'i her push'ta CI'da — bütün option kombinasyonlarında — baştan sona koşuluyor.",
+  "catalog": {
+    "title": "Katalog",
+    "lead": "Şu an içindeki her şey, publish edilmiş index'ten canlı okunuyor. Her blueprint'in recipe'i her push'ta, her seçenek kombinasyonunda CI'da koşuyor.",
+    "tabsLabel": "Neye göz atılsın",
+    "tabs": {
+      "blueprint": "Blueprint'ler",
+      "expert": "Expert'ler",
+      "crew": "Crew'lar",
+      "integration": "Integration'lar"
+    },
     "loading": "Katalog okunuyor…",
-    "empty": "Katalog index'i okunuyor ama içinde blueprint yok. Böyle olmaması gerekir; bakılacak yer repo.",
-    "error": "Katalog index'i okunamadı, o yüzden liste boş. Index repo'ya da yazılıyor, yani bu sayfa ulaşamasa bile orada okunabilir.",
+    "empty": "Katalog index'i okunabiliyor ama bu türden henüz bir şey listelemiyor.",
+    "error": "Katalog index'i okunamadı, bu yüzden liste boş. Index repo'ya commit'li, bu sayfa ulaşamasa bile orada okunabiliyor.",
     "errorAction": "Kataloğu aç",
     "openCatalog": "Aramalı tam katalog",
-    "cardLink": "Blueprint'e git",
-    "filterLabel": "Şablonları filtrele",
-    "filterPlaceholder": "Dil, stack veya isme göre filtrele…",
-    "noMatch": "Bu filtreye uyan yok.",
-    "noMatchAction": "Filtreyi temizle",
-    "count": "{n} şablon",
-    "countOne": "1 şablon",
-    "englishNote": "Blueprint özetleri İngilizce kalıyor. Katalog bir kez, tek dilde yazılıyor; senin diline çeviren agent oluyor.",
-    "tier": {
-      "official": "Official",
-      "verified": "Verified",
-      "community": "Community"
+    "cardLink": {
+      "blueprint": "Blueprint'i oku",
+      "expert": "Expert'i oku",
+      "crew": "Crew'u oku",
+      "integration": "Integration'ı oku"
     },
+    "filterLabel": "Kataloğu filtrele",
+    "filterPlaceholder": "Dil, rol, stack ya da isimle filtrele…",
+    "noMatch": "Burada bu filtreye uyan bir şey yok.",
+    "noMatchAction": "Filtreyi temizle",
+    "count": "{n} gösteriliyor",
+    "countOne": "1 gösteriliyor",
+    "englishNote": "Katalog girdileri İngilizce kalıyor. Bir kez, tek dilde yazılıyor; agent'ın onları senin dilinde sunuyor.",
+    "options": "Seçenekler",
+    "checklists": "{n} checklist",
+    "members": "{n} expert · {m} integration",
+    "installFor": "Kurulumu doğrulanan",
+    "needsSecret": "token gerekiyor",
+    "tier": { "official": "Official", "verified": "Verified", "community": "Community" },
     "tierHint": {
-      "official": "Önce kendisi kuran bir maintainer tarafından yazıldı.",
-      "verified": "Bir maintainer setup'ı koşup doğruladı.",
-      "community": "Katkı olarak geldi. Çalıştırmadan önce setup adımlarını oku."
+      "official": "Önce kendisi kurmuş bir maintainer yazdı; mimari ve güvenlik review'undan geçti.",
+      "verified": "Bir maintainer koştu ve doğruladı.",
+      "community": "Katkıyla geldi. Güvenmeden önce oku."
     },
     "generated": "Generated",
-    "generatedHint": "Kataloğun talep araştırmasından bir tool tarafından taslaklandı. Recipe'i CI'da koşuyor; adımları kimse elle review etmedi.",
-    "options": "Options"
+    "generatedHint": "Kataloğun talep araştırmasından bir tool tarafından taslak olarak yazıldı. Makine kontrol etti, onu kullanan bir insan henüz etmedi."
   },
   "who": {
     "title": "Kimin için",
@@ -146,109 +392,73 @@
     "use": [
       {
         "title": "Agent'la proje başlatan herkes",
-        "body": "MCP server'ın ne olduğunu bilmene gerek yok. Bir kez bağlıyorsun, sonra ne yazdığını kendi cümlelerinle anlatıyorsun."
+        "body": "MCP server'ın ne olduğunu bilmen gerekmiyor."
       },
       {
         "title": "Aynı setup'ı tekrar tekrar yazan ekipler",
-        "body": "Bu çeyreğin dördüncü servisi birincisi kadar sürmemeli. Blueprint tam olarak o kararın bir kez yazılmış hali."
+        "body": "Blueprint o kararın bir kez yazılmış hali."
       },
       {
-        "title": "Yeni bir stack öğrenenler",
-        "body": "Recipe sadece komutları değil kararları da gösteriyor — bariz olmayan her adım orada niye durduğunu yazıyor."
+        "title": "Agent'ın bir senior gibi çalışmasını isteyenler",
+        "body": "Expert kostüm değil, checklist'leri ve kaynakları getiriyor."
       }
     ],
     "buildTitle": "Geliştirenler",
     "build": [
       {
         "title": "Çalışan bir projesi olan herkes",
-        "body": "En iyi blueprint gerçek bir projeden çıkar. blueprint-author skill'i çalışan bir projeyi quality gate'ten geçecek bir blueprint'e çeviriyor."
+        "body": "En değerli blueprint gerçek bir şeyden çıkıyor."
       },
       {
-        "title": "Review edenler ve maintainer'lar",
-        "body": "Her blueprint'in sayfasında adı yazan bir maintainer'ı var. Üç anlamlı merge olmuş PR co-maintainer teklifi getiriyor."
+        "title": "Yazmaya değer bir çalışma biçimi olan herkes",
+        "body": "Bir expert bir rol, checklist'leri ve kaynaklarıdır."
       },
       {
-        "title": "Sadece var olmasını isteyenler",
-        "body": "Issue aç. Katalog talebe göre büyüyor ve bir talep en güçlü sinyal — herhangi bir indirme grafiğinden güçlü."
+        "title": "Sadece bir tanesinin var olmasını isteyenler",
+        "body": "Talep aç. Katalog talebe göre büyüyor."
       }
     ]
   },
-  "use": {
-    "title": "Nasıl kullanılır",
-    "lead": "İki dakika, ve zaten kullandığın agent dışında kurulacak bir şey yok.",
-    "steps": [
-      {
-        "title": "MCP server'ı bağla",
-        "body": "Tek komut. npx indiriyor; kalıcı olarak hiçbir şey kurulmuyor."
-      },
-      {
-        "title": "Agent'a ne yazdığını söyle",
-        "body": "Kendi cümlelerinle. Kendiliğinden Forgeprint'e uzanmazsa kullanmasını söyle."
-      },
-      {
-        "title": "Dönen soruları cevapla",
-        "body": "Resolver tahmin etmiyor, soruyor. Hangi database, hangi auth, kimin için."
-      },
-      {
-        "title": "Recipe'i koşmasına izin ver",
-        "body": "Agent adımları uyguluyor ve her birini doğruluyor. Sen izliyorsun; bir adım yanlış görünürse durduruyorsun — recipe bilerek okunabilir yazılmış."
-      }
-    ],
-    "sampleTitle": "Konuşma neye benziyor",
-    "sampleYou": "Sen",
-    "sampleAgent": "Agent",
-    "sample": [
-      { "who": "you", "text": "C# biliyorum. Multi-tenant bir SaaS API yazmak istiyorum." },
-      {
-        "who": "agent",
-        "text": "Forgeprint üç şey soruyor: hangi database, hangi auth, ve tenancy tek schema mı yoksa tenant başına bir database mi?"
-      },
-      { "who": "you", "text": "Postgres, JWT, shared schema." },
-      {
-        "who": "agent",
-        "text": "dotnet-multitenant-saas-api. Seçilme sebebi: zaten C# yazıyorsun; tenant izolasyonu her query'de değil data layer'da zorunlu kılınmış. Makinende Docker eksik. 34 adım — başlayayım mı?"
-      }
-    ],
-    "alsoTitle": "Ya da parçaları doğrudan al",
-    "also": "Skill'ler zaten kullandığın tool'larla install oluyor, araya MCP server girmeden."
-  },
   "build": {
     "title": "Nasıl katkı verilir",
-    "lead": "Bir klasör bir blueprint, ve katkının birimi o klasör. Pipeline'ın yaptığı her şey kendi makinende koşabileceğin bir komut — hosted CI burada kolaylık, asla bağımlılık değil.",
+    "lead": "Bir klasör bir birim — blueprint, expert, crew ya da integration — ve katkı o klasör. Pipeline'ın yaptığı her şey kendi makinende koşabileceğin bir komut; hosted CI burada kolaylık, asla bağımlılık değil.",
     "setupTitle": "Çalışır hale getir",
     "flowTitle": "Katkı akışı",
     "flow": [
       {
         "title": "Zaten var mı diye bak",
-        "body": "En hızlı merge genelde var olan bir blueprint'e açılan PR. İki blueprint aynı stack + project_type + requirements üçlüsünü alamaz."
+        "body": "Her kombinasyon için tek birim: stack ve gereksinim başına bir blueprint, rol, alan ve kıdem başına bir expert."
       },
       {
         "title": "Çalışan bir şeyden yaz",
-        "body": "blueprint-author skill'i çalışan bir projeyi blueprint'e çeviriyor: manifest, recipe ve kararları anlatan AGENTS.md."
+        "body": "blueprint-author skill'i çalışan bir projeyi blueprint'e çeviriyor."
       },
       {
         "title": "Quality gate'i yerelde geç",
-        "body": "validate, lint-setup, similarity ve gerçek bir setup koşusu. Burada kırmızı olan review'a hiç gelmiyor."
+        "body": "validate, lint-setup, similarity, render-check ve gerçek bir setup koşusu."
       },
       {
         "title": "PR'ı aç",
-        "body": "Hangi blueprint'in en yakın olduğunu ve seninkinin neden ona bir değişiklik olmadığını yaz. O bölüm zorunlu; boşsa check kırmızı."
+        "body": "En yakını ne, ve seninki neden ona bir değişiklik değil, yaz."
       }
     ],
     "archTitle": "Repo nasıl düzenlenmiş",
     "arch": [
-      { "path": "blueprints/<slug>/", "body": "Blueprint başına bir klasör — katkının birimi" },
-      { "path": "schema/", "body": "Manifest schema'sı ve kapalı taxonomy" },
       {
-        "path": "packages/cli/",
-        "body": "validate, build-*, similarity, lint-setup, test-setup, release"
+        "path": "blueprints/<slug>/",
+        "body": "Ne yazdığın: manifest, AGENTS.md, overview, setup.md"
       },
-      { "path": "packages/mcp-server/", "body": "forgeprint-mcp adıyla publish edilen MCP server" },
-      { "path": "packages/site/", "body": "docs/ içine generate edilen katalog sayfaları" },
       {
-        "path": "skills/",
-        "body": "blueprint-author, blueprint-review, arch-review, catalog-research"
+        "path": "experts/<slug>/",
+        "body": "Agent nasıl çalışır: SKILL.md, checklist'ler, kaynaklar"
       },
+      { "path": "crews/<slug>/", "body": "Expert ve integration'ların isimli paketleri" },
+      {
+        "path": "integrations/<slug>/",
+        "body": "Üçüncü taraf MCP server'lar için pinli kurulum recipe'leri"
+      },
+      { "path": "schema/", "body": "Manifest schema'ları, taxonomy ve agents.yaml" },
+      { "path": "packages/", "body": "CLI, MCP server ve katalog sayfaları" },
       { "path": "docs/decisions/", "body": "Her mimari karar, gerekçesiyle birlikte" }
     ]
   },
@@ -260,57 +470,65 @@
         "a": "Hayır. Tool'ların hepsi text dönüyor. Recipe'i okuyup komutları çalıştıran şey senin agent'ın, ve o çalıştırmadan önce her adımı okuyabiliyorsun."
       },
       {
+        "q": "Sadece Claude Code için mi?",
+        "a": "Hayır. Dokuz agent kayıtlı: her birinin ne okuduğu, MCP server'ı nasıl kurduğu ve secret'larını nereden aldığı, vendor'ın kendi dokümanına ve okunduğu tarihe dayanıyor. Bütün bir recipe'i uçtan uca koşan ilk agent Claude Code; diğerleri biri koşana kadar test edildi değil, dokümante edildi olarak işaretli."
+      },
+      {
+        "q": "Expert ne — bir persona mı?",
+        "a": "Hayır. Persona bir kostüm. Expert bir çalışma biçimi: ne ürettiği, hangi checklist'leri uyguladığı, ve sürümü ile en son kontrol tarihi yazılı kaynaklar. Rol, alan ve kıdem başına tek expert."
+      },
+      {
+        "q": "Integration'ları benim için kuruyor mu?",
+        "a": "Hayır. Agent'ına uygun pinli bir kurulum komutu dönüyor ve integration'ın nelere erişebildiğini söylüyor. Bir secret gerekiyorsa agent'ın onu nereden alacağını söylüyor, asla kendisi girmiyor."
+      },
+      {
         "q": "Hakkımda veri topluyor mu?",
-        "a": "Telemetri yok, log yok, analytics yok. Sayaç yok ve planlanmıyor; repo'daki PRIVACY.md bunu yazıyor, roadmap de böyle bir şey eklenecekse neden anonim ve opt-in olmak zorunda olduğunu."
+        "a": "Telemetri yok, log yok, analytics yok. Sayaç yok ve planlanmıyor; repo'daki gizlilik beyanı bunu yazıyor."
       },
       {
         "q": "Neden tek blueprint? Karşılaştırmak istiyorum.",
-        "a": "Çünkü listeden seçmek, kaçınmaya çalıştığın işin ta kendisi. İki aday gerçekten yakınsa resolver ikisini birden soru olarak veriyor, compare_blueprints de artı-eksi tablosunu kendi overview.md'lerinden çıkarıyor."
+        "a": "Çünkü listeden seçmek, kaçınmaya çalıştığın işin ta kendisi. İki aday gerçekten yakınsa resolver ikisini birden soru olarak veriyor, compare_blueprints de tabloyu kendi overview dosyalarından çıkarıyor."
       },
       {
-        "q": "Yazdığım şeye hiçbiri uymuyorsa?",
-        "a": "Bunu söylüyor, en yakın blueprint'i adıyla veriyor, neden uymadığını açıklıyor ve issue açmayı öneriyor. Uydurma match yapmıyor — yanlış blueprint, blueprint olmamasından pahalı."
+        "q": "Yazdığım şeye hiçbir şey uymazsa?",
+        "a": "Bunu söylüyor, en yakın blueprint'i ve neden uymadığını anlatıyor, talep açmayı öneriyor. Asla eşleşme uydurmuyor."
       },
       {
-        "q": "Bazı şablonlarda \"Generated\" yazıyor. Güvenilir mi?",
-        "a": "Etiketin söylediği kadar. Setup recipe'leri diğerleri gibi CI'da koşuyor, ama üzerine gerçek bir proje kuran olmadı. Official işaretlenememelerinin sebebi bu — schema bu kombinasyonu reddediyor — ve etiketin her yere onlarla gitmesinin sebebi de."
+        "q": "Bazı girdilerde \"generated\" yazıyor. Güvenmeli miyim?",
+        "a": "Tam olarak etiketin dediği kadar. Makine kontrollerinin hepsini geçiyorlar, ama henüz kimse üzerlerinde gerçek bir şey kurmadı. Bu yüzden hiçbir zaman Official olamıyorlar, etiket de her yerde peşlerinden geliyor."
       },
       {
-        "q": "Blueprint'i ticari projede kullanabilir miyim?",
-        "a": "Evet. Blueprint içeriği CC BY 4.0 — bilerek en özgür kısım, çünkü kendi projene koyamadığın bir blueprint işe yaramaz. Tooling PolyForm Shield: kullan, değiştir, katkı ver; ama onunla rakip bir ürün çıkarma."
+        "q": "Bir blueprint'i ticari işte kullanabilir miyim?",
+        "a": "Evet. Katalog içeriği CC BY 4.0 — bilerek en özgür kısım. Tooling PolyForm Shield: kullan, değiştir, katkı ver, ama onunla rakip bir ürün çıkarma."
       },
       {
-        "q": "Açık kaynak mı?",
-        "a": "Source-available, OSI anlamında açık kaynak değil. Aksini söylemek daha kolay ve daha az dürüst olurdu. Repo'daki lisans tablosu hangi kısmın hangisi olduğunu net yazıyor."
+        "q": "Bu open source mu?",
+        "a": "Source-available, OSI open source değil. Aksini söylemek daha kolay, ama daha az dürüst olurdu."
       },
       {
-        "q": "Claude Code dışındaki agent'larla çalışıyor mu?",
-        "a": "Bu bir MCP server, yani MCP konuşan her şey bağlanabiliyor. Her blueprint hepsini iddia etmek yerine gerçekten test edildiği agent'ları listeliyor."
-      },
-      {
-        "q": "Site benim dilimde mi?",
-        "a": "Bu sayfa evet. Katalog bilerek değil: bir kez İngilizce yazılıyor, senin diline agent çeviriyor — tool'lar bir locale hint'i alıp geri veriyor. Güncel kalması için hiçbir şeyin çevrilmesi gerekmiyor."
+        "q": "Site benim dilimde var mı?",
+        "a": "Bu sayfa var. Katalog bilerek yok: bir kez İngilizce yazılıyor, agent'ın onu senin dilinde sunuyor."
       }
     ]
   },
   "links": {
     "title": "Buradan nereye",
     "repo": "Repo",
-    "repoBody": "Kaynak, blueprint'ler, ADR'ler ve bütün geçmiş.",
+    "repoBody": "Kaynak kod, katalog, kararlar ve bütün geçmiş.",
     "issues": "Açık issue'lar",
-    "issuesBody": "Bug'lar, sorular ve birini bekleyen blueprint talepleri.",
-    "request": "Blueprint talebi aç",
-    "requestBody": "Yazdığın şeye hiçbiri uymuyor mu? En güçlü sinyal bu.",
+    "issuesBody": "Bug'lar, sorular ve talepler.",
+    "request": "Blueprint talep et",
+    "requestBody": "Yazdığın şeye hiçbir şey uymuyor mu?",
     "contributing": "Katkı rehberi",
-    "contributingBody": "Bir blueprint neleri içermeli ve nasıl değerlendiriliyor.",
-    "governance": "Governance",
-    "governanceBody": "Kim neye karar veriyor, kimse cevap vermezse ne oluyor.",
+    "contributingBody": "Her birimin neleri içermesi gerektiği.",
+    "governance": "Yönetişim",
+    "governanceBody": "Neye kim karar veriyor.",
     "licence": "Lisans",
-    "licenceBody": "Source-available. Blueprint içeriği CC BY 4.0."
+    "licenceBody": "Source-available. Katalog içeriği için CC BY 4.0."
   },
   "footer": {
-    "tagline": "Coding agent'lar için blueprint kataloğu ve MCP server.",
-    "note": "Tooling PolyForm Shield 1.0.0 altında. Blueprint içeriği CC BY 4.0 altında.",
-    "built": "Bu sayfa build step'i olmayan saf HTML, CSS ve JavaScript; GitHub Pages repo'dan serve ediyor."
+    "tagline": "Coding agent'lar için blueprint, expert ve crew'lar.",
+    "note": "Source-available, PolyForm Shield 1.0.0 altında. Katalog içeriği CC BY 4.0 altında.",
+    "built": "Bu sayfa build adımı olmayan, elle yazılmış HTML, CSS ve JavaScript."
   }
 }
