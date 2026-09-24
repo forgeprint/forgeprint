@@ -218,6 +218,29 @@ Requires Go 1.25 or newer and Docker.
    		t.Fatalf("got %d, want 200", got)
    	}
    }
+
+   // The group protects a new route by where it is declared, and nothing stops
+   // somebody declaring one outside it. Gin exposes the route table, so the
+   // convention can be a check rather than a habit: every route that is not on
+   // the allow-list has to refuse a request carrying no token.
+   func TestEveryRouteOutsideTheAllowListNeedsAToken(t *testing.T) {
+   	public := map[string]bool{"GET /health": true}
+
+   	for _, route := range New(settings).Routes() {
+   		name := route.Method + " " + route.Path
+   		if public[name] {
+   			continue
+   		}
+
+   		request := httptest.NewRequest(route.Method, route.Path, nil)
+   		recorder := httptest.NewRecorder()
+   		New(settings).ServeHTTP(recorder, request)
+
+   		if recorder.Code != http.StatusUnauthorized {
+   			t.Errorf("%s answered %d without a token, want 401", name, recorder.Code)
+   		}
+   	}
+   }
    ```
 
    Verify: `test -f internal/api/api_test.go`
