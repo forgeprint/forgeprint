@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title data-i18n="meta.title">
-      Forgeprint — tell an agent who you are, get the whole project package
+      Forgeprint — blueprints, experts and crews for coding agents
     </title>
     <meta
       name="description"
       data-i18n-attr="content:meta.description"
-      content="A curated blueprint catalog and MCP server. Describe yourself and your goal; get exactly one blueprint with its AGENTS.md, skills, MCP configuration and a setup recipe your agent can execute."
+      content="A curated catalog and MCP server for any coding agent. Say what you know and what you are building; get exactly one blueprint with a CI-tested setup recipe, and the experts, crews and integrations to work on it with."
     />
     <link rel="icon" href="brand/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://forgeprint.github.io/forgeprint/" />
@@ -18,7 +18,7 @@
     <meta
       property="og:description"
       data-i18n-attr="content:meta.description"
-      content="Tell an agent who you are. Get the whole project package."
+      content="Blueprints, experts and crews for coding agents — resolved for you."
     />
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/" />
     <link rel="stylesheet" href="forgeprint.css" />
@@ -48,10 +48,12 @@
         </a>
 
         <nav class="site-nav" aria-label="Sections">
-          <a href="#what" data-i18n="nav.what">What it is</a>
+          <a href="#units" data-i18n="nav.units">Four units</a>
           <a href="#how" data-i18n="nav.how">How it works</a>
-          <a href="#templates" data-i18n="nav.templates">Templates</a>
-          <a href="#use" data-i18n="nav.use">Use it</a>
+          <a href="#examples" data-i18n="nav.examples">Examples</a>
+          <a href="#tools" data-i18n="nav.tools">Tools</a>
+          <a href="#agents" data-i18n="nav.agents">Agents</a>
+          <a href="#catalog" data-i18n="nav.catalog">Catalog</a>
           <a href="#build" data-i18n="nav.build">Contribute</a>
           <a href="#faq" data-i18n="nav.faq">FAQ</a>
         </nav>
@@ -90,24 +92,51 @@
       <!-- ── Hero ─────────────────────────────────────────────────────── -->
       <section class="hero" id="what">
         <div class="hero-text">
-          <p class="eyebrow" data-i18n="hero.eyebrow">Blueprint catalog + MCP server</p>
-          <h1 data-i18n="hero.title">Tell an agent who you are. Get the whole project package.</h1>
+          <p class="eyebrow" data-i18n="hero.eyebrow">
+            Catalog + MCP server · for any coding agent
+          </p>
+          <h1 data-i18n="hero.title">
+            Blueprints, experts and crews for coding agents — resolved for you.
+          </h1>
           <p class="lead" data-i18n-html="hero.lead">
-            Others hand you two hundred skills and wish you luck. Forgeprint asks what you know and
-            what you are building, then returns <strong>exactly one</strong> blueprint — the rule
-            file, the skills, the MCP configuration, and a setup recipe your agent runs step by
-            step.
+            Say what you know and what you are building. Forgeprint returns
+            <strong>exactly one</strong> blueprint — the rule file, the skills, the MCP
+            configuration and a setup recipe your agent runs step by step — and, when you ask, the
+            experts and tools to work on it with.
           </p>
           <p class="status-pill">
             <span class="dot" aria-hidden="true"></span
-            ><span data-i18n="hero.status">Pre-release · 7 blueprints · 3 languages</span>
+            ><span id="status"
+              >Pre-release · 17 blueprints · 8 experts · 2 crews · 10 integrations · 9 agents</span
+            >
           </p>
         </div>
 
         <div class="hero-cta">
           <p class="cta-label" data-i18n="hero.ctaPrimary">Connect it to your agent</p>
+
+          <!-- Without JavaScript the picker does nothing, so it is hidden and
+               the Claude Code command below stands on its own. -->
+          <div class="agent-pick js-only">
+            <label for="agent-pick" data-i18n="hero.agentLabel">Your agent</label>
+            <select id="agent-pick" aria-describedby="agent-pick-hint">
+              <option value="claude-code">Claude Code</option>
+              <option value="codex">Codex CLI</option>
+              <option value="gemini-cli">Gemini CLI</option>
+              <option value="copilot-cli">GitHub Copilot CLI</option>
+              <option value="cursor">Cursor</option>
+              <option value="windsurf">Windsurf</option>
+              <option value="cline">Cline</option>
+              <option value="opencode">OpenCode</option>
+              <option value="kiro">Kiro</option>
+            </select>
+            <p class="hint" id="agent-pick-hint" data-i18n="hero.agentHint">
+              The examples on this page follow the agent you pick.
+            </p>
+          </div>
+
           <div class="code" data-code>
-            <pre><code>claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
+            <pre><code id="install-code">claude mcp add forgeprint -- npx -y forgeprint-mcp</code></pre>
             <button
               class="copy"
               type="button"
@@ -117,23 +146,12 @@
               <span data-i18n="hero.copy">Copy</span>
             </button>
           </div>
-          <p class="hint" data-i18n="hero.ctaPrimaryHint">
-            One command. It adds the MCP server to Claude Code.
+          <p class="hint" id="install-note">
+            One command. On Windows PowerShell, quote the separator: "--".
           </p>
-          <details class="aside">
-            <summary data-i18n="hero.windows">On Windows PowerShell, quote the separator:</summary>
-            <div class="code" data-code>
-              <pre><code>claude mcp add forgeprint "--" npx -y forgeprint-mcp</code></pre>
-              <button
-                class="copy"
-                type="button"
-                data-i18n-attr="aria-label:hero.copy"
-                aria-label="Copy"
-              >
-                <span data-i18n="hero.copy">Copy</span>
-              </button>
-            </div>
-          </details>
+          <p class="verified" id="install-status" data-state="tested">
+            <span>Tested end to end: an agent ran a whole recipe through it.</span>
+          </p>
           <p>
             <a class="btn-quiet" href="catalog.html" data-i18n="hero.ctaSecondary"
               >Browse the catalog</a
@@ -165,7 +183,7 @@
                 <li>Search for a starting point, find five, compare them by hand</li>
                 <li>Write AGENTS.md from memory, forget half of it</li>
                 <li>Wire MCP servers one at a time, from their own READMEs</li>
-                <li>Run setup steps that were right six months ago</li>
+                <li>Tell the agent how to review, test and ship — again, in every project</li>
                 <li>Discover the gaps only when something fails</li>
               </ul>
             </div>
@@ -175,7 +193,7 @@
                 <li>Describe yourself in one sentence; the resolver asks what it still needs</li>
                 <li>Get one blueprint, with the reason it was chosen</li>
                 <li>The rule file, the skills and the MCP configuration arrive together</li>
-                <li>Every setup step is pinned and ends with the command that proves it worked</li>
+                <li>Experts bring a way of working, with checklists and sources behind it</li>
                 <li>The recipe is executed in CI before it ever reaches you</li>
               </ul>
             </div>
@@ -183,9 +201,63 @@
         </div>
       </section>
 
-      <!-- ── How it works ─────────────────────────────────────────────── -->
-      <section class="section" id="how">
+      <!-- ── Four units ───────────────────────────────────────────────── -->
+      <section class="section" id="units">
         <div class="section-inner reveal">
+          <h2 data-i18n="units.title">Three questions, four units</h2>
+          <p class="prose" data-i18n="units.lead">
+            A blueprint answers what you are building. Two more questions come up in the same breath
+            — how the agent should work, and with which tools — and each has its own unit. A crew
+            packages the answers under a name.
+          </p>
+
+          <div class="units" data-i18n-units="units.items">
+            <article class="unit" data-kind="blueprint">
+              <p class="unit-q">What are you building?</p>
+              <h3>Blueprint</h3>
+              <p>
+                A project package: AGENTS.md, skills, MCP configuration, and setup.md — a recipe
+                whose every step ends in the check that proves it worked.
+              </p>
+            </article>
+            <article class="unit" data-kind="expert">
+              <p class="unit-q">How should the agent work?</p>
+              <h3>Expert</h3>
+              <p>
+                A way of working, not a persona. It names what it produces, the checklists it
+                applies, and the sourced references it rests on.
+              </p>
+            </article>
+            <article class="unit" data-kind="integration">
+              <p class="unit-q">With which tools?</p>
+              <h3>Integration</h3>
+              <p>
+                A pinned, permission-documented install recipe for somebody else's MCP server.
+                Forgeprint hosts no third-party code.
+              </p>
+            </article>
+            <article class="unit" data-kind="crew">
+              <p class="unit-q">All of it, under one name?</p>
+              <h3>Crew</h3>
+              <p>
+                Up to six experts and their integrations, named by slug. It copies nothing, and says
+                what it is for — and what it is not for.
+              </p>
+            </article>
+          </div>
+
+          <figure class="diagram js-only">
+            <figcaption data-i18n="units.diagramTitle">
+              How the units point at each other — live from the catalog
+            </figcaption>
+            <div class="diagram-frame" id="units-diagram"></div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ── How it works ─────────────────────────────────────────────── -->
+      <section class="band" id="how">
+        <div class="band-inner reveal">
           <h2 data-i18n="how.title">How it works</h2>
           <p class="prose" data-i18n="how.lead">
             You talk to your agent normally. Forgeprint answers in structured data, and your agent
@@ -193,42 +265,330 @@
             text.
           </p>
 
-          <div class="flow">
-            <ol class="steps" data-i18n-steps="how.steps">
-              <li>
-                <h3>You describe yourself</h3>
-                <p>
-                  “I know C#, I am building a multi-tenant SaaS API.” No form to fill in, no
-                  catalogue to read.
-                </p>
-              </li>
-              <li>
-                <h3>The resolver asks what is missing</h3>
-                <p>
-                  An incomplete profile does not get a guess. It gets the questions your agent
-                  should ask you.
-                </p>
-              </li>
-              <li>
-                <h3>One blueprint comes back</h3>
-                <p>
-                  Never a list. With the reason it was chosen, what is missing on your machine, and
-                  the setup plan.
-                </p>
-              </li>
-              <li>
-                <h3>Your agent executes the recipe</h3>
-                <p>Numbered steps, pinned versions, and a verification command after each one.</p>
-              </li>
+          <div class="player">
+            <!-- The list is the diagram's text. Without JavaScript it is all
+                 there is, and it reads as a numbered sequence. -->
+            <ol class="flow-steps" id="flow-steps">
+              <li><span class="fs-title">You say who you are</span></li>
+              <li><span class="fs-title">Your agent calls resolve</span></li>
+              <li><span class="fs-title">One blueprint comes back</span></li>
+              <li><span class="fs-title">It asks rather than guesses</span></li>
+              <li><span class="fs-title">You answer</span></li>
+              <li><span class="fs-title">It fetches the package</span></li>
+              <li><span class="fs-title">Context and recipe arrive together</span></li>
+              <li><span class="fs-title">Your agent runs the recipe</span></li>
             </ol>
 
-            <figure class="diagram">
-              <figcaption data-i18n="how.diagramTitle">What moves between the pieces</figcaption>
-              <div class="diagram-frame" id="diagram"></div>
-              <p class="hint" data-i18n="how.diagram.note">
+            <figure class="diagram js-only">
+              <div class="diagram-frame flow-frame" id="flow-diagram"></div>
+              <div class="player-bar">
+                <button
+                  type="button"
+                  class="ctl"
+                  id="flow-prev"
+                  data-i18n-attr="aria-label:how.prev;title:how.prev"
+                  aria-label="Previous step"
+                  title="Previous step"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M15 6l-6 6 6 6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+                <button type="button" class="ctl play" id="flow-play" aria-pressed="false">
+                  <svg
+                    class="i-play"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M8 5v14l11-7Z" fill="currentColor" />
+                  </svg>
+                  <svg
+                    class="i-pause"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" />
+                  </svg>
+                  <span id="flow-play-label" data-i18n="how.play">Play</span>
+                </button>
+                <button
+                  type="button"
+                  class="ctl"
+                  id="flow-next"
+                  data-i18n-attr="aria-label:how.next;title:how.next"
+                  aria-label="Next step"
+                  title="Next step"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M9 6l6 6-6 6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+                <p class="player-pos" id="flow-pos" aria-live="polite"></p>
+              </div>
+              <p class="hint" data-i18n="how.note">
                 Forgeprint returns text. It never runs anything on your machine.
               </p>
             </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Examples ─────────────────────────────────────────────────── -->
+      <section class="section" id="examples">
+        <div class="section-inner reveal">
+          <h2 data-i18n="examples.title">What it looks like</h2>
+          <p class="prose" data-i18n="examples.lead">
+            Four conversations, one for each unit. The tool calls are shown the way your agent makes
+            them.
+          </p>
+
+          <div
+            class="tabs ex-tabs js-only"
+            role="tablist"
+            data-i18n-attr="aria-label:examples.tabsLabel"
+            aria-label="Example conversations"
+          >
+            <button
+              type="button"
+              role="tab"
+              id="ex-tab-project"
+              aria-controls="ex-panel"
+              aria-selected="true"
+              data-example="project"
+              data-i18n="examples.tabs.project"
+            >
+              Start a project
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="ex-tab-expert"
+              aria-controls="ex-panel"
+              aria-selected="false"
+              tabindex="-1"
+              data-example="expert"
+              data-i18n="examples.tabs.expert"
+            >
+              Bring an expert
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="ex-tab-crew"
+              aria-controls="ex-panel"
+              aria-selected="false"
+              tabindex="-1"
+              data-example="crew"
+              data-i18n="examples.tabs.crew"
+            >
+              Take a crew
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="ex-tab-integration"
+              aria-controls="ex-panel"
+              aria-selected="false"
+              tabindex="-1"
+              data-example="integration"
+              data-i18n="examples.tabs.integration"
+            >
+              Add an integration
+            </button>
+          </div>
+
+          <div class="ex-grid">
+            <div
+              class="chat"
+              id="ex-panel"
+              role="tabpanel"
+              aria-labelledby="ex-tab-project"
+              tabindex="0"
+            >
+              <p class="turn you">
+                <span class="who">You</span>I know C#. I want to build a multi-tenant SaaS API.
+              </p>
+              <p class="turn tool">
+                <code>resolve { languages: ["C#"], goal: "multi-tenant SaaS API" }</code>
+              </p>
+              <p class="turn agent">
+                <span class="who">Your agent</span>One blueprint fits: dotnet-multitenant-saas-api —
+                chosen because you already write C#, and it covers multi-tenancy. Two things are
+                still open: Postgres or SQL Server, and one shared database with a tenant column, or
+                one database per tenant?
+              </p>
+              <p class="turn you"><span class="who">You</span>Postgres, one shared database.</p>
+              <p class="turn agent">
+                <span class="who">Your agent</span>I have the recipe: numbered steps, pinned
+                versions, and a check after each one. Shall I start in this folder?
+              </p>
+            </div>
+            <aside class="ex-aside js-only">
+              <p class="hint" id="ex-note"></p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tools ────────────────────────────────────────────────────── -->
+      <section class="band" id="tools">
+        <div class="band-inner reveal">
+          <h2 data-i18n="tools.title">Ten tools, three jobs</h2>
+          <p class="prose" data-i18n="tools.lead">
+            Everything Forgeprint does is one of these calls. Each returns text; none of them runs
+            anything.
+          </p>
+          <div class="tool-groups" data-i18n-tools="tools.groups">
+            <div class="tool-group">
+              <h3>Start a project</h3>
+              <dl>
+                <dt>resolve</dt>
+                <dd>
+                  Your profile in; either the questions to ask you, or one blueprint with the
+                  reason.
+                </dd>
+                <dt>search_blueprints</dt>
+                <dd>
+                  Stack, language, type or text in; matching blueprints with their scores out.
+                </dd>
+                <dt>compare_blueprints</dt>
+                <dd>
+                  Two to four slugs in; a pros-and-cons table built from their own overview files.
+                </dd>
+                <dt>get_blueprint</dt>
+                <dd>The package, with the recipe's option blocks resolved for your choices.</dd>
+              </dl>
+            </div>
+            <div class="tool-group">
+              <h3>Work with the right people</h3>
+              <dl>
+                <dt>recommend_experts</dt>
+                <dd>A task in; at most one crew or three experts, each with a reason.</dd>
+                <dt>get_expert</dt>
+                <dd>
+                  SKILL.md, checklists and references — and the paths your agent reads them from.
+                </dd>
+                <dt>get_crew</dt>
+                <dd>
+                  Every member in full, and the install command for each integration, for your
+                  agent.
+                </dd>
+                <dt>get_integration</dt>
+                <dd>
+                  Pinned upstream, install command, and the secrets it needs with what they reach.
+                </dd>
+              </dl>
+            </div>
+            <div class="tool-group">
+              <h3>Grow the catalog</h3>
+              <dl>
+                <dt>validate_blueprint</dt>
+                <dd>A blueprint folder in; schema errors and a duplicate report out.</dd>
+                <dt>request_blueprint</dt>
+                <dd>When nothing fits: an issue payload. The catalog grows by demand.</dd>
+              </dl>
+            </div>
+          </div>
+          <p class="punch prose" data-i18n="tools.note">
+            Ask resolve for an expert and it does not improvise one: it tells your agent which tool
+            to call instead.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Agents ───────────────────────────────────────────────────── -->
+      <section class="section" id="agents">
+        <div class="section-inner reveal">
+          <h2 data-i18n="agents.title">Written once. Rendered for nine agents.</h2>
+          <p class="prose" data-i18n="agents.lead">
+            Content lives in the catalog once, as AGENTS.md and SKILL.md. Each agent's own file is
+            generated from it — a hand-written copy per agent is refused. What every agent reads,
+            and the day its documentation was last checked, is on record.
+          </p>
+
+          <div class="render-flow">
+            <div class="rf-node">
+              <p class="rf-title" data-i18n="agents.source">Written once</p>
+              <p class="rf-sub" data-i18n="agents.sourceSub">AGENTS.md · SKILL.md</p>
+            </div>
+            <div class="rf-link" aria-hidden="true"></div>
+            <div class="rf-node accent">
+              <p class="rf-title" data-i18n="agents.engine">Rendered per agent</p>
+              <p class="rf-sub" data-i18n="agents.engineSub">forgeprint render --agent</p>
+            </div>
+            <div class="rf-link" aria-hidden="true"></div>
+            <div class="rf-targets">
+              <h3 class="sub" data-i18n="agents.targetsLabel">What each agent gets</h3>
+              <ul class="targets" id="agent-targets">
+                <li><span class="t-name">Claude Code</span><code>CLAUDE.md</code></li>
+                <li><span class="t-name">Codex CLI</span><code>AGENTS.md</code></li>
+                <li>
+                  <span class="t-name">GitHub Copilot CLI</span
+                  ><code>.github/copilot-instructions.md</code>
+                </li>
+                <li><span class="t-name">Cursor</span><code>.cursor/rules/{slug}.mdc</code></li>
+                <li><span class="t-name">Gemini CLI</span><code>GEMINI.md</code></li>
+                <li><span class="t-name">Windsurf</span><code>.windsurf/rules/{slug}.md</code></li>
+                <li><span class="t-name">Cline</span><code>.clinerules/{slug}.md</code></li>
+                <li><span class="t-name">OpenCode</span><code>AGENTS.md</code></li>
+                <li><span class="t-name">Kiro</span><code>.kiro/steering/{slug}.md</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="no-mcp">
+            <div>
+              <h3 class="sub" data-i18n="agents.noMcpTitle">No MCP client?</h3>
+              <p class="hint prose" data-i18n="agents.noMcp">
+                The same files, written to disk from a clone of the repository — two ways in, one
+                answer out. Skills also install through tools you may already use.
+              </p>
+            </div>
+            <div class="code" data-code>
+              <pre><code id="get-code">pnpm forgeprint get dotnet-web-api --agent claude-code
+npx skills add forgeprint/forgeprint
+gh skill install forgeprint/forgeprint blueprint-author</code></pre>
+              <button
+                class="copy"
+                type="button"
+                data-i18n-attr="aria-label:hero.copy"
+                aria-label="Copy"
+              >
+                <span data-i18n="hero.copy">Copy</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -238,66 +598,137 @@
         <div class="band-inner reveal">
           <h2 data-i18n="different.title">What makes it different</h2>
           <div
-            class="cards four"
+            class="cards three"
             data-i18n-cards="different.items"
-            data-icons="target,list,shield,plug"
+            data-icons="target,list,shield,plug,layers,globe"
           >
             <article class="card-lift">
               <h3>A resolver, not a list</h3>
-              <p>
-                It returns one blueprint, weighted so a language you already know beats everything
-                else.
-              </p>
+              <p>One answer, weighted so a language you already know beats everything else.</p>
             </article>
             <article class="card-lift">
               <h3>A recipe, not a description</h3>
               <p>
-                setup.md is a script. Versions pinned, each step ending in the check that proves it
+                setup.md is a script: pinned versions, each step ending in the check that proves it
                 worked.
               </p>
             </article>
             <article class="card-lift">
               <h3>A gate, not a junk drawer</h3>
               <p>
-                Schema validation, a real setup run, and a duplicate report on every pull request.
+                Schema validation, a real setup run and a duplicate report on every pull request.
               </p>
             </article>
             <article class="card-lift">
               <h3>Standards, not another format</h3>
               <p>AGENTS.md, SKILL.md and marketplace.json as they already exist.</p>
             </article>
+            <article class="card-lift">
+              <h3>Composition, not copies</h3>
+              <p>
+                A crew names experts and integrations by slug. At most six members, and a line
+                saying what it is not for.
+              </p>
+            </article>
+            <article class="card-lift">
+              <h3>Any agent, on the record</h3>
+              <p>
+                Nine agents registered from their vendors' own docs, each with a date. Tested means
+                tested.
+              </p>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- ── Templates ────────────────────────────────────────────────── -->
-      <section class="section" id="templates">
+      <!-- ── Catalog ──────────────────────────────────────────────────── -->
+      <section class="section" id="catalog">
         <div class="section-inner">
           <div class="templates-head reveal">
             <div>
-              <h2 data-i18n="templates.title">The templates</h2>
-              <p class="prose" data-i18n="templates.lead">
-                Every blueprint in the catalog right now. Each one has been reviewed against named
-                security and architecture standards, and its setup recipe is executed in CI on every
-                push — in every option combination.
+              <h2 data-i18n="catalog.title">The catalog</h2>
+              <p class="prose" data-i18n="catalog.lead">
+                Everything in it right now, read live from the published index. Every blueprint's
+                recipe runs in CI on every push, in every option combination.
               </p>
             </div>
             <div class="templates-tools">
-              <label class="visually-hidden" for="tpl-filter" data-i18n="templates.filterLabel"
-                >Filter the templates</label
+              <label class="visually-hidden" for="tpl-filter" data-i18n="catalog.filterLabel"
+                >Filter the catalog</label
               >
               <input
                 id="tpl-filter"
                 type="search"
                 autocomplete="off"
-                data-i18n-attr="placeholder:templates.filterPlaceholder"
-                placeholder="Filter by language, stack or name…"
+                data-i18n-attr="placeholder:catalog.filterPlaceholder"
+                placeholder="Filter by language, role, stack or name…"
               />
               <p class="hint" id="tpl-count" aria-live="polite"></p>
             </div>
           </div>
 
-          <div id="tpl-list" class="templates" aria-busy="true">
+          <div
+            class="tabs cat-tabs js-only"
+            role="tablist"
+            data-i18n-attr="aria-label:catalog.tabsLabel"
+            aria-label="What to browse"
+          >
+            <button
+              type="button"
+              role="tab"
+              id="cat-tab-blueprint"
+              aria-controls="tpl-list"
+              aria-selected="true"
+              data-kind="blueprint"
+            >
+              <span data-i18n="catalog.tabs.blueprint">Blueprints</span>
+              <span class="count" data-count="blueprint"></span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="cat-tab-expert"
+              aria-controls="tpl-list"
+              aria-selected="false"
+              tabindex="-1"
+              data-kind="expert"
+            >
+              <span data-i18n="catalog.tabs.expert">Experts</span>
+              <span class="count" data-count="expert"></span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="cat-tab-crew"
+              aria-controls="tpl-list"
+              aria-selected="false"
+              tabindex="-1"
+              data-kind="crew"
+            >
+              <span data-i18n="catalog.tabs.crew">Crews</span>
+              <span class="count" data-count="crew"></span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="cat-tab-integration"
+              aria-controls="tpl-list"
+              aria-selected="false"
+              tabindex="-1"
+              data-kind="integration"
+            >
+              <span data-i18n="catalog.tabs.integration">Integrations</span>
+              <span class="count" data-count="integration"></span>
+            </button>
+          </div>
+
+          <div
+            id="tpl-list"
+            class="templates"
+            role="tabpanel"
+            aria-labelledby="cat-tab-blueprint"
+            aria-busy="true"
+          >
             <!-- Loading skeletons, replaced once the index is read. -->
             <div class="tpl skeleton" aria-hidden="true">
               <span></span><span></span><span></span>
@@ -309,17 +740,17 @@
               <span></span><span></span><span></span>
             </div>
           </div>
-          <p class="visually-hidden" id="tpl-status" role="status" data-i18n="templates.loading">
+          <p class="visually-hidden" id="tpl-status" role="status" data-i18n="catalog.loading">
             Reading the catalog…
           </p>
 
           <p class="templates-foot">
-            <a class="btn-quiet" href="catalog.html" data-i18n="templates.openCatalog"
+            <a class="btn-quiet" href="catalog.html" data-i18n="catalog.openCatalog"
               >Full catalog with search</a
             >
-            <span class="hint" data-i18n="templates.englishNote"
-              >Blueprint summaries stay in English. The catalog is written once, in one language,
-              and your agent presents it in yours.</span
+            <span class="hint" data-i18n="catalog.englishNote"
+              >Catalog entries stay in English. They are written once, in one language, and your
+              agent presents them in yours.</span
             >
           </p>
         </div>
@@ -342,8 +773,8 @@
                   <p>A blueprint is that decision, written down once.</p>
                 </article>
                 <article class="card-lift">
-                  <h3>People learning a stack</h3>
-                  <p>The recipe shows the decisions, not just the commands.</p>
+                  <h3>People who want the agent to work like a senior</h3>
+                  <p>An expert brings the checklists and the sources, not a costume.</p>
                 </article>
               </div>
             </div>
@@ -355,8 +786,8 @@
                   <p>The most valuable blueprint comes from something real.</p>
                 </article>
                 <article class="card-lift">
-                  <h3>Reviewers and maintainers</h3>
-                  <p>Every blueprint has a maintainer, listed on its page.</p>
+                  <h3>Anyone with a way of working worth writing down</h3>
+                  <p>An expert is a role, its checklists and its references.</p>
                 </article>
                 <article class="card-lift">
                   <h3>People who just want one to exist</h3>
@@ -368,82 +799,14 @@
         </div>
       </section>
 
-      <!-- ── Use it ───────────────────────────────────────────────────── -->
-      <section class="section" id="use">
-        <div class="section-inner reveal">
-          <h2 data-i18n="use.title">How to use it</h2>
-          <p class="prose" data-i18n="use.lead">
-            Two minutes, and nothing to install beyond the agent you already have.
-          </p>
-
-          <div class="use-grid">
-            <ol class="steps" data-i18n-steps="use.steps">
-              <li>
-                <h3>Connect the MCP server</h3>
-                <p>One command. npx fetches it; nothing is installed permanently.</p>
-              </li>
-              <li>
-                <h3>Tell your agent what you are building</h3>
-                <p>In your own words.</p>
-              </li>
-              <li>
-                <h3>Answer the questions it comes back with</h3>
-                <p>The resolver asks rather than guesses.</p>
-              </li>
-              <li>
-                <h3>Let it run the recipe</h3>
-                <p>Your agent executes the steps and checks each one.</p>
-              </li>
-            </ol>
-
-            <div class="chat-wrap">
-              <h3 class="sub" data-i18n="use.sampleTitle">What the exchange looks like</h3>
-              <div class="chat" data-i18n-chat="use.sample">
-                <p class="turn you">
-                  <span class="who">You</span>I know C#. I want to build a multi-tenant SaaS API.
-                </p>
-                <p class="turn agent">
-                  <span class="who">Agent</span>Forgeprint needs three things: which database, which
-                  auth, and is tenancy one schema or one database per tenant?
-                </p>
-                <p class="turn you"><span class="who">You</span>Postgres, JWT, shared schema.</p>
-                <p class="turn agent">
-                  <span class="who">Agent</span>dotnet-multitenant-saas-api. Chosen because you
-                  already write C#. 34 steps — shall I start?
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="also">
-            <h3 class="sub" data-i18n="use.alsoTitle">Or take the pieces directly</h3>
-            <p class="hint" data-i18n="use.also">
-              The skills install through the tools you already use, with no MCP server involved.
-            </p>
-            <div class="code" data-code>
-              <pre><code>npx skills add forgeprint/forgeprint
-gh skill install forgeprint/forgeprint blueprint-author</code></pre>
-              <button
-                class="copy"
-                type="button"
-                data-i18n-attr="aria-label:hero.copy"
-                aria-label="Copy"
-              >
-                <span data-i18n="hero.copy">Copy</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ── Contribute ───────────────────────────────────────────────── -->
-      <section class="band" id="build">
-        <div class="band-inner reveal">
+      <section class="section" id="build">
+        <div class="section-inner reveal">
           <h2 data-i18n="build.title">How to contribute</h2>
           <p class="prose" data-i18n="build.lead">
-            One folder is one blueprint, and that folder is the unit of contribution. Everything the
-            pipeline does is a command you can run on your own machine — hosted CI is a convenience
-            here, never a dependency.
+            One folder is one unit — a blueprint, an expert, a crew or an integration — and that
+            folder is the contribution. Everything the pipeline does is a command you can run on
+            your own machine; hosted CI is a convenience here, never a dependency.
           </p>
 
           <div class="build-grid">
@@ -468,7 +831,19 @@ pnpm forgeprint validate</code></pre>
               <h3 class="sub" data-i18n="build.archTitle">How the repository is laid out</h3>
               <dl class="tree" data-i18n-tree="build.arch">
                 <dt>blueprints/&lt;slug&gt;/</dt>
-                <dd>One folder per blueprint</dd>
+                <dd>What you build: manifest, AGENTS.md, overview, setup.md</dd>
+                <dt>experts/&lt;slug&gt;/</dt>
+                <dd>How the agent works: SKILL.md, checklists, references</dd>
+                <dt>crews/&lt;slug&gt;/</dt>
+                <dd>Named packages of experts and integrations</dd>
+                <dt>integrations/&lt;slug&gt;/</dt>
+                <dd>Pinned install recipes for third-party MCP servers</dd>
+                <dt>schema/</dt>
+                <dd>Manifest schemas, the taxonomy, and agents.yaml</dd>
+                <dt>packages/</dt>
+                <dd>The CLI, the MCP server and the catalog pages</dd>
+                <dt>docs/decisions/</dt>
+                <dd>Every architectural decision, with the reasoning kept</dd>
               </dl>
             </div>
 
@@ -478,8 +853,8 @@ pnpm forgeprint validate</code></pre>
                 <li>
                   <h3>Check whether it already exists</h3>
                   <p>
-                    The fastest merge is usually a pull request against a blueprint that is already
-                    there.
+                    One unit per combination: one blueprint per stack and requirements, one expert
+                    per role, domain and seniority.
                   </p>
                 </li>
                 <li>
@@ -488,11 +863,11 @@ pnpm forgeprint validate</code></pre>
                 </li>
                 <li>
                   <h3>Pass the gate locally</h3>
-                  <p>validate, lint-setup, similarity and a real setup run.</p>
+                  <p>validate, lint-setup, similarity, render-check and a real setup run.</p>
                 </li>
                 <li>
                   <h3>Open the pull request</h3>
-                  <p>Say which blueprint is closest and why yours is not a change to it.</p>
+                  <p>Say what is closest and why yours is not a change to it.</p>
                 </li>
               </ol>
             </div>
@@ -501,30 +876,48 @@ pnpm forgeprint validate</code></pre>
       </section>
 
       <!-- ── FAQ ──────────────────────────────────────────────────────── -->
-      <section class="section" id="faq">
-        <div class="section-inner reveal">
+      <section class="band" id="faq">
+        <div class="band-inner reveal">
           <h2 data-i18n="faq.title">Questions people actually ask</h2>
           <div class="faq" data-i18n-faq="faq.items">
             <details>
               <summary>Does Forgeprint run anything on my machine?</summary>
-              <p>No. Every tool returns text.</p>
+              <p>
+                No. Every tool returns text. Your agent is what reads the recipe and runs the
+                commands, and you can read every step before it does.
+              </p>
+            </details>
+            <details>
+              <summary>Is it only for Claude Code?</summary>
+              <p>
+                No. Nine agents are registered, each traced to the vendor's own documentation with
+                the date it was read. Claude Code is the first that has run a whole recipe end to
+                end; the others are marked as documented, not tested, until somebody runs one.
+              </p>
+            </details>
+            <details>
+              <summary>What is an expert — a persona?</summary>
+              <p>
+                No. An expert is a way of working: what it produces, the checklists it applies, and
+                references with versions and the date they were last checked.
+              </p>
             </details>
           </div>
         </div>
       </section>
 
       <!-- ── Links ────────────────────────────────────────────────────── -->
-      <section class="band" id="links">
-        <div class="band-inner reveal">
+      <section class="section" id="links">
+        <div class="section-inner reveal">
           <h2 data-i18n="links.title">Where to go next</h2>
           <div class="cards three link-cards">
             <a class="card-lift" href="https://github.com/forgeprint/forgeprint">
               <h3 data-i18n="links.repo">The repository</h3>
-              <p data-i18n="links.repoBody">Source, blueprints, decisions and the whole history.</p>
+              <p data-i18n="links.repoBody">Source, catalog, decisions and the whole history.</p>
             </a>
             <a class="card-lift" href="https://github.com/forgeprint/forgeprint/issues">
               <h3 data-i18n="links.issues">Open issues</h3>
-              <p data-i18n="links.issuesBody">Bugs, questions, and blueprint requests.</p>
+              <p data-i18n="links.issuesBody">Bugs, questions, and requests.</p>
             </a>
             <a
               class="card-lift"
@@ -538,7 +931,7 @@ pnpm forgeprint validate</code></pre>
               href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"
             >
               <h3 data-i18n="links.contributing">Contributing guide</h3>
-              <p data-i18n="links.contributingBody">What a blueprint has to contain.</p>
+              <p data-i18n="links.contributingBody">What each unit has to contain.</p>
             </a>
             <a
               class="card-lift"
@@ -549,9 +942,7 @@ pnpm forgeprint validate</code></pre>
             </a>
             <a class="card-lift" href="https://github.com/forgeprint/forgeprint/blob/main/LICENSE">
               <h3 data-i18n="links.licence">Licence</h3>
-              <p data-i18n="links.licenceBody">
-                Source-available. CC BY 4.0 for blueprint content.
-              </p>
+              <p data-i18n="links.licenceBody">Source-available. CC BY 4.0 for catalog content.</p>
             </a>
           </div>
         </div>
@@ -561,9 +952,9 @@ pnpm forgeprint validate</code></pre>
     <footer class="site-foot">
       <div class="foot-inner">
         <p class="foot-brand">Forgeprint</p>
-        <p data-i18n="footer.tagline">A blueprint catalog and MCP server for coding agents.</p>
+        <p data-i18n="footer.tagline">Blueprints, experts and crews for coding agents.</p>
         <p class="hint" data-i18n="footer.note">
-          Source-available under PolyForm Shield 1.0.0. Blueprint content under CC BY 4.0.
+          Source-available under PolyForm Shield 1.0.0. Catalog content under CC BY 4.0.
         </p>
         <p class="hint" data-i18n="footer.built">
           This page is hand-written HTML, CSS and JavaScript with no build step.

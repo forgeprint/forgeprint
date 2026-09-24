@@ -184,9 +184,12 @@ footer {
   margin-inline-start: auto;
 }
 
-@media (min-width: 64rem) {
+/* Eight sections: the row only fits beside the wordmark and the actions
+   from about 1280px. Below that the sections are a scroll away. */
+@media (min-width: 80rem) {
   .site-nav {
     display: flex;
+    gap: var(--s-4);
   }
   .head-actions {
     margin-inline-start: 0;
@@ -973,6 +976,847 @@ h3.sub {
   font-weight: 650;
   color: var(--fg);
   font-size: var(--t-3);
+}
+
+/* ── Without JavaScript ──────────────────────────────────────────────── */
+
+/* Things that do nothing without the script are not shown without it. The
+   text they would have animated is in the page regardless. */
+.no-js .js-only {
+  display: none !important;
+}
+
+/* ── Agent picker ────────────────────────────────────────────────────── */
+
+.agent-pick {
+  margin-bottom: var(--s-4);
+}
+.agent-pick label {
+  display: block;
+  font-size: var(--t-1);
+  font-weight: 600;
+  margin-bottom: var(--s-2);
+}
+.agent-pick select {
+  width: 100%;
+  min-height: 44px;
+  font: inherit;
+  font-size: var(--t-2); /* 16px: iOS zooms the page below this. */
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: var(--s-2) var(--s-3);
+  cursor: pointer;
+}
+.agent-pick select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.agent-pick .hint {
+  margin: var(--s-2) 0 0;
+}
+
+.verified {
+  display: flex;
+  gap: var(--s-2);
+  align-items: baseline;
+  font-size: var(--t-1);
+  line-height: 1.5;
+  margin: 0 0 var(--s-4);
+  color: var(--muted);
+}
+/* A mark as well as a colour, so the difference survives without colour. */
+.verified::before {
+  flex: none;
+  font-weight: 700;
+}
+.verified[data-state='tested'] {
+  color: var(--ok);
+}
+.verified[data-state='tested']::before {
+  content: '✓';
+}
+.verified[data-state='docs']::before {
+  content: '◌';
+  color: var(--muted);
+}
+
+/* ── Four units ──────────────────────────────────────────────────────── */
+
+.units {
+  display: grid;
+  gap: var(--s-4);
+  margin: var(--s-6) 0 var(--s-7);
+}
+@media (min-width: 46rem) {
+  .units {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 76rem) {
+  .units {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.unit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+}
+.unit-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.unit-top .card-icon {
+  margin: 0;
+}
+.unit-count {
+  font-size: var(--t-6);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.unit-q {
+  margin: var(--s-3) 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-0);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.unit h3 {
+  margin: 0;
+  font-size: var(--t-4);
+  letter-spacing: -0.01em;
+}
+.unit p:not(.unit-q) {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: var(--t-1);
+  flex: 1;
+}
+.unit-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--s-2);
+  font-size: var(--t-1);
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+  box-shadow: inset 0 -2px 0 var(--accent-line);
+}
+.unit-link::after {
+  content: ' →';
+  white-space: pre;
+  color: var(--accent);
+}
+.unit-link:hover {
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+/* The cards arrive one after another when the section comes into view. */
+.reveal .unit {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 280ms var(--ease-out),
+    transform 280ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.reveal.in .unit,
+.no-js .unit {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Diagram text (shared by both SVGs) ──────────────────────────────── */
+
+.diagram-frame svg text {
+  fill: var(--fg);
+  font:
+    600 13px ui-sans-serif,
+    system-ui,
+    sans-serif;
+}
+.diagram-frame .u-mono {
+  font:
+    12px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  fill: var(--fg);
+}
+.diagram-frame .u-kind,
+.diagram-frame .u-label {
+  font:
+    600 11px ui-sans-serif,
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--muted);
+}
+.diagram-frame .u-note {
+  font:
+    12px ui-sans-serif,
+    system-ui,
+    sans-serif;
+  fill: var(--muted);
+}
+.diagram-frame svg a:focus-visible rect {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+.diagram-frame svg a {
+  outline: none;
+}
+.diagram-frame svg a rect {
+  transition: stroke 140ms var(--ease-out);
+}
+.diagram-frame svg a:hover rect {
+  stroke: var(--accent);
+}
+
+#units-diagram svg {
+  min-width: 36rem;
+}
+
+/* Lines draw themselves, then the entries they point at appear. pathLength
+   is 1 on every path, so one dash of length 1 covers any of them. */
+#units-diagram .draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 600ms var(--ease-out);
+  transition-delay: calc(200ms + var(--d, 0) * 90ms);
+}
+#units-diagram path.draw[stroke-dasharray='4 4'] {
+  /* The recommendation is dashed on purpose; it fades rather than draws. */
+  stroke-dasharray: 4 4;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-out);
+}
+#units-diagram .chip {
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  transition-delay: calc(500ms + var(--d, 0) * 90ms);
+}
+.reveal.in #units-diagram .draw {
+  stroke-dashoffset: 0;
+}
+.reveal.in #units-diagram path.draw[stroke-dasharray='4 4'],
+.reveal.in #units-diagram .chip {
+  opacity: 1;
+}
+
+/* ── The flow player ─────────────────────────────────────────────────── */
+
+.player {
+  display: grid;
+  gap: var(--s-6);
+  margin-top: var(--s-6);
+}
+/* Grid items default to their content's minimum width, and the diagram has
+   one: without this the column grows to fit it and the page scrolls sideways
+   on a phone instead of the diagram scrolling inside its frame. */
+.player > *,
+.ex-grid > *,
+.render-flow > *,
+.no-mcp > * {
+  min-width: 0;
+}
+@media (min-width: 64rem) {
+  .player {
+    grid-template-columns: minmax(18rem, 1fr) 1.7fr;
+    align-items: start;
+  }
+}
+/* On a phone the picture comes first and the list explains it. */
+.player .diagram {
+  order: -1;
+}
+@media (min-width: 64rem) {
+  .player .diagram {
+    order: 0;
+  }
+}
+
+.flow-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-1);
+  counter-reset: flow;
+}
+.no-js .flow-steps {
+  list-style: decimal;
+  padding-inline-start: var(--s-5);
+  gap: var(--s-2);
+}
+.flow-steps button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: var(--s-3);
+  align-items: start;
+  text-align: start;
+  font: inherit;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: var(--s-2) var(--s-3);
+  min-height: 44px;
+  cursor: pointer;
+  transition:
+    background 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+}
+.flow-steps button:hover {
+  color: var(--fg);
+}
+.fs-num {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-0);
+  font-weight: 700;
+  background: var(--bg);
+  transition:
+    background 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out);
+}
+.fs-text {
+  display: grid;
+  gap: 0.1rem;
+  padding-top: 0.2rem;
+}
+.fs-title {
+  font-weight: 600;
+  font-size: var(--t-1);
+}
+/* Only the current step shows its sentence, so the list stays short enough
+   to read beside the diagram. */
+.fs-body {
+  font-size: var(--t-1);
+  line-height: 1.5;
+  display: none;
+}
+.flow-steps button.is-past .fs-num {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+.flow-steps button[aria-current='step'] {
+  color: var(--fg);
+  background: var(--accent-wash);
+  border-color: var(--accent-line);
+}
+.flow-steps button[aria-current='step'] .fs-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.flow-steps button[aria-current='step'] .fs-body {
+  display: block;
+  color: var(--muted);
+}
+
+.flow-frame svg {
+  min-width: 36rem;
+}
+.fl-lane rect {
+  fill: var(--panel);
+  stroke: var(--line);
+  transition:
+    fill 200ms var(--ease-out),
+    stroke 200ms var(--ease-out);
+}
+.fl-lane.is-now rect {
+  fill: var(--accent-wash);
+  stroke: var(--accent);
+}
+.fl-life {
+  stroke: var(--line);
+  stroke-dasharray: 3 5;
+}
+.fl-step {
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out);
+}
+.fl-step.is-on {
+  opacity: 0.5;
+}
+.fl-step.is-now {
+  opacity: 1;
+}
+.fl-arrow {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 520ms var(--ease-out);
+}
+.fl-step.is-on .fl-arrow {
+  stroke-dashoffset: 0;
+}
+.fl-step.is-now .fl-arrow {
+  stroke-width: 2.2;
+}
+.diagram-frame .fl-label {
+  font:
+    12px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  fill: var(--fg);
+}
+.fl-dot {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 1.4;
+}
+.fl-step.is-now .fl-dot {
+  fill: var(--accent);
+}
+.diagram-frame .fl-num {
+  font:
+    700 10px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  fill: var(--accent);
+}
+.diagram-frame .fl-step.is-now .fl-num {
+  fill: #fff;
+}
+
+.player-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+.ctl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--s-3);
+  font: inherit;
+  font-size: var(--t-1);
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 140ms var(--ease-out);
+}
+.ctl:hover {
+  border-color: var(--accent-line);
+}
+.ctl.play {
+  padding: 0 var(--s-4);
+}
+.ctl .i-pause,
+.ctl[aria-pressed='true'] .i-play {
+  display: none;
+}
+.ctl[aria-pressed='true'] .i-pause {
+  display: block;
+}
+.player-pos {
+  margin: 0 0 0 var(--s-2);
+  font-size: var(--t-1);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Example conversations ───────────────────────────────────────────── */
+
+.ex-tabs {
+  margin: var(--s-5) 0 var(--s-4);
+}
+.ex-grid {
+  display: grid;
+  gap: var(--s-5);
+}
+@media (min-width: 64rem) {
+  .ex-grid {
+    grid-template-columns: minmax(0, 2.2fr) 1fr;
+    align-items: start;
+  }
+}
+.chat:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: var(--r-md);
+}
+.turn.tool {
+  display: flex;
+  gap: var(--s-2);
+  align-items: baseline;
+  padding: var(--s-2) var(--s-4);
+  background: transparent;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: var(--t-0);
+}
+.turn.tool code {
+  font-size: var(--t-0);
+  overflow-wrap: anywhere;
+  color: var(--fg);
+}
+.tool-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+.turn.gap {
+  border-style: dashed;
+  color: var(--muted);
+  background: transparent;
+}
+.code-turn {
+  padding: 0;
+  border: 0;
+}
+.ex-aside {
+  border-inline-start: 3px solid var(--accent);
+  padding-inline-start: var(--s-4);
+}
+.ex-aside .hint {
+  margin: 0;
+}
+
+/* Turns arrive one at a time, the way a conversation does. */
+.chat.play .turn,
+.chat.play .code-turn {
+  animation: turn-in 320ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 380ms);
+}
+@keyframes turn-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Tools ───────────────────────────────────────────────────────────── */
+
+.tool-groups {
+  display: grid;
+  gap: var(--s-4);
+  margin: var(--s-6) 0 var(--s-5);
+}
+@media (min-width: 64rem) {
+  .tool-groups {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.tool-group {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+}
+.tool-group h3 {
+  font-size: var(--t-2);
+  font-weight: 650;
+  margin-bottom: var(--s-4);
+}
+.tool-group dl {
+  margin: 0;
+  display: grid;
+  gap: var(--s-1);
+}
+.tool-group dt {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-1);
+  font-weight: 600;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+.tool-group dd {
+  margin: 0 0 var(--s-3);
+  color: var(--muted);
+  font-size: var(--t-1);
+  line-height: 1.55;
+}
+.tool-group dd:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Agents ──────────────────────────────────────────────────────────── */
+
+.render-flow {
+  display: grid;
+  gap: var(--s-3);
+  margin: var(--s-6) 0;
+  justify-items: stretch;
+}
+@media (min-width: 64rem) {
+  .render-flow {
+    grid-template-columns: 13rem 3rem 14rem 3rem 1fr;
+    align-items: center;
+    gap: 0;
+  }
+}
+.rf-node {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+}
+.rf-node.accent {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+}
+.rf-title {
+  margin: 0;
+  font-weight: 650;
+}
+.rf-sub {
+  margin: var(--s-1) 0 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-0);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+/* A connector: vertical when stacked, horizontal beside each other. A dot
+   travels along it a few times when the section arrives, then stops. */
+.rf-link {
+  position: relative;
+  justify-self: center;
+  width: 2px;
+  height: 2rem;
+  background: var(--accent-line);
+}
+.rf-link::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0;
+}
+.reveal.in .rf-link::before {
+  animation: travel-down 1.6s var(--ease-out) 3;
+}
+@keyframes travel-down {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+@media (min-width: 64rem) {
+  .rf-link {
+    width: 100%;
+    height: 2px;
+  }
+  .rf-link::before {
+    left: 0;
+    top: -3px;
+  }
+  .reveal.in .rf-link::before {
+    animation-name: travel-across;
+  }
+}
+@keyframes travel-across {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+}
+.rf-targets h3.sub {
+  margin-top: 0;
+}
+@media (min-width: 64rem) {
+  .rf-targets {
+    padding-inline-start: var(--s-4);
+    border-inline-start: 2px solid var(--accent-line);
+  }
+}
+.targets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+@media (min-width: 46rem) {
+  .targets {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
+}
+.no-js .targets li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  justify-content: space-between;
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+.target {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  gap: 0.15rem;
+  text-align: start;
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s-3);
+  cursor: pointer;
+  transition:
+    border-color 160ms var(--ease-out),
+    background 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+.target:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-2px);
+}
+.target.is-picked {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+.t-name {
+  font-weight: 650;
+  font-size: var(--t-1);
+}
+.t-path {
+  font-size: var(--t-0);
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+.t-meta {
+  font-size: var(--t-0);
+  color: var(--muted);
+}
+.t-status {
+  font-size: var(--t-0);
+  color: var(--muted);
+}
+.t-status.tested {
+  color: var(--ok);
+  font-weight: 600;
+}
+.t-status.tested::before {
+  content: '✓ ';
+}
+.reveal .targets li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 260ms var(--ease-out),
+    transform 260ms var(--ease-out);
+  transition-delay: calc(400ms + var(--i, 0) * 50ms);
+}
+.reveal.in .targets li,
+.no-js .targets li {
+  opacity: 1;
+  transform: none;
+}
+
+.no-mcp {
+  display: grid;
+  gap: var(--s-4);
+  border-top: 1px solid var(--line);
+  padding-top: var(--s-5);
+}
+@media (min-width: 64rem) {
+  .no-mcp {
+    grid-template-columns: 1fr 1.3fr;
+    align-items: start;
+  }
+}
+.no-mcp h3.sub {
+  margin-top: 0;
+}
+
+/* ── Catalog tabs and kinds ──────────────────────────────────────────── */
+
+.cat-tabs {
+  margin-bottom: var(--s-5);
+}
+.tabs .count {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  margin-inline-start: 0.2rem;
+}
+.tpl.kind-expert {
+  border-inline-start-color: var(--accent-line);
+}
+.badge.secret {
+  border-style: dashed;
+  color: var(--fg);
+}
+
+/* Reduced motion: every sequence is shown whole and at once. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal .unit,
+  .reveal .targets li,
+  #units-diagram .chip,
+  #units-diagram path.draw[stroke-dasharray='4 4'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  #units-diagram .draw {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .chat.play .turn,
+  .chat.play .code-turn,
+  .reveal.in .rf-link::before {
+    animation: none;
+  }
 }
 
 /* ── Motion ──────────────────────────────────────────────────────────── */
