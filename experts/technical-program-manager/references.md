@@ -1,0 +1,41 @@
+# References
+
+Every rule in [`SKILL.md`](SKILL.md) and every checklist row rests on one of
+these. A row that cites nothing is somebody's opinion and does not belong in a
+review ([ADR 0010](../../docs/decisions/0010-review-standards.md)).
+
+Each row carries the version current when it was last read, and the date of
+that reading. **Re-check every 90 days.**
+
+> **Next re-check due: 2026-12-23.**
+
+## How multi-agent work fails
+
+| Short name         | Reference                                                                                                                      | Version             | Checked    | Used for                                                                                                                                                                                                                                                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| MAST v3            | [Cemri et al., _Why Do Multi-Agent LLM Systems Fail?_](https://arxiv.org/abs/2503.13657)                                       | arXiv 2503.13657 v3 | 2026-09-24 | The frame of the whole expert. 1,600+ annotated traces across 7 frameworks; 14 failure modes in 3 categories — system design issues, inter-agent misalignment, task verification. And the finding F1 rests on: gains on popular benchmarks "often minimal"                                                                                       |
+| Anthropic MA 2025  | [Anthropic, _How we built our multi-agent research system_](https://www.anthropic.com/engineering/multi-agent-research-system) | 2025-06-13          | 2026-09-24 | The cost in §1: agents use about 4× the tokens of chat, multi-agent systems about 15×. And F6: each subagent "needs an objective, an output format, guidance on the tools and sources to use, and clear task boundaries"; without them, "agents duplicate work, leave gaps"                                                                      |
+| Cognition 2025     | [Cognition, _Don't Build Multi-Agents_](https://cognition.ai/blog/dont-build-multi-agents)                                     | 2025-06-12          | 2026-09-24 | Principle 1, "share context, and share full agent traces, not just individual messages" — §2 and F2, F3, D7. Principle 2, "actions carry implicit decisions, and conflicting decisions carry bad results" — the assumption log in §3 and the frozen contract in §4. The strongest argument against splitting at all, which is why §1 comes first |
+| Anthropic BEA 2024 | [Anthropic, _Building effective agents_](https://www.anthropic.com/engineering/building-effective-agents)                      | 2024-12-19          | 2026-09-24 | The orchestrator-workers and evaluator-optimizer patterns — one party generates, another evaluates — behind §7 and H1. And "stopping conditions (such as a maximum number of iterations)" behind the attempt budget in F8 and H7                                                                                                                 |
+
+## Established practice the rules borrow
+
+| Short name                 | Reference                                                                                                                                                                 | Version       | Checked    | Used for                                                                                                                                                                                                                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scrum Guide 2020           | [The Scrum Guide](https://scrumguides.org/scrum-guide.html)                                                                                                               | November 2020 | 2026-09-24 | "Done" as a checked state rather than a declaration: an item that does not meet the Definition of Done "cannot be released or even presented". §9, F7, H1, H3, D1                                                                                                               |
+| CDC 2006                   | [Ian Robinson, _Consumer-Driven Contracts_](https://martinfowler.com/articles/consumerDrivenContracts.html)                                                               | 2006-06-12    | 2026-09-24 | Agreeing the interface between independently built parts before building them. §4, F5, H5                                                                                                                                                                                       |
+| OpenAPI 3.2.1              | [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)                                                                                                        | 3.2.1         | 2026-09-24 | The most common machine-readable form of such a contract for an HTTP API — what F5 means by "written down" when the interface is one                                                                                                                                            |
+| CODEOWNERS                 | [GitHub Docs, _About code owners_](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) | current       | 2026-09-24 | Ownership expressed as path patterns, which is the form `paths` takes in the plan. F6, H4                                                                                                                                                                                       |
+| Fowler 2014                | [Martin Fowler, _CircuitBreaker_](https://martinfowler.com/bliki/CircuitBreaker.html)                                                                                     | 2014-03-06    | 2026-09-24 | Stopping after repeated failure instead of retrying without limit. §8, F8, H7                                                                                                                                                                                                   |
+| Cockburn, walking skeleton | Alistair Cockburn, _Crystal Clear_ (2004): a walking skeleton is "a tiny implementation of the system that performs a small end-to-end function"                          | 2004, book    | 2026-09-24 | §6 and F9. **The primary source is a book and was not read online.** The definition was confirmed as quoted in [Code Climate's article](https://codeclimate.com/blog/kickstart-your-next-project-with-a-walking-skeleton); treat it as secondary until somebody checks the book |
+
+## Deferred to elsewhere
+
+- Whether each branch's code is any good: the expert for that stack —
+  [`dotnet-senior-architect`](../dotnet-senior-architect/SKILL.md) for .NET —
+  and [`security-reviewer`](../security-reviewer/SKILL.md).
+- How to design the tests that `verify` runs:
+  [`qa-automation-lead`](../qa-automation-lead/SKILL.md).
+- Running agents in parallel, isolating them in worktrees, or enforcing any of
+  this with a command: not in the catalog, deliberately
+  ([ADR 0014](../../docs/decisions/0014-crew-runtime-deferred.md)).

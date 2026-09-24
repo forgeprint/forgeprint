@@ -1,0 +1,129 @@
+# delivery/plan.yaml — the plan and the ledger in one file.
+#
+# The job (delivery/brief.md, verbatim): "Starting from ts-http-service, add two
+# resources — projects and tasks, where a task belongs to a project — each with
+# create, read, list and delete, input validation, and tests for every route
+# including the refusals. Every new route requires a token."
+#
+# Width: 2. After the slice, `projects` and `tasks` can run at the same time and
+# nothing else can. So: one coordinator, two workers, no layer in between (§1).
+#
+# Follow T3 to see a task go wrong and come back: rejected on its first attempt
+# for writing outside its paths, verified on its second.
+#
+# Files are flat under src/ on purpose. The blueprint's test script runs
+# `node --test dist/*.test.js`, so a test in a subdirectory is never run — and a
+# test that never runs never fails. The acceptance criteria count tests for that
+# reason.
+
+spec: delivery/spec.md
+assumptions: delivery/assumptions.md
+
+tasks:
+  - id: T0
+    title: Freeze the contract both resources build against
+    owner: coordinator
+    paths: [contracts/, src/repositories.ts]
+    depends_on: []
+    spec_refs: [S1, S2]
+    acceptance:
+      - contracts/openapi.yaml describes every new route, its body and its errors
+      - src/repositories.ts declares the ProjectRepository interface tasks will call
+    verify:
+      - npx @redocly/cli@2.54.2 lint contracts/openapi.yaml
+      - npm run build
+    attempts: 2
+    status: verified
+    attempts_used: 1
+    evidence: delivery/evidence/T0/
+
+  - id: T1
+    title: Thin slice — create and read one project, end to end, behind the token
+    owner: coordinator
+    # End to end means mounted, so the slice owns src/app.ts while it runs.
+    # T4 owns it afterwards; the two never run at the same time.
+    paths: [src/projects.ts, src/projects.test.ts, src/app.ts]
+    depends_on: [T0]
+    spec_refs: [S1]
+    acceptance:
+      - POST /projects then GET /projects/:id returns what was created
+      - both answer 401 without a token
+    verify:
+      - npm run build
+      - node --test dist/projects.test.js
+    attempts: 2
+    status: verified
+    attempts_used: 1
+    evidence: delivery/evidence/T1/
+    # Shown to the user before T2 and T3 started (§6, F9).
+
+  - id: T2
+    title: The rest of projects — list and delete, with validation
+    owner: worker-projects
+    # T1's files minus src/app.ts. Safe only because T1 is finished and nothing
+    # else writes here.
+    paths: [src/projects.ts, src/projects.test.ts]
+    depends_on: [T1]
+    spec_refs: [S1]
+    acceptance:
+      - list and delete exist, each with a test with a token and one without
+      - a malformed create body answers 400, not 500
+      - deleting a project that has tasks answers 409 (assumption A1)
+      - dist/projects.test.js reports at least eight tests
+    verify:
+      - npm run build
+      - node --test dist/projects.test.js
+    attempts: 2
+    status: verified
+    attempts_used: 1
+    evidence: delivery/evidence/T2/
+
+  - id: T3
+    title: Tasks — create, read, list, delete, with validation
+    owner: worker-tasks
+    # Tested by calling the tasks router directly, so it needs nothing mounted.
+    # Mounting it is T4's job, in T4's file.
+    paths: [src/tasks.ts, src/tasks.test.ts]
+    depends_on: [T1]
+    spec_refs: [S2]
+    acceptance:
+      - all four routes exist, each with a test with a token and one without
+      - creating a task for a project that does not exist answers 404
+      - a malformed body answers 400, not 500
+      - dist/tasks.test.js reports at least ten tests
+    verify:
+      - npm run build
+      - node --test dist/tasks.test.js
+    attempts: 2
+    status: verified
+    attempts_used: 2
+    evidence: delivery/evidence/T3/
+    history:
+      - attempt: 1
+        status: rejected
+        # Its tests passed. The diff did not: the worker mounted its router in
+        # src/app.ts, which belongs to T4 (H4). Green tests, wrong file — and
+        # T4 would have mounted it a second time.
+        reason: 'changed src/app.ts, outside paths; mounting belongs to T4'
+      - attempt: 2
+        status: verified
+
+  - id: T4
+    title: Mount the tasks router and check the whole thing together
+    owner: coordinator
+    # src/app.ts is here and only here now. Both workers would otherwise have
+    # edited it, and the second would have won (F6).
+    paths: [src/app.ts]
+    depends_on: [T2, T3]
+    spec_refs: [S1, S2]
+    acceptance:
+      - the tasks router is mounted behind the token
+      - the blueprint's route-table test passes, so no new route is public
+      - the full suite and the build pass together
+    verify:
+      - npm run build
+      - npm test
+    attempts: 2
+    status: verified
+    attempts_used: 1
+    evidence: delivery/evidence/T4/

@@ -1,0 +1,23 @@
+schema: 1
+slug: technical-program-manager
+name: 'Technical Program Manager'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Split work across agents only when the plan is wide enough to repay it, freeze the interfaces first, and never let a worker mark its own work done.'
+role: technical-program-manager
+domain: software
+seniority: senior
+deliverables:
+  - delivery-plan
+  - assumption-log
+  - delivery-report
+checklists:
+  - before-fan-out
+  - handoff
+  - before-done
+pairs_with: [qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null
