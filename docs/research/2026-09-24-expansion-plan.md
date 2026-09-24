@@ -20,6 +20,13 @@ is ticked when its pull request is open, and the PR number goes next to it.
   blueprint `test-setup` and an architecture and security review (§5c) before
   its pull request opens.
 - Nothing is merged by an agent. The maintainer merges.
+- Every unit PR regenerates `docs/index.json` and the site, so the open ones
+  conflict each time one merges. They are rebuilt on `main` (the unit folder
+  kept, the derived files regenerated) rather than resolved by hand.
+- Before Phase 4: the setup-test runner gained Java, PHP, Ruby, Rust, Flutter,
+  Elixir and uv (#86), and `lint-setup` the registries those stacks install
+  from (#87). A blueprint in one of those languages cannot pass CI without
+  them.
 
 ---
 
@@ -50,6 +57,10 @@ is ticked when its pull request is open, and the PR number goes next to it.
 | D21 | The mobile expert would be too vague across four stacks                                                            | One per stack, through D1: React Native, Flutter, Android (Kotlin). SwiftUI waits for a macOS-capable check                                                                                                                                                                                    |
 | D22 | `godot-game` could need a `gdscript` language value                                                                | C# with Godot, which fits the existing taxonomy                                                                                                                                                                                                                                                |
 | D23 | Held-back blueprints need new project types (`desktop`, `extension`)                                               | Both added in the taxonomy PR; `tauri-desktop-app` and `browser-extension` are built in the last blueprint phase. Electron is not built: Tauri covers the type with a smaller, CI-friendly toolchain                                                                                           |
+| D24 | The research suggested separate web and backend performance experts; the plan named one `performance-engineer`     | One expert covering both, measure-first for each; `overview.md` names the split as the way it would grow if the two diverge                                                                                                                                                                    |
+| D25 | A vendor-hosted MCP server has no package version to pin                                                           | `upstream_version` is the endpoint's own version when it has one (Atlassian `v2`), otherwise `hosted`; the README says it cannot be pinned and gives the date it was verified                                                                                                                  |
+| D26 | `gitlab-mcp` is a beta feature, and D16 holds `azure-mcp` back for being a beta                                    | Kept. D16 is about a beta _package_ being the only thing to pin; GitLab's pin is a released GitLab version, and the beta status is stated in the summary and README                                                                                                                            |
+| D27 | `postgres-database-administrator` is Postgres-specific, but the expert key has no `stack`                          | Slug and `stack: [postgres]` name it; a second database's administrator would need `languages` or a different role to stay unique, decided when one is proposed                                                                                                                                |
 
 ## Refused this round
 
@@ -70,48 +81,48 @@ Recorded so the next round does not re-litigate them without new evidence.
 
 ## Phase 0 — groundwork
 
-- [ ] 0.1 The four research reports and this plan
-- [ ] 0.2 ADR 0015: experts per language (D1), CLAUDE.md rule 9, and `validate`/`similarity` keyed on `role + domain + seniority + languages`
-- [ ] 0.3 Taxonomy: roles `code-reviewer`, `debugger`, `modernization-engineer` (D20); stack values `expo`, `clap`, `sqlx`, `nuxt`, `tanstack`, `ai-sdk`, `pgvector`, `streamlit`, `dbt`, `duckdb`, `phaser`, `tauri`, `wxt`; project types `desktop`, `extension` (D23)
-- [ ] 0.4 Pin updates for existing integrations that have fallen behind (`chrome-devtools-mcp`, `sentry-mcp`, and any other the integrations report names)
+- [x] 0.1 The four research reports and this plan — #57
+- [x] 0.2 ADR 0015: experts per language (D1), CLAUDE.md rule 9, and `validate`/`similarity` keyed on `role + domain + seniority + languages` — #58
+- [x] 0.3 Taxonomy: roles `code-reviewer`, `debugger`, `modernization-engineer` (D20); stack values `expo`, `clap`, `sqlx`, `nuxt`, `tanstack`, `ai-sdk`, `pgvector`, `streamlit`, `dbt`, `duckdb`, `phaser`, `tauri`, `wxt`; project types `desktop`, `extension` (D23) — #59
+- [x] 0.4 Pin updates for existing integrations that have fallen behind (`chrome-devtools-mcp`, `sentry-mcp`, and any other the integrations report names) — #60, #61
 
 ## Phase 1 — the experts most asked for, and the ones crews need
 
-- [ ] `frontend-engineer` — measurable only: WCAG 2.2, Core Web Vitals
-- [ ] `test-engineer` — TDD and tests in the code (D2)
-- [ ] `code-reviewer` — correctness and maintainability; security stays with `security-reviewer`
-- [ ] `api-designer` — OpenAPI 3.2, RFC 9110, RFC 9457, OWASP API Top 10
-- [ ] `performance-engineer` — web: Core Web Vitals, Lighthouse, USE method
-- [ ] `debugger` — reproduce, isolate, root cause, regression test
-- [ ] `database-administrator` — Postgres: schema, indexes, migrations (pipelines stay with `sql-data-engineer`)
-- [ ] `agent-designer` — MCP spec, Agent Skills, OWASP LLM Top 10, evals (D3)
-- [ ] `accessibility-specialist` — WCAG 2.2, WAI-ARIA 1.2, EN 301 549
-- [ ] `research-engineer` — sourced technical research with graded evidence
+- [x] `frontend-engineer` — measurable only: WCAG 2.2, Core Web Vitals — #63
+- [x] `test-engineer` — TDD and tests in the code (D2) — #64
+- [x] `code-reviewer` — correctness and maintainability; security stays with `security-reviewer` — #82
+- [x] `api-designer` — OpenAPI 3.2, RFC 9110, RFC 9457, OWASP API Top 10 — #65
+- [x] `performance-engineer` — web: Core Web Vitals, Lighthouse, USE method — #62
+- [x] `debugger` — reproduce, isolate, root cause, regression test — #80
+- [x] `database-administrator` — Postgres: schema, indexes, migrations (pipelines stay with `sql-data-engineer`) — #74
+- [x] `agent-designer` — MCP spec, Agent Skills, OWASP LLM Top 10, evals (D3) — #69
+- [x] `accessibility-specialist` — WCAG 2.2, WAI-ARIA 1.2, EN 301 549 — #71
+- [x] `research-engineer` — sourced technical research with graded evidence — #70
 
 ## Phase 2 — architects and backend engineers per language (D1)
 
-- [ ] `typescript-senior-architect`
-- [ ] `python-senior-architect`
-- [ ] `go-senior-architect`
-- [ ] `java-senior-architect`
-- [ ] `typescript-backend-engineer`
-- [ ] `python-backend-engineer`
-- [ ] `java-backend-engineer`
-- [ ] `go-backend-engineer`
+- [x] `typescript-senior-architect` — #83
+- [x] `python-senior-architect` — #88
+- [x] `go-senior-architect` — #90
+- [x] `java-senior-architect` — #92
+- [x] `typescript-backend-engineer` — #85
+- [x] `python-backend-engineer` — #89
+- [x] `java-backend-engineer` — #91
+- [x] `go-backend-engineer` — #93
 
 ## Phase 3 — integrations, the most used new ones
 
-- [ ] `grafana-mcp` — `--disable-write`, scoped service account
-- [ ] `atlassian-mcp` — the official remote server (D15)
-- [ ] `linear-mcp` — read-only endpoint by default
-- [ ] `supabase-mcp` — `read_only=true`, `project_ref`
-- [ ] `mongodb-mcp` — `--readOnly`
-- [ ] `terraform-mcp`
-- [ ] `stripe-mcp` — Agent keys after 2026-10-31
-- [ ] `azure-devops-mcp` — domains scoped with `-d`
-- [ ] `gitlab-mcp` — the built-in server (D15)
-- [ ] `next-devtools-mcp`
-- [ ] `storybook-mcp`
+- [x] `grafana-mcp` — `--disable-write`, scoped service account — #68
+- [x] `atlassian-mcp` — the official remote server (D15) — #67
+- [x] `linear-mcp` — read-only endpoint by default — #73
+- [x] `supabase-mcp` — `read_only=true`, `project_ref` — #66
+- [x] `mongodb-mcp` — `--readOnly` — #78
+- [x] `terraform-mcp` — #75
+- [x] `stripe-mcp` — Agent keys after 2026-10-31 — #76
+- [x] `azure-devops-mcp` — domains scoped with `-d` — #72
+- [x] `gitlab-mcp` — the built-in server (D15) — #77
+- [x] `next-devtools-mcp` — #79
+- [x] `storybook-mcp` — #81
 
 ## Phase 4 — blueprints: the web and API gaps
 
