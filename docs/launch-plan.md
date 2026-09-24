@@ -169,9 +169,11 @@ Name: Forgeprint
 Repository: https://github.com/forgeprint/forgeprint
 Description: Tell your agent what you know and what you are building;
 Forgeprint returns exactly one project blueprint — agent context, skills, MCP
-configuration and a setup recipe whose every step is executed in CI. Six tools:
-resolve, search_blueprints, get_blueprint, compare_blueprints,
-validate_blueprint, request_blueprint. Install: npx -y forgeprint-mcp
+configuration and a setup recipe whose every step is executed in CI — and the
+experts, crews and integrations to work on it with. Ten tools: resolve,
+search_blueprints, get_blueprint, compare_blueprints, validate_blueprint,
+request_blueprint, recommend_experts, get_expert, get_crew, get_integration.
+Install: npx -y forgeprint-mcp
 ```
 
 ---

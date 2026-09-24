@@ -10,8 +10,9 @@ coding agent bootstrap a new project with the right context in one shot: the
 `AGENTS.md`, the skills, the MCP and plugin configuration, and a deterministic
 setup recipe the agent can execute.
 
-> **Status: pre-release.** Four blueprints, working tooling, and an MCP server
-> with all six tools, published and connectable today:
+> **Status: pre-release.** A catalog of blueprints, experts, crews and
+> integrations, working tooling, and an MCP server with all ten tools, published
+> and connectable today. With Claude Code:
 >
 > ```bash
 > claude mcp add forgeprint -- npx -y forgeprint-mcp
@@ -20,8 +21,9 @@ setup recipe the agent can execute.
 > On Windows PowerShell, quote the separator:
 > `claude mcp add forgeprint "--" npx -y forgeprint-mcp`.
 >
-> The catalog is browsable at <https://forgeprint.github.io/forgeprint>.
-> [Roadmap](#roadmap) has the rest.
+> Any MCP client can connect; [the site](https://forgeprint.github.io/forgeprint)
+> has the command or configuration for each of the nine registered agents, and
+> the catalog with its current counts. [Roadmap](#roadmap) has the rest.
 
 ---
 
