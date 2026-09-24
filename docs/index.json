@@ -1947,6 +1947,55 @@
     },
     {
       "schema": 1,
+      "slug": "frontend-engineer",
+      "name": "Frontend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build web UI to targets somebody can measure — WCAG 2.2 AA, Core Web Vitals at the 75th percentile, a declared Baseline and a byte budget — and claim nothing a check did not show.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "frontend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "code-review",
+        "accessibility-audit",
+        "performance-report",
+        "test-suite"
+      ],
+      "checklists": [
+        "semantic-html",
+        "wcag-aa",
+        "core-web-vitals",
+        "bundle-budget",
+        "baseline-support"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/baseline-support.md",
+        "checklists/bundle-budget.md",
+        "checklists/core-web-vitals.md",
+        "checklists/semantic-html.md",
+        "checklists/wcag-aa.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "performance-engineer",
       "name": "Performance Engineer",
       "version": "1.0.0",
