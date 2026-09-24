@@ -248,6 +248,13 @@ function readChangelog(dir: string): string | undefined {
 const MISSING_COMMAND = /not recognized|not found|command not found|enoent|no such file/;
 
 /**
+ * The registry's 403 when the token authenticated but carries only the
+ * personal namespace. It lists what you may publish, which no other failure
+ * does, so that phrase is what identifies it.
+ */
+const WRONG_NAMESPACE = /you have permission to publish:/;
+
+/**
  * Every manifest outside `packages/` that carries the release version.
  *
  * Read from disk rather than listed in a constant, so a fifth skill is covered
@@ -336,9 +343,17 @@ async function publishToMcpRegistry(root: string, version: string): Promise<void
       // somebody looking for the wrong thing.
       'mcp-publisher is not on this shell’s PATH. It is one binary, so it sits where you put it; ' +
       'call it by full path or add that directory to PATH. See docs/releasing.md. Then:'
-    : /login|auth|token|credential|unauthor|401|403/.test(text)
-      ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
-      : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
+    : WRONG_NAMESPACE.test(text)
+      ? // Logged in, and as the right person — the registry just cannot see the
+        // organization. Its advice ("make your membership public") predates
+        // the Owner-only rule and is no longer the cause. "Log in again" is
+        // the wrong instruction here: 0.3.0 did that three times.
+        'the registry granted only your personal namespace. The device-flow login cannot see ' +
+        'the organization; log in with a classic PAT scoped to read:org instead. ' +
+        'See docs/releasing.md, "Publishing under the organization". Then:'
+      : /login|auth|token|credential|unauthor|401|403/.test(text)
+        ? 'mcp-publisher is not logged in. Run `mcp-publisher login github`, then:'
+        : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
   say();
   say(`  note   the MCP Registry still serves ${served ?? 'an older version'}. ${reason}`);
   say('           mcp-publisher publish server.json');
