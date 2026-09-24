@@ -29,9 +29,36 @@ stopped halfway finishes by running the same command.
 | `--no-wait`    | refuse rather than wait for a workflow still running     |
 | `-y`           | do not ask; for a plan you have already read             |
 
-Two things stay outside it, because both are someone else's registry and
-neither is reversible: `mcp-publisher publish server.json`, and the
-[dogfood test](dogfood.md). It prints both when it finishes.
+One thing stays outside it: the [dogfood test](dogfood.md), which it prints
+when it finishes.
+
+### mcp-publisher has to be on the PATH of the shell you release from
+
+The command publishes to the MCP Registry itself, and that needs the tool
+findable. `mcp-publisher` is a single downloaded binary rather than a package,
+so it sits wherever you put it — and on Windows that is usually `~/bin`, which
+Git Bash searches and PowerShell does not. The same machine answers
+`mcp-publisher 1.8.1` in one shell and "not recognized" in the other.
+
+Check before you release, in the shell you will release from:
+
+```bash
+mcp-publisher --version
+```
+
+If it is missing, either add its directory to that shell's PATH or call it by
+full path. `release` reports this case by name rather than as a failed publish,
+because the tool is not what went wrong.
+
+Authentication is separate and is the maintainer's, like npm's:
+
+```bash
+mcp-publisher login github
+```
+
+`login github-oidc` exists too, and is the path that ends this step — GitHub
+Actions authenticating without a credential on anybody's laptop. The same
+answer as npm trusted publishing, and the same open roadmap item.
 
 The rest of this file is what the command does, in case it is unavailable or
 you want to do a step by hand.
