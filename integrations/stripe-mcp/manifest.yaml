@@ -1,0 +1,21 @@
+schema: 1
+slug: stripe-mcp
+name: 'Stripe MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "The Stripe API and Stripe's documentation through Stripe's hosted server, for the accounts and sandboxes you authorise."
+kind: mcp
+upstream: https://github.com/stripe/ai
+upstream_version: 'hosted'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add --transport http stripe https://mcp.stripe.com/'
+  codex: 'codex mcp add stripe --url https://mcp.stripe.com'
+  gemini-cli: 'gemini mcp add --transport http stripe https://mcp.stripe.com'
+permissions_summary: 'Reads and writes the Stripe accounts and sandboxes you authorise through any Stripe API method, so it moves money: refunds, invoices, subscriptions. Stripe asks a human to confirm refunds and outbound payments.'
+fits: [software, finance, operations]
+agents: [claude-code]
+deprecated: false
+supersedes: null
