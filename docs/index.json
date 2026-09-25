@@ -2496,6 +2496,64 @@
     },
     {
       "schema": 1,
+      "slug": "dart-senior-architect",
+      "name": "Dart Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Layers are packages in a pub workspace, pubspec says what may import what, generated code has a written policy and a test, FFI sits behind one package, and a published API is versioned like a promise.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "dart"
+      ],
+      "stack": [
+        "flutter"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "api-design-review",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "package-layering",
+        "pub-workspace",
+        "codegen-policy",
+        "type-contracts",
+        "ffi-boundary",
+        "pub-publishing"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/codegen-policy.md",
+        "checklists/ffi-boundary.md",
+        "checklists/package-layering.md",
+        "checklists/pub-publishing.md",
+        "checklists/pub-workspace.md",
+        "checklists/type-contracts.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "debugger",
       "name": "Debugger",
       "version": "1.0.0",
