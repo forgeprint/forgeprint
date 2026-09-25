@@ -5524,6 +5524,41 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "spec-driven-feature-crew",
+      "name": "Spec-Driven Feature Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Four experts that take one feature from a spec somebody could fail, through a plan and test-first code, to a check the builder did not run.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "product-manager",
+        "technical-program-manager",
+        "test-engineer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "context7-mcp"
+      ],
+      "for_what": "A new feature in one repository with a test suite, taken from idea to a spec with acceptance criteria, a plan with its assumptions written down, code driven by failing tests, and an independent check against the spec.",
+      "not_for": "A one-line fix, a prototype with no spec, a project with no tests, or a change confined to one file. Those are small, sequential jobs one agent does better alone, and handing them between four experts only adds cost.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ],
   "integrations": [

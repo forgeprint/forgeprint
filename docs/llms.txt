@@ -97,6 +97,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 - [API Hardening Crew](https://forgeprint.github.io/forgeprint/c/api-hardening-crew.html): Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.
 - [SaaS Launch Crew](https://forgeprint.github.io/forgeprint/c/saas-launch-crew.html): The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.
+- [Spec-Driven Feature Crew](https://forgeprint.github.io/forgeprint/c/spec-driven-feature-crew.html): Four experts that take one feature from a spec somebody could fail, through a plan and test-first code, to a check the builder did not run.
 
 ## Integrations
 
