@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>dbt MCP Server — Forgeprint</title>
+    <meta name="description" content="Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models." />
+    <link rel="icon" href="../brand/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../forgeprint.css" />
+    <link rel="canonical" href="https://forgeprint.github.io/forgeprint/i/dbt-mcp.html" />
+    <link rel="alternate" type="application/json" href="../index.json" title="The catalog as JSON" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Forgeprint" />
+    <meta property="og:title" content="dbt MCP Server — Forgeprint" />
+    <meta property="og:description" content="Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models." />
+    <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/dbt-mcp.html" />
+    <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"dbt MCP Server","name":"dbt MCP Server","description":"Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/dbt-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/dbt-mcp.html"}</script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="home" href="../"><svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 10.5 22 16 12 21.5 2 16Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity="0.55"/><path d="M12 2 22 7.5 12 13 2 7.5Z" fill="currentColor"/></svg><span>Forgeprint</span></a>
+      <nav class="topnav">
+        <a href="../catalog.html"><span data-i18n="site.catalog">Catalog</span></a>
+        <div class="lang" role="group" aria-label="Language" data-i18n-aria-label="site.language" title="Interface language. Catalog entries stay in English." data-i18n-title="site.languageHint">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+        </div>
+      </nav>
+    </header>
+    <p class="lang-note" data-i18n="site.contentNote">Catalog entries are written once, in English. Your browser can translate them.</p>
+    <main>
+<p class="back"><a href="../catalog.html#integrations"><span data-i18n="site.allIntegrations">← all integrations</span></a></p>
+      <p class="slug">integrations/dbt-mcp</p>
+      <h1>dbt MCP Server <span class="tier">mcp</span></h1>
+      <p class="tagline" lang="en">Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.</p>
+
+      <p class="warn">
+        <strong data-i18n="site.thirdPartyTitle">Third-party software.</strong> <span data-i18n="site.thirdParty">Forgeprint hosts none of this code: it is an installation recipe for a project somebody else publishes and maintains. Review the permissions below before installing.</span>
+      </p>
+
+      <h2><span data-i18n="site.upstream">Upstream</span></h2>
+      <table class="facts">
+        <tr><th><span data-i18n="site.project">Project</span></th><td><a href="https://github.com/dbt-labs/dbt-mcp">dbt-labs/dbt-mcp</a></td></tr>
+        <tr><th><span data-i18n="site.pinnedAt">Pinned at</span></th><td><code>2.4.0</code></td></tr>
+        <tr><th><span data-i18n="site.verifiedOn">Verified on</span></th><td>2026-09-24</td></tr>
+      </table>
+
+      <h2><span data-i18n="site.reach">What it can reach</span></h2>
+      <p lang="en">Runs the local dbt executable on one project to parse, list and compile it and read its manifest; compile may query the warehouse through the profile dbt uses, and no tool that builds, runs or tests models is enabled.</p>
+      <p class="muted"><span data-i18n="site.noSecret">It needs no secret.</span></p>
+
+      <h2><span data-i18n="site.install">Install</span></h2>
+      <h3>Claude Code</h3>
+      <pre class="install"><code>claude mcp add-json dbt '{&quot;command&quot;:&quot;uvx&quot;,&quot;args&quot;:[&quot;dbt-mcp==2.4.0&quot;],&quot;env&quot;:{&quot;DBT_PROJECT_DIR&quot;:&quot;/path/to/dbt/project&quot;,&quot;DBT_PATH&quot;:&quot;/path/to/dbt&quot;,&quot;DBT_MCP_ENABLE_TOOLS&quot;:&quot;parse,list,compile,get_lineage_dev,get_node_details_dev&quot;,&quot;DO_NOT_TRACK&quot;:&quot;true&quot;}}'</code></pre>
+      <h3>Codex CLI</h3>
+      <pre class="install"><code>codex mcp add dbt --env &quot;DBT_PROJECT_DIR=/path/to/dbt/project&quot; --env &quot;DBT_PATH=/path/to/dbt&quot; --env &quot;DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev&quot; --env &quot;DO_NOT_TRACK=true&quot; -- uvx dbt-mcp==2.4.0</code></pre>
+      <h3>Gemini CLI</h3>
+      <pre class="install"><code>gemini mcp add dbt -e 'DBT_PROJECT_DIR=/path/to/dbt/project' -e 'DBT_PATH=/path/to/dbt' -e 'DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev' -e 'DO_NOT_TRACK=true' uvx dbt-mcp==2.4.0</code></pre>
+      <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
+
+      <h2><span data-i18n="site.readIt">Read it</span></h2>
+      <p><a href="https://github.com/forgeprint/forgeprint/tree/main/integrations/dbt-mcp/README.md">README.md</a></p>
+    </main>
+    <footer>
+      <a href="https://github.com/forgeprint/forgeprint"><span data-i18n="site.repository">Repository</span></a> ·
+      <a href="https://github.com/forgeprint/forgeprint/blob/main/CONTRIBUTING.md"><span data-i18n="site.contribute">Contribute</span></a> ·
+      <a href="../index.json">index.json</a>
+      <p class="muted"><span data-i18n="site.licence">Source-available, not OSI open source: tooling under PolyForm Shield 1.0.0, catalog content under CC BY 4.0.</span></p>
+    </footer>
+    <script src="../site.js"></script>
+  </body>
+</html>

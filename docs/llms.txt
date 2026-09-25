@@ -69,6 +69,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
 - [ClickHouse MCP Server](https://forgeprint.github.io/forgeprint/i/clickhouse-mcp.html): List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
+- [dbt MCP Server](https://forgeprint.github.io/forgeprint/i/dbt-mcp.html): Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.
 - [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
 - [Fetch MCP](https://forgeprint.github.io/forgeprint/i/fetch-mcp.html): Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.
 - [Figma Context MCP](https://forgeprint.github.io/forgeprint/i/figma-mcp.html): Read a Figma file's layout and styles as structured data, so generated UI matches the design.
