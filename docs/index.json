@@ -2518,6 +2518,57 @@
     },
     {
       "schema": 1,
+      "slug": "appsec-engineer",
+      "name": "Application Security Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The threat model and the security requirements come before the code, every requirement names an ASVS 5.0 control and a test, and nothing is verified by attacking a system.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "appsec-engineer",
+      "domain": "security",
+      "seniority": "senior",
+      "deliverables": [
+        "threat-model",
+        "threat-model-review",
+        "requirements-spec",
+        "test-plan"
+      ],
+      "checklists": [
+        "threat-model",
+        "security-requirements",
+        "design-documentation",
+        "scanning-policy",
+        "security-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "test-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/design-documentation.md",
+        "checklists/scanning-policy.md",
+        "checklists/security-requirements.md",
+        "checklists/security-tests.md",
+        "checklists/threat-model.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "code-reviewer",
       "name": "Code Reviewer",
       "version": "1.0.0",

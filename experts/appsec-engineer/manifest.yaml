@@ -1,0 +1,26 @@
+schema: 1
+slug: appsec-engineer
+name: 'Application Security Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The threat model and the security requirements come before the code, every requirement names an ASVS 5.0 control and a test, and nothing is verified by attacking a system.'
+role: appsec-engineer
+domain: security
+seniority: senior
+deliverables:
+  - threat-model
+  - threat-model-review
+  - requirements-spec
+  - test-plan
+checklists:
+  - threat-model
+  - security-requirements
+  - design-documentation
+  - scanning-policy
+  - security-tests
+pairs_with: [security-reviewer, qa-automation-lead, test-engineer, devops-platform-engineer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
