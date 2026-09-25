@@ -539,6 +539,75 @@
       "i18n": []
     },
     {
+      "slug": "blazor-web-app",
+      "name": "Blazor Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Blazor Web App on .NET 10 with Identity on SQLite, server rendering with Interactive Server, bUnit component tests and CI.",
+      "stack": [
+        "dotnet",
+        "aspnetcore",
+        "blazor",
+        "efcore",
+        "sqlite"
+      ],
+      "languages": [
+        "csharp"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "dotnet>=10",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "dotnet-senior-architect",
+        "security-reviewer",
+        "frontend-engineer"
+      ],
+      "recommended_crew": null,
+      "integrations": [
+        "github-mcp"
+      ],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "django-web-app",
       "name": "Django Web App",
       "version": "1.0.0",
