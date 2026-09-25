@@ -3595,6 +3595,41 @@
     },
     {
       "schema": 1,
+      "slug": "git-mcp",
+      "name": "Git MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Status, diffs, log and commits on one local Git repository, named on the command line.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "upstream_version": "2026.8.18",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json git '{\"command\":\"uvx\",\"args\":[\"mcp-server-git==2026.8.18\",\"--repository\",\"/path/to/repo\"]}'",
+        "codex": "codex mcp add git -- uvx mcp-server-git==2026.8.18 --repository /path/to/repo",
+        "gemini-cli": "gemini mcp add git uvx mcp-server-git==2026.8.18 --repository /path/to/repo"
+      },
+      "permissions_summary": "Reads the history, diffs and working tree of the repository passed with --repository, and writes to it: stages files, commits, unstages, creates and switches branches. It does not push.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "github-mcp",
       "name": "GitHub MCP Server",
       "version": "1.0.0",
