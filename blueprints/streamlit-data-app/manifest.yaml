@@ -1,0 +1,19 @@
+schema: 1
+slug: streamlit-data-app
+name: 'Streamlit Data App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Streamlit dashboard over a bundled CSV: pandas transforms in a plain module with unit tests, the page driven headlessly with AppTest, usage statistics off, loopback only.'
+stack: [python, streamlit]
+languages: [python]
+platforms: [web, linux, windows, macos]
+distribution: [internal]
+project_type: data
+audience: [beginner, intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [python>=3.13, curl]
+deprecated: false
+supersedes: null

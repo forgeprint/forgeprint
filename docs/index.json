@@ -2055,6 +2055,67 @@
       "i18n": []
     },
     {
+      "slug": "streamlit-data-app",
+      "name": "Streamlit Data App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Streamlit dashboard over a bundled CSV: pandas transforms in a plain module with unit tests, the page driven headlessly with AppTest, usage statistics off, loopback only.",
+      "stack": [
+        "python",
+        "streamlit"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "distribution": [
+        "internal"
+      ],
+      "project_type": "data",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "sveltekit-app",
       "name": "SvelteKit App",
       "version": "1.0.0",
