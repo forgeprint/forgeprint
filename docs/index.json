@@ -3847,6 +3847,46 @@
     },
     {
       "schema": 1,
+      "slug": "firecrawl-mcp",
+      "name": "Firecrawl MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Scrape, crawl, map and search the web through Firecrawl, and get pages back as Markdown or as JSON to a schema.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/firecrawl/firecrawl-mcp-server",
+      "upstream_version": "3.25.4",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json firecrawl '{\"command\":\"npx\",\"args\":[\"-y\",\"firecrawl-mcp@3.25.4\"],\"env\":{\"FIRECRAWL_API_KEY\":\"${FIRECRAWL_API_KEY}\"}}'",
+        "codex": "codex mcp add firecrawl --env \"FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}\" -- npx -y firecrawl-mcp@3.25.4",
+        "gemini-cli": "gemini mcp add firecrawl -e 'FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}' npx -y firecrawl-mcp@3.25.4"
+      },
+      "needs_secrets": [
+        "FIRECRAWL_API_KEY"
+      ],
+      "permissions_summary": "Sends URLs and queries to Firecrawl, which fetches pages, clicks and types in them and runs research jobs, billed to the key's credits; it can also create recurring monitors that post to a webhook.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "git-mcp",
       "name": "Git MCP",
       "version": "1.0.0",
