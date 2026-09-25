@@ -2839,6 +2839,54 @@
     },
     {
       "schema": 1,
+      "slug": "documentation-architect",
+      "name": "Documentation Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The shape of a documentation set, not its sentences: typed sections, no orphan pages, docs changed in the pull request that changes the code, and a docs build CI can fail.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "documentation-architect",
+      "domain": "docs",
+      "seniority": "senior",
+      "deliverables": [
+        "documentation-set",
+        "content-outline",
+        "adr"
+      ],
+      "checklists": [
+        "information-architecture",
+        "repository-files",
+        "docs-as-code",
+        "docs-ci",
+        "versioning"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/docs-as-code.md",
+        "checklists/docs-ci.md",
+        "checklists/information-architecture.md",
+        "checklists/repository-files.md",
+        "checklists/versioning.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "dotnet-senior-architect",
       "name": ".NET Senior Software Architect",
       "version": "1.0.0",
