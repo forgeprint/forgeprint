@@ -9,6 +9,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 ## Blueprints
 
 - [Astro Content Site](https://forgeprint.github.io/forgeprint/b/astro-content-site.html): Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.
+- [Django Web App](https://forgeprint.github.io/forgeprint/b/django-web-app.html): Server-rendered Django 6.1 application with a custom user model, login and logout, migrations, settings that refuse to start in production without a real secret, and tests that prove it.
 - [C# MCP Server](https://forgeprint.github.io/forgeprint/b/dotnet-mcp-server.html): MCP server in C# on the official ModelContextProtocol SDK, over stdio or streamable HTTP.
 - [Multi-tenant SaaS API](https://forgeprint.github.io/forgeprint/b/dotnet-multitenant-saas-api.html): ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.
 - [ASP.NET Core REST API](https://forgeprint.github.io/forgeprint/b/dotnet-web-api.html): ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.
