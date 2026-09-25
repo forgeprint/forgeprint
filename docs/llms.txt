@@ -73,6 +73,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 ## Integrations
 
+- [agent-device](https://forgeprint.github.io/forgeprint/i/agent-device.html): Callstack's app-automation server: drive and verify iOS, Android, TV, desktop and web apps from an agent, and keep screenshots, logs and traces. Needs Xcode (macOS) or the Android SDK.
 - [Atlassian Rovo MCP Server](https://forgeprint.github.io/forgeprint/i/atlassian-mcp.html): Jira, Confluence, Compass and the rest of Atlassian Cloud through Atlassian's hosted server, as the signed-in user.
 - [AWS Documentation MCP Server](https://forgeprint.github.io/forgeprint/i/aws-documentation-mcp.html): Search, read and get recommendations from the public AWS documentation, with no AWS credentials.
 - [Azure DevOps MCP Server](https://forgeprint.github.io/forgeprint/i/azure-devops-mcp.html): Work items, projects and teams from one Azure DevOps organisation, with the tool domains narrowed to what the work needs.

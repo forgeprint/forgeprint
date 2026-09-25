@@ -3981,6 +3981,42 @@
   "integrations": [
     {
       "schema": 1,
+      "slug": "agent-device",
+      "name": "agent-device",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Callstack's app-automation server: drive and verify iOS, Android, TV, desktop and web apps from an agent, and keep screenshots, logs and traces. Needs Xcode (macOS) or the Android SDK.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/callstack/agent-device",
+      "upstream_version": "0.21.14",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json agent-device '{\"command\":\"npx\",\"args\":[\"-y\",\"agent-device@0.21.14\",\"mcp\"],\"env\":{\"AGENT_DEVICE_NO_UPDATE_NOTIFIER\":\"1\"}}'",
+        "codex": "codex mcp add agent-device --env \"AGENT_DEVICE_NO_UPDATE_NOTIFIER=1\" -- npx -y agent-device@0.21.14 mcp",
+        "gemini-cli": "gemini mcp add agent-device -e \"AGENT_DEVICE_NO_UPDATE_NOTIFIER=1\" npx -y agent-device@0.21.14 mcp"
+      },
+      "permissions_summary": "Controls the simulators, emulators and connected devices on the machine: boots and shuts them down, installs and removes apps, taps and types, changes OS settings and app permissions, sends push notifications, and reads screens, logs and app network traffic.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "atlassian-mcp",
       "name": "Atlassian Rovo MCP Server",
       "version": "1.0.0",
