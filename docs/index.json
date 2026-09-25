@@ -4521,6 +4521,41 @@
     },
     {
       "schema": 1,
+      "slug": "svelte-mcp",
+      "name": "Svelte MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Current Svelte 5 and SvelteKit documentation, and a static checker that tells the agent what is wrong with the component it just wrote.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/sveltejs/ai-tools",
+      "upstream_version": "0.1.26",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json svelte '{\"command\":\"npx\",\"args\":[\"-y\",\"@sveltejs/mcp@0.1.26\"]}'",
+        "codex": "codex mcp add svelte -- npx -y @sveltejs/mcp@0.1.26",
+        "gemini-cli": "gemini mcp add svelte npx -y @sveltejs/mcp@0.1.26"
+      },
+      "permissions_summary": "Fetches Svelte and SvelteKit documentation from svelte.dev and checks the code the agent passes it locally; it reads and writes no project files and needs no account.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "terraform-mcp",
       "name": "Terraform MCP Server",
       "version": "1.0.0",
