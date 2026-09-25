@@ -2245,6 +2245,66 @@
     },
     {
       "schema": 1,
+      "slug": "go-senior-architect",
+      "name": "Go Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "In Go the package is the architecture: keep it small, hide it behind internal/, let consumers own interfaces, and make every goroutine, context and error traceable.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "go"
+      ],
+      "stack": [
+        "go",
+        "gin"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "api-design-review",
+        "refactoring-plan"
+      ],
+      "checklists": [
+        "package-layout",
+        "toolchain-gates",
+        "interface-placement",
+        "context-flow",
+        "error-wrapping",
+        "goroutine-lifetimes"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/context-flow.md",
+        "checklists/error-wrapping.md",
+        "checklists/goroutine-lifetimes.md",
+        "checklists/interface-placement.md",
+        "checklists/package-layout.md",
+        "checklists/toolchain-gates.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "performance-engineer",
       "name": "Performance Engineer",
       "version": "1.0.0",
