@@ -75,6 +75,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Brave Search MCP](https://forgeprint.github.io/forgeprint/i/brave-search-mcp.html): Web, news, image, video and local search from Brave's own index, plus page content extracted for an agent to ground on.
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
 - [ClickHouse MCP Server](https://forgeprint.github.io/forgeprint/i/clickhouse-mcp.html): List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.
+- [Cloudflare MCP Server](https://forgeprint.github.io/forgeprint/i/cloudflare-mcp.html): The whole Cloudflare API and Cloudflare's documentation through Cloudflare's hosted Code Mode server: the agent writes JavaScript that Cloudflare runs against your account.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
 - [dbt MCP Server](https://forgeprint.github.io/forgeprint/i/dbt-mcp.html): Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.
 - [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
