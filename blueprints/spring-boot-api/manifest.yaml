@@ -1,0 +1,19 @@
+schema: 1
+slug: spring-boot-api
+name: 'Spring Boot REST API'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Spring Boot 4.1 on Java 25: an OAuth2 resource server validating JWTs, Flyway on PostgreSQL, OpenAPI, problem details, Testcontainers tests and a layered non-root image.'
+stack: [spring-boot, postgres, docker]
+languages: [java]
+platforms: [linux, docker]
+distribution: [internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, migrations, api-docs, testing, ci, containerization]
+agents: [claude-code]
+requires_tools: [java>=25, docker, curl]
+deprecated: false
+supersedes: null
