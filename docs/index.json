@@ -2796,6 +2796,54 @@
     },
     {
       "schema": 1,
+      "slug": "coding-mentor",
+      "name": "Coding Mentor",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Teaches while the learner codes: explain and ask for a prediction before any change, hints before answers, the learner types their own code, and a small exercise proves it landed.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "coding-mentor",
+      "domain": "education",
+      "seniority": "senior",
+      "deliverables": [
+        "tutorial",
+        "content-outline",
+        "code-review"
+      ],
+      "checklists": [
+        "predict-before-change",
+        "graduated-hints",
+        "worked-examples",
+        "check-understanding",
+        "academic-integrity"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "test-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/academic-integrity.md",
+        "checklists/check-understanding.md",
+        "checklists/graduated-hints.md",
+        "checklists/predict-before-change.md",
+        "checklists/worked-examples.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "dart-senior-architect",
       "name": "Dart Senior Software Architect",
       "version": "1.0.0",
