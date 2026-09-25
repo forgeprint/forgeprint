@@ -2394,6 +2394,67 @@
     },
     {
       "schema": 1,
+      "slug": "python-backend-engineer",
+      "name": "Python Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Python services where pydantic forbids what it was not told about, nothing blocks the event loop, and a session lives exactly as long as one unit of work.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "python"
+      ],
+      "stack": [
+        "python",
+        "fastapi",
+        "django",
+        "flask"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "pydantic-edge",
+        "event-loop",
+        "session-scope",
+        "exceptions-and-logging",
+        "process-lifecycle",
+        "pytest-layers"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/event-loop.md",
+        "checklists/exceptions-and-logging.md",
+        "checklists/process-lifecycle.md",
+        "checklists/pydantic-edge.md",
+        "checklists/pytest-layers.md",
+        "checklists/session-scope.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "qa-automation-lead",
       "name": "QA Automation Lead",
       "version": "1.0.0",
