@@ -1834,6 +1834,58 @@
   "experts": [
     {
       "schema": 1,
+      "slug": "agent-designer",
+      "name": "Agent Designer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A workflow before an agent and one agent before several; every tool typed, scoped and able to explain its own errors; and no prompt change without an eval set and a recorded baseline.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "agent-designer",
+      "domain": "ai",
+      "seniority": "senior",
+      "deliverables": [
+        "design-spec",
+        "evaluation-harness",
+        "prompt-suite",
+        "threat-model"
+      ],
+      "checklists": [
+        "simplest-design",
+        "tool-design",
+        "mcp-server",
+        "skill-authoring",
+        "evals-and-prompt-changes",
+        "injection-and-agency"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "technical-program-manager"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/evals-and-prompt-changes.md",
+        "checklists/injection-and-agency.md",
+        "checklists/mcp-server.md",
+        "checklists/simplest-design.md",
+        "checklists/skill-authoring.md",
+        "checklists/tool-design.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "api-designer",
       "name": "API Designer",
       "version": "1.0.0",
