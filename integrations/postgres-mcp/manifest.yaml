@@ -1,0 +1,22 @@
+schema: 1
+slug: postgres-mcp
+name: 'Postgres MCP Pro'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Schemas, query plans, index advice and health checks on a PostgreSQL database, in the read-only restricted mode.'
+kind: mcp
+upstream: https://github.com/crystaldba/postgres-mcp
+upstream_version: '0.3.0'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add-json postgres ''{"command":"uvx","args":["--with","mcp<2","postgres-mcp==0.3.0","--access-mode=restricted"],"env":{"DATABASE_URI":"${DATABASE_URI}"}}'''
+  codex: 'codex mcp add postgres --env "DATABASE_URI=$DATABASE_URI" -- uvx --with "mcp<2" postgres-mcp==0.3.0 --access-mode=restricted'
+  gemini-cli: "gemini mcp add postgres -e 'DATABASE_URI=$DATABASE_URI' uvx --with 'mcp<2' postgres-mcp==0.3.0 --access-mode=restricted"
+needs_secrets: [DATABASE_URI]
+permissions_summary: "Reads every schema, table and statistics view the connection string's user can read, and runs SQL only inside read-only transactions with a 30-second limit; without --access-mode=restricted it can write."
+fits: [software, data]
+agents: [claude-code]
+deprecated: false
+supersedes: null
