@@ -19,6 +19,7 @@
 /blueprints/flask-api/ @aliosmanmho
 /blueprints/go-cli/ @aliosmanmho
 /blueprints/go-http-service/ @aliosmanmho
+/blueprints/godot-game/ @aliosmanmho
 /blueprints/langgraph-agent/ @aliosmanmho
 /blueprints/laravel-web-app/ @aliosmanmho
 /blueprints/nestjs-api/ @aliosmanmho

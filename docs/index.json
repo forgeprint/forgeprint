@@ -1225,6 +1225,65 @@
       "i18n": []
     },
     {
+      "slug": "godot-game",
+      "name": "Godot C# Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "2D game on Godot 4.7 in C#: the rules in a plain .NET library tested with xUnit, the game compiled against Godot.NET.Sdk from NuGet, and the engine left for you to install.",
+      "stack": [
+        "godot",
+        "dotnet"
+      ],
+      "languages": [
+        "csharp"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "free",
+        "paid"
+      ],
+      "project_type": "game",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "dotnet>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "langgraph-agent",
       "name": "LangGraph Agent",
       "version": "1.1.0",

@@ -1,0 +1,19 @@
+schema: 1
+slug: godot-game
+name: 'Godot C# Game'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: '2D game on Godot 4.7 in C#: the rules in a plain .NET library tested with xUnit, the game compiled against Godot.NET.Sdk from NuGet, and the engine left for you to install.'
+stack: [godot, dotnet]
+languages: [csharp]
+platforms: [windows, linux, macos]
+distribution: [free, paid]
+project_type: game
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [dotnet>=10]
+deprecated: false
+supersedes: null
