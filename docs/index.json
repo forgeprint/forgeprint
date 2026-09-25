@@ -2698,6 +2698,57 @@
     },
     {
       "schema": 1,
+      "slug": "business-analyst",
+      "name": "Business Analyst",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Requirements a tester can fail: each one sourced, singular and traced both ways, quality targets with a unit and a range, processes in valid BPMN, and every assumption owned and dated.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "business-analyst",
+      "domain": "product",
+      "seniority": "senior",
+      "deliverables": [
+        "requirements-spec",
+        "user-story-set",
+        "assumption-log"
+      ],
+      "checklists": [
+        "elicitation-and-assumptions",
+        "requirement-quality",
+        "acceptance-criteria",
+        "non-functional",
+        "traceability",
+        "process-models"
+      ],
+      "pairs_with": [
+        "product-manager",
+        "technical-program-manager",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/acceptance-criteria.md",
+        "checklists/elicitation-and-assumptions.md",
+        "checklists/non-functional.md",
+        "checklists/process-models.md",
+        "checklists/requirement-quality.md",
+        "checklists/traceability.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "code-reviewer",
       "name": "Code Reviewer",
       "version": "1.0.0",
