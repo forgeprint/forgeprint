@@ -5526,6 +5526,40 @@
     },
     {
       "schema": 1,
+      "slug": "docs-crew",
+      "name": "Docs Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A documentation set with a shape CI can hold: typed sections and no orphan pages, a reference generated from a linted OpenAPI document, and pages whose samples were run.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "documentation-architect",
+        "technical-writer",
+        "api-designer"
+      ],
+      "integrations": [
+        "context7-mcp",
+        "github-mcp"
+      ],
+      "for_what": "Building or restructuring the documentation for a codebase or SDK: the information architecture and a docs build CI can fail, an API reference from a linted contract, and guides, tutorials and ADRs whose samples run.",
+      "not_for": "Marketing copy, translation, or fixing one page or one README. That is small, same-file work for the technical writer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "incident-response-crew",
       "name": "Incident Response Crew",
       "version": "1.0.0",
