@@ -79,6 +79,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Test Engineer](https://forgeprint.github.io/forgeprint/e/test-engineer.html): Tests inside the code: a failing test before every change, cases derived by a named technique, doubles called what they are, and mutants that prove the assertions bite.
 - [TypeScript Senior Backend Engineer](https://forgeprint.github.io/forgeprint/e/typescript-backend-engineer.html): Build Node.js services in TypeScript where every input is parsed, every promise is awaited or handed off on purpose, and every outbound call carries a deadline.
 - [TypeScript Senior Software Architect](https://forgeprint.github.io/forgeprint/e/typescript-senior-architect.html): Let the compiler, the module graph and a schema at every boundary hold the architecture, because in TypeScript a type nothing checks at runtime is a comment.
+- [UX Researcher](https://forgeprint.github.io/forgeprint/e/ux-researcher.html): Methods, not taste: a question before a method, success criteria fixed before sessions, sample sizes with their limits, SUS scored as published, consent first, observations kept apart.
 
 ## Crews
 
