@@ -1,0 +1,22 @@
+schema: 1
+slug: tavily-mcp
+name: 'Tavily MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Search, extract, map and crawl the web through Tavily, with results shaped for an agent rather than a person.'
+kind: mcp
+upstream: https://github.com/tavily-ai/tavily-mcp
+upstream_version: '0.2.22'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json tavily ''{"command":"npx","args":["-y","tavily-mcp@0.2.22"],"env":{"TAVILY_API_KEY":"${TAVILY_API_KEY}"}}'''
+  codex: 'codex mcp add tavily --env "TAVILY_API_KEY=${TAVILY_API_KEY}" -- npx -y tavily-mcp@0.2.22'
+  gemini-cli: "gemini mcp add tavily -e 'TAVILY_API_KEY=${TAVILY_API_KEY}' npx -y tavily-mcp@0.2.22"
+needs_secrets: [TAVILY_API_KEY]
+permissions_summary: "Sends the agent's queries and URLs to the Tavily API, which searches, fetches and crawls pages and runs research jobs billed to the key's credits; it changes nothing."
+fits: [research, software, marketing]
+agents: [claude-code]
+deprecated: false
+supersedes: null
