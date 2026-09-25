@@ -2731,6 +2731,67 @@
         "overview.md",
         "references.md"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "typescript-senior-architect",
+      "name": "TypeScript Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Let the compiler, the module graph and a schema at every boundary hold the architecture, because in TypeScript a type nothing checks at runtime is a comment.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "node",
+        "nestjs",
+        "nextjs"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "api-design-review",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "compiler-strictness",
+        "module-graph",
+        "module-format",
+        "boundary-validation",
+        "promise-discipline",
+        "workspace-layout"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/boundary-validation.md",
+        "checklists/compiler-strictness.md",
+        "checklists/module-format.md",
+        "checklists/module-graph.md",
+        "checklists/promise-discipline.md",
+        "checklists/workspace-layout.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
     }
   ],
   "crews": [
