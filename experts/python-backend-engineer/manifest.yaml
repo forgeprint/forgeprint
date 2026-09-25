@@ -1,0 +1,29 @@
+schema: 1
+slug: python-backend-engineer
+name: 'Python Senior Backend Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Build Python services where pydantic forbids what it was not told about, nothing blocks the event loop, and a session lives exactly as long as one unit of work.'
+role: backend-engineer
+domain: software
+seniority: senior
+languages: [python]
+stack: [python, fastapi, django, flask]
+deliverables:
+  - code-review
+  - test-suite
+  - api-spec
+  - runbook
+checklists:
+  - pydantic-edge
+  - event-loop
+  - session-scope
+  - exceptions-and-logging
+  - process-lifecycle
+  - pytest-layers
+pairs_with: [security-reviewer, sql-data-engineer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null
