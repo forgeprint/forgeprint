@@ -3239,6 +3239,56 @@
     },
     {
       "schema": 1,
+      "slug": "modernization-engineer",
+      "name": "Modernization Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Pin what the old code does before changing it, move one slice at a time behind a seam, upgrade one major version per step, and switch the old path off only when the numbers say nobody uses it.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "modernization-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "migration-plan",
+        "refactoring-plan",
+        "test-suite"
+      ],
+      "checklists": [
+        "characterization-tests",
+        "seams-and-slices",
+        "stepwise-upgrades",
+        "behaviour-parity",
+        "decommission"
+      ],
+      "pairs_with": [
+        "test-engineer",
+        "performance-engineer",
+        "devops-platform-engineer",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/behaviour-parity.md",
+        "checklists/characterization-tests.md",
+        "checklists/decommission.md",
+        "checklists/seams-and-slices.md",
+        "checklists/stepwise-upgrades.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "observability-engineer",
       "name": "Observability Engineer",
       "version": "1.0.0",
