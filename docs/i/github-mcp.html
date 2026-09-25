@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/github-mcp.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GitHub MCP Server","name":"GitHub MCP Server","description":"Issues, pull requests, Actions and code search on the repositories a token can reach.","version":"1.0.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/github-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/github-mcp.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GitHub MCP Server","name":"GitHub MCP Server","description":"Issues, pull requests, Actions and code search on the repositories a token can reach.","version":"1.1.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/github-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/github-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -53,9 +53,9 @@
 
       <h2><span data-i18n="site.install">Install</span></h2>
       <h3>Claude Code</h3>
-      <pre class="install"><code>claude mcp add-json github '{&quot;type&quot;:&quot;http&quot;,&quot;url&quot;:&quot;https://api.githubcopilot.com/mcp/&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:&quot;Bearer $GITHUB_PERSONAL_ACCESS_TOKEN&quot;}}'</code></pre>
+      <pre class="install"><code>claude mcp add-json github '{&quot;type&quot;:&quot;http&quot;,&quot;url&quot;:&quot;https://api.githubcopilot.com/mcp/&quot;,&quot;headers&quot;:{&quot;Authorization&quot;:&quot;Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}&quot;}}'</code></pre>
       <h3>Gemini CLI</h3>
-      <pre class="install"><code>gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header &quot;Authorization: Bearer $GITHUB_PERSONAL_ACCESS_TOKEN&quot;</code></pre>
+      <pre class="install"><code>gemini mcp add github https://api.githubcopilot.com/mcp/ --transport http --header 'Authorization: Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}'</code></pre>
       <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
 
       <h2><span data-i18n="site.readIt">Read it</span></h2>
