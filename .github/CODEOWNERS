@@ -36,6 +36,7 @@
 /blueprints/python-library/ @aliosmanmho
 /blueprints/python-mcp-server/ @aliosmanmho
 /blueprints/python-rag-service/ @aliosmanmho
+/blueprints/rails-web-app/ @aliosmanmho
 /blueprints/rust-axum-service/ @aliosmanmho
 /blueprints/rust-cli/ @aliosmanmho
 /blueprints/spring-boot-api/ @aliosmanmho
