@@ -75,6 +75,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Fetch MCP](https://forgeprint.github.io/forgeprint/i/fetch-mcp.html): Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.
 - [Figma Context MCP](https://forgeprint.github.io/forgeprint/i/figma-mcp.html): Read a Figma file's layout and styles as structured data, so generated UI matches the design.
 - [Filesystem MCP](https://forgeprint.github.io/forgeprint/i/filesystem-mcp.html): Read and write files under directories named on the command line, and nowhere else.
+- [Firecrawl MCP](https://forgeprint.github.io/forgeprint/i/firecrawl-mcp.html): Scrape, crawl, map and search the web through Firecrawl, and get pages back as Markdown or as JSON to a schema.
 - [Git MCP](https://forgeprint.github.io/forgeprint/i/git-mcp.html): Status, diffs, log and commits on one local Git repository, named on the command line.
 - [GitHub MCP Server](https://forgeprint.github.io/forgeprint/i/github-mcp.html): Issues, pull requests, Actions and code search on the repositories a token can reach.
 - [GitLab MCP Server](https://forgeprint.github.io/forgeprint/i/gitlab-mcp.html): GitLab's built-in MCP server (beta): projects, work items, merge requests and pipelines on your own GitLab instance or GitLab.com.
