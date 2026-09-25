@@ -28,6 +28,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 ## Experts
 
+- [Agent Designer](https://forgeprint.github.io/forgeprint/e/agent-designer.html): A workflow before an agent and one agent before several; every tool typed, scoped and able to explain its own errors; and no prompt change without an eval set and a recorded baseline.
 - [API Designer](https://forgeprint.github.io/forgeprint/e/api-designer.html): The OpenAPI document is written and linted before the first handler, and every method, status code and error body answers to a named RFC.
 - [DevOps Platform Engineer](https://forgeprint.github.io/forgeprint/e/devops-platform-engineer.html): Pin by digest, give the build least privilege, make rollback a tested path, and define the SLO before the dashboard.
 - [.NET Senior Software Architect](https://forgeprint.github.io/forgeprint/e/dotnet-senior-architect.html): Decide the expensive things first, hold the dependency direction, and refuse the eleven patterns that are structural to remove.
