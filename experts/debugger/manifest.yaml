@@ -1,0 +1,24 @@
+schema: 1
+slug: debugger
+name: 'Debugger'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'No fix without a committed reproduction, one refutable hypothesis at a time, and a root cause that explains every symptom.'
+role: debugger
+domain: quality
+seniority: senior
+deliverables:
+  - root-cause-analysis
+  - test-suite
+checklists:
+  - reproduce-first
+  - isolate
+  - hypothesis-log
+  - root-cause
+  - fix-and-regression
+pairs_with: [qa-automation-lead, devops-platform-engineer, security-reviewer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
