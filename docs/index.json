@@ -1611,6 +1611,65 @@
       "i18n": []
     },
     {
+      "slug": "phaser-web-game",
+      "name": "Phaser Web Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Browser game on Phaser 4 and Vite in strict TypeScript: the rules in plain modules with ordinary unit tests, the whole game booted headless in Vitest, and a build that fails over its size budget.",
+      "stack": [
+        "phaser",
+        "vite"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "open-source"
+      ],
+      "project_type": "game",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-background-worker",
       "name": "Python Background Worker",
       "version": "1.1.0",

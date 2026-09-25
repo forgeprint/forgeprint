@@ -1,0 +1,19 @@
+schema: 1
+slug: phaser-web-game
+name: 'Phaser Web Game'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Browser game on Phaser 4 and Vite in strict TypeScript: the rules in plain modules with ordinary unit tests, the whole game booted headless in Vitest, and a build that fails over its size budget.'
+stack: [phaser, vite]
+languages: [typescript]
+platforms: [web]
+distribution: [free, open-source]
+project_type: game
+audience: [beginner, intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [node>=22.12.0, npm>=10]
+deprecated: false
+supersedes: null
