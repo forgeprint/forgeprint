@@ -1,0 +1,22 @@
+schema: 1
+slug: sveltekit-app
+name: 'SvelteKit App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Server-rendered SvelteKit in Svelte 5 runes and strict TypeScript on adapter-node, with a form action validated on the server, a CSP, and tests that read the HTML of the built server.'
+stack: [svelte, vite, tailwind]
+languages: [typescript]
+platforms: [web, linux, macos, windows]
+distribution: [open-source, saas, internal]
+project_type: web
+audience: [intermediate]
+requirements: [seo, testing, ci]
+agents: [claude-code]
+recommended_experts:
+  - frontend-engineer
+  - test-engineer
+requires_tools: [node>=22.13]
+deprecated: false
+supersedes: null
