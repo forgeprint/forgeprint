@@ -412,6 +412,69 @@
   },
   "blueprints": [
     {
+      "slug": "ai-chat-web-app",
+      "name": "AI Chat Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Next.js chat on the AI SDK with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no API key needed to build or test.",
+      "stack": [
+        "nextjs",
+        "react",
+        "ai-sdk",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "realtime",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "angular-app",
       "name": "Angular App",
       "version": "1.0.0",

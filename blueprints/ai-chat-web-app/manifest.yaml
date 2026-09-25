@@ -1,0 +1,19 @@
+schema: 1
+slug: ai-chat-web-app
+name: 'AI Chat Web App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Next.js chat on the AI SDK with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no API key needed to build or test.'
+stack: [nextjs, react, ai-sdk, tailwind]
+languages: [typescript]
+platforms: [web, linux]
+distribution: [open-source, saas, internal]
+project_type: agent
+audience: [intermediate]
+requirements: [realtime, testing, ci]
+agents: [claude-code]
+requires_tools: [node>=22.12, curl]
+deprecated: false
+supersedes: null
