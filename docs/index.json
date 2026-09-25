@@ -5593,6 +5593,41 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "tech-research-crew",
+      "name": "Tech Research Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A researcher who grades every source, a writer who turns it into a brief or an ADR, and a checker who runs the claims the decision rests on.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "research-engineer",
+        "technical-writer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "exa-mcp",
+        "context7-mcp",
+        "notion-mcp"
+      ],
+      "for_what": "Choosing a library, vendor or approach by researching it across many sources and writing the result up as a cited brief or ADR, with the claims the decision rests on checked by running them.",
+      "not_for": "A question with one known answer, anything that changes code, or a short note one agent can write in one sequential pass. A crew costs many times the tokens of a single chat, and small work never pays that back.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ],
   "integrations": [
