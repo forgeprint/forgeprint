@@ -16,6 +16,7 @@
 /blueprints/dotnet-web-api/ @aliosmanmho
 /blueprints/expo-mobile-app/ @aliosmanmho
 /blueprints/fastapi-service/ @aliosmanmho
+/blueprints/flask-api/ @aliosmanmho
 /blueprints/go-cli/ @aliosmanmho
 /blueprints/go-http-service/ @aliosmanmho
 /blueprints/langgraph-agent/ @aliosmanmho
