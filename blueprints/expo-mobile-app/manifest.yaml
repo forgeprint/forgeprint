@@ -1,0 +1,24 @@
+schema: 1
+slug: expo-mobile-app
+name: 'Expo Mobile App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Expo SDK 57 and React Native 0.86 on Expo Router with typed routes, a screen tested through the router, and a web export plus Hermes bundles as the build proof, with no device or account.'
+stack: [react-native, expo]
+languages: [typescript]
+platforms: [ios, android, web]
+distribution: [free, paid, internal]
+project_type: mobile
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [node>=22.13]
+derived_from:
+  url: https://github.com/expo/expo/tree/main/templates/expo-template-default
+  license: MIT
+  verified_on: 2026-09-25
+  note: 'Scaffolded from the published template at 57.0.27; the recipe replaces the home screen and one hook, and adds the tests, lint, CI and checks.'
+deprecated: false
+supersedes: null

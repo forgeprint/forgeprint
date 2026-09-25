@@ -777,6 +777,72 @@
       "i18n": []
     },
     {
+      "slug": "expo-mobile-app",
+      "name": "Expo Mobile App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Expo SDK 57 and React Native 0.86 on Expo Router with typed routes, a screen tested through the router, and a web export plus Hermes bundles as the build proof, with no device or account.",
+      "stack": [
+        "react-native",
+        "expo"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "ios",
+        "android",
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "paid",
+        "internal"
+      ],
+      "project_type": "mobile",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.13"
+      ],
+      "provenance": "generated",
+      "derived_from": {
+        "url": "https://github.com/expo/expo/tree/main/templates/expo-template-default",
+        "license": "MIT",
+        "verified_on": "2026-09-25",
+        "note": "Scaffolded from the published template at 57.0.27; the recipe replaces the home screen and one hook, and adds the tests, lint, CI and checks."
+      },
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "fastapi-service",
       "name": "FastAPI Service",
       "version": "1.0.1",
