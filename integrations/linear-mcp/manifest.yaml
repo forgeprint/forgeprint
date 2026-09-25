@@ -1,0 +1,21 @@
+schema: 1
+slug: linear-mcp
+name: 'Linear MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Linear issues, projects and comments through Linear's hosted server, read-only unless you choose the full endpoint."
+kind: mcp
+upstream: https://linear.app/docs/mcp
+upstream_version: 'hosted'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add --transport http linear-server https://mcp.linear.app/mcp/readonly'
+  codex: 'codex mcp add linear --url https://mcp.linear.app/mcp/readonly'
+  gemini-cli: 'gemini mcp add --transport http linear https://mcp.linear.app/mcp/readonly'
+permissions_summary: 'As installed, reads the issues, projects and comments the signed-in user can see. The full /mcp endpoint, which you opt into, also creates and updates them.'
+fits: [software, product]
+agents: [claude-code]
+deprecated: false
+supersedes: null
