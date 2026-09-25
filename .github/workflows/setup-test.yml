@@ -74,13 +74,13 @@ jobs:
         with:
           python-version: '3.13'
 
-      # Go is on the runner, but an older one than the catalog needs: gin
-      # 1.12 requires 1.25 and the image ships 1.24. The tool check refuses
-      # rather than building with the wrong toolchain, which is correct and
-      # means the version has to be pinned here.
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+      # Go is on the runner, but an older one than the catalog needs. The
+      # tool check refuses rather than building with the wrong toolchain, so
+      # the version is pinned here: 1.27, the newest release. Go supports the
+      # two latest minors, so 1.25 stopped getting security fixes with 1.27.
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.25'
+          go-version: '1.27'
 
       # Terraform is not on the runner at all. `terraform_wrapper: false`
       # because the wrapper rewrites stdout, and a recipe that reads
