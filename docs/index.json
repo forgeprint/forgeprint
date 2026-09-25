@@ -2363,6 +2363,65 @@
     },
     {
       "schema": 1,
+      "slug": "java-senior-architect",
+      "name": "Java Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Make the module boundaries a failing test, the build bit-for-bit reproducible, the types closed and null-checked, and every Spring proxy do what its annotation claims.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "java"
+      ],
+      "stack": [
+        "spring-boot"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "module-rules",
+        "build-reproducibility",
+        "type-modelling",
+        "spring-wiring",
+        "spring-transactions",
+        "thread-model"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/build-reproducibility.md",
+        "checklists/module-rules.md",
+        "checklists/spring-transactions.md",
+        "checklists/spring-wiring.md",
+        "checklists/thread-model.md",
+        "checklists/type-modelling.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "performance-engineer",
       "name": "Performance Engineer",
       "version": "1.0.0",

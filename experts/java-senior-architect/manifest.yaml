@@ -1,0 +1,30 @@
+schema: 1
+slug: java-senior-architect
+name: 'Java Senior Software Architect'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Make the module boundaries a failing test, the build bit-for-bit reproducible, the types closed and null-checked, and every Spring proxy do what its annotation claims.'
+role: software-architect
+domain: software
+seniority: senior
+languages: [java]
+stack: [spring-boot]
+deliverables:
+  - adr
+  - architecture-review
+  - c4-diagram
+  - migration-plan
+  - dependency-audit
+checklists:
+  - module-rules
+  - build-reproducibility
+  - type-modelling
+  - spring-wiring
+  - spring-transactions
+  - thread-model
+pairs_with: [security-reviewer, sql-data-engineer, devops-platform-engineer]
+agents: [claude-code]
+deprecated: false
+supersedes: null
