@@ -1,0 +1,19 @@
+schema: 1
+slug: vite-react-spa
+name: 'Vite React SPA'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Client-only React single-page app built by Vite, with Tailwind, React Router, a typed API client as the only network boundary, and Vitest tests that run axe-core against every route.'
+stack: [react, vite, tailwind]
+languages: [typescript]
+platforms: [web]
+distribution: [saas, internal, open-source]
+project_type: web
+audience: [intermediate]
+requirements: [testing, accessibility, ci]
+agents: [claude-code]
+requires_tools: [node>=22.22.2, npm>=10]
+deprecated: false
+supersedes: null
