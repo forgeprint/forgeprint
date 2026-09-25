@@ -1,0 +1,23 @@
+schema: 1
+slug: performance-crew
+name: 'Performance Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Latency and throughput fixed by measurement: see where the time goes, change one thing in the browser or the database, and count nothing smaller than the run-to-run spread.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - performance-engineer
+  - observability-engineer
+  - postgres-database-administrator
+  - frontend-engineer
+integrations:
+  - chrome-devtools-mcp
+  - sentry-mcp
+  - postgres-mcp
+for_what: 'Profiling and fixing latency or throughput on a web application backed by PostgreSQL: the signals that show where time goes, Core Web Vitals in the browser, query plans and indexes in the database, and every change measured against a baseline.'
+not_for: 'Feature work, correctness bugs, or a single slow query that is already identified. That is one sequential change for one expert, and a crew adds cost without adding a measurement.'
+agents: [claude-code]
+deprecated: false
+supersedes: null
