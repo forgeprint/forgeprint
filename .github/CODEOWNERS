@@ -9,6 +9,7 @@
 # One line per blueprint, ordered by slug.
 /blueprints/angular-app/ @aliosmanmho
 /blueprints/astro-content-site/ @aliosmanmho
+/blueprints/bevy-game/ @aliosmanmho
 /blueprints/blazor-web-app/ @aliosmanmho
 /blueprints/browser-extension/ @aliosmanmho
 /blueprints/dbt-duckdb-pipeline/ @aliosmanmho
