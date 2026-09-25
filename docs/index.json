@@ -2416,6 +2416,71 @@
       "i18n": []
     },
     {
+      "slug": "spring-boot-api",
+      "name": "Spring Boot REST API",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Spring Boot 4.1 on Java 25: an OAuth2 resource server validating JWTs, Flyway on PostgreSQL, OpenAPI, problem details, Testcontainers tests and a layered non-root image.",
+      "stack": [
+        "spring-boot",
+        "postgres",
+        "docker"
+      ],
+      "languages": [
+        "java"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "api-docs",
+        "testing",
+        "ci",
+        "containerization"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "java>=25",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "streamlit-data-app",
       "name": "Streamlit Data App",
       "version": "1.0.0",

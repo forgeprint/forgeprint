@@ -38,6 +38,7 @@
 /blueprints/python-rag-service/ @aliosmanmho
 /blueprints/rust-axum-service/ @aliosmanmho
 /blueprints/rust-cli/ @aliosmanmho
+/blueprints/spring-boot-api/ @aliosmanmho
 /blueprints/streamlit-data-app/ @aliosmanmho
 /blueprints/sveltekit-app/ @aliosmanmho
 /blueprints/tanstack-start-app/ @aliosmanmho
