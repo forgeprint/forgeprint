@@ -66,6 +66,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
 - [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
+- [Fetch MCP](https://forgeprint.github.io/forgeprint/i/fetch-mcp.html): Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.
 - [Figma Context MCP](https://forgeprint.github.io/forgeprint/i/figma-mcp.html): Read a Figma file's layout and styles as structured data, so generated UI matches the design.
 - [Filesystem MCP](https://forgeprint.github.io/forgeprint/i/filesystem-mcp.html): Read and write files under directories named on the command line, and nowhere else.
 - [GitHub MCP Server](https://forgeprint.github.io/forgeprint/i/github-mcp.html): Issues, pull requests, Actions and code search on the repositories a token can reach.
