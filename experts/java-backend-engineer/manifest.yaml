@@ -1,0 +1,29 @@
+schema: 1
+slug: java-backend-engineer
+name: 'Java Senior Backend Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Build Spring Boot services where the JSON mapper rejects what it does not know, @Transactional actually applies, and virtual threads meet a pool sized on purpose.'
+role: backend-engineer
+domain: software
+seniority: senior
+languages: [java]
+stack: [spring-boot]
+deliverables:
+  - code-review
+  - test-suite
+  - api-spec
+  - runbook
+checklists:
+  - bean-validation
+  - transaction-boundaries
+  - problem-details
+  - threads-and-pools
+  - shutdown-and-logging
+  - test-slices
+pairs_with: [security-reviewer, sql-data-engineer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null
