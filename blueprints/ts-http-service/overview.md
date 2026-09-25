@@ -1,7 +1,8 @@
 # TypeScript HTTP Service
 
-An HTTP service in TypeScript on Hono with bearer token verification, a
-container, and tests that prove an unauthenticated request is refused.
+An HTTP service in TypeScript on Hono or Express 5 with bearer token
+verification, a container, and tests that prove an unauthenticated request is
+refused.
 
 **Generated, CI-tested, not manually verified.** The recipe executes on every
 push like every other blueprint here. Nobody has run a real service on it
@@ -19,6 +20,24 @@ first, which is what `tier: official` means in this catalog and why this is
   not issue them, which is usually the right split.
 - A service whose tests have to be fast. A Hono app is a fetch handler, so the
   whole router is exercised without a port.
+- A team whose middleware, hiring and habits already assume Express. Choose
+  `framework: express` and keep them; the design and the checks are the same.
+
+## Options
+
+- **`framework: hono`** (default) — Hono 4 on `@hono/node-server`. Tests call
+  the fetch handler directly, with no port. Runs on other runtimes with a
+  different adapter.
+- **`framework: express`** — Express 5. The same routes, the same middleware
+  placement, the same route-table test, in Express's idioms: a `Router` for the
+  protected routes and a typed `res.locals` for the claims. Tests start the app
+  on a loopback port. Adds a terminal error handler, because Express's default
+  one prints the stack trace outside `NODE_ENV=production`, and turns off
+  `x-powered-by`. Node only.
+
+Everything outside the four source files and `package.json` — the container,
+CI, the README and the checks against the running image — is the same step for
+both.
 
 ## What it is NOT for
 
@@ -72,8 +91,13 @@ first, which is what `tier: official` means in this catalog and why this is
 - **No store means the interesting decisions are still ahead of you** —
   pooling, migrations, transaction boundaries, where a tenant filter lives.
 - **Hono is young next to Express.** It is 46M downloads a week and climbing,
-  and Express is still 101M. If a team's whole ecosystem assumes Express
-  middleware, this is a change rather than a shortcut.
+  and Express is still 101M. That is what the `express` option is for.
+- **On Express, route placement is also order.** A route declared on `app`
+  above the protected router is public. The route-table test catches it, but
+  only for routers mounted at `/` — it reads route paths, not mount paths.
+- **Express tests need a port.** A loopback one the operating system picks, so
+  they cannot collide, but they are slower than Hono's and exercise a listener
+  the Hono tests do not.
 
 ## Compared with the alternatives here
 

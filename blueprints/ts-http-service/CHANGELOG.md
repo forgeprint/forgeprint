@@ -1,5 +1,42 @@
 # Changelog — ts-http-service
 
+## 1.2.0 — 2026-09-25
+
+Feature: framework option, Express 5, per D12 of
+[the expansion plan](../../docs/research/2026-09-24-expansion-plan.md).
+
+An `express-api` blueprint would have claimed the same language, type and
+requirements as this one and differed in one import, so it is an option here
+instead of a second slug ([ADR 0001](../../docs/decisions/0001-no-variants.md)).
+
+- **`options.framework: [hono, express]`.** Hono stays the default and the
+  first value, so the pull request check runs what it ran before. Express is
+  pinned at 5.2.1, the current 5.x on npm on 2026-09-25, with
+  `@types/express` 5.0.6.
+- **Only the steps that differ are guarded:** `package.json` and the four
+  source files. The configuration, the container, CI, the README and every
+  check against the running image are shared, so both branches are proved by
+  the same curl.
+- **The same guarantees, in Express's own idioms.** Claims live in a typed
+  `res.locals`; the protected routes are an `express.Router()` with the
+  middleware on it; the route-table test walks `app.router.stack`, including
+  mounted routers, and fails on any route outside the allow-list that answers
+  without a token.
+- **Two things Express needs that Hono did not.** A terminal error handler,
+  because Express's own one prints the stack trace unless `NODE_ENV` is
+  `production` and the node image does not set it — tested with a handler that
+  throws. And `x-powered-by` turned off, also tested.
+- **`express` is added to `stack`.** `validate` accepts a stack value that one
+  option needs, and it is what lets `resolve` find this blueprint for somebody
+  who asks for Express.
+- **The install step verifies with `npm ls --depth=0`** rather than importing
+  Hono, so it is the same step in both branches.
+
+The Express tests run the app on a loopback port the operating system picks
+and call it with Node's own `fetch`. An Express app is a request listener, not
+a fetch handler, and a test client library would have been a dependency for
+something Node already does.
+
 ## 1.1.0 — 2026-09-24
 
 The routing convention became a check, from the architecture review

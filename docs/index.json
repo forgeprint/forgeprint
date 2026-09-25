@@ -1331,15 +1331,16 @@
     {
       "slug": "ts-http-service",
       "name": "TypeScript HTTP Service",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"
       ],
-      "summary": "HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.",
+      "summary": "HTTP service in TypeScript on Hono or Express with bearer token verification, a container, and tests that prove an unauthenticated request is refused.",
       "stack": [
         "node",
         "hono",
+        "express",
         "docker"
       ],
       "languages": [
@@ -1366,7 +1367,12 @@
       "agents": [
         "claude-code"
       ],
-      "options": {},
+      "options": {
+        "framework": [
+          "hono",
+          "express"
+        ]
+      },
       "provides": {
         "mcp": [],
         "skills": []
