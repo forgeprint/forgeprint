@@ -2883,6 +2883,42 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "supabase-mcp",
+      "name": "Supabase MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Query one Supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/supabase/mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --scope project --transport http supabase \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\"",
+        "codex": "codex mcp add supabase --url \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\"",
+        "gemini-cli": "gemini mcp add -t http supabase \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\""
+      },
+      "permissions_summary": "Signs in as you through OAuth and, as installed here, reads one project read-only; without read_only it can run SQL that changes data, apply migrations and deploy functions.",
+      "fits": [
+        "software",
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ]
 }
