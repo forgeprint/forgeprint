@@ -1,0 +1,21 @@
+schema: 1
+slug: netlify-mcp
+name: 'Netlify MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Netlify's own server: projects, deploys, environment variables, forms, access controls and extensions on the Netlify account you are logged in to."
+kind: mcp
+upstream: https://github.com/netlify/netlify-mcp
+upstream_version: '1.15.1'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json netlify ''{"command":"npx","args":["-y","@netlify/mcp@1.15.1"]}'''
+  codex: 'codex mcp add netlify -- npx -y @netlify/mcp@1.15.1'
+  gemini-cli: 'gemini mcp add netlify npx -y @netlify/mcp@1.15.1'
+permissions_summary: 'Reads and changes every Netlify team and project your login reaches: creates projects, zips and uploads a local folder to deploy it, sets and deletes environment variables and secrets, changes access controls and forms, installs extensions.'
+fits: [software, devops]
+agents: [claude-code]
+deprecated: false
+supersedes: null
