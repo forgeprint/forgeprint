@@ -102,10 +102,10 @@ export function renderIndexPage(index: CatalogIndex, context: SiteContext = NOTH
 
       <section class="catalog">
         <div class="catalog-head">
-          <div class="tabs" role="tablist"${attr('aria-label', 'tabsLabel')}>
+          <div class="tabs" role="tablist"${attr('aria-label', 'tabsLabel')} hidden>
 ${tabs(counts)}
           </div>
-          <input id="filter" type="search"${attr('placeholder', 'filterPlaceholder')} autocomplete="off"${attr('aria-label', 'filterLabel')} />
+          <input id="filter" type="search"${attr('placeholder', 'filterPlaceholder')} autocomplete="off"${attr('aria-label', 'filterLabel')} hidden />
         </div>
         ${
           empty
@@ -137,10 +137,12 @@ ${panel('integration', integrationCards(units))}
       const filter = document.getElementById('filter');
       const nothing = document.getElementById('nothing');
       const panels = Array.from(document.querySelectorAll('.cards'));
+      const tablist = document.querySelector('[role="tablist"]');
       const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
 
-      // One kind at a time. Without JavaScript every panel is visible, which
-      // makes for a longer page and not a broken one.
+      // One kind at a time. Without JavaScript every panel is visible and the
+      // tabs and the filter, which would do nothing, stay hidden: a longer
+      // page, not a broken one. They are shown here, once they can work.
       function apply() {
         const active = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
         const kind = active ? active.dataset.kind : 'blueprint';
@@ -202,6 +204,8 @@ ${panel('integration', integrationCards(units))}
       }
       window.addEventListener('hashchange', fromAddress);
       if (tabs.length > 0) {
+        if (tablist) tablist.hidden = false;
+        if (filter) filter.hidden = false;
         apply();
         fromAddress();
       }
@@ -548,7 +552,7 @@ function tabs(counts: Record<string, number>): string {
 
 function panel(kind: string, cards: string): string {
   if (cards.trim() === '') return '';
-  return `        <div class="cards" id="${escape(kind)}s" data-kind="${escape(kind)}" role="tabpanel" aria-labelledby="tab-${escape(kind)}s" tabindex="0" hidden>
+  return `        <div class="cards" id="${escape(kind)}s" data-kind="${escape(kind)}" role="tabpanel" aria-labelledby="tab-${escape(kind)}s" tabindex="0">
 ${cards}
         </div>`;
 }

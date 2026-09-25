@@ -225,6 +225,40 @@ describe('the catalog tabs, as a keyboard user meets them', () => {
     assert.match(html, /'Home'/);
     assert.match(html, /'End'/);
   });
+
+  const tabs = [...html.matchAll(/<button[^>]*role="tab"[^>]*>/g)].map((match) => match[0]);
+  const panels = [...html.matchAll(/<div class="cards"[^>]*>/g)].map((match) => match[0]);
+
+  it('ties every tab to its panel, not only the experts one', () => {
+    assert.ok(tabs.length > 1, 'the sample catalog has more than one kind');
+    for (const tab of tabs) {
+      const id = /\bid="([^"]+)"/.exec(tab)?.[1];
+      const controls = /aria-controls="([^"]+)"/.exec(tab)?.[1];
+      assert.ok(id !== undefined && controls !== undefined, tab);
+      const panel = panels.find((candidate) => candidate.includes(`id="${controls}"`));
+      assert.ok(panel !== undefined, `no panel with id="${controls}"`);
+      assert.match(panel, /role="tabpanel"/);
+      assert.ok(panel.includes(`aria-labelledby="${id}"`), panel);
+    }
+  });
+
+  it('has exactly one selected tab, and it alone is in the tab order', () => {
+    const selected = tabs.filter((tab) => tab.includes('aria-selected="true"'));
+    assert.equal(selected.length, 1);
+    assert.match(selected[0] ?? '', /tabindex="0"/);
+    for (const tab of tabs.filter((candidate) => !selected.includes(candidate))) {
+      assert.match(tab, /tabindex="-1"/);
+    }
+  });
+
+  it('shows every panel without JavaScript, and hides the controls that need it', () => {
+    for (const panel of panels) assert.doesNotMatch(panel, /\bhidden\b/, panel);
+    assert.match(html, /<div class="tabs" role="tablist"[^>]*\bhidden>/);
+    assert.match(html, /<input id="filter"[^>]*\bhidden \/>/);
+    // The script is what shows them again, once they can work.
+    assert.match(html, /tablist\.hidden = false/);
+    assert.match(html, /filter\.hidden = false/);
+  });
 });
 
 describe('a hosted integration', () => {

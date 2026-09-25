@@ -47,13 +47,13 @@
 
       <section class="catalog">
         <div class="catalog-head">
-          <div class="tabs" role="tablist" aria-label="What to browse" data-i18n-aria-label="site.tabsLabel">
+          <div class="tabs" role="tablist" aria-label="What to browse" data-i18n-aria-label="site.tabsLabel" hidden>
             <button type="button" role="tab" id="tab-blueprints" aria-controls="blueprints" data-kind="blueprint" aria-selected="true" tabindex="0"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">43</span></button>
             <button type="button" role="tab" id="tab-experts" aria-controls="experts" data-kind="expert" aria-selected="false" tabindex="-1"><span data-i18n="site.tabExpert">Experts</span> <span class="count">45</span></button>
             <button type="button" role="tab" id="tab-crews" aria-controls="crews" data-kind="crew" aria-selected="false" tabindex="-1"><span data-i18n="site.tabCrew">Crews</span> <span class="count">17</span></button>
             <button type="button" role="tab" id="tab-integrations" aria-controls="integrations" data-kind="integration" aria-selected="false" tabindex="-1"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">44</span></button>
           </div>
-          <input id="filter" type="search" placeholder="Filter by language, stack, role…" data-i18n-placeholder="site.filterPlaceholder" autocomplete="off" aria-label="Filter the catalog" data-i18n-aria-label="site.filterLabel" />
+          <input id="filter" type="search" placeholder="Filter by language, stack, role…" data-i18n-placeholder="site.filterPlaceholder" autocomplete="off" aria-label="Filter the catalog" data-i18n-aria-label="site.filterLabel" hidden />
         </div>
         <div class="cards" id="blueprints" data-kind="blueprint" role="tabpanel" aria-labelledby="tab-blueprints" tabindex="0">
         <article class="card" data-terms="ai-chat-web-app ai chat web app next.js chat on the ai sdk with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no api key needed to build or test. agent typescript nextjs react ai-sdk tailwind realtime testing ci web linux open-source saas internal">
@@ -272,7 +272,7 @@
           <p class="tags"><span>TypeScript</span><span>Web application</span></p>
         </article>
 </div>
-        <div class="cards" id="experts" data-kind="expert" role="tabpanel" aria-labelledby="tab-experts" tabindex="0" hidden>
+        <div class="cards" id="experts" data-kind="expert" role="tabpanel" aria-labelledby="tab-experts" tabindex="0">
         <article class="card" data-terms="accessibility-specialist accessibility specialist audit against wcag 2.2 aa: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction. accessibility-specialist quality senior accessibility-audit test-suite compliance-checklist code-review">
           <h3><a href="e/accessibility-specialist.html">Accessibility Specialist</a> </h3>
           <p lang="en">Audit against WCAG 2.2 AA: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction.</p>
@@ -544,7 +544,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="crews" data-kind="crew" role="tabpanel" aria-labelledby="tab-crews" tabindex="0" hidden>
+        <div class="cards" id="crews" data-kind="crew" role="tabpanel" aria-labelledby="tab-crews" tabindex="0">
         <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer github-mcp playwright-mcp">
           <h3><a href="c/api-hardening-crew.html">API Hardening Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
@@ -665,7 +665,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="integrations" data-kind="integration" role="tabpanel" aria-labelledby="tab-integrations" tabindex="0" hidden>
+        <div class="cards" id="integrations" data-kind="integration" role="tabpanel" aria-labelledby="tab-integrations" tabindex="0">
         <article class="card" data-terms="agent-device agent-device callstack's app-automation server: drive and verify ios, android, tv, desktop and web apps from an agent, and keep screenshots, logs and traces. needs xcode (macos) or the android sdk. mcp software quality">
           <h3><a href="i/agent-device.html">agent-device</a> <span class="tier">mcp</span></h3>
           <p lang="en">Callstack's app-automation server: drive and verify iOS, Android, TV, desktop and web apps from an agent, and keep screenshots, logs and traces. Needs Xcode (macOS) or the Android SDK.</p>
@@ -931,10 +931,12 @@
 const filter = document.getElementById('filter');
       const nothing = document.getElementById('nothing');
       const panels = Array.from(document.querySelectorAll('.cards'));
+      const tablist = document.querySelector('[role="tablist"]');
       const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
 
-      // One kind at a time. Without JavaScript every panel is visible, which
-      // makes for a longer page and not a broken one.
+      // One kind at a time. Without JavaScript every panel is visible and the
+      // tabs and the filter, which would do nothing, stay hidden: a longer
+      // page, not a broken one. They are shown here, once they can work.
       function apply() {
         const active = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
         const kind = active ? active.dataset.kind : 'blueprint';
@@ -996,6 +998,8 @@ const filter = document.getElementById('filter');
       }
       window.addEventListener('hashchange', fromAddress);
       if (tabs.length > 0) {
+        if (tablist) tablist.hidden = false;
+        if (filter) filter.hidden = false;
         apply();
         fromAddress();
       }
