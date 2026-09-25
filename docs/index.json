@@ -2199,6 +2199,61 @@
     },
     {
       "schema": 1,
+      "slug": "postgres-database-administrator",
+      "name": "PostgreSQL Database Administrator",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A backup is a restore somebody ran, an index ships with its plan, and no DDL reaches production without a lock_timeout.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "database-administrator",
+      "domain": "data",
+      "seniority": "senior",
+      "stack": [
+        "postgres"
+      ],
+      "deliverables": [
+        "data-model",
+        "migration-plan",
+        "performance-report",
+        "runbook"
+      ],
+      "checklists": [
+        "catalog-integrity",
+        "index-evidence",
+        "lock-safe-ddl",
+        "backup-and-restore",
+        "roles-and-access",
+        "runtime-health"
+      ],
+      "pairs_with": [
+        "sql-data-engineer",
+        "security-reviewer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/backup-and-restore.md",
+        "checklists/catalog-integrity.md",
+        "checklists/index-evidence.md",
+        "checklists/lock-safe-ddl.md",
+        "checklists/roles-and-access.md",
+        "checklists/runtime-health.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "product-manager",
       "name": "Product Manager",
       "version": "1.0.0",
