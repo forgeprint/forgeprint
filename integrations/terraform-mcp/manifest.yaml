@@ -1,0 +1,21 @@
+schema: 1
+slug: terraform-mcp
+name: 'Terraform MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Look up providers, modules and policies in the public Terraform Registry, so an agent writes HCL against the current schema.'
+kind: mcp
+upstream: https://github.com/hashicorp/terraform-mcp-server
+upstream_version: '1.3.0'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add-json terraform ''{"command":"docker","args":["run","-i","--rm","hashicorp/terraform-mcp-server:1.3.0","--toolsets=registry"]}'''
+  codex: 'codex mcp add terraform -- docker run -i --rm hashicorp/terraform-mcp-server:1.3.0 --toolsets=registry'
+  gemini-cli: 'gemini mcp add terraform docker run -i --rm hashicorp/terraform-mcp-server:1.3.0 --toolsets=registry'
+permissions_summary: 'Runs a container on this machine that reads public provider, module and policy documentation from the Terraform Registry; with no token set it reaches no workspace, state or run.'
+fits: [devops, software]
+agents: [claude-code]
+deprecated: false
+supersedes: null
