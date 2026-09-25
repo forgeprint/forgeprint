@@ -13,7 +13,8 @@ a route.
 internal/auth/auth.go     the only place that decides who a caller is
 internal/api/api.go       New(settings): the routes, and nothing else
 internal/api/api_test.go  the router, driven through httptest
-main.go                   configuration, the listener, the exit code
+internal/server/          the http.Server: its timeouts, and the drain on shutdown
+main.go                   configuration, the signal context, the exit code
 ```
 
 ## Rules that are not style preferences
@@ -51,19 +52,35 @@ starting.
 **`New` is a constructor.** A package-level engine shares state between tests
 and cannot be given different settings.
 
+**Shutdown drains; it does not drop.** `main` cancels its context on SIGTERM
+or SIGINT through `signal.NotifyContext`, and `server.Run` answers with
+`http.Server.Shutdown`: the listener closes, and the requests already running
+get `ShutdownTimeout` — eight seconds — to finish. That number has to stay
+below the grace period of whatever stops the process (ten seconds for
+`docker stop`, thirty for Kubernetes), or SIGKILL arrives mid-drain. A
+goroutine you start that outlives a request needs the same treatment: it
+watches the context, and something waits for it.
+
+**Errors are matched with `errors.Is` and `errors.As`, never `==`.** A
+comparison stops matching the day anything wraps the error, and it fails
+silently: the not-found path becomes a 500. The recipe runs golangci-lint's
+`errorlint` to catch it, and CI runs the same line.
+
 ## The go directive is set by your dependencies
 
 `go mod init` writes whatever toolchain you happen to have installed, and
-`go get` raises the floor when a dependency demands it — gin 1.12 requires
-1.25. The builder image in the Dockerfile has to satisfy that floor, and step
-13 of the setup checks the two still agree, because otherwise the mismatch
-surfaces as a failed Docker build with an error that reads like a network
-problem.
+`go get` raises the floor when a dependency demands it. The recipe sets it to
+1.27 on purpose — gin 1.12 alone would accept 1.25, which no longer gets
+security fixes. The builder image in the Dockerfile has to satisfy that floor,
+and step 16 of the setup checks the two still agree, because otherwise the
+mismatch surfaces as a failed Docker build with an error that reads like a
+network problem. When you raise the floor, raise the image and the CI
+`go-version` with it.
 
 ## What this does not do
 
 No database, no migrations, no rate limiting, no CORS, no observability beyond
-the standard log line, no token issuance, no graceful shutdown. `/items`
+the standard log line, no token issuance, no readiness endpoint. `/items`
 returns an empty list because it exists to prove the group is wired, not to
 show a data layer.
 

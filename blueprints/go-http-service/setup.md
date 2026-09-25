@@ -1,20 +1,20 @@
 # Setup
 
 Creates an HTTP service in Go on Gin, with bearer token verification, tests
-that prove an unauthenticated request is refused, a distroless container and
-CI.
+that prove an unauthenticated request is refused, a shutdown that drains the
+requests in flight, a distroless container and CI.
 
 Run every step from the directory that will hold the project. Each step is one
 action and ends with the command that proves it worked. Stop at the first
 verification that fails.
 
-Requires Go 1.25 or newer and Docker.
+Requires Go 1.27 or newer and Docker.
 
 1. Start the module: `go mod init example.com/service`
    Verify: `test -f go.mod`
 
-2. Set the module's Go floor explicitly. `go mod init` writes whatever toolchain happens to be installed, so without this the module declares the author's version and the pinned builder image no longer satisfies it — on one machine and not another: `go mod edit -go=1.25`
-   Verify: `grep -qE "^go 1\.25" go.mod`
+2. Set the module's Go floor explicitly. `go mod init` writes whatever toolchain happens to be installed, so without this the module declares the author's version and the pinned builder image no longer satisfies it — on one machine and not another. 1.27 is the oldest Go release still getting security fixes: `go mod edit -go=1.27`
+   Verify: `grep -qE "^go 1\.27" go.mod`
 
 3. Add the pinned dependencies: `go get github.com/gin-gonic/gin@v1.12.0 github.com/golang-jwt/jwt/v5@v5.3.1`
    Verify: `grep -q "gin-gonic/gin v1.12.0" go.mod`
@@ -253,20 +253,249 @@ Requires Go 1.25 or newer and Docker.
 
    Verify: `test -f internal/api/api_test.go`
 
-7. Create `main.go` with:
+7. Create `internal/server/server.go` with:
+
+   ```go
+   // Package server owns the listener's lifetime: the timeouts a zero value
+   // leaves switched off, and a shutdown that lets requests in flight finish.
+   package server
+
+   import (
+   	"context"
+   	"errors"
+   	"fmt"
+   	"net"
+   	"net/http"
+   	"time"
+   )
+
+   // ShutdownTimeout bounds the drain. It has to be shorter than the time
+   // whatever stops the process waits before it kills it — ten seconds for
+   // `docker stop`, thirty for a Kubernetes pod — or SIGKILL cuts the drain
+   // off and the requests it was protecting are dropped anyway.
+   const ShutdownTimeout = 8 * time.Second
+
+   // New wraps the handler in a server with its timeouts set. In net/http a
+   // zero timeout means no timeout.
+   func New(handler http.Handler) *http.Server {
+   	return &http.Server{
+   		Handler: handler,
+   		// Without this a slow client can hold a connection open indefinitely
+   		// while sending headers one byte at a time.
+   		ReadHeaderTimeout: 5 * time.Second,
+   	}
+   }
+
+   // Run serves on listener until ctx is done, then drains. Shutdown closes
+   // the listener first, so nothing new is accepted, and then waits up to
+   // timeout for the requests already running to finish.
+   func Run(ctx context.Context, srv *http.Server, listener net.Listener, timeout time.Duration) error {
+   	served := make(chan error, 1)
+   	go func() {
+   		served <- srv.Serve(listener)
+   	}()
+
+   	select {
+   	case err := <-served:
+   		// Serve stopped before anybody asked it to.
+   		return fmt.Errorf("serving: %w", err)
+   	case <-ctx.Done():
+   	}
+
+   	// ctx is already cancelled, so the deadline cannot be derived from it
+   	// as it stands: the drain would get no time at all.
+   	drain, cancel := context.WithTimeout(context.WithoutCancel(ctx), timeout)
+   	defer cancel()
+
+   	if err := srv.Shutdown(drain); err != nil {
+   		// The deadline passed with requests still running. Close cuts them
+   		// off, so the process exits on its own terms rather than being killed.
+   		return errors.Join(fmt.Errorf("draining: %w", err), srv.Close())
+   	}
+
+   	// Serve returns ErrServerClosed the moment Shutdown starts, and that is
+   	// the normal way out. errors.Is rather than ==, which stops matching the
+   	// day anything wraps the error.
+   	if err := <-served; !errors.Is(err, http.ErrServerClosed) {
+   		return fmt.Errorf("serving: %w", err)
+   	}
+
+   	return nil
+   }
+   ```
+
+   Verify: `test -f internal/server/server.go`
+
+8. Create `internal/server/server_test.go` with:
+
+   ```go
+   package server
+
+   import (
+   	"context"
+   	"errors"
+   	"io"
+   	"net"
+   	"net/http"
+   	"testing"
+   	"time"
+   )
+
+   // start runs the server on a port the operating system chooses, and returns
+   // its URL, the function that stands in for SIGTERM, and what Run returned.
+   func start(t *testing.T, handler http.Handler, timeout time.Duration) (string, context.CancelFunc, <-chan error) {
+   	t.Helper()
+
+   	listener, err := net.Listen("tcp", "127.0.0.1:0")
+   	if err != nil {
+   		t.Fatalf("listening: %v", err)
+   	}
+
+   	ctx, cancel := context.WithCancel(context.Background())
+   	t.Cleanup(cancel)
+
+   	stopped := make(chan error, 1)
+   	go func() {
+   		stopped <- Run(ctx, New(handler), listener, timeout)
+   	}()
+
+   	return "http://" + listener.Addr().String(), cancel, stopped
+   }
+
+   // slow holds a request to /slow until release is closed, and answers /fast
+   // at once.
+   func slow(started chan<- struct{}, release <-chan struct{}) http.Handler {
+   	mux := http.NewServeMux()
+   	mux.HandleFunc("GET /slow", func(w http.ResponseWriter, _ *http.Request) {
+   		started <- struct{}{}
+   		<-release
+   		_, _ = io.WriteString(w, "finished")
+   	})
+   	mux.HandleFunc("GET /fast", func(w http.ResponseWriter, _ *http.Request) {
+   		w.WriteHeader(http.StatusNoContent)
+   	})
+   	return mux
+   }
+
+   type result struct {
+   	status int
+   	body   string
+   	err    error
+   }
+
+   func get(client *http.Client, url string) result {
+   	response, err := client.Get(url)
+   	if err != nil {
+   		return result{err: err}
+   	}
+   	defer response.Body.Close()
+
+   	body, err := io.ReadAll(response.Body)
+   	return result{status: response.StatusCode, body: string(body), err: err}
+   }
+
+   func waitFor(t *testing.T, started <-chan struct{}) {
+   	t.Helper()
+
+   	select {
+   	case <-started:
+   	case <-time.After(5 * time.Second):
+   		t.Fatal("the slow request never reached the handler")
+   	}
+   }
+
+   func TestShutdownFinishesTheRequestInFlightAndRefusesNewOnes(t *testing.T) {
+   	started := make(chan struct{}, 1)
+   	release := make(chan struct{})
+   	url, stop, stopped := start(t, slow(started, release), 5*time.Second)
+
+   	inFlight := make(chan result, 1)
+   	go func() {
+   		inFlight <- get(&http.Client{Timeout: 10 * time.Second}, url+"/slow")
+   	}()
+   	waitFor(t, started)
+
+   	// What SIGTERM does in main.
+   	stop()
+
+   	// Shutdown closes the listener before it waits, so a new connection is
+   	// refused while the first request is still running. Keep-alives off, so
+   	// every attempt is a new connection rather than a reused idle one.
+   	fresh := &http.Client{Timeout: time.Second, Transport: &http.Transport{DisableKeepAlives: true}}
+   	deadline := time.Now().Add(5 * time.Second)
+   	for get(fresh, url+"/fast").err == nil {
+   		if time.Now().After(deadline) {
+   			t.Fatal("the server still accepts new requests after shutdown began")
+   		}
+   		time.Sleep(10 * time.Millisecond)
+   	}
+
+   	select {
+   	case err := <-stopped:
+   		t.Fatalf("Run returned %v while a request was still running", err)
+   	default:
+   	}
+
+   	close(release)
+
+   	got := <-inFlight
+   	if got.err != nil || got.status != http.StatusOK || got.body != "finished" {
+   		t.Fatalf("the request in flight got %d %q, %v; want 200 \"finished\"", got.status, got.body, got.err)
+   	}
+
+   	select {
+   	case err := <-stopped:
+   		if err != nil {
+   			t.Fatalf("Run returned %v, want nil", err)
+   		}
+   	case <-time.After(5 * time.Second):
+   		t.Fatal("Run did not return after the last request finished")
+   	}
+   }
+
+   // The drain is bounded. A request that never finishes must not keep the
+   // process alive past the deadline, or the orchestrator kills it instead.
+   func TestShutdownGivesUpAtItsDeadline(t *testing.T) {
+   	started := make(chan struct{}, 1)
+   	release := make(chan struct{})
+   	t.Cleanup(func() { close(release) })
+   	url, stop, stopped := start(t, slow(started, release), 100*time.Millisecond)
+
+   	go get(&http.Client{Timeout: 10 * time.Second}, url+"/slow")
+   	waitFor(t, started)
+
+   	stop()
+
+   	select {
+   	case err := <-stopped:
+   		if !errors.Is(err, context.DeadlineExceeded) {
+   			t.Fatalf("Run returned %v, want the drain's deadline", err)
+   		}
+   	case <-time.After(5 * time.Second):
+   		t.Fatal("Run waited past its deadline")
+   	}
+   }
+   ```
+
+   Verify: `test -f internal/server/server_test.go`
+
+9. Create `main.go` with:
 
    ```go
    package main
 
    import (
+   	"context"
    	"fmt"
    	"log"
-   	"net/http"
+   	"net"
    	"os"
-   	"time"
+   	"os/signal"
+   	"syscall"
 
    	"example.com/service/internal/api"
    	"example.com/service/internal/auth"
+   	"example.com/service/internal/server"
    )
 
    func required(name string) (string, error) {
@@ -309,73 +538,81 @@ Requires Go 1.25 or newer and Docker.
    		port = "8080"
    	}
 
-   	server := &http.Server{
-   		Addr:    ":" + port,
-   		Handler: api.New(settings),
-   		// Without this a slow client can hold a connection open indefinitely
-   		// while sending headers one byte at a time.
-   		ReadHeaderTimeout: 5 * time.Second,
+   	// SIGTERM is what `docker stop` and Kubernetes send, and SIGINT is
+   	// Ctrl+C. Either one cancels ctx, and server.Run turns that into a drain
+   	// rather than dropping the requests in flight.
+   	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, os.Interrupt)
+   	defer stop()
+
+   	listener, err := net.Listen("tcp", ":"+port)
+   	if err != nil {
+   		log.Fatalf("refusing to start: %v", err)
    	}
 
-   	log.Printf("listening on %s", server.Addr)
-   	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+   	log.Printf("listening on %s", listener.Addr())
+   	if err := server.Run(ctx, server.New(api.New(settings)), listener, server.ShutdownTimeout); err != nil {
    		log.Fatal(err)
    	}
+   	log.Print("stopped")
    }
    ```
 
    Verify: `test -f main.go`
 
-8. Create `.gitignore` with:
+10. Create `.gitignore` with:
 
-   ```text
-   service
-   service.exe
-   /dist/
-   ```
+    ```text
+    service
+    service.exe
+    /dist/
+    ```
 
-   Verify: `test -f .gitignore`
+    Verify: `test -f .gitignore`
 
-9. Create `Dockerfile` with:
+11. Create `Dockerfile` with:
 
-   ```dockerfile
-   # The builder's Go version has to satisfy the `go` directive in go.mod,
-   # and that directive is set by the dependencies rather than by preference:
-   # gin 1.12 requires 1.25. Step 13 checks the two still agree, because
-   # `go get` can raise the floor and the build then fails here instead.
-   FROM golang:1.25-alpine AS build
-   WORKDIR /src
-   # Dependencies first, so a source change does not re-download them.
-   COPY go.mod go.sum ./
-   RUN go mod download
-   COPY . .
-   # CGO off, so the binary has no libc dependency and can run on a base image
-   # with nothing in it. -trimpath keeps build paths out of the binary.
-   RUN CGO_ENABLED=0 go build -trimpath -o /out/service .
+    ```dockerfile
+    # The builder's Go version has to satisfy the `go` directive in go.mod.
+    # Step 2 sets that directive to 1.27, the oldest Go release still getting
+    # security fixes; gin 1.12 alone would accept 1.25. Step 16 checks the two
+    # still agree, because `go get` can raise the floor and the build then
+    # fails here instead.
+    FROM golang:1.27.1-alpine AS build
+    WORKDIR /src
+    # Dependencies first, so a source change does not re-download them.
+    COPY go.mod go.sum ./
+    RUN go mod download
+    COPY . .
+    # CGO off, so the binary has no libc dependency and can run on a base image
+    # with nothing in it. -trimpath keeps build paths out of the binary.
+    RUN CGO_ENABLED=0 go build -trimpath -o /out/service .
 
-   # Nothing but the binary: no shell, no package manager, nothing to exploit
-   # that is not the program itself. `nonroot` is the tag, not an instruction.
-   FROM gcr.io/distroless/static-debian12:nonroot
-   COPY --from=build /out/service /service
-   USER nonroot:nonroot
-   EXPOSE 8080
-   ENTRYPOINT ["/service"]
-   ```
+    # Nothing but the binary: no shell, no package manager, nothing to exploit
+    # that is not the program itself. `nonroot` is the tag, not an instruction.
+    # The binary is the entrypoint in exec form, so it is PID 1 and receives
+    # the SIGTERM from `docker stop` itself; no shell sits in between to
+    # swallow it.
+    FROM gcr.io/distroless/static-debian12:nonroot
+    COPY --from=build /out/service /service
+    USER nonroot:nonroot
+    EXPOSE 8080
+    ENTRYPOINT ["/service"]
+    ```
 
-   Verify: `test -f Dockerfile`
+    Verify: `test -f Dockerfile`
 
-10. Create `.dockerignore` with:
+12. Create `.dockerignore` with:
 
-```text
-.git
-*_test.go
-Dockerfile
-README.md
-```
+    ```text
+    .git
+    *_test.go
+    Dockerfile
+    README.md
+    ```
 
-Verify: `test -f .dockerignore`
+    Verify: `test -f .dockerignore`
 
-11. Create `.github/workflows/ci.yml` with:
+13. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: ci
@@ -392,17 +629,18 @@ Verify: `test -f .dockerignore`
         runs-on: ubuntu-latest
         steps:
           - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-          - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+          - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
             with:
-              go-version: '1.25'
+              go-version: '1.27.1'
           - run: go build ./...
           - run: go vet ./...
+          - run: go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --enable-only errorlint ./...
           - run: go test ./...
     ```
 
     Verify: `test -f .github/workflows/ci.yml`
 
-12. Create `README.md` with:
+14. Create `README.md` with:
 
     ```markdown
     # service
@@ -414,6 +652,9 @@ Verify: `test -f .dockerignore`
     It refuses to start without `JWT_SECRET`, `JWT_AUDIENCE` and `JWT_ISSUER`.
     That is deliberate: see `AGENTS.md`.
 
+    On SIGTERM or Ctrl+C it stops accepting connections and gives the
+    requests already running up to eight seconds to finish.
+
     ## Add a route
 
     Inside the protected group, so it is authenticated by where it is declared
@@ -423,38 +664,44 @@ Verify: `test -f .dockerignore`
 
     Verify: `test -f README.md`
 
-13. Tidy the module so the checked-in files match what is imported: `go mod tidy`
+15. Tidy the module so the checked-in files match what is imported: `go mod tidy`
     Verify: `test -f go.sum`
 
-14. Confirm the module's Go floor and the builder image agree. `go get` raises the floor when a dependency demands it, and the build then fails inside Docker rather than here: `grep -oE "^go 1\.[0-9]+" go.mod | grep -oE "1\.[0-9]+" > go.floor && grep -oE "golang:1\.[0-9]+-alpine" Dockerfile | grep -oE "1\.[0-9]+" > image.floor`
+16. Confirm the module's Go floor and the builder image agree. `go get` raises the floor when a dependency demands it, and the build then fails inside Docker rather than here: `grep -oE "^go 1\.[0-9]+" go.mod | grep -oE "1\.[0-9]+" > go.floor && grep -oE "golang:1\.[0-9]+" Dockerfile | grep -oE "1\.[0-9]+" > image.floor`
     Verify: `diff go.floor image.floor`
 
-15. Build it: `go build ./...`
+17. Build it: `go build ./...`
     Verify: `go build ./...`
 
-16. Check it for the mistakes the compiler allows: `go vet ./...`
+18. Check it for the mistakes the compiler allows: `go vet ./...`
     Verify: `go vet ./...`
 
-17. Run the tests: `go test ./...`
+19. Check that no error is compared with `==` or `!=`, which stops matching the day anything wraps the error. The linter is pinned and built from the module proxy, and nothing is added to `go.mod`: `go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --enable-only errorlint ./...`
+    Verify: `go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --enable-only errorlint ./...`
+
+20. Run the tests, including the one that shuts the server down under a request in flight: `go test ./...`
     Verify: `go test ./...`
 
-18. Build the container image: `docker build -t go-http-service:dev .`
+21. Build the container image: `docker build -t go-http-service:dev .`
     Verify: `docker image inspect go-http-service:dev > /dev/null`
 
-19. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force service-check > /dev/null 2>&1 || true`
+22. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force service-check > /dev/null 2>&1 || true`
     Verify: `test -z "$(docker ps -aq --filter name=service-check)"`
 
-20. Start the container. It takes its configuration from the environment and refuses to start without it, so all three are supplied here: `docker run -d --name service-check -e JWT_SECRET="local-development-only-not-a-real-secret" -e JWT_AUDIENCE="service" -e JWT_ISSUER="service" -p 127.0.0.1::8080 go-http-service:dev`
+23. Start the container. It takes its configuration from the environment and refuses to start without it, so all three are supplied here: `docker run -d --name service-check -e JWT_SECRET="local-development-only-not-a-real-secret" -e JWT_AUDIENCE="service" -e JWT_ISSUER="service" -p 127.0.0.1::8080 go-http-service:dev`
     Verify: `test -n "$(docker ps -q --filter name=service-check)"`
 
-21. Read the port the operating system chose: `docker port service-check 8080 | head -1 > service.url`
+24. Read the port the operating system chose: `docker port service-check 8080 | head -1 > service.url`
     Verify: `test -s service.url`
 
-22. Confirm the service answers, which proves the image runs as a non-root user with no shell: `curl -fsS --retry 30 --retry-all-errors --retry-delay 1 -o health.json "http://$(cat service.url)/health"`
+25. Confirm the service answers, which proves the image runs as a non-root user with no shell: `curl -fsS --retry 30 --retry-all-errors --retry-delay 1 -o health.json "http://$(cat service.url)/health"`
     Verify: `grep -q '"status":"ok"' health.json`
 
-23. Confirm a protected route refuses a request with no token. This is the step that proves the group is wired, and it fails loudly the day somebody declares a route outside it: `curl -sS -o refused.json -w "%{http_code}" "http://$(cat service.url)/items" > refused.code`
+26. Confirm a protected route refuses a request with no token. This is the step that proves the group is wired, and it fails loudly the day somebody declares a route outside it: `curl -sS -o refused.json -w "%{http_code}" "http://$(cat service.url)/items" > refused.code`
     Verify: `grep -q '^401$' refused.code`
 
-24. Stop the check container: `docker rm --force service-check`
-    Verify: `test -z "$(docker ps -q --filter name=service-check)"`
+27. Stop the container the way an orchestrator does. `docker stop` sends SIGTERM and waits ten seconds before it sends SIGKILL, and it exits 0 either way — so the proof is the container's own exit code: 0 means the service drained and exited by itself inside the window, 137 that it had to be killed: `docker stop --time 10 service-check`
+    Verify: `test "$(docker inspect --format '{{.State.ExitCode}}' service-check)" = "0"`
+
+28. Remove the check container: `docker rm service-check`
+    Verify: `test -z "$(docker ps -aq --filter name=service-check)"`
