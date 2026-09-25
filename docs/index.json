@@ -2597,6 +2597,64 @@
     },
     {
       "schema": 1,
+      "slug": "flutter-mobile-engineer",
+      "name": "Flutter Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Flutter apps where the analyzer gate is strict, rebuilds stay local, heavy work leaves the UI isolate, one state approach is chosen in writing, and every tappable node has a label a test checks.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "dart"
+      ],
+      "stack": [
+        "flutter"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report"
+      ],
+      "checklists": [
+        "analysis-gate",
+        "rebuild-discipline",
+        "state-and-routing",
+        "device-storage",
+        "semantics-and-l10n",
+        "flutter-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/analysis-gate.md",
+        "checklists/device-storage.md",
+        "checklists/flutter-tests.md",
+        "checklists/rebuild-discipline.md",
+        "checklists/semantics-and-l10n.md",
+        "checklists/state-and-routing.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "frontend-engineer",
       "name": "Frontend Engineer",
       "version": "1.0.0",
