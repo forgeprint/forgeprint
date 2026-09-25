@@ -3204,6 +3204,42 @@
     },
     {
       "schema": 1,
+      "slug": "next-devtools-mcp",
+      "name": "Next.js DevTools MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read build and runtime errors, routes and logs from a running Next.js 16+ dev server, and point the agent at the docs for the installed version.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/vercel/next-devtools-mcp",
+      "upstream_version": "0.4.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json next-devtools '{\"command\":\"npx\",\"args\":[\"-y\",\"next-devtools-mcp@0.4.0\"],\"env\":{\"NEXT_TELEMETRY_DISABLED\":\"1\"}}'",
+        "codex": "codex mcp add next-devtools --env NEXT_TELEMETRY_DISABLED=1 -- npx -y next-devtools-mcp@0.4.0",
+        "gemini-cli": "gemini mcp add next-devtools -e NEXT_TELEMETRY_DISABLED=1 npx -y next-devtools-mcp@0.4.0"
+      },
+      "permissions_summary": "Probes local ports for Next.js dev servers and calls the runtime tools they expose at /_next/mcp, which read errors, routes, logs and project metadata; it needs no credentials.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "notion-mcp",
       "name": "Notion MCP",
       "version": "1.0.0",
