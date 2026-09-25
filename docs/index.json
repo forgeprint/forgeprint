@@ -3141,6 +3141,66 @@
     },
     {
       "schema": 1,
+      "slug": "react-native-mobile-engineer",
+      "name": "React Native Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Expo apps where the SDK picks the versions, lists recycle, no secret reaches AsyncStorage or the bundle, and an OTA update cannot land on a binary it does not fit.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "react-native",
+        "expo"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report",
+        "release-plan"
+      ],
+      "checklists": [
+        "sdk-alignment",
+        "list-rendering",
+        "secure-storage",
+        "deep-links",
+        "rn-accessibility",
+        "ota-and-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/deep-links.md",
+        "checklists/list-rendering.md",
+        "checklists/ota-and-tests.md",
+        "checklists/rn-accessibility.md",
+        "checklists/sdk-alignment.md",
+        "checklists/secure-storage.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "research-engineer",
       "name": "Research Engineer",
       "version": "1.0.0",
