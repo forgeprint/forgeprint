@@ -1,0 +1,21 @@
+schema: 1
+slug: launchdarkly-mcp
+name: 'LaunchDarkly MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "LaunchDarkly's own server for feature flags and AI Configs, pinned and started with read tools only; writes, including flag toggles in live environments, are one flag away."
+kind: mcp
+upstream: https://github.com/launchdarkly/mcp-server
+upstream_version: '0.6.2'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json launchdarkly ''{"command":"npx","args":["-y","--package","@launchdarkly/mcp-server@0.6.2","--","mcp","start","--scope","read","--api-key","${LD_ACCESS_TOKEN}"]}'''
+  gemini-cli: "gemini mcp add launchdarkly npx -- -y --package @launchdarkly/mcp-server@0.6.2 -- mcp start --scope read --api-key '${LD_ACCESS_TOKEN}'"
+needs_secrets: [LD_ACCESS_TOKEN]
+permissions_summary: 'As installed, reads feature flags, flag status, AI Configs, environments, code references and the audit log that the access token can see. Without --scope read it also creates, updates, toggles and deletes flags and AI Configs, in any environment the token reaches.'
+fits: [software, devops, product]
+agents: [claude-code]
+deprecated: false
+supersedes: null
