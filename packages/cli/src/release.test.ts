@@ -9,6 +9,8 @@ import {
   failureLines,
   hasChangelogEntry,
   isReleaseVersion,
+  parseCiRuns,
+  parseServerManifest,
   publishable,
   publishedCodeUnchanged,
   quoteForShell,
@@ -366,5 +368,42 @@ describe('checkDistributionVersions', () => {
     // way an absent field reads as success. It is a problem, not a pass.
     const problems = checkDistributionVersions([{ path: 'server.json', versions: [] }], '0.3.0');
     assert.deepEqual(problems, [{ package: 'server.json', problem: 'no version field' }]);
+  });
+});
+
+describe('parseCiRuns', () => {
+  it('reads the runs gh reports', () => {
+    const runs = parseCiRuns(
+      '[{"headSha":"abc","conclusion":"success","status":"completed","workflowName":"validate"}]',
+    );
+    assert.deepEqual(runs, [
+      { headSha: 'abc', conclusion: 'success', status: 'completed', workflowName: 'validate' },
+    ]);
+  });
+
+  it('reads a run still in progress, whose conclusion gh leaves empty', () => {
+    const runs = parseCiRuns(
+      '[{"headSha":"abc","conclusion":null,"status":"in_progress","workflowName":"validate"}]',
+    );
+    assert.equal(runs?.[0]?.conclusion, '');
+  });
+
+  it('refuses a shape it does not know, rather than trusting it', () => {
+    assert.equal(parseCiRuns('{"message":"Bad credentials"}'), undefined);
+    assert.equal(parseCiRuns('not json'), undefined);
+  });
+});
+
+describe('parseServerManifest', () => {
+  it('reads the name, the version and the package versions', () => {
+    const server = parseServerManifest(
+      '{"name":"io.github.example/server","version":"1.2.0","packages":[{"identifier":"example","version":"1.2.0"}]}',
+    );
+    assert.equal(server.name, 'io.github.example/server');
+    assert.equal(server.packages?.[0]?.version, '1.2.0');
+  });
+
+  it('says which file is wrong when a version is not a string', () => {
+    assert.throws(() => parseServerManifest('{"version":120}'), /server\.json/);
   });
 });
