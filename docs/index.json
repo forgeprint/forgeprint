@@ -3414,6 +3414,43 @@
     },
     {
       "schema": 1,
+      "slug": "fetch-mcp",
+      "name": "Fetch MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "upstream_version": "2026.8.18",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json fetch '{\"command\":\"uvx\",\"args\":[\"mcp-server-fetch==2026.8.18\"]}'",
+        "codex": "codex mcp add fetch -- uvx mcp-server-fetch==2026.8.18",
+        "gemini-cli": "gemini mcp add fetch uvx mcp-server-fetch==2026.8.18"
+      },
+      "permissions_summary": "Sends GET requests to any URL the agent asks for, following redirects, from the machine it runs on, including localhost and private network addresses.",
+      "fits": [
+        "research",
+        "docs",
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "figma-mcp",
       "name": "Figma Context MCP",
       "version": "1.0.0",
