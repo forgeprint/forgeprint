@@ -5562,6 +5562,40 @@
     },
     {
       "schema": 1,
+      "slug": "llm-app-crew",
+      "name": "LLM App Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An LLM feature designed as the simplest thing that works, with typed and scoped tools, an eval set before every prompt change, and a review that treats model output as untrusted input.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "agent-designer",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "context7-mcp",
+        "exa-mcp"
+      ],
+      "for_what": "Building a RAG, agent or LLM-backed feature: the design and its tools, an evaluation set with a recorded baseline, and a prompt-injection and excessive-agency review before it ships.",
+      "not_for": "Model training, classic machine-learning pipelines, or a single prompt tweak on a feature that already has an eval set. That last one is small, sequential work for the agent designer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "saas-launch-crew",
       "name": "SaaS Launch Crew",
       "version": "1.0.0",
