@@ -2293,6 +2293,55 @@
     },
     {
       "schema": 1,
+      "slug": "research-engineer",
+      "name": "Research Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The question written before the first search, every source graded and dated, every number fetched rather than quoted, disagreements reported instead of settled by taste, and \"not found\" written down.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "research-engineer",
+      "domain": "research",
+      "seniority": "senior",
+      "deliverables": [
+        "research-summary",
+        "adr"
+      ],
+      "checklists": [
+        "question-first",
+        "search-log",
+        "source-grading",
+        "traceable-claims",
+        "decision-ready"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "product-manager",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/decision-ready.md",
+        "checklists/question-first.md",
+        "checklists/search-log.md",
+        "checklists/source-grading.md",
+        "checklists/traceable-claims.md",
+        "examples/research-brief.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "security-reviewer",
       "name": "Security Reviewer",
       "version": "1.0.0",
