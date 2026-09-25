@@ -12,6 +12,7 @@
 /blueprints/dotnet-mcp-server/ @aliosmanmho
 /blueprints/dotnet-multitenant-saas-api/ @aliosmanmho
 /blueprints/dotnet-web-api/ @aliosmanmho
+/blueprints/expo-mobile-app/ @aliosmanmho
 /blueprints/fastapi-service/ @aliosmanmho
 /blueprints/go-cli/ @aliosmanmho
 /blueprints/go-http-service/ @aliosmanmho

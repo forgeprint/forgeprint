@@ -13,6 +13,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [C# MCP Server](https://forgeprint.github.io/forgeprint/b/dotnet-mcp-server.html): MCP server in C# on the official ModelContextProtocol SDK, over stdio or streamable HTTP.
 - [Multi-tenant SaaS API](https://forgeprint.github.io/forgeprint/b/dotnet-multitenant-saas-api.html): ASP.NET Core 10 SaaS API with tenant isolation enforced in the data layer and proven by tests.
 - [ASP.NET Core REST API](https://forgeprint.github.io/forgeprint/b/dotnet-web-api.html): ASP.NET Core 10 minimal API with EF Core, bearer authentication, a container image and CI.
+- [Expo Mobile App](https://forgeprint.github.io/forgeprint/b/expo-mobile-app.html): Expo SDK 57 and React Native 0.86 on Expo Router with typed routes, a screen tested through the router, and a web export plus Hermes bundles as the build proof, with no device or account.
 - [FastAPI Service](https://forgeprint.github.io/forgeprint/b/fastapi-service.html): FastAPI service with SQLAlchemy, bearer token verification, a container image and CI.
 - [Go CLI](https://forgeprint.github.io/forgeprint/b/go-cli.html): Command-line tool in Go on Cobra, with commands tested through the real parser and a binary that builds from a checkout.
 - [Go HTTP Service](https://forgeprint.github.io/forgeprint/b/go-http-service.html): HTTP service in Go on Gin with bearer token verification, a distroless container, and tests that prove an unauthenticated request is refused.
