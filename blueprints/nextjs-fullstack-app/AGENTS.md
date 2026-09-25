@@ -58,6 +58,66 @@ and `client.ts` throws when it is missing.
 3. Keep queries in the page or in a module beside the schema; there is no
    repository layer here and adding one is a decision, not a convention.
 
+## Payments (`options.payments: stripe`)
+
+With `payments: none` there is no payment code at all and this section does
+not apply.
+
+```
+src/payments/config.ts     keys from the server environment; the production check
+src/payments/checkout.ts   one call to Stripe, behind the CheckoutClient type
+src/payments/webhook.ts    verify the signature, then act once
+src/payments/schema.ts     stripe_events and orders
+src/payments/startup.ts    exits the process on placeholder keys in production
+src/instrumentation.ts     runs that check when the server starts
+src/app/api/checkout/      POST: create a hosted Checkout session, 303 to it
+src/app/api/stripe/webhook/ POST: Stripe's deliveries
+```
+
+**Keys never get a `NEXT_PUBLIC_` prefix.** That prefix is the only thing that
+puts an environment variable into the browser bundle. A client component that
+needs to know about payments calls a route; it never reads a key.
+`npm run check:client-bundle` fails if a key, or the name of one, appears under
+`.next/static`, and CI runs it after every build.
+
+**The webhook reads `request.text()`, never `request.json()`.** The signature
+covers the exact bytes Stripe sent; a parsed and re-serialised body does not
+verify.
+
+**Verify first, then act, then acknowledge.** An event whose signature fails,
+or whose timestamp is outside Stripe's five-minute tolerance, is a 400 and
+changes nothing. That tolerance is the replay protection; do not widen it.
+
+**Idempotency is a primary key, not a check-then-insert.** The event id goes
+into `stripe_events` in the same transaction as the change it causes. A second
+delivery finds the id taken and changes nothing. Checking "have I seen this?"
+and inserting later is a race between two deliveries arriving together.
+
+**A duplicate is answered 200.** Anything else makes Stripe deliver it again.
+
+**An order comes only from the webhook.** The success URL is where the buyer
+lands, and anybody can visit it; it proves nothing about payment. Fulfil on
+`checkout.session.completed` with `payment_status: 'paid'`, or on
+`checkout.session.async_payment_succeeded`.
+
+**The price comes from `STRIPE_PRICE_ID`, not from the request.** A buyer must
+not be able to choose what they pay.
+
+**The production check exits; it does not throw.** Next 16 logs an error thrown
+from `register()` and keeps serving. Keep the `process.exit(1)` in
+`startup.ts`, a Node-only module, because `instrumentation.ts` is compiled for
+the edge runtime too.
+
+**Tests never reach Stripe.** Signed payloads come from
+`Stripe.webhooks.generateTestHeaderString`, and checkout takes a
+`CheckoutClient` so a test can hand it a fake. Keep new Stripe calls behind a
+type like that; a test that needs a real key is a test that will be skipped.
+
+Configuration: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID`,
+`APP_URL`. The recipe's values contain `EXAMPLE` and are refused in production.
+The real ones come from the Stripe dashboard, into the host's secret store —
+never into a committed file.
+
 ## What this does not do
 
 No authentication, no sessions, no user table. No form handling, no server
@@ -68,3 +128,8 @@ Authentication is the largest of those and the one people assume is present:
 **it is not**. Every page and every route here is public. Adding it changes the
 shape of the data layer as well as the routing, which is why it is left out
 rather than half-done.
+
+With `payments: stripe`: one-off payments for one configured price, and
+nothing else. No subscriptions, no tax, no refunds, no customer records, no
+receipts, no storefront page, and no rate limit on `POST /api/checkout`. An
+order is a row with a session id and an amount; what it buys is yours to add.
