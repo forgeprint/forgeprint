@@ -4184,6 +4184,53 @@
     },
     {
       "schema": 1,
+      "slug": "technical-seo-specialist",
+      "name": "Technical SEO Specialist",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Only what a crawler can be shown to see: robots rules per RFC 9309, honest sitemaps, one canonical per page, reciprocal hreflang, truthful structured data, HTML that indexes. No ranking promises.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "seo-specialist",
+      "domain": "marketing",
+      "seniority": "senior",
+      "deliverables": [
+        "seo-audit"
+      ],
+      "checklists": [
+        "crawl-and-index",
+        "sitemaps",
+        "canonicals-and-hreflang",
+        "structured-data",
+        "rendering-and-page-experience"
+      ],
+      "pairs_with": [
+        "performance-engineer",
+        "frontend-engineer",
+        "product-manager"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/canonicals-and-hreflang.md",
+        "checklists/crawl-and-index.md",
+        "checklists/rendering-and-page-experience.md",
+        "checklists/sitemaps.md",
+        "checklists/structured-data.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "technical-writer",
       "name": "Technical Writer",
       "version": "1.0.0",
