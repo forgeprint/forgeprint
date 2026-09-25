@@ -3449,6 +3449,58 @@
     },
     {
       "schema": 1,
+      "slug": "privacy-engineer",
+      "name": "Privacy Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Every personal-data field has a purpose, a retention period and a deletion path a test proves; DPIA triggers are checked, not guessed; and legal conclusions go to counsel.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "privacy-engineer",
+      "domain": "security",
+      "seniority": "senior",
+      "deliverables": [
+        "privacy-review",
+        "data-model",
+        "threat-model",
+        "compliance-checklist"
+      ],
+      "checklists": [
+        "data-inventory",
+        "minimisation",
+        "retention-and-deletion",
+        "dpia-triggers",
+        "privacy-threats",
+        "personal-data-in-logs"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/data-inventory.md",
+        "checklists/dpia-triggers.md",
+        "checklists/minimisation.md",
+        "checklists/personal-data-in-logs.md",
+        "checklists/privacy-threats.md",
+        "checklists/retention-and-deletion.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "product-manager",
       "name": "Product Manager",
       "version": "1.0.0",
