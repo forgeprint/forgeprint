@@ -539,6 +539,67 @@
       "i18n": []
     },
     {
+      "slug": "bevy-game",
+      "name": "Bevy Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Desktop 2D game in Rust on Bevy 0.19: the rules as ECS plugins in a crate with no window or renderer, tested headless one frame at a time, and a thin binary that draws them.",
+      "stack": [
+        "rust",
+        "bevy"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "distribution": [
+        "free",
+        "open-source"
+      ],
+      "project_type": "game",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.95",
+        "rustfmt",
+        "cargo-clippy"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "blazor-web-app",
       "name": "Blazor Web App",
       "version": "1.0.0",
