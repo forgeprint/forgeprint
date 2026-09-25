@@ -41,9 +41,24 @@ Any client that takes an `mcpServers` object:
 | `validate_blueprint` | Schema, taxonomy, setup and duplication checks on a draft                                                    |
 | `request_blueprint`  | A GitHub issue payload when nothing fits. It does not file it                                                |
 
+Every tool is listed with `readOnlyHint: true` and `openWorldHint: false`, so a
+client has no reason to confirm a call as destructive. The default catalog is
+fetched over the network, but from two fixed addresses serving the same one
+catalog; no tool takes a URL or reaches anything else, which is the closed
+domain the specification means. `destructiveHint` and `idempotentHint` are left
+out because the specification reads them only on tools that are not read-only.
+
 `resolve` asks before it guesses, asks in rounds, and only asks questions whose
 answers would change which blueprint wins. It never returns a list to browse,
 and never invents a match.
+
+## Protocol
+
+The server is built on `@modelcontextprotocol/sdk` 1.30.0, pinned exactly.
+That release implements MCP revision **2025-11-25**: its `LATEST_PROTOCOL_VERSION`
+is `'2025-11-25'`, and it also negotiates 2025-06-18, 2025-03-26, 2024-11-05
+and 2024-10-07 (`src/types.ts` at the `1.30.0` tag). It does not implement
+2026-07-28. The tool annotations above mean the same in both revisions.
 
 ## Configuration
 

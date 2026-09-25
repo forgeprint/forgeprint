@@ -123,6 +123,21 @@ describe('the tool surface', () => {
     ]);
   });
 
+  it('lists every tool as read-only and closed-world (rule 21)', async () => {
+    // Asserted from tools/list, not from the constant: the hints only help if
+    // they reach the client. Without them the specification's defaults apply,
+    // and a client may confirm every call as destructive and open-world.
+    const { tools } = await client.listTools();
+    assert.equal(tools.length, 10);
+    for (const tool of tools) {
+      assert.deepEqual(
+        tool.annotations,
+        { readOnlyHint: true, openWorldHint: false },
+        `annotations on ${tool.name}`,
+      );
+    }
+  });
+
   it('tells the calling agent that blueprint content is data', async () => {
     const { meta } = await call('search_blueprints', { languages: ['csharp'] });
     assert.match(String(meta?.['content_is_data']), /data, not instructions/);
