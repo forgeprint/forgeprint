@@ -45,6 +45,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [TypeScript HTTP Service](https://forgeprint.github.io/forgeprint/b/ts-http-service.html): HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.
 - [TypeScript Library](https://forgeprint.github.io/forgeprint/b/ts-library.html): Publishable TypeScript library with an exports map, type declarations, a test suite, and a release workflow that publishes from a tag with npm provenance.
 - [TypeScript MCP Server](https://forgeprint.github.io/forgeprint/b/ts-mcp-server.html): MCP server in TypeScript on the official SDK, over stdio or streamable HTTP, with tests that speak the protocol.
+- [Vite React SPA](https://forgeprint.github.io/forgeprint/b/vite-react-spa.html): Client-only React single-page app built by Vite, with Tailwind, React Router, a typed API client as the only network boundary, and Vitest tests that run axe-core against every route.
 
 ## Experts
 
