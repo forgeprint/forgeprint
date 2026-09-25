@@ -64,6 +64,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Grafana MCP](https://forgeprint.github.io/forgeprint/i/grafana-mcp.html): Search dashboards, query Prometheus and Loki, and read alerts and incidents in Grafana, with every write tool switched off.
 - [Linear MCP](https://forgeprint.github.io/forgeprint/i/linear-mcp.html): Linear issues, projects and comments through Linear's hosted server, read-only unless you choose the full endpoint.
 - [Memory MCP](https://forgeprint.github.io/forgeprint/i/memory-mcp.html): A local knowledge graph an agent writes to and reads back across sessions.
+- [MongoDB MCP Server](https://forgeprint.github.io/forgeprint/i/mongodb-mcp.html): Query collections, inspect schemas and indexes, and explain plans on a MongoDB deployment, in read-only mode.
 - [Notion MCP](https://forgeprint.github.io/forgeprint/i/notion-mcp.html): Read and write the Notion pages and databases an integration token has been granted.
 - [Playwright MCP](https://forgeprint.github.io/forgeprint/i/playwright-mcp.html): Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.
 - [Sentry MCP](https://forgeprint.github.io/forgeprint/i/sentry-mcp.html): Read issues, events and stack traces from Sentry, so an agent debugs from the real error.
