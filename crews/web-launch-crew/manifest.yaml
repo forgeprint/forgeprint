@@ -1,0 +1,21 @@
+schema: 1
+slug: web-launch-crew
+name: 'Web Launch Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Everything a public launch can be checked against: what a crawler can see, Core Web Vitals in the field, WCAG 2.2 AA by hand, and a success metric that could come back negative.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - technical-seo-specialist
+  - performance-engineer
+  - accessibility-specialist
+  - product-manager
+integrations:
+  - chrome-devtools-mcp
+for_what: 'Checking a public website before and after launch: crawlability and indexing, Core Web Vitals, WCAG 2.2 AA, and a launch metric with a counter-metric and a date to look at it.'
+not_for: 'Building the site, launch copy or growth marketing, buying advertising, or a change to one page. A single page is small, same-file work that one expert checks faster than four.'
+agents: [claude-code]
+deprecated: false
+supersedes: null
