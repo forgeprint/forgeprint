@@ -1,0 +1,29 @@
+schema: 1
+slug: go-backend-engineer
+name: 'Go Senior Backend Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Build Go services where a context reaches every call, every zero-valued timeout is replaced, errors wrap with %w, and no test ends with a goroutine still running.'
+role: backend-engineer
+domain: software
+seniority: senior
+languages: [go]
+stack: [go, gin]
+deliverables:
+  - code-review
+  - test-suite
+  - api-spec
+  - runbook
+checklists:
+  - context-propagation
+  - server-and-client-timeouts
+  - error-wrapping
+  - sql-pool
+  - goroutine-lifecycle
+  - table-tests
+pairs_with: [security-reviewer, sql-data-engineer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null
