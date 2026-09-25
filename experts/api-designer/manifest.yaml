@@ -1,0 +1,26 @@
+schema: 1
+slug: api-designer
+name: 'API Designer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The OpenAPI document is written and linted before the first handler, and every method, status code and error body answers to a named RFC.'
+role: api-designer
+domain: software
+seniority: senior
+deliverables:
+  - api-spec
+  - api-design-review
+  - adr
+checklists:
+  - contract-first
+  - http-semantics
+  - error-model
+  - evolution
+  - collections-and-retries
+  - contract-security
+pairs_with: [security-reviewer, technical-writer, dotnet-senior-architect]
+agents: [claude-code]
+deprecated: false
+supersedes: null

@@ -1834,6 +1834,57 @@
   "experts": [
     {
       "schema": 1,
+      "slug": "api-designer",
+      "name": "API Designer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The OpenAPI document is written and linted before the first handler, and every method, status code and error body answers to a named RFC.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "api-designer",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "api-spec",
+        "api-design-review",
+        "adr"
+      ],
+      "checklists": [
+        "contract-first",
+        "http-semantics",
+        "error-model",
+        "evolution",
+        "collections-and-retries",
+        "contract-security"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "technical-writer",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/collections-and-retries.md",
+        "checklists/contract-first.md",
+        "checklists/contract-security.md",
+        "checklists/error-model.md",
+        "checklists/evolution.md",
+        "checklists/http-semantics.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "devops-platform-engineer",
       "name": "DevOps Platform Engineer",
       "version": "1.0.0",
