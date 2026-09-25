@@ -3405,6 +3405,43 @@
     },
     {
       "schema": 1,
+      "slug": "storybook-mcp",
+      "name": "Storybook MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Storybook's official MCP addon: the agent reads your components' docs and stories, previews them and runs their tests from the local dev server.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/storybookjs/storybook",
+      "upstream_version": "10.6.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "npx storybook add @storybook/addon-mcp@10.6.0 && claude mcp add-json storybook '{\"type\":\"http\",\"url\":\"http://localhost:6006/mcp\"}'",
+        "codex": "npx storybook add @storybook/addon-mcp@10.6.0 && codex mcp add storybook --url http://localhost:6006/mcp",
+        "gemini-cli": "npx storybook add @storybook/addon-mcp@10.6.0 && gemini mcp add -t http storybook http://localhost:6006/mcp"
+      },
+      "permissions_summary": "Serves from your local Storybook dev server with no credentials: reads component docs and stories, runs story tests through Vitest when that addon is installed, and publishes a review of your current changes to its own review page.",
+      "fits": [
+        "software",
+        "design",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "stripe-mcp",
       "name": "Stripe MCP",
       "version": "1.0.0",
