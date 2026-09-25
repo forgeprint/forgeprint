@@ -2305,6 +2305,64 @@
     },
     {
       "schema": 1,
+      "slug": "java-backend-engineer",
+      "name": "Java Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Spring Boot services where the JSON mapper rejects what it does not know, @Transactional actually applies, and virtual threads meet a pool sized on purpose.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "java"
+      ],
+      "stack": [
+        "spring-boot"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "bean-validation",
+        "transaction-boundaries",
+        "problem-details",
+        "threads-and-pools",
+        "shutdown-and-logging",
+        "test-slices"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/bean-validation.md",
+        "checklists/problem-details.md",
+        "checklists/shutdown-and-logging.md",
+        "checklists/test-slices.md",
+        "checklists/threads-and-pools.md",
+        "checklists/transaction-boundaries.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "performance-engineer",
       "name": "Performance Engineer",
       "version": "1.0.0",
