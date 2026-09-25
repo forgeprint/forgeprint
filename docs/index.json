@@ -4187,6 +4187,42 @@
     },
     {
       "schema": 1,
+      "slug": "nx-mcp",
+      "name": "Nx MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An Nx monorepo's project graph, project configuration, generators and running tasks, read by an agent, with Nx Cloud left out.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/nrwl/nx-console/tree/master/apps/nx-mcp",
+      "upstream_version": "0.25.0",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json nx-mcp '{\"command\":\"npx\",\"args\":[\"-y\",\"nx-mcp@0.25.0\",\"--no-minimal\",\"--disableTelemetry\"],\"env\":{\"NX_NO_CLOUD\":\"true\"}}'",
+        "codex": "codex mcp add nx-mcp --env \"NX_NO_CLOUD=true\" -- npx -y nx-mcp@0.25.0 --no-minimal --disableTelemetry",
+        "gemini-cli": "gemini mcp add nx-mcp -e \"NX_NO_CLOUD=true\" npx -y nx-mcp@0.25.0 --no-minimal --disableTelemetry"
+      },
+      "permissions_summary": "Reads the Nx workspace it starts in (project graph, project configuration, generators, output of running tasks) and sends documentation questions to nx.dev; it changes no source files, and NX_NO_CLOUD keeps its Nx Cloud tools off.",
+      "fits": [
+        "software",
+        "devops"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "playwright-mcp",
       "name": "Playwright MCP",
       "version": "1.0.0",
