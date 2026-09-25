@@ -1,0 +1,19 @@
+schema: 1
+slug: rust-axum-service
+name: 'Rust Axum Service'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'HTTP service in Rust on axum and sqlx with Postgres, embedded migrations, deny-by-default JWT auth, per-caller data, problem documents, and tests against a real database.'
+stack: [rust, axum, sqlx, postgres, docker]
+languages: [rust]
+platforms: [linux, docker]
+distribution: [open-source, internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, migrations, containerization, testing, ci]
+agents: [claude-code]
+requires_tools: [cargo>=1.94, rustfmt, cargo-clippy, docker, curl]
+deprecated: false
+supersedes: null
