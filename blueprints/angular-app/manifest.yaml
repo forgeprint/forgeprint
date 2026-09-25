@@ -1,0 +1,19 @@
+schema: 1
+slug: angular-app
+name: 'Angular App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Angular 22 single-page app: standalone and zoneless, signals for state, a lazy feature behind a functional guard, one HTTP interceptor, Vitest in jsdom, and a build per locale that fails over budget.'
+stack: [angular, tailwind]
+languages: [typescript]
+platforms: [web]
+distribution: [saas, internal, open-source]
+project_type: web
+audience: [intermediate]
+requirements: [testing, i18n, ci]
+agents: [claude-code]
+requires_tools: [node>=22.22.3, npm>=10]
+deprecated: false
+supersedes: null
