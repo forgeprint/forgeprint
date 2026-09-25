@@ -3000,6 +3000,67 @@
     },
     {
       "schema": 1,
+      "slug": "kotlin-senior-architect",
+      "name": "Kotlin Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Gradle modules are the boundaries, internal is the wall, the public API is dumped and checked, every coroutine scope has an owner, and what Kotlin Multiplatform shares is decided in writing.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "kotlin"
+      ],
+      "stack": [
+        "ktor",
+        "spring-boot",
+        "jetpack-compose"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "api-design-review"
+      ],
+      "checklists": [
+        "gradle-module-graph",
+        "kotlin-build",
+        "api-surface",
+        "kmp-scope",
+        "coroutine-ownership",
+        "domain-types"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/api-surface.md",
+        "checklists/coroutine-ownership.md",
+        "checklists/domain-types.md",
+        "checklists/gradle-module-graph.md",
+        "checklists/kmp-scope.md",
+        "checklists/kotlin-build.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "performance-engineer",
       "name": "Performance Engineer",
       "version": "1.0.0",
