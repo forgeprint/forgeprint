@@ -3977,6 +3977,43 @@
     },
     {
       "schema": 1,
+      "slug": "sequential-thinking-mcp",
+      "name": "Sequential Thinking MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A scratchpad tool the model calls to write its reasoning as numbered, revisable steps; it reaches nothing outside itself.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+      "upstream_version": "2026.8.31",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json sequential-thinking '{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-sequential-thinking@2026.8.31\"],\"env\":{\"DISABLE_THOUGHT_LOGGING\":\"true\"}}'",
+        "codex": "codex mcp add sequential-thinking --env DISABLE_THOUGHT_LOGGING=true -- npx -y @modelcontextprotocol/server-sequential-thinking@2026.8.31",
+        "gemini-cli": "gemini mcp add sequential-thinking -e DISABLE_THOUGHT_LOGGING=true npx -y @modelcontextprotocol/server-sequential-thinking@2026.8.31"
+      },
+      "permissions_summary": "Keeps the thoughts the model sends it in memory for the session and returns a count; it reads and writes no file, network or account.",
+      "fits": [
+        "software",
+        "research",
+        "ai"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "storybook-mcp",
       "name": "Storybook MCP",
       "version": "1.0.0",
