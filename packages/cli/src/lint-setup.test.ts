@@ -171,6 +171,23 @@ describe('lintSetup', () => {
     assert.ok(!rules(source).includes('registry-only'));
   });
 
+  it('allows the registries the Dart, Elixir, Gradle and Android toolchains install from', () => {
+    // Each is where that ecosystem's own tooling fetches packages from, and a
+    // recipe in that language has to be able to name it.
+    for (const url of [
+      'https://pub.dev/packages/go_router',
+      'https://repo.hex.pm/installs/hex-1.ez',
+      'https://hex.pm/packages/phoenix',
+      'https://plugins.gradle.org/m2/',
+      'https://services.gradle.org/distributions/gradle-9.1.0-bin.zip',
+      'https://maven.google.com/web/index.html',
+      'https://dl.google.com/android/repository/repository2-3.xml',
+    ]) {
+      const source = `1. Fetch it: \`curl -fsSLo out ${url}\`\n   Verify: \`test -f out\`\n`;
+      assert.ok(!rules(source).includes('registry-only'), url);
+    }
+  });
+
   it('allows a documentation host, which resolves to nothing anybody runs', () => {
     // RFC 2606 reserves example.com for exactly this. A step that proves a
     // server rejects `Origin: https://example.com` names a host without
@@ -179,6 +196,27 @@ describe('lintSetup', () => {
       '1. Check it refuses a browser origin: `curl -sS -H "Origin: https://example.com" http://127.0.0.1:8080/`\n' +
       '   Verify: `test -f out.txt`\n';
     assert.ok(!rules(source).includes('registry-only'));
+  });
+
+  it('allows an XML namespace, which names a schema and fetches nothing', () => {
+    // Every Android manifest must declare this namespace exactly.
+    const source = [
+      '1. Write the manifest:',
+      '',
+      '   ```xml',
+      '   <manifest xmlns:android="http://schemas.android.com/apk/res/android" />',
+      '   ```',
+      '',
+      '   Verify: `test -f AndroidManifest.xml`',
+      '',
+    ].join('\n');
+    assert.ok(!rules(source).includes('registry-only'));
+  });
+
+  it('still rejects the same host outside a namespace declaration', () => {
+    const source =
+      '1. Fetch it: `curl -o s.xsd http://schemas.android.com/apk/res/android`\n   Verify: `test -f s.xsd`\n';
+    assert.ok(rules(source).includes('registry-only'));
   });
 
   it('rejects a host that is not a package registry', () => {
