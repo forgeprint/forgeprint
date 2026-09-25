@@ -1024,6 +1024,73 @@
       "i18n": []
     },
     {
+      "slug": "laravel-web-app",
+      "name": "Laravel Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Laravel 13 web application on SQLite, with login and registration through Fortify, a protected dashboard, Blade and Tailwind built by Vite, PHPUnit feature tests and CI.",
+      "stack": [
+        "laravel",
+        "sqlite",
+        "vite",
+        "tailwind"
+      ],
+      "languages": [
+        "php"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "web",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "php>=8.3",
+        "composer>=2",
+        "node>=22.12",
+        "npm"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "nestjs-api",
       "name": "NestJS API",
       "version": "1.0.0",
