@@ -3613,6 +3613,55 @@
     },
     {
       "schema": 1,
+      "slug": "release-manager",
+      "name": "Release Manager",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The version number is derived from the history, a published version never changes, and every release says how it is withdrawn before it ships.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "release-manager",
+      "domain": "devops",
+      "seniority": "senior",
+      "deliverables": [
+        "release-plan",
+        "runbook"
+      ],
+      "checklists": [
+        "history-hygiene",
+        "versioning",
+        "changelog",
+        "tags-and-provenance",
+        "withdrawal"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "security-reviewer",
+        "qa-automation-lead",
+        "technical-writer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/changelog.md",
+        "checklists/history-hygiene.md",
+        "checklists/tags-and-provenance.md",
+        "checklists/versioning.md",
+        "checklists/withdrawal.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "research-engineer",
       "name": "Research Engineer",
       "version": "1.0.0",
