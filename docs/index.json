@@ -836,7 +836,7 @@
     {
       "slug": "go-http-service",
       "name": "Go HTTP Service",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"
@@ -877,7 +877,7 @@
         "skills": []
       },
       "requires_tools": [
-        "go>=1.25",
+        "go>=1.27",
         "docker",
         "curl"
       ],

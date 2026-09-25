@@ -33,9 +33,10 @@ first, which is what `tier: official` means in this catalog and why this is
 - **CORS.** No browser is expected to call this directly.
 - **Observability.** One log line at startup, and Gin's recovery middleware.
   No metrics, no traces, no structured logging.
-- **Graceful shutdown.** The process stops when it is stopped. In a cluster
-  that drains connections first this is usually fine, and it is still a
-  simplification.
+- **Readiness.** There is `/health` for liveness and nothing that turns
+  unready before shutdown. The drain refuses new connections as soon as it
+  starts, but a load balancer that has not yet noticed will send a few there
+  and see them refused.
 
 ## Pros
 
@@ -54,6 +55,14 @@ first, which is what `tier: official` means in this catalog and why this is
 - **It refuses to start without its configuration.** Not per request — at
   startup, so a missing variable is a container that does not come up rather
   than one that answers 500 to everything while `/health` still says 200.
+- **It shuts down without dropping requests.** SIGTERM closes the listener
+  and gives the requests in flight eight seconds to finish, inside the grace
+  period `docker stop` and Kubernetes allow. A test holds a request open
+  through the shutdown and asserts it completes, and the setup stops the real
+  container and reads its exit code, so "graceful" is measured rather than
+  claimed.
+- **Errors are matched with `errors.Is`**, and golangci-lint's `errorlint`
+  runs in the recipe and in CI to keep it that way.
 - **The container is distroless and non-root**, with `CGO_ENABLED=0` and
   `-trimpath`, and the recipe runs it and talks to it rather than trusting the
   build.
@@ -78,8 +87,9 @@ first, which is what `tier: official` means in this catalog and why this is
   and binding, not with routing.
 - **The module path is a placeholder** and renaming it later touches every
   import.
-- **Go 1.25 is a recent floor**, and it is set by gin rather than by this
-  blueprint.
+- **Go 1.27 is the floor**, set by the support window rather than by gin:
+  1.25 no longer gets security fixes. An older toolchain has to be upgraded
+  before step 1.
 
 ## Compared with the alternatives here
 
