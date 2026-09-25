@@ -34,6 +34,7 @@
 /blueprints/rust-cli/ @aliosmanmho
 /blueprints/streamlit-data-app/ @aliosmanmho
 /blueprints/sveltekit-app/ @aliosmanmho
+/blueprints/tanstack-start-app/ @aliosmanmho
 /blueprints/terraform-module/ @aliosmanmho
 /blueprints/ts-http-service/ @aliosmanmho
 /blueprints/ts-library/ @aliosmanmho
