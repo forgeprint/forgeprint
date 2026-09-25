@@ -3592,6 +3592,41 @@
     },
     {
       "schema": 1,
+      "slug": "dbt-mcp",
+      "name": "dbt MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/dbt-labs/dbt-mcp",
+      "upstream_version": "2.4.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json dbt '{\"command\":\"uvx\",\"args\":[\"dbt-mcp==2.4.0\"],\"env\":{\"DBT_PROJECT_DIR\":\"/path/to/dbt/project\",\"DBT_PATH\":\"/path/to/dbt\",\"DBT_MCP_ENABLE_TOOLS\":\"parse,list,compile,get_lineage_dev,get_node_details_dev\",\"DO_NOT_TRACK\":\"true\"}}'",
+        "codex": "codex mcp add dbt --env \"DBT_PROJECT_DIR=/path/to/dbt/project\" --env \"DBT_PATH=/path/to/dbt\" --env \"DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev\" --env \"DO_NOT_TRACK=true\" -- uvx dbt-mcp==2.4.0",
+        "gemini-cli": "gemini mcp add dbt -e 'DBT_PROJECT_DIR=/path/to/dbt/project' -e 'DBT_PATH=/path/to/dbt' -e 'DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev' -e 'DO_NOT_TRACK=true' uvx dbt-mcp==2.4.0"
+      },
+      "permissions_summary": "Runs the local dbt executable on one project to parse, list and compile it and read its manifest; compile may query the warehouse through the profile dbt uses, and no tool that builds, runs or tests models is enabled.",
+      "fits": [
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "exa-mcp",
       "name": "Exa Search MCP",
       "version": "1.0.0",
