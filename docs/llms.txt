@@ -88,6 +88,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [GitHub MCP Server](https://forgeprint.github.io/forgeprint/i/github-mcp.html): Issues, pull requests, Actions and code search on the repositories a token can reach.
 - [GitLab MCP Server](https://forgeprint.github.io/forgeprint/i/gitlab-mcp.html): GitLab's built-in MCP server (beta): projects, work items, merge requests and pipelines on your own GitLab instance or GitLab.com.
 - [Grafana MCP](https://forgeprint.github.io/forgeprint/i/grafana-mcp.html): Search dashboards, query Prometheus and Loki, and read alerts and incidents in Grafana, with every write tool switched off.
+- [LaunchDarkly MCP Server](https://forgeprint.github.io/forgeprint/i/launchdarkly-mcp.html): LaunchDarkly's own server for feature flags and AI Configs, pinned and started with read tools only; writes, including flag toggles in live environments, are one flag away.
 - [Linear MCP](https://forgeprint.github.io/forgeprint/i/linear-mcp.html): Linear issues, projects and comments through Linear's hosted server, read-only unless you choose the full endpoint.
 - [Memory MCP](https://forgeprint.github.io/forgeprint/i/memory-mcp.html): A local knowledge graph an agent writes to and reads back across sessions.
 - [MongoDB MCP Server](https://forgeprint.github.io/forgeprint/i/mongodb-mcp.html): Query collections, inspect schemas and indexes, and explain plans on a MongoDB deployment, in read-only mode.
