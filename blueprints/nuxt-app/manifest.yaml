@@ -1,0 +1,19 @@
+schema: 1
+slug: nuxt-app
+name: 'Nuxt App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Server-rendered Nuxt 4 app with Tailwind, a Nitro API route that validates its input, SEO tags asserted in the HTML the built server sends, and unit, component and end-to-end tests.'
+stack: [nuxt, vue, tailwind]
+languages: [typescript]
+platforms: [web, linux, macos, windows]
+distribution: [open-source, saas, internal]
+project_type: web
+audience: [intermediate]
+requirements: [seo, testing, ci]
+agents: [claude-code]
+requires_tools: [node>=22.19, curl]
+deprecated: false
+supersedes: null
