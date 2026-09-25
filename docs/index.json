@@ -1931,6 +1931,72 @@
       "i18n": []
     },
     {
+      "slug": "sveltekit-app",
+      "name": "SvelteKit App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Server-rendered SvelteKit in Svelte 5 runes and strict TypeScript on adapter-node, with a form action validated on the server, a CSP, and tests that read the HTML of the built server.",
+      "stack": [
+        "svelte",
+        "vite",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "seo",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.13"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "frontend-engineer",
+        "test-engineer"
+      ],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "terraform-module",
       "name": "Terraform Module",
       "version": "1.1.0",

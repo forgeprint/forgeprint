@@ -30,6 +30,7 @@
 /blueprints/python-rag-service/ @aliosmanmho
 /blueprints/rust-axum-service/ @aliosmanmho
 /blueprints/rust-cli/ @aliosmanmho
+/blueprints/sveltekit-app/ @aliosmanmho
 /blueprints/terraform-module/ @aliosmanmho
 /blueprints/ts-http-service/ @aliosmanmho
 /blueprints/ts-library/ @aliosmanmho
