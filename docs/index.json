@@ -2095,6 +2095,65 @@
       "i18n": []
     },
     {
+      "slug": "python-library",
+      "name": "Python Library",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Typed, publishable Python library on uv: src layout, strict mypy, ruff, pytest with doctests, a lockfile, a wheel proven in a fresh environment, and PyPI trusted publishing from a tag.",
+      "stack": [
+        "python"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source"
+      ],
+      "project_type": "lib",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci",
+        "cd"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "uv>=0.12.18"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-mcp-server",
       "name": "Python MCP Server",
       "version": "1.0.0",

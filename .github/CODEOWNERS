@@ -33,6 +33,7 @@
 /blueprints/phaser-web-game/ @aliosmanmho
 /blueprints/python-background-worker/ @aliosmanmho
 /blueprints/python-cli/ @aliosmanmho
+/blueprints/python-library/ @aliosmanmho
 /blueprints/python-mcp-server/ @aliosmanmho
 /blueprints/python-rag-service/ @aliosmanmho
 /blueprints/rust-axum-service/ @aliosmanmho
