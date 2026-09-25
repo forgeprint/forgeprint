@@ -1,0 +1,21 @@
+schema: 1
+slug: aws-documentation-mcp
+name: 'AWS Documentation MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Search, read and get recommendations from the public AWS documentation, with no AWS credentials.'
+kind: mcp
+upstream: https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server
+upstream_version: '1.2.1'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add-json aws-documentation ''{"command":"uvx","args":["awslabs.aws-documentation-mcp-server==1.2.1"],"env":{"FASTMCP_LOG_LEVEL":"ERROR","AWS_DOCUMENTATION_PARTITION":"aws"}}'''
+  codex: 'codex mcp add aws-documentation --env FASTMCP_LOG_LEVEL=ERROR --env AWS_DOCUMENTATION_PARTITION=aws -- uvx awslabs.aws-documentation-mcp-server==1.2.1'
+  gemini-cli: 'gemini mcp add aws-documentation -e FASTMCP_LOG_LEVEL=ERROR -e AWS_DOCUMENTATION_PARTITION=aws uvx awslabs.aws-documentation-mcp-server==1.2.1'
+permissions_summary: "Reads pages on docs.aws.amazon.com and calls AWS's public documentation search and recommendation APIs; it holds no AWS credentials and reaches no account."
+fits: [devops, software, docs]
+agents: [claude-code]
+deprecated: false
+supersedes: null
