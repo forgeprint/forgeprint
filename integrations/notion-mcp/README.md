@@ -24,7 +24,7 @@ Reads and writes the pages and databases explicitly shared with the integration.
 **claude-code**
 
 ```bash
-claude mcp add-json notion '{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"$NOTION_TOKEN"}}'
+claude mcp add-json notion '{"command":"npx","args":["-y","@notionhq/notion-mcp-server@2.5.2"],"env":{"NOTION_TOKEN":"${NOTION_TOKEN}"}}'
 ```
 
 **codex**
@@ -33,10 +33,16 @@ claude mcp add-json notion '{"command":"npx","args":["-y","@notionhq/notion-mcp-
 codex mcp add notion --env NOTION_TOKEN=$NOTION_TOKEN -- npx -y @notionhq/notion-mcp-server@2.5.2
 ```
 
+`codex mcp add --env` stores the value the shell expanded, so the key is
+written in plain text to `~/.codex/config.toml`. To keep only its name there,
+add the server by hand with `env_vars = ["NOTION_TOKEN"]` instead of
+`env`: Codex then forwards the variable from your environment when it starts
+the server.
+
 **gemini-cli**
 
 ```bash
-gemini mcp add notion -e NOTION_TOKEN=$NOTION_TOKEN npx -y @notionhq/notion-mcp-server@2.5.2
+gemini mcp add notion -e 'NOTION_TOKEN=${NOTION_TOKEN}' npx -y @notionhq/notion-mcp-server@2.5.2
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent
