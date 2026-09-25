@@ -5075,6 +5075,42 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "vercel-mcp",
+      "name": "Vercel MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Projects, deployments, build and runtime logs and Web Analytics through Vercel's hosted server (public beta), as the signed-in user; it can also deploy and make purchases.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://vercel.com/docs/agent-resources/vercel-mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add --transport http vercel https://mcp.vercel.com",
+        "codex": "codex mcp add vercel --url https://mcp.vercel.com",
+        "gemini-cli": "gemini mcp add vercel npx -y mcp-remote@0.14.3 https://mcp.vercel.com"
+      },
+      "permissions_summary": "Acts as your Vercel user on the teams you authorise: reads projects, deployments, logs and analytics, deploys files to preview or production, opens links past deployment protection, and can buy domains, credits and plan upgrades.",
+      "fits": [
+        "software",
+        "devops"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ]
 }

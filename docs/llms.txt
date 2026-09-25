@@ -105,6 +105,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Tavily MCP](https://forgeprint.github.io/forgeprint/i/tavily-mcp.html): Search, extract, map and crawl the web through Tavily, with results shaped for an agent rather than a person.
 - [Terraform MCP Server](https://forgeprint.github.io/forgeprint/i/terraform-mcp.html): Look up providers, modules and policies in the public Terraform Registry, so an agent writes HCL against the current schema.
 - [Time MCP](https://forgeprint.github.io/forgeprint/i/time-mcp.html): The current time in any IANA time zone, and conversion between zones, so an agent stops guessing the date.
+- [Vercel MCP](https://forgeprint.github.io/forgeprint/i/vercel-mcp.html): Projects, deployments, build and runtime logs and Web Analytics through Vercel's hosted server (public beta), as the signed-in user; it can also deploy and make purchases.
 
 ## Docs
 
