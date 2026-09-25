@@ -162,12 +162,12 @@ Recorded so the next round does not re-litigate them without new evidence.
 - [x] `dbt-duckdb-pipeline` — #169
 - [x] `godot-game` (D22) — #167
 - [x] `phaser-web-game` — #164
-- [ ] `tauri-desktop-app` (D23)
+- [x] `tauri-desktop-app` (D23) — #173
 - [x] `browser-extension` (D23) — #168
 - [ ] `phoenix-liveview-app`
-- [ ] `bevy-game`
-- [ ] Option: payments on `nextjs-fullstack-app` (D11)
-- [ ] Option: Express on `ts-http-service` (D12)
+- [x] `bevy-game` — #171
+- [x] Option: payments on `nextjs-fullstack-app` (D11) — #172
+- [x] Option: Express on `ts-http-service` (D12) — #170
 
 ## Phase 7 — the remaining experts
 
@@ -220,7 +220,7 @@ that names sequential, small and same-file work.
 
 - [ ] `code-review-crew`
 - [ ] `tech-research-crew`
-- [ ] `spec-driven-feature-crew`
+- [x] `spec-driven-feature-crew` — #174
 - [ ] `ui-build-crew` (D5)
 - [ ] `incident-response-crew`
 - [ ] `llm-app-crew`
@@ -234,6 +234,15 @@ that names sequential, small and same-file work.
 - [ ] `web-launch-crew` (D6)
 - [ ] `mobile-app-crew`
 - Deferred: `fullstack-squad-crew` (D9), `ml-platform-crew` (D10)
+
+The other fourteen wait for members still in review (D33): `code-review-crew`
+#82; `tech-research-crew` #70; `ui-build-crew` #71; `incident-response-crew`
+#146, #147, #80, #68; `llm-app-crew` #69; `legacy-modernization-crew` #152,
+#157, #118; `product-discovery-crew` #157, #158; `release-crew` #148, #146;
+`docs-crew` #155; `performance-crew` #147, #74, #111; `appsec-audit-crew` #149,
+#151; `data-pipeline-crew` #74, #111, #116; `web-launch-crew` #153, #71;
+`mobile-app-crew` #130, #71, #148, #138. `phoenix-liveview-app` and
+`flutter-mobile-app` wait for the CI toolchains in #86.
 
 ---
 
