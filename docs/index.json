@@ -3601,6 +3601,67 @@
     },
     {
       "schema": 1,
+      "slug": "rust-senior-architect",
+      "name": "Rust Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Crates as the boundaries, a public surface the lints hold, typed errors in libraries, additive features, a kept MSRV, cargo deny in CI and unsafe forbidden unless justified.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "rust"
+      ],
+      "stack": [
+        "rust",
+        "axum",
+        "clap"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "crate-boundaries",
+        "public-surface",
+        "error-types",
+        "feature-flags",
+        "dependency-policy",
+        "unsafe-policy"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "performance-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/crate-boundaries.md",
+        "checklists/dependency-policy.md",
+        "checklists/error-types.md",
+        "checklists/feature-flags.md",
+        "checklists/public-surface.md",
+        "checklists/unsafe-policy.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "security-reviewer",
       "name": "Security Reviewer",
       "version": "1.0.0",
