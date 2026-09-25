@@ -5562,6 +5562,42 @@
     },
     {
       "schema": 1,
+      "slug": "legacy-modernization-crew",
+      "name": "Legacy Modernization Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Business rules written down and traced to the code, old behaviour pinned by tests that are proved to bite, one slice moved at a time, and the security checks carried across.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "modernization-engineer",
+        "business-analyst",
+        "test-engineer",
+        "security-reviewer"
+      ],
+      "integrations": [
+        "github-mcp",
+        "context7-mcp",
+        "serena-mcp"
+      ],
+      "for_what": "Migrating or upgrading a legacy codebase: the business rules extracted and traced, the current behaviour pinned by characterization tests, the code moved one slice at a time behind a seam, and each slice security-reviewed.",
+      "not_for": "Greenfield work, a routine version bump, or a change confined to one module. Those are small and sequential, and the modernization engineer alone does them with less overhead.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "llm-app-crew",
       "name": "LLM App Crew",
       "version": "1.0.0",
