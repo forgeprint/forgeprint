@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/i/sentry-mcp.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Sentry MCP","name":"Sentry MCP","description":"Read issues, events and stack traces from Sentry, so an agent debugs from the real error.","version":"1.1.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/sentry-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/sentry-mcp.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Sentry MCP","name":"Sentry MCP","description":"Read issues, events and stack traces from Sentry, so an agent debugs from the real error.","version":"1.2.0","genre":"integration","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"sameAs":"https://github.com/forgeprint/forgeprint/tree/main/integrations/sentry-mcp","isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/i/sentry-mcp.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -53,11 +53,11 @@
 
       <h2><span data-i18n="site.install">Install</span></h2>
       <h3>Claude Code</h3>
-      <pre class="install"><code>claude mcp add-json sentry '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@sentry/mcp-server@0.40.0&quot;],&quot;env&quot;:{&quot;SENTRY_ACCESS_TOKEN&quot;:&quot;$SENTRY_ACCESS_TOKEN&quot;}}'</code></pre>
+      <pre class="install"><code>claude mcp add-json sentry '{&quot;command&quot;:&quot;npx&quot;,&quot;args&quot;:[&quot;-y&quot;,&quot;@sentry/mcp-server@0.40.0&quot;],&quot;env&quot;:{&quot;SENTRY_ACCESS_TOKEN&quot;:&quot;${SENTRY_ACCESS_TOKEN}&quot;}}'</code></pre>
       <h3>Codex CLI</h3>
       <pre class="install"><code>codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0</code></pre>
       <h3>Gemini CLI</h3>
-      <pre class="install"><code>gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0</code></pre>
+      <pre class="install"><code>gemini mcp add sentry -e 'SENTRY_ACCESS_TOKEN=${SENTRY_ACCESS_TOKEN}' npx -y @sentry/mcp-server@0.40.0</code></pre>
       <p class="muted small"><span data-i18n="site.installNote">Only agents whose command syntax has been verified are listed. A missing agent is one nobody has confirmed, not one that does not work.</span></p>
 
       <h2><span data-i18n="site.readIt">Read it</span></h2>

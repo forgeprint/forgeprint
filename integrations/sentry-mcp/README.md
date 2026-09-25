@@ -24,7 +24,7 @@ Reads issues, events and stack traces, and can update issues (assign, unassign, 
 **claude-code**
 
 ```bash
-claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"$SENTRY_ACCESS_TOKEN"}}'
+claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.40.0"],"env":{"SENTRY_ACCESS_TOKEN":"${SENTRY_ACCESS_TOKEN}"}}'
 ```
 
 **codex**
@@ -33,10 +33,16 @@ claude mcp add-json sentry '{"command":"npx","args":["-y","@sentry/mcp-server@0.
 codex mcp add sentry --env SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN -- npx -y @sentry/mcp-server@0.40.0
 ```
 
+`codex mcp add --env` stores the value the shell expanded, so the key is
+written in plain text to `~/.codex/config.toml`. To keep only its name there,
+add the server by hand with `env_vars = ["SENTRY_ACCESS_TOKEN"]` instead of
+`env`: Codex then forwards the variable from your environment when it starts
+the server.
+
 **gemini-cli**
 
 ```bash
-gemini mcp add sentry -e SENTRY_ACCESS_TOKEN=$SENTRY_ACCESS_TOKEN npx -y @sentry/mcp-server@0.40.0
+gemini mcp add sentry -e 'SENTRY_ACCESS_TOKEN=${SENTRY_ACCESS_TOKEN}' npx -y @sentry/mcp-server@0.40.0
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent
