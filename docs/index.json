@@ -5492,6 +5492,40 @@
     },
     {
       "schema": 1,
+      "slug": "appsec-audit-crew",
+      "name": "AppSec Audit Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A whole-application security and privacy audit: threat model and ASVS requirements first, a deletion path for every personal field, and a test for every control.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "appsec-engineer",
+        "privacy-engineer",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp"
+      ],
+      "for_what": "A deep audit of a whole application: threat model, ASVS 5.0 requirements, authentication and authorization, dependencies and secrets, personal data and its deletion, and a test for each control that goes red when the control is removed.",
+      "not_for": "Hardening a single API (that is api-hardening-crew), compliance paperwork or legal conclusions, a penetration test, or one known finding in one file. A single finding is small, sequential work for the security reviewer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "code-review-crew",
       "name": "Code Review Crew",
       "version": "1.0.0",
