@@ -55,6 +55,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Figma Context MCP](https://forgeprint.github.io/forgeprint/i/figma-mcp.html): Read a Figma file's layout and styles as structured data, so generated UI matches the design.
 - [Filesystem MCP](https://forgeprint.github.io/forgeprint/i/filesystem-mcp.html): Read and write files under directories named on the command line, and nowhere else.
 - [GitHub MCP Server](https://forgeprint.github.io/forgeprint/i/github-mcp.html): Issues, pull requests, Actions and code search on the repositories a token can reach.
+- [Grafana MCP](https://forgeprint.github.io/forgeprint/i/grafana-mcp.html): Search dashboards, query Prometheus and Loki, and read alerts and incidents in Grafana, with every write tool switched off.
 - [Memory MCP](https://forgeprint.github.io/forgeprint/i/memory-mcp.html): A local knowledge graph an agent writes to and reads back across sessions.
 - [Notion MCP](https://forgeprint.github.io/forgeprint/i/notion-mcp.html): Read and write the Notion pages and databases an integration token has been granted.
 - [Playwright MCP](https://forgeprint.github.io/forgeprint/i/playwright-mcp.html): Drive a real browser from an agent: navigate, fill, click and read the accessibility tree.
