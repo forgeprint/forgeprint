@@ -5492,6 +5492,40 @@
     },
     {
       "schema": 1,
+      "slug": "code-review-crew",
+      "name": "Code Review Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Four reviewers, one lens each, whose findings end as one list with one verdict: correctness, security, performance and the tests in the change.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "code-reviewer",
+        "security-reviewer",
+        "performance-engineer",
+        "test-engineer"
+      ],
+      "integrations": [
+        "github-mcp"
+      ],
+      "for_what": "A pull request or diff large enough to cross several concerns, reviewed through separate lenses (correctness, security, performance, tests) and merged into one finding list with one verdict.",
+      "not_for": "Writing the code, style-only linting, or a diff of a few lines or a single file. One reviewer reads that faster than four can hand it round, and the extra lenses find nothing the first did not.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "saas-launch-crew",
       "name": "SaaS Launch Crew",
       "version": "1.0.0",
