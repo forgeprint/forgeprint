@@ -608,6 +608,65 @@
       "i18n": []
     },
     {
+      "slug": "browser-extension",
+      "name": "Browser Extension (WXT, Manifest V3)",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Manifest V3 extension for Chrome and Firefox on WXT: service worker, one-site content script, popup, checked typed messages, and a build check that refuses any permission beyond its policy.",
+      "stack": [
+        "wxt",
+        "vite"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "open-source",
+        "internal"
+      ],
+      "project_type": "extension",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "django-web-app",
       "name": "Django Web App",
       "version": "1.0.0",
