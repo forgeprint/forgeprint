@@ -1475,6 +1475,67 @@
       "i18n": []
     },
     {
+      "slug": "rust-cli",
+      "name": "Rust CLI",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Command-line tool in Rust on clap derive, with one error type, exit codes a script can rely on, and tests that run the built binary.",
+      "stack": [
+        "rust",
+        "clap"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "cli",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.85",
+        "rustfmt",
+        "cargo-clippy"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "terraform-module",
       "name": "Terraform Module",
       "version": "1.1.0",

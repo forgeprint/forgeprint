@@ -1,0 +1,19 @@
+schema: 1
+slug: rust-cli
+name: 'Rust CLI'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Command-line tool in Rust on clap derive, with one error type, exit codes a script can rely on, and tests that run the built binary.'
+stack: [rust, clap]
+languages: [rust]
+platforms: [windows, linux, macos]
+distribution: [open-source, internal]
+project_type: cli
+audience: [intermediate]
+requirements: [ci, testing]
+agents: [claude-code]
+requires_tools: [cargo>=1.85, rustfmt, cargo-clippy]
+deprecated: false
+supersedes: null
