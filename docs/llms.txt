@@ -88,6 +88,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Postgres MCP Pro](https://forgeprint.github.io/forgeprint/i/postgres-mcp.html): Schemas, query plans, index advice and health checks on a PostgreSQL database, in the read-only restricted mode.
 - [Sentry MCP](https://forgeprint.github.io/forgeprint/i/sentry-mcp.html): Read issues, events and stack traces from Sentry, so an agent debugs from the real error.
 - [Sequential Thinking MCP](https://forgeprint.github.io/forgeprint/i/sequential-thinking-mcp.html): A scratchpad tool the model calls to write its reasoning as numbered, revisable steps; it reaches nothing outside itself.
+- [Serena](https://forgeprint.github.io/forgeprint/i/serena-mcp.html): Find, read and edit code by symbol through a language server, instead of by line and by grep.
 - [Storybook MCP](https://forgeprint.github.io/forgeprint/i/storybook-mcp.html): Storybook's official MCP addon: the agent reads your components' docs and stories, previews them and runs their tests from the local dev server.
 - [Stripe MCP](https://forgeprint.github.io/forgeprint/i/stripe-mcp.html): The Stripe API and Stripe's documentation through Stripe's hosted server, for the accounts and sandboxes you authorise.
 - [Supabase MCP Server](https://forgeprint.github.io/forgeprint/i/supabase-mcp.html): Query one Supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only.

@@ -4340,6 +4340,41 @@
     },
     {
       "schema": 1,
+      "slug": "serena-mcp",
+      "name": "Serena",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Find, read and edit code by symbol through a language server, instead of by line and by grep.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/oraios/serena",
+      "upstream_version": "1.7.0",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json serena '{\"command\":\"uvx\",\"args\":[\"-p\",\"3.13\",\"--from\",\"serena-agent==1.7.0\",\"serena\",\"start-mcp-server\",\"--context\",\"claude-code\",\"--project-from-cwd\",\"--open-web-dashboard\",\"false\"],\"env\":{\"SERENA_USAGE_REPORTING\":\"false\"}}'",
+        "codex": "codex mcp add serena --env \"SERENA_USAGE_REPORTING=false\" -- uvx -p 3.13 --from serena-agent==1.7.0 serena start-mcp-server --context codex --project-from-cwd --open-web-dashboard false",
+        "gemini-cli": "gemini mcp add serena -e \"SERENA_USAGE_REPORTING=false\" uvx -p 3.13 --from serena-agent==1.7.0 serena start-mcp-server --context ide --project-from-cwd --open-web-dashboard false"
+      },
+      "permissions_summary": "Reads and edits code in the project it starts in (replacing, inserting and renaming symbols, rewriting file content) and writes its own .serena folder there; the contexts used here leave out its shell command tool.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "storybook-mcp",
       "name": "Storybook MCP",
       "version": "1.0.0",
