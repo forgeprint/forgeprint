@@ -1,0 +1,21 @@
+schema: 1
+slug: time-mcp
+name: 'Time MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The current time in any IANA time zone, and conversion between zones, so an agent stops guessing the date.'
+kind: mcp
+upstream: https://github.com/modelcontextprotocol/servers/tree/main/src/time
+upstream_version: '2026.8.18'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add-json time ''{"command":"uvx","args":["mcp-server-time==2026.8.18"]}'''
+  codex: 'codex mcp add time -- uvx mcp-server-time==2026.8.18'
+  gemini-cli: 'gemini mcp add time uvx mcp-server-time==2026.8.18'
+permissions_summary: 'Reads the system clock and time zone of the machine it runs on and converts times between zones; it reaches no network, file or account.'
+fits: [software, operations, product]
+agents: [claude-code]
+deprecated: false
+supersedes: null

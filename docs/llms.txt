@@ -83,6 +83,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Stripe MCP](https://forgeprint.github.io/forgeprint/i/stripe-mcp.html): The Stripe API and Stripe's documentation through Stripe's hosted server, for the accounts and sandboxes you authorise.
 - [Supabase MCP Server](https://forgeprint.github.io/forgeprint/i/supabase-mcp.html): Query one Supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only.
 - [Terraform MCP Server](https://forgeprint.github.io/forgeprint/i/terraform-mcp.html): Look up providers, modules and policies in the public Terraform Registry, so an agent writes HCL against the current schema.
+- [Time MCP](https://forgeprint.github.io/forgeprint/i/time-mcp.html): The current time in any IANA time zone, and conversion between zones, so an agent stops guessing the date.
 
 ## Docs
 
