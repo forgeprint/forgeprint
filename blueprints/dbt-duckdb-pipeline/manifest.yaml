@@ -1,0 +1,19 @@
+schema: 1
+slug: dbt-duckdb-pipeline
+name: 'dbt + DuckDB Pipeline'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'dbt Core on a local DuckDB file: raw files as sources, a seed, staging views and a contracted mart, with data, unit and singular tests, sqlfluff and CI. No warehouse, no account.'
+stack: [dbt, duckdb]
+languages: [sql]
+platforms: [linux, macos, windows]
+distribution: [internal, open-source]
+project_type: data
+audience: [beginner, intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [python>=3.13]
+deprecated: false
+supersedes: null

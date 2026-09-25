@@ -15,7 +15,7 @@ import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { parse } from 'yaml';
 import { z } from 'zod';
 import { entryFor, type CatalogSource } from './catalog.js';
-import { CONTENT_IS_DATA } from './notes.js';
+import { CONTENT_IS_DATA, READ_ONLY_TOOL } from './notes.js';
 import { normalizeProfile } from './profile.js';
 import { INTENTS, registerUnitTools, type Intent } from './units.js';
 import {
@@ -103,6 +103,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'search_blueprints',
     {
       title: 'Search blueprints',
+      annotations: READ_ONLY_TOOL,
       description:
         'Find blueprints matching a stack, languages, project type or requirements, with a score and the reasons behind it. ' +
         'Use this when the user wants to look at the catalog themselves. When they want a recommendation, use `resolve` instead: it returns one blueprint rather than a list.',
@@ -152,6 +153,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'get_blueprint',
     {
       title: 'Get a blueprint',
+      annotations: READ_ONLY_TOOL,
       description:
         'Return a blueprint: its manifest, its context and overview files, and its setup recipe with the chosen options already resolved. ' +
         'Pass every option the blueprint declares, or the recipe comes back with its branches still in it and the unresolved fields listed.',
@@ -207,6 +209,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'resolve',
     {
       title: 'Resolve a profile to one blueprint',
+      annotations: READ_ONLY_TOOL,
       description:
         'Call this first when somebody is about to start a new project, before writing code or proposing a design of your own. ' +
         'Take what the user knows and what they are building, and return EITHER the questions to ask them OR exactly one blueprint with the reasoning behind it. ' +
@@ -370,6 +373,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'compare_blueprints',
     {
       title: 'Compare blueprints',
+      annotations: READ_ONLY_TOOL,
       description:
         'Compare two to four blueprints on what they fit, what they are explicitly not for, and the trade-offs each one makes. Built from their overview files, not from a summary of them.',
       inputSchema: {
@@ -415,6 +419,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'validate_blueprint',
     {
       title: 'Validate a blueprint draft',
+      annotations: READ_ONLY_TOOL,
       description:
         'Check a blueprint that is not in the catalog yet: schema and taxonomy errors, missing required files, setup recipe problems, and how similar it is to what already exists. For contributors, before opening a pull request.',
       inputSchema: {
@@ -509,6 +514,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
     'request_blueprint',
     {
       title: 'Request a blueprint',
+      annotations: READ_ONLY_TOOL,
       description:
         'Produce a GitHub issue payload for a blueprint the catalog does not have. Use it when `resolve` found no match. This returns text; it does not open the issue — show it to the user and let them file it.',
       inputSchema: {

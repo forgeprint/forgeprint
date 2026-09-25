@@ -1,0 +1,26 @@
+schema: 1
+slug: business-analyst
+name: 'Business Analyst'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Requirements a tester can fail: each one sourced, singular and traced both ways, quality targets with a unit and a range, processes in valid BPMN, and every assumption owned and dated.'
+role: business-analyst
+domain: product
+seniority: senior
+deliverables:
+  - requirements-spec
+  - user-story-set
+  - assumption-log
+checklists:
+  - elicitation-and-assumptions
+  - requirement-quality
+  - acceptance-criteria
+  - non-functional
+  - traceability
+  - process-models
+pairs_with: [product-manager, technical-program-manager, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null

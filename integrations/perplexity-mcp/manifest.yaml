@@ -1,0 +1,22 @@
+schema: 1
+slug: perplexity-mcp
+name: 'Perplexity MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Web search, quick answers, reasoning and deep research from Perplexity's API, with sources, from inside an agent."
+kind: mcp
+upstream: https://github.com/perplexityai/modelcontextprotocol
+upstream_version: '1.2.1'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json perplexity ''{"command":"npx","args":["-y","@perplexity-ai/mcp-server@1.2.1"],"env":{"PERPLEXITY_API_KEY":"${PERPLEXITY_API_KEY}"}}'''
+  codex: 'codex mcp add perplexity --env "PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}" -- npx -y @perplexity-ai/mcp-server@1.2.1'
+  gemini-cli: "gemini mcp add perplexity -e 'PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}' npx -y @perplexity-ai/mcp-server@1.2.1"
+needs_secrets: [PERPLEXITY_API_KEY]
+permissions_summary: "Sends the agent's questions and search queries to the Perplexity API, which searches the web and answers with its models, billed per request and per token to the key's account; it changes nothing."
+fits: [research, software, marketing]
+agents: [claude-code]
+deprecated: false
+supersedes: null

@@ -1,0 +1,21 @@
+schema: 1
+slug: mobile-mcp
+name: 'Mobile MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Drive iOS and Android simulators, emulators and real devices from an agent: read the screen, tap, type, install apps and read logs. Needs Xcode (macOS) or the Android SDK.'
+kind: mcp
+upstream: https://github.com/mobile-next/mobile-mcp
+upstream_version: '1.0.5'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json mobile-mcp ''{"command":"npx","args":["-y","@mobilenext/mobile-mcp@1.0.5"],"env":{"MOBILEMCP_DISABLE_TELEMETRY":"1"}}'''
+  codex: 'codex mcp add mobile-mcp --env "MOBILEMCP_DISABLE_TELEMETRY=1" -- npx -y @mobilenext/mobile-mcp@1.0.5'
+  gemini-cli: 'gemini mcp add mobile-mcp -e "MOBILEMCP_DISABLE_TELEMETRY=1" npx -y @mobilenext/mobile-mcp@1.0.5'
+permissions_summary: 'Controls every simulator, emulator and USB-connected device on the machine: reads the screen, taps, types, installs and uninstalls apps, opens URLs, reads device logs and crash reports, and writes screenshots and recordings to disk.'
+fits: [software, quality]
+agents: [claude-code]
+deprecated: false
+supersedes: null

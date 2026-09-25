@@ -86,18 +86,36 @@ export function integrationSchema(taxonomy: Taxonomy) {
     // A secret in the install command is a secret in a public repository, and
     // it is also a lie about where the value comes from (§5b, rule 21).
     for (const [agent, command] of Object.entries(integration.install)) {
-      for (const secret of integration.needs_secrets ?? []) {
-        if (command.includes(`=${secret}=`) || / [A-Za-z0-9_-]{20,}/.test(command)) {
-          ctx.addIssue({
-            code: 'custom',
-            path: ['install', agent],
-            message: 'the install command must reference a variable, never a value',
-          });
-          break;
-        }
+      if (writesSecretValue(command, integration.needs_secrets ?? [])) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['install', agent],
+          message: 'the install command must reference a variable, never a value',
+        });
       }
     }
   });
+}
+
+/**
+ * Whether an install command carries a secret's value rather than a reference
+ * to it. Two ways it can: a named secret assigned something that is not a
+ * variable (`TOKEN=abc` instead of `TOKEN=$TOKEN`), or anything shaped like a
+ * key — a long run of letters and digits in both cases. A variable name is
+ * upper case and underscores, and a flag is lower case and hyphens, so neither
+ * is mistaken for one however long it is.
+ */
+export function writesSecretValue(command: string, secrets: readonly string[]): boolean {
+  for (const secret of secrets) {
+    const assigned = new RegExp(`(?:^|[\\s"'{,:])${secret}=([^\\s"']*)`, 'g');
+    for (const match of command.matchAll(assigned)) {
+      const value = match[1] ?? '';
+      if (value !== '' && !value.startsWith('$')) return true;
+    }
+  }
+  return (command.match(/[A-Za-z0-9]{20,}/g) ?? []).some(
+    (run) => /[a-z]/.test(run) && /[A-Z]/.test(run) && /[0-9]/.test(run),
+  );
 }
 
 export type Integration = z.infer<ReturnType<typeof integrationObjectSchema>>;

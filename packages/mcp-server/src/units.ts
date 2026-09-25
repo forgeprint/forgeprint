@@ -12,6 +12,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import { unitFor, type CatalogSource } from './catalog.js';
+import { READ_ONLY_TOOL } from './notes.js';
 
 /** What a caller is asking for. `resolve` routes on this (ADR 0012). */
 export const INTENTS = ['project', 'expert', 'crew', 'integration'] as const;
@@ -138,6 +139,7 @@ export function registerUnitTools(
     'get_expert',
     {
       title: 'Get an expert',
+      annotations: READ_ONLY_TOOL,
       description:
         'Return one expert: its manifest, its SKILL.md, its checklists and its references. ' +
         'An expert is a way of working — what it produces, which checklists it applies, and ' +
@@ -176,6 +178,7 @@ export function registerUnitTools(
     'get_crew',
     {
       title: 'Get a crew',
+      annotations: READ_ONLY_TOOL,
       description:
         'Return one crew: its members as full expert entries, and the install command for each ' +
         'integration it names. A crew composes and copies nothing, so changing a member changes ' +
@@ -219,6 +222,7 @@ export function registerUnitTools(
     'get_integration',
     {
       title: 'Get an integration',
+      annotations: READ_ONLY_TOOL,
       description:
         'Return one installation recipe for third-party software: the pinned upstream, the ' +
         'install command for the named agent, the secrets it needs and what those secrets reach. ' +
@@ -258,6 +262,7 @@ export function registerUnitTools(
     'recommend_experts',
     {
       title: 'Recommend experts',
+      annotations: READ_ONLY_TOOL,
       description:
         'Given a task, return at most one crew OR at most three experts, each with a reason. ' +
         'Never a list to browse — if more would match, the answer is the closest few and a ' +

@@ -1,0 +1,19 @@
+schema: 1
+slug: flask-api
+name: 'Flask API'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Flask 3.1 JSON API: app factory and blueprints, Flask-SQLAlchemy and Flask-Migrate on Postgres, pydantic validation, RFC 9457 errors, JWT with caller-scoped rows, gunicorn non-root.'
+stack: [flask, python, postgres, docker]
+languages: [python]
+platforms: [linux, docker]
+distribution: [internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, migrations, testing, ci, containerization]
+agents: [claude-code]
+requires_tools: [python>=3.13, docker, curl]
+deprecated: false
+supersedes: null

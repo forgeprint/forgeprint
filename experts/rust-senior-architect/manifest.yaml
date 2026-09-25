@@ -1,0 +1,30 @@
+schema: 1
+slug: rust-senior-architect
+name: 'Rust Senior Software Architect'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Crates as the boundaries, a public surface the lints hold, typed errors in libraries, additive features, a kept MSRV, cargo deny in CI and unsafe forbidden unless justified.'
+role: software-architect
+domain: software
+seniority: senior
+languages: [rust]
+stack: [rust, axum, clap]
+deliverables:
+  - adr
+  - architecture-review
+  - c4-diagram
+  - migration-plan
+  - dependency-audit
+checklists:
+  - crate-boundaries
+  - public-surface
+  - error-types
+  - feature-flags
+  - dependency-policy
+  - unsafe-policy
+pairs_with: [security-reviewer, performance-engineer, devops-platform-engineer]
+agents: [claude-code]
+deprecated: false
+supersedes: null

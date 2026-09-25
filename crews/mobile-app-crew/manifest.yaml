@@ -1,0 +1,21 @@
+schema: 1
+slug: mobile-app-crew
+name: 'Mobile App Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'A React Native app on Expo built to its SDK, audited with a screen reader on a device, gated end to end, and released with a version that never changes and a way to withdraw it.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - react-native-mobile-engineer
+  - accessibility-specialist
+  - qa-automation-lead
+  - release-manager
+integrations:
+  - mobile-mcp
+for_what: 'Building and shipping a React Native app on Expo: SDK-aligned dependencies and secure storage, a screen-reader audit on a device, end-to-end journeys on an emulator, and a release and OTA plan that says how it is withdrawn.'
+not_for: 'A Flutter or native Android app, backend work, store listing copy, or a change to one screen. One screen is small, same-file work for the mobile engineer alone.'
+agents: [claude-code]
+deprecated: false
+supersedes: null

@@ -51,6 +51,18 @@ const ALLOWED_HOSTS = new Set([
   'repo.maven.apache.org',
   'rubygems.org',
   'packagist.org',
+  // Dart and Flutter packages.
+  'pub.dev',
+  // Elixir packages, and the installers `mix` fetches Hex and Rebar from.
+  'hex.pm',
+  'repo.hex.pm',
+  'builds.hex.pm',
+  // Gradle's plugin portal and the wrapper's distribution download.
+  'plugins.gradle.org',
+  'services.gradle.org',
+  // Google's Maven repository and the Android SDK repository.
+  'maven.google.com',
+  'dl.google.com',
   'mcr.microsoft.com',
   'ghcr.io',
   'docker.io',
@@ -409,6 +421,10 @@ function hostsIn(text: string): string[] {
     // that matter for those commands — no privilege, no pipe from a download —
     // are checked on the command itself.
     if (authority.includes('$')) continue;
+    // An XML namespace is a name that happens to look like a URL: every
+    // Android manifest must declare `xmlns:android="http://schemas.android.com/..."`
+    // exactly, and nothing is fetched from it.
+    if (/xmlns(?::[\w.-]+)?\s*=\s*["']$/.test(text.slice(0, match.index))) continue;
     const authorityOnly = authority.split('@').pop() ?? authority;
     // Backslashes come from regexes written inside a command; the port may be a
     // pattern rather than a number, so everything after the colon goes.

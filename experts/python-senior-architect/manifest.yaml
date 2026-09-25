@@ -1,0 +1,29 @@
+schema: 1
+slug: python-senior-architect
+name: 'Python Senior Software Architect'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Python enforces no boundary itself, so put the architecture in pyproject.toml: a locked environment, import contracts, one strict type checker, and an event loop nothing blocks.'
+role: software-architect
+domain: software
+seniority: senior
+languages: [python]
+stack: [python, django, fastapi]
+deliverables:
+  - adr
+  - architecture-review
+  - c4-diagram
+  - data-model
+  - dependency-audit
+checklists:
+  - packaging-and-locking
+  - import-contracts
+  - typing-gate
+  - async-boundaries
+  - edge-models
+pairs_with: [security-reviewer, sql-data-engineer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null

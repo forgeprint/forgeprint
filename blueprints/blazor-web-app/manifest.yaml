@@ -1,0 +1,25 @@
+schema: 1
+slug: blazor-web-app
+name: 'Blazor Web App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Blazor Web App on .NET 10 with Identity on SQLite, server rendering with Interactive Server, bUnit component tests and CI.'
+stack: [dotnet, aspnetcore, blazor, efcore, sqlite]
+languages: [csharp]
+platforms: [web, linux]
+distribution: [internal, saas]
+project_type: web
+audience: [intermediate]
+requirements: [auth, testing, ci]
+agents: [claude-code]
+requires_tools: [dotnet>=10, curl]
+recommended_experts:
+  - dotnet-senior-architect
+  - security-reviewer
+  - frontend-engineer
+integrations:
+  - github-mcp
+deprecated: false
+supersedes: null

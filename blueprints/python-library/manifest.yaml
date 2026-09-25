@@ -1,0 +1,19 @@
+schema: 1
+slug: python-library
+name: 'Python Library'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Typed, publishable Python library on uv: src layout, strict mypy, ruff, pytest with doctests, a lockfile, a wheel proven in a fresh environment, and PyPI trusted publishing from a tag.'
+stack: [python]
+languages: [python]
+platforms: [windows, linux, macos]
+distribution: [open-source]
+project_type: lib
+audience: [intermediate]
+requirements: [testing, ci, cd]
+agents: [claude-code]
+requires_tools: [python>=3.13, uv>=0.12.18]
+deprecated: false
+supersedes: null

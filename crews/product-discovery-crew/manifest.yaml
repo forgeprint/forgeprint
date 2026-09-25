@@ -1,0 +1,23 @@
+schema: 1
+slug: product-discovery-crew
+name: 'Product Discovery Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'An idea turned into a brief, tested requirements and a plan, with no code: the problem first, users watched rather than asked, and requirements a tester could fail.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - business-analyst
+  - product-manager
+  - ux-researcher
+  - technical-program-manager
+integrations:
+  - notion-mcp
+  - exa-mcp
+  - atlassian-mcp
+for_what: 'Turning an idea into a product brief, a usability-tested problem statement, requirements with acceptance criteria traced both ways, and a delivery plan with its assumptions approved. No code.'
+not_for: 'Implementation, a mature product with a settled backlog, or a single small story. One product manager writes that in one sequential pass; four experts would only hand it round.'
+agents: [claude-code]
+deprecated: false
+supersedes: null

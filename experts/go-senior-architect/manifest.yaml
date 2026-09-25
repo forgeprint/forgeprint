@@ -1,0 +1,30 @@
+schema: 1
+slug: go-senior-architect
+name: 'Go Senior Software Architect'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'In Go the package is the architecture: keep it small, hide it behind internal/, let consumers own interfaces, and make every goroutine, context and error traceable.'
+role: software-architect
+domain: software
+seniority: senior
+languages: [go]
+stack: [go, gin]
+deliverables:
+  - adr
+  - architecture-review
+  - c4-diagram
+  - api-design-review
+  - refactoring-plan
+checklists:
+  - package-layout
+  - toolchain-gates
+  - interface-placement
+  - context-flow
+  - error-wrapping
+  - goroutine-lifetimes
+pairs_with: [security-reviewer, devops-platform-engineer, performance-engineer]
+agents: [claude-code]
+deprecated: false
+supersedes: null

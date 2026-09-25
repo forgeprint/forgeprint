@@ -1,0 +1,24 @@
+schema: 1
+slug: code-reviewer
+name: 'Code Reviewer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Read the whole diff against its stated intent, run it, and raise only findings that name an input and the wrong result it produces.'
+role: code-reviewer
+domain: quality
+seniority: senior
+deliverables:
+  - code-review
+  - refactoring-plan
+checklists:
+  - intent-and-scope
+  - correctness
+  - tests-in-the-change
+  - maintainability
+  - comments-and-verdict
+pairs_with: [security-reviewer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null

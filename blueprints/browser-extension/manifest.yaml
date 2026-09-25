@@ -1,0 +1,19 @@
+schema: 1
+slug: browser-extension
+name: 'Browser Extension (WXT, Manifest V3)'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Manifest V3 extension for Chrome and Firefox on WXT: service worker, one-site content script, popup, checked typed messages, and a build check that refuses any permission beyond its policy.'
+stack: [wxt, vite]
+languages: [typescript]
+platforms: [web]
+distribution: [free, open-source, internal]
+project_type: extension
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [node>=22.12.0, npm>=10]
+deprecated: false
+supersedes: null

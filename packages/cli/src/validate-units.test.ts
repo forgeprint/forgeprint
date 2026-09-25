@@ -253,6 +253,65 @@ describe('integrations', () => {
     assert.match(messages.join('\n'), /upstream/);
   });
 
+  describe('secrets in an install command', () => {
+    const withSecret = (name: string, command: string): Fields =>
+      integration({ needs_secrets: [name], install: { 'claude-code': command } });
+
+    it('accepts a long variable name referenced by name', () => {
+      // A variable name is not a secret, however long it is.
+      const name = 'SAMPLE_SERVICE_CLIENT_SECRET_VALUE';
+      const { messages } = check([
+        {
+          kind: 'integration',
+          manifest: withSecret(
+            name,
+            `codex mcp add sample --env ${name}=$${name} -- npx -y s@1.0.0`,
+          ),
+        },
+      ]);
+      assert.deepEqual(messages, []);
+    });
+
+    it('accepts a quoted and a braced reference', () => {
+      const name = 'SAMPLE_CONNECTION_STRING';
+      for (const reference of [`"${name}=\${${name}}"`, `'${name}=$${name}'`]) {
+        const { messages } = check([
+          {
+            kind: 'integration',
+            manifest: withSecret(name, `codex mcp add sample --env ${reference} -- npx -y s@1.0.0`),
+          },
+        ]);
+        assert.deepEqual(messages, [], reference);
+      }
+    });
+
+    it('refuses a value written where the variable belongs', () => {
+      const { messages } = check([
+        {
+          kind: 'integration',
+          manifest: withSecret(
+            'SAMPLE_TOKEN',
+            'codex mcp add sample --env SAMPLE_TOKEN=not-a-real-value -- npx -y s@1.0.0',
+          ),
+        },
+      ]);
+      assert.match(messages.join('\n'), /must reference a variable, never a value/);
+    });
+
+    it('refuses something shaped like a key anywhere in the command', () => {
+      const { messages } = check([
+        {
+          kind: 'integration',
+          manifest: withSecret(
+            'SAMPLE_TOKEN',
+            'codex mcp add sample -- npx -y s@1.0.0 --token NotARealKey0000Example1111',
+          ),
+        },
+      ]);
+      assert.match(messages.join('\n'), /must reference a variable, never a value/);
+    });
+  });
+
   it('refuses two recipes for the same upstream', () => {
     const { messages } = check([
       { kind: 'integration', manifest: integration() },

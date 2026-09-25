@@ -74,13 +74,13 @@ jobs:
         with:
           python-version: '3.13'
 
-      # Go is on the runner, but an older one than the catalog needs: gin
-      # 1.12 requires 1.25 and the image ships 1.24. The tool check refuses
-      # rather than building with the wrong toolchain, which is correct and
-      # means the version has to be pinned here.
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+      # Go is on the runner, but an older one than the catalog needs. The
+      # tool check refuses rather than building with the wrong toolchain, so
+      # the version is pinned here: 1.27, the newest release. Go supports the
+      # two latest minors, so 1.25 stopped getting security fixes with 1.27.
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.25'
+          go-version: '1.27'
 
       # Terraform is not on the runner at all. `terraform_wrapper: false`
       # because the wrapper rewrites stdout, and a recipe that reads
@@ -89,6 +89,44 @@ jobs:
         with:
           terraform_version: '1.9.8'
           terraform_wrapper: false
+
+      # The toolchains the 2026-09-24 expansion plan brings in: Java, PHP,
+      # Ruby, Rust, Flutter, Elixir and uv. Each is the current stable or LTS
+      # line as read on 2026-09-24, pinned so that `requires_tools` is checked
+      # against a known version rather than whatever the image carries. The
+      # Android SDK and Chrome are already on ubuntu-latest.
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          tools: composer:v2
+
+      - uses: ruby/setup-ruby@762794c140bbeda0f1224786aa33b4b46783a6c1 # v1.326.0
+        with:
+          ruby-version: '4.0'
+
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # v1
+        with:
+          toolchain: '1.98.1'
+          components: clippy, rustfmt
+
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: '3.47.5'
+          channel: stable
+
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24.1
+        with:
+          otp-version: '29'
+          elixir-version: '1.20'
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.18'
 
       - name: Install pnpm
         run: npm install --global pnpm@12.5.1

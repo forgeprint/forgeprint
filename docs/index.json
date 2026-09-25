@@ -412,6 +412,129 @@
   },
   "blueprints": [
     {
+      "slug": "ai-chat-web-app",
+      "name": "AI Chat Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Next.js chat on the AI SDK with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no API key needed to build or test.",
+      "stack": [
+        "nextjs",
+        "react",
+        "ai-sdk",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "realtime",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "angular-app",
+      "name": "Angular App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Angular 22 single-page app: standalone and zoneless, signals for state, a lazy feature behind a functional guard, one HTTP interceptor, Vitest in jsdom, and a build per locale that fails over budget.",
+      "stack": [
+        "angular",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "saas",
+        "internal",
+        "open-source"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "i18n",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.22.3",
+        "npm>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "astro-content-site",
       "name": "Astro Content Site",
       "version": "1.0.0",
@@ -462,6 +585,323 @@
       },
       "requires_tools": [
         "node>=22.12"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "bevy-game",
+      "name": "Bevy Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Desktop 2D game in Rust on Bevy 0.19: the rules as ECS plugins in a crate with no window or renderer, tested headless one frame at a time, and a thin binary that draws them.",
+      "stack": [
+        "rust",
+        "bevy"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "distribution": [
+        "free",
+        "open-source"
+      ],
+      "project_type": "game",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.95",
+        "rustfmt",
+        "cargo-clippy"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "blazor-web-app",
+      "name": "Blazor Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Blazor Web App on .NET 10 with Identity on SQLite, server rendering with Interactive Server, bUnit component tests and CI.",
+      "stack": [
+        "dotnet",
+        "aspnetcore",
+        "blazor",
+        "efcore",
+        "sqlite"
+      ],
+      "languages": [
+        "csharp"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "dotnet>=10",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "dotnet-senior-architect",
+        "security-reviewer",
+        "frontend-engineer"
+      ],
+      "recommended_crew": null,
+      "integrations": [
+        "github-mcp"
+      ],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "browser-extension",
+      "name": "Browser Extension (WXT, Manifest V3)",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Manifest V3 extension for Chrome and Firefox on WXT: service worker, one-site content script, popup, checked typed messages, and a build check that refuses any permission beyond its policy.",
+      "stack": [
+        "wxt",
+        "vite"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "open-source",
+        "internal"
+      ],
+      "project_type": "extension",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "dbt-duckdb-pipeline",
+      "name": "dbt + DuckDB Pipeline",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "dbt Core on a local DuckDB file: raw files as sources, a seed, staging views and a contracted mart, with data, unit and singular tests, sqlfluff and CI. No warehouse, no account.",
+      "stack": [
+        "dbt",
+        "duckdb"
+      ],
+      "languages": [
+        "sql"
+      ],
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "distribution": [
+        "internal",
+        "open-source"
+      ],
+      "project_type": "data",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "django-web-app",
+      "name": "Django Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Server-rendered Django 6.1 application with a custom user model, login and logout, migrations, settings that refuse to start in production without a real secret, and tests that prove it.",
+      "stack": [
+        "django",
+        "python",
+        "postgres"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "saas",
+        "internal",
+        "open-source"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {
+        "database": [
+          "postgres",
+          "sqlite"
+        ]
+      },
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "docker"
       ],
       "provenance": "generated",
       "recommended_experts": [],
@@ -709,6 +1149,72 @@
       "i18n": []
     },
     {
+      "slug": "expo-mobile-app",
+      "name": "Expo Mobile App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Expo SDK 57 and React Native 0.86 on Expo Router with typed routes, a screen tested through the router, and a web export plus Hermes bundles as the build proof, with no device or account.",
+      "stack": [
+        "react-native",
+        "expo"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "ios",
+        "android",
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "paid",
+        "internal"
+      ],
+      "project_type": "mobile",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.13"
+      ],
+      "provenance": "generated",
+      "derived_from": {
+        "url": "https://github.com/expo/expo/tree/main/templates/expo-template-default",
+        "license": "MIT",
+        "verified_on": "2026-09-25",
+        "note": "Scaffolded from the published template at 57.0.27; the recipe replaces the home screen and one hook, and adds the tests, lint, CI and checks."
+      },
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "fastapi-service",
       "name": "FastAPI Service",
       "version": "1.0.1",
@@ -760,6 +1266,71 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "flask-api",
+      "name": "Flask API",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Flask 3.1 JSON API: app factory and blueprints, Flask-SQLAlchemy and Flask-Migrate on Postgres, pydantic validation, RFC 9457 errors, JWT with caller-scoped rows, gunicorn non-root.",
+      "stack": [
+        "flask",
+        "python",
+        "postgres",
+        "docker"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "testing",
+        "ci",
+        "containerization"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
       "recommended_experts": [],
       "recommended_crew": null,
       "integrations": [],
@@ -897,6 +1468,65 @@
       "i18n": []
     },
     {
+      "slug": "godot-game",
+      "name": "Godot C# Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "2D game on Godot 4.7 in C#: the rules in a plain .NET library tested with xUnit, the game compiled against Godot.NET.Sdk from NuGet, and the engine left for you to install.",
+      "stack": [
+        "godot",
+        "dotnet"
+      ],
+      "languages": [
+        "csharp"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "free",
+        "paid"
+      ],
+      "project_type": "game",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "dotnet>=10"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "langgraph-agent",
       "name": "LangGraph Agent",
       "version": "1.1.0",
@@ -944,6 +1574,145 @@
       "recommended_experts": [],
       "recommended_crew": null,
       "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "laravel-web-app",
+      "name": "Laravel Web App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Laravel 13 web application on SQLite, with login and registration through Fortify, a protected dashboard, Blade and Tailwind built by Vite, PHPUnit feature tests and CI.",
+      "stack": [
+        "laravel",
+        "sqlite",
+        "vite",
+        "tailwind"
+      ],
+      "languages": [
+        "php"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "web",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "php>=8.3",
+        "composer>=2",
+        "node>=22.12",
+        "npm"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "nestjs-api",
+      "name": "NestJS API",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "NestJS 12 HTTP API on Postgres with a global JWT guard, validated input, RFC 9457 errors, TypeORM migrations, OpenAPI, end-to-end tests against a real database and a non-root container.",
+      "stack": [
+        "node",
+        "nestjs",
+        "postgres",
+        "docker"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "api-docs",
+        "testing",
+        "containerization",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.13",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "recommended_crew": "api-hardening-crew",
+      "integrations": [
+        "github-mcp",
+        "context7-mcp"
+      ],
       "deprecated": false,
       "supersedes": null,
       "files": [
@@ -1063,6 +1832,129 @@
       },
       "requires_tools": [
         "node>=20"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "nuxt-app",
+      "name": "Nuxt App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Server-rendered Nuxt 4 app with Tailwind, a Nitro API route that validates its input, SEO tags asserted in the HTML the built server sends, and unit, component and end-to-end tests.",
+      "stack": [
+        "nuxt",
+        "vue",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "seo",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.19",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "phaser-web-game",
+      "name": "Phaser Web Game",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Browser game on Phaser 4 and Vite in strict TypeScript: the rules in plain modules with ordinary unit tests, the whole game booted headless in Vitest, and a build that fails over its size budget.",
+      "stack": [
+        "phaser",
+        "vite"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "open-source"
+      ],
+      "project_type": "game",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10"
       ],
       "provenance": "generated",
       "recommended_experts": [],
@@ -1203,6 +2095,65 @@
       "i18n": []
     },
     {
+      "slug": "python-library",
+      "name": "Python Library",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Typed, publishable Python library on uv: src layout, strict mypy, ruff, pytest with doctests, a lockfile, a wheel proven in a fresh environment, and PyPI trusted publishing from a tag.",
+      "stack": [
+        "python"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source"
+      ],
+      "project_type": "lib",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci",
+        "cd"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "uv>=0.12.18"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "python-mcp-server",
       "name": "Python MCP Server",
       "version": "1.0.0",
@@ -1251,6 +2202,460 @@
       "requires_tools": [
         "python>=3.10",
         "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "python-rag-service",
+      "name": "Python RAG Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "FastAPI RAG on PostgreSQL and pgvector: ingest chunks and embeds, ask answers only from retrieved chunks and cites them, and a deterministic fake model runs every test.",
+      "stack": [
+        "python",
+        "fastapi",
+        "postgres",
+        "pgvector",
+        "docker"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "advanced"
+      ],
+      "requirements": [
+        "search",
+        "api-docs",
+        "migrations",
+        "containerization",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "rust-axum-service",
+      "name": "Rust Axum Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "HTTP service in Rust on axum and sqlx with Postgres, embedded migrations, deny-by-default JWT auth, per-caller data, problem documents, and tests against a real database.",
+      "stack": [
+        "rust",
+        "axum",
+        "sqlx",
+        "postgres",
+        "docker"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "open-source",
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "containerization",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.94",
+        "rustfmt",
+        "cargo-clippy",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "rust-cli",
+      "name": "Rust CLI",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Command-line tool in Rust on clap derive, with one error type, exit codes a script can rely on, and tests that run the built binary.",
+      "stack": [
+        "rust",
+        "clap"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "cli",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "ci",
+        "testing"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.85",
+        "rustfmt",
+        "cargo-clippy"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "streamlit-data-app",
+      "name": "Streamlit Data App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Streamlit dashboard over a bundled CSV: pandas transforms in a plain module with unit tests, the page driven headlessly with AppTest, usage statistics off, loopback only.",
+      "stack": [
+        "python",
+        "streamlit"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "windows",
+        "macos"
+      ],
+      "distribution": [
+        "internal"
+      ],
+      "project_type": "data",
+      "audience": [
+        "beginner",
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "sveltekit-app",
+      "name": "SvelteKit App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Server-rendered SvelteKit in Svelte 5 runes and strict TypeScript on adapter-node, with a form action validated on the server, a CSP, and tests that read the HTML of the built server.",
+      "stack": [
+        "svelte",
+        "vite",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "distribution": [
+        "open-source",
+        "saas",
+        "internal"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "seo",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.13"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "frontend-engineer",
+        "test-engineer"
+      ],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "tanstack-start-app",
+      "name": "TanStack Start App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "TanStack Start on Vite: file-based routes with validated params, server functions, a sealed session cookie behind a beforeLoad guard, and requests against the built Node server as proof.",
+      "stack": [
+        "react",
+        "vite",
+        "tanstack",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "saas",
+        "internal",
+        "open-source"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "tauri-desktop-app",
+      "name": "Tauri Desktop App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Tauri 2 desktop app: logic in a plain Rust crate tested without a webview, one IPC command behind a least-privilege capability, a strict CSP, and a Vite + TypeScript frontend tested with Vitest.",
+      "stack": [
+        "tauri",
+        "rust",
+        "vite"
+      ],
+      "languages": [
+        "rust",
+        "typescript"
+      ],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "distribution": [
+        "free",
+        "open-source",
+        "internal"
+      ],
+      "project_type": "desktop",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.85",
+        "rustfmt",
+        "cargo-clippy",
+        "node>=22.12",
+        "npm"
       ],
       "provenance": "generated",
       "recommended_experts": [],
@@ -1500,6 +2905,67 @@
         "curl"
       ],
       "provenance": "human",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
+      "slug": "vite-react-spa",
+      "name": "Vite React SPA",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Client-only React single-page app built by Vite, with Tailwind, React Router, a typed API client as the only network boundary, and Vitest tests that run axe-core against every route.",
+      "stack": [
+        "react",
+        "vite",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web"
+      ],
+      "distribution": [
+        "saas",
+        "internal",
+        "open-source"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "accessibility",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.22.2",
+        "npm>=10"
+      ],
+      "provenance": "generated",
       "recommended_experts": [],
       "recommended_crew": null,
       "integrations": [],
@@ -1834,6 +3300,523 @@
   "experts": [
     {
       "schema": 1,
+      "slug": "accessibility-specialist",
+      "name": "Accessibility Specialist",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Audit against WCAG 2.2 AA: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "accessibility-specialist",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "accessibility-audit",
+        "test-suite",
+        "compliance-checklist",
+        "code-review"
+      ],
+      "checklists": [
+        "automated-baseline",
+        "keyboard-and-focus",
+        "screen-reader",
+        "zoom-contrast-and-targets",
+        "forms-and-errors",
+        "motion-and-media"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "technical-writer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/automated-baseline.md",
+        "checklists/forms-and-errors.md",
+        "checklists/keyboard-and-focus.md",
+        "checklists/motion-and-media.md",
+        "checklists/screen-reader.md",
+        "checklists/zoom-contrast-and-targets.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "agent-designer",
+      "name": "Agent Designer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A workflow before an agent and one agent before several; every tool typed, scoped and able to explain its own errors; and no prompt change without an eval set and a recorded baseline.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "agent-designer",
+      "domain": "ai",
+      "seniority": "senior",
+      "deliverables": [
+        "design-spec",
+        "evaluation-harness",
+        "prompt-suite",
+        "threat-model"
+      ],
+      "checklists": [
+        "simplest-design",
+        "tool-design",
+        "mcp-server",
+        "skill-authoring",
+        "evals-and-prompt-changes",
+        "injection-and-agency"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "technical-program-manager"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/evals-and-prompt-changes.md",
+        "checklists/injection-and-agency.md",
+        "checklists/mcp-server.md",
+        "checklists/simplest-design.md",
+        "checklists/skill-authoring.md",
+        "checklists/tool-design.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "android-mobile-engineer",
+      "name": "Android Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Android apps in Kotlin and Compose where state is hoisted, flows stop with the lifecycle, migrations are tested, keys stay in the Keystore, and R8 and a baseline profile ship.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "kotlin"
+      ],
+      "stack": [
+        "jetpack-compose"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report",
+        "migration-plan"
+      ],
+      "checklists": [
+        "compose-state",
+        "coroutines-lifecycle",
+        "room-migrations",
+        "keystore-and-permissions",
+        "compose-semantics-tests",
+        "build-gates"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/build-gates.md",
+        "checklists/compose-semantics-tests.md",
+        "checklists/compose-state.md",
+        "checklists/coroutines-lifecycle.md",
+        "checklists/keystore-and-permissions.md",
+        "checklists/room-migrations.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "api-designer",
+      "name": "API Designer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The OpenAPI document is written and linted before the first handler, and every method, status code and error body answers to a named RFC.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "api-designer",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "api-spec",
+        "api-design-review",
+        "adr"
+      ],
+      "checklists": [
+        "contract-first",
+        "http-semantics",
+        "error-model",
+        "evolution",
+        "collections-and-retries",
+        "contract-security"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "technical-writer",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/collections-and-retries.md",
+        "checklists/contract-first.md",
+        "checklists/contract-security.md",
+        "checklists/error-model.md",
+        "checklists/evolution.md",
+        "checklists/http-semantics.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "appsec-engineer",
+      "name": "Application Security Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The threat model and the security requirements come before the code, every requirement names an ASVS 5.0 control and a test, and nothing is verified by attacking a system.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "appsec-engineer",
+      "domain": "security",
+      "seniority": "senior",
+      "deliverables": [
+        "threat-model",
+        "threat-model-review",
+        "requirements-spec",
+        "test-plan"
+      ],
+      "checklists": [
+        "threat-model",
+        "security-requirements",
+        "design-documentation",
+        "scanning-policy",
+        "security-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "test-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/design-documentation.md",
+        "checklists/scanning-policy.md",
+        "checklists/security-requirements.md",
+        "checklists/security-tests.md",
+        "checklists/threat-model.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "business-analyst",
+      "name": "Business Analyst",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Requirements a tester can fail: each one sourced, singular and traced both ways, quality targets with a unit and a range, processes in valid BPMN, and every assumption owned and dated.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "business-analyst",
+      "domain": "product",
+      "seniority": "senior",
+      "deliverables": [
+        "requirements-spec",
+        "user-story-set",
+        "assumption-log"
+      ],
+      "checklists": [
+        "elicitation-and-assumptions",
+        "requirement-quality",
+        "acceptance-criteria",
+        "non-functional",
+        "traceability",
+        "process-models"
+      ],
+      "pairs_with": [
+        "product-manager",
+        "technical-program-manager",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/acceptance-criteria.md",
+        "checklists/elicitation-and-assumptions.md",
+        "checklists/non-functional.md",
+        "checklists/process-models.md",
+        "checklists/requirement-quality.md",
+        "checklists/traceability.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "code-reviewer",
+      "name": "Code Reviewer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read the whole diff against its stated intent, run it, and raise only findings that name an input and the wrong result it produces.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "code-reviewer",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "code-review",
+        "refactoring-plan"
+      ],
+      "checklists": [
+        "intent-and-scope",
+        "correctness",
+        "tests-in-the-change",
+        "maintainability",
+        "comments-and-verdict"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/comments-and-verdict.md",
+        "checklists/correctness.md",
+        "checklists/intent-and-scope.md",
+        "checklists/maintainability.md",
+        "checklists/tests-in-the-change.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "coding-mentor",
+      "name": "Coding Mentor",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Teaches while the learner codes: explain and ask for a prediction before any change, hints before answers, the learner types their own code, and a small exercise proves it landed.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "coding-mentor",
+      "domain": "education",
+      "seniority": "senior",
+      "deliverables": [
+        "tutorial",
+        "content-outline",
+        "code-review"
+      ],
+      "checklists": [
+        "predict-before-change",
+        "graduated-hints",
+        "worked-examples",
+        "check-understanding",
+        "academic-integrity"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "test-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/academic-integrity.md",
+        "checklists/check-understanding.md",
+        "checklists/graduated-hints.md",
+        "checklists/predict-before-change.md",
+        "checklists/worked-examples.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "dart-senior-architect",
+      "name": "Dart Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Layers are packages in a pub workspace, pubspec says what may import what, generated code has a written policy and a test, FFI sits behind one package, and a published API is versioned like a promise.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "dart"
+      ],
+      "stack": [
+        "flutter"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "api-design-review",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "package-layering",
+        "pub-workspace",
+        "codegen-policy",
+        "type-contracts",
+        "ffi-boundary",
+        "pub-publishing"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/codegen-policy.md",
+        "checklists/ffi-boundary.md",
+        "checklists/package-layering.md",
+        "checklists/pub-publishing.md",
+        "checklists/pub-workspace.md",
+        "checklists/type-contracts.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "debugger",
+      "name": "Debugger",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "No fix without a committed reproduction, one refutable hypothesis at a time, and a root cause that explains every symptom.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "debugger",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "root-cause-analysis",
+        "test-suite"
+      ],
+      "checklists": [
+        "reproduce-first",
+        "isolate",
+        "hypothesis-log",
+        "root-cause",
+        "fix-and-regression"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "devops-platform-engineer",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/fix-and-regression.md",
+        "checklists/hypothesis-log.md",
+        "checklists/isolate.md",
+        "checklists/reproduce-first.md",
+        "checklists/root-cause.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "devops-platform-engineer",
       "name": "DevOps Platform Engineer",
       "version": "1.0.0",
@@ -1884,6 +3867,54 @@
         "checklists/rollout-and-rollback.md",
         "checklists/secrets-in-ci.md",
         "checklists/slo-and-alerting.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "documentation-architect",
+      "name": "Documentation Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The shape of a documentation set, not its sentences: typed sections, no orphan pages, docs changed in the pull request that changes the code, and a docs build CI can fail.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "documentation-architect",
+      "domain": "docs",
+      "seniority": "senior",
+      "deliverables": [
+        "documentation-set",
+        "content-outline",
+        "adr"
+      ],
+      "checklists": [
+        "information-architecture",
+        "repository-files",
+        "docs-as-code",
+        "docs-ci",
+        "versioning"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/docs-as-code.md",
+        "checklists/docs-ci.md",
+        "checklists/information-architecture.md",
+        "checklists/repository-files.md",
+        "checklists/versioning.md",
         "manifest.yaml",
         "overview.md",
         "references.md"
@@ -1947,6 +3978,64 @@
     },
     {
       "schema": 1,
+      "slug": "flutter-mobile-engineer",
+      "name": "Flutter Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Flutter apps where the analyzer gate is strict, rebuilds stay local, heavy work leaves the UI isolate, one state approach is chosen in writing, and every tappable node has a label a test checks.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "dart"
+      ],
+      "stack": [
+        "flutter"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report"
+      ],
+      "checklists": [
+        "analysis-gate",
+        "rebuild-discipline",
+        "state-and-routing",
+        "device-storage",
+        "semantics-and-l10n",
+        "flutter-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/analysis-gate.md",
+        "checklists/device-storage.md",
+        "checklists/flutter-tests.md",
+        "checklists/rebuild-discipline.md",
+        "checklists/semantics-and-l10n.md",
+        "checklists/state-and-routing.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "frontend-engineer",
       "name": "Frontend Engineer",
       "version": "1.0.0",
@@ -1989,6 +4078,402 @@
         "checklists/core-web-vitals.md",
         "checklists/semantic-html.md",
         "checklists/wcag-aa.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "go-backend-engineer",
+      "name": "Go Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Go services where a context reaches every call, every zero-valued timeout is replaced, errors wrap with %w, and no test ends with a goroutine still running.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "go"
+      ],
+      "stack": [
+        "go",
+        "gin"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "context-propagation",
+        "server-and-client-timeouts",
+        "error-wrapping",
+        "sql-pool",
+        "goroutine-lifecycle",
+        "table-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/context-propagation.md",
+        "checklists/error-wrapping.md",
+        "checklists/goroutine-lifecycle.md",
+        "checklists/server-and-client-timeouts.md",
+        "checklists/sql-pool.md",
+        "checklists/table-tests.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "go-senior-architect",
+      "name": "Go Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "In Go the package is the architecture: keep it small, hide it behind internal/, let consumers own interfaces, and make every goroutine, context and error traceable.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "go"
+      ],
+      "stack": [
+        "go",
+        "gin"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "api-design-review",
+        "refactoring-plan"
+      ],
+      "checklists": [
+        "package-layout",
+        "toolchain-gates",
+        "interface-placement",
+        "context-flow",
+        "error-wrapping",
+        "goroutine-lifetimes"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/context-flow.md",
+        "checklists/error-wrapping.md",
+        "checklists/goroutine-lifetimes.md",
+        "checklists/interface-placement.md",
+        "checklists/package-layout.md",
+        "checklists/toolchain-gates.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "java-backend-engineer",
+      "name": "Java Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Spring Boot services where the JSON mapper rejects what it does not know, @Transactional actually applies, and virtual threads meet a pool sized on purpose.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "java"
+      ],
+      "stack": [
+        "spring-boot"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "bean-validation",
+        "transaction-boundaries",
+        "problem-details",
+        "threads-and-pools",
+        "shutdown-and-logging",
+        "test-slices"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/bean-validation.md",
+        "checklists/problem-details.md",
+        "checklists/shutdown-and-logging.md",
+        "checklists/test-slices.md",
+        "checklists/threads-and-pools.md",
+        "checklists/transaction-boundaries.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "java-senior-architect",
+      "name": "Java Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Make the module boundaries a failing test, the build bit-for-bit reproducible, the types closed and null-checked, and every Spring proxy do what its annotation claims.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "java"
+      ],
+      "stack": [
+        "spring-boot"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "module-rules",
+        "build-reproducibility",
+        "type-modelling",
+        "spring-wiring",
+        "spring-transactions",
+        "thread-model"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/build-reproducibility.md",
+        "checklists/module-rules.md",
+        "checklists/spring-transactions.md",
+        "checklists/spring-wiring.md",
+        "checklists/thread-model.md",
+        "checklists/type-modelling.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "kotlin-senior-architect",
+      "name": "Kotlin Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Gradle modules are the boundaries, internal is the wall, the public API is dumped and checked, every coroutine scope has an owner, and what Kotlin Multiplatform shares is decided in writing.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "kotlin"
+      ],
+      "stack": [
+        "ktor",
+        "spring-boot",
+        "jetpack-compose"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "api-design-review"
+      ],
+      "checklists": [
+        "gradle-module-graph",
+        "kotlin-build",
+        "api-surface",
+        "kmp-scope",
+        "coroutine-ownership",
+        "domain-types"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "devops-platform-engineer",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/api-surface.md",
+        "checklists/coroutine-ownership.md",
+        "checklists/domain-types.md",
+        "checklists/gradle-module-graph.md",
+        "checklists/kmp-scope.md",
+        "checklists/kotlin-build.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "modernization-engineer",
+      "name": "Modernization Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Pin what the old code does before changing it, move one slice at a time behind a seam, upgrade one major version per step, and switch the old path off only when the numbers say nobody uses it.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "modernization-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "deliverables": [
+        "migration-plan",
+        "refactoring-plan",
+        "test-suite"
+      ],
+      "checklists": [
+        "characterization-tests",
+        "seams-and-slices",
+        "stepwise-upgrades",
+        "behaviour-parity",
+        "decommission"
+      ],
+      "pairs_with": [
+        "test-engineer",
+        "performance-engineer",
+        "devops-platform-engineer",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/behaviour-parity.md",
+        "checklists/characterization-tests.md",
+        "checklists/decommission.md",
+        "checklists/seams-and-slices.md",
+        "checklists/stepwise-upgrades.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "observability-engineer",
+      "name": "Observability Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "OpenTelemetry names from the semantic conventions, a trace id on every log line, a cardinality budget per metric, sampling decided on purpose, and dashboards and alerts kept as code.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "observability-engineer",
+      "domain": "devops",
+      "seniority": "senior",
+      "deliverables": [
+        "observability-plan",
+        "dashboard-spec",
+        "cost-review"
+      ],
+      "checklists": [
+        "semantic-conventions",
+        "signal-correlation",
+        "cardinality-budget",
+        "sampling",
+        "dashboards-and-alerts"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "performance-engineer",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/cardinality-budget.md",
+        "checklists/dashboards-and-alerts.md",
+        "checklists/sampling.md",
+        "checklists/semantic-conventions.md",
+        "checklists/signal-correlation.md",
         "manifest.yaml",
         "overview.md",
         "references.md"
@@ -2045,6 +4530,170 @@
     },
     {
       "schema": 1,
+      "slug": "php-senior-architect",
+      "name": "PHP Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Commit the lock, pin the platform, declare strict types everywhere, make the layer rules a failing Deptrac run, and keep Laravel at the edge of a domain it does not own.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "php"
+      ],
+      "stack": [
+        "laravel"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "composer-discipline",
+        "layer-rules",
+        "type-strictness",
+        "laravel-edges",
+        "queue-boundaries"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/composer-discipline.md",
+        "checklists/laravel-edges.md",
+        "checklists/layer-rules.md",
+        "checklists/queue-boundaries.md",
+        "checklists/type-strictness.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "postgres-database-administrator",
+      "name": "PostgreSQL Database Administrator",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A backup is a restore somebody ran, an index ships with its plan, and no DDL reaches production without a lock_timeout.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "database-administrator",
+      "domain": "data",
+      "seniority": "senior",
+      "stack": [
+        "postgres"
+      ],
+      "deliverables": [
+        "data-model",
+        "migration-plan",
+        "performance-report",
+        "runbook"
+      ],
+      "checklists": [
+        "catalog-integrity",
+        "index-evidence",
+        "lock-safe-ddl",
+        "backup-and-restore",
+        "roles-and-access",
+        "runtime-health"
+      ],
+      "pairs_with": [
+        "sql-data-engineer",
+        "security-reviewer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/backup-and-restore.md",
+        "checklists/catalog-integrity.md",
+        "checklists/index-evidence.md",
+        "checklists/lock-safe-ddl.md",
+        "checklists/roles-and-access.md",
+        "checklists/runtime-health.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "privacy-engineer",
+      "name": "Privacy Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Every personal-data field has a purpose, a retention period and a deletion path a test proves; DPIA triggers are checked, not guessed; and legal conclusions go to counsel.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "privacy-engineer",
+      "domain": "security",
+      "seniority": "senior",
+      "deliverables": [
+        "privacy-review",
+        "data-model",
+        "threat-model",
+        "compliance-checklist"
+      ],
+      "checklists": [
+        "data-inventory",
+        "minimisation",
+        "retention-and-deletion",
+        "dpia-triggers",
+        "privacy-threats",
+        "personal-data-in-logs"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/data-inventory.md",
+        "checklists/dpia-triggers.md",
+        "checklists/minimisation.md",
+        "checklists/personal-data-in-logs.md",
+        "checklists/privacy-threats.md",
+        "checklists/retention-and-deletion.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "product-manager",
       "name": "Product Manager",
       "version": "1.0.0",
@@ -2083,6 +4732,126 @@
         "checklists/measurable.md",
         "checklists/problem-first.md",
         "checklists/ready-to-build.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "python-backend-engineer",
+      "name": "Python Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Python services where pydantic forbids what it was not told about, nothing blocks the event loop, and a session lives exactly as long as one unit of work.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "python"
+      ],
+      "stack": [
+        "python",
+        "fastapi",
+        "django",
+        "flask"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "pydantic-edge",
+        "event-loop",
+        "session-scope",
+        "exceptions-and-logging",
+        "process-lifecycle",
+        "pytest-layers"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/event-loop.md",
+        "checklists/exceptions-and-logging.md",
+        "checklists/process-lifecycle.md",
+        "checklists/pydantic-edge.md",
+        "checklists/pytest-layers.md",
+        "checklists/session-scope.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "python-senior-architect",
+      "name": "Python Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Python enforces no boundary itself, so put the architecture in pyproject.toml: a locked environment, import contracts, one strict type checker, and an event loop nothing blocks.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "python"
+      ],
+      "stack": [
+        "python",
+        "django",
+        "fastapi"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "data-model",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "packaging-and-locking",
+        "import-contracts",
+        "typing-gate",
+        "async-boundaries",
+        "edge-models"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/async-boundaries.md",
+        "checklists/edge-models.md",
+        "checklists/import-contracts.md",
+        "checklists/packaging-and-locking.md",
+        "checklists/typing-gate.md",
         "manifest.yaml",
         "overview.md",
         "references.md"
@@ -2139,6 +4908,282 @@
     },
     {
       "schema": 1,
+      "slug": "react-native-mobile-engineer",
+      "name": "React Native Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Expo apps where the SDK picks the versions, lists recycle, no secret reaches AsyncStorage or the bundle, and an OTA update cannot land on a binary it does not fit.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "react-native",
+        "expo"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report",
+        "release-plan"
+      ],
+      "checklists": [
+        "sdk-alignment",
+        "list-rendering",
+        "secure-storage",
+        "deep-links",
+        "rn-accessibility",
+        "ota-and-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/deep-links.md",
+        "checklists/list-rendering.md",
+        "checklists/ota-and-tests.md",
+        "checklists/rn-accessibility.md",
+        "checklists/sdk-alignment.md",
+        "checklists/secure-storage.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "release-manager",
+      "name": "Release Manager",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The version number is derived from the history, a published version never changes, and every release says how it is withdrawn before it ships.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "release-manager",
+      "domain": "devops",
+      "seniority": "senior",
+      "deliverables": [
+        "release-plan",
+        "runbook"
+      ],
+      "checklists": [
+        "history-hygiene",
+        "versioning",
+        "changelog",
+        "tags-and-provenance",
+        "withdrawal"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "security-reviewer",
+        "qa-automation-lead",
+        "technical-writer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/changelog.md",
+        "checklists/history-hygiene.md",
+        "checklists/tags-and-provenance.md",
+        "checklists/versioning.md",
+        "checklists/withdrawal.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "research-engineer",
+      "name": "Research Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The question written before the first search, every source graded and dated, every number fetched rather than quoted, disagreements reported instead of settled by taste, and \"not found\" written down.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "research-engineer",
+      "domain": "research",
+      "seniority": "senior",
+      "deliverables": [
+        "research-summary",
+        "adr"
+      ],
+      "checklists": [
+        "question-first",
+        "search-log",
+        "source-grading",
+        "traceable-claims",
+        "decision-ready"
+      ],
+      "pairs_with": [
+        "technical-writer",
+        "product-manager",
+        "dotnet-senior-architect"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/decision-ready.md",
+        "checklists/question-first.md",
+        "checklists/search-log.md",
+        "checklists/source-grading.md",
+        "checklists/traceable-claims.md",
+        "examples/research-brief.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "ruby-senior-architect",
+      "name": "Ruby Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Packwerk boundaries in strict mode, Zeitwerk proven in CI, a frozen lockfile with checksums, callbacks that stay in their pack, and one typing tool.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "ruby"
+      ],
+      "stack": [
+        "rails"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "bundler-discipline",
+        "pack-boundaries",
+        "zeitwerk-loading",
+        "active-record-boundaries",
+        "typing-decision"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/active-record-boundaries.md",
+        "checklists/bundler-discipline.md",
+        "checklists/pack-boundaries.md",
+        "checklists/typing-decision.md",
+        "checklists/zeitwerk-loading.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "rust-senior-architect",
+      "name": "Rust Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Crates as the boundaries, a public surface the lints hold, typed errors in libraries, additive features, a kept MSRV, cargo deny in CI and unsafe forbidden unless justified.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "rust"
+      ],
+      "stack": [
+        "rust",
+        "axum",
+        "clap"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "crate-boundaries",
+        "public-surface",
+        "error-types",
+        "feature-flags",
+        "dependency-policy",
+        "unsafe-policy"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "performance-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/crate-boundaries.md",
+        "checklists/dependency-policy.md",
+        "checklists/error-types.md",
+        "checklists/feature-flags.md",
+        "checklists/public-surface.md",
+        "checklists/unsafe-policy.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "security-reviewer",
       "name": "Security Reviewer",
       "version": "1.0.0",
@@ -2183,6 +5228,58 @@
         "checklists/logging-and-errors.md",
         "checklists/secrets-and-config.md",
         "checklists/trust-boundaries.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "site-reliability-engineer",
+      "name": "Site Reliability Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An SLO is a ratio with a window and a target in a file, the budget has a written policy, pages fire on burn rate, and every incident ends in a blameless postmortem with owned actions.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "site-reliability-engineer",
+      "domain": "devops",
+      "seniority": "senior",
+      "deliverables": [
+        "slo-definition",
+        "runbook",
+        "incident-review",
+        "root-cause-analysis"
+      ],
+      "checklists": [
+        "slo-spec",
+        "error-budget-policy",
+        "burn-rate-alerts",
+        "runbook-steps",
+        "incident-handling",
+        "postmortem"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "performance-engineer",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/burn-rate-alerts.md",
+        "checklists/error-budget-policy.md",
+        "checklists/incident-handling.md",
+        "checklists/postmortem.md",
+        "checklists/runbook-steps.md",
+        "checklists/slo-spec.md",
         "manifest.yaml",
         "overview.md",
         "references.md"
@@ -2289,6 +5386,53 @@
     },
     {
       "schema": 1,
+      "slug": "technical-seo-specialist",
+      "name": "Technical SEO Specialist",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Only what a crawler can be shown to see: robots rules per RFC 9309, honest sitemaps, one canonical per page, reciprocal hreflang, truthful structured data, HTML that indexes. No ranking promises.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "seo-specialist",
+      "domain": "marketing",
+      "seniority": "senior",
+      "deliverables": [
+        "seo-audit"
+      ],
+      "checklists": [
+        "crawl-and-index",
+        "sitemaps",
+        "canonicals-and-hreflang",
+        "structured-data",
+        "rendering-and-page-experience"
+      ],
+      "pairs_with": [
+        "performance-engineer",
+        "frontend-engineer",
+        "product-manager"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/canonicals-and-hreflang.md",
+        "checklists/crawl-and-index.md",
+        "checklists/rendering-and-page-experience.md",
+        "checklists/sitemaps.md",
+        "checklists/structured-data.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "technical-writer",
       "name": "Technical Writer",
       "version": "1.0.0",
@@ -2326,6 +5470,227 @@
         "checklists/accuracy.md",
         "checklists/deletion.md",
         "checklists/document-type.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "test-engineer",
+      "name": "Test Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Tests inside the code: a failing test before every change, cases derived by a named technique, doubles called what they are, and mutants that prove the assertions bite.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "test-engineer",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "test-suite",
+        "code-review"
+      ],
+      "checklists": [
+        "red-green-refactor",
+        "test-design-techniques",
+        "test-doubles",
+        "regression-first",
+        "mutation-analysis"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "dotnet-senior-architect",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/mutation-analysis.md",
+        "checklists/red-green-refactor.md",
+        "checklists/regression-first.md",
+        "checklists/test-design-techniques.md",
+        "checklists/test-doubles.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "typescript-backend-engineer",
+      "name": "TypeScript Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Node.js services in TypeScript where every input is parsed, every promise is awaited or handed off on purpose, and every outbound call carries a deadline.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "node",
+        "nestjs",
+        "hono",
+        "express",
+        "fastify"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "boundary-validation",
+        "promise-discipline",
+        "errors-and-logs",
+        "pool-and-idempotency",
+        "lifecycle",
+        "test-layers"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/boundary-validation.md",
+        "checklists/errors-and-logs.md",
+        "checklists/lifecycle.md",
+        "checklists/pool-and-idempotency.md",
+        "checklists/promise-discipline.md",
+        "checklists/test-layers.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "typescript-senior-architect",
+      "name": "TypeScript Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Let the compiler, the module graph and a schema at every boundary hold the architecture, because in TypeScript a type nothing checks at runtime is a comment.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "node",
+        "nestjs",
+        "nextjs"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "api-design-review",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "compiler-strictness",
+        "module-graph",
+        "module-format",
+        "boundary-validation",
+        "promise-discipline",
+        "workspace-layout"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/boundary-validation.md",
+        "checklists/compiler-strictness.md",
+        "checklists/module-format.md",
+        "checklists/module-graph.md",
+        "checklists/promise-discipline.md",
+        "checklists/workspace-layout.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "ux-researcher",
+      "name": "UX Researcher",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Methods, not taste: a question before a method, success criteria fixed before sessions, sample sizes with their limits, SUS scored as published, consent first, observations kept apart.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "ux-researcher",
+      "domain": "design",
+      "seniority": "senior",
+      "deliverables": [
+        "test-plan",
+        "usability-review",
+        "research-summary"
+      ],
+      "checklists": [
+        "research-plan",
+        "test-protocol",
+        "sample-size",
+        "sus-scoring",
+        "participant-consent",
+        "synthesis"
+      ],
+      "pairs_with": [
+        "product-manager",
+        "frontend-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/participant-consent.md",
+        "checklists/research-plan.md",
+        "checklists/sample-size.md",
+        "checklists/sus-scoring.md",
+        "checklists/synthesis.md",
+        "checklists/test-protocol.md",
         "manifest.yaml",
         "overview.md",
         "references.md"
@@ -2369,6 +5734,390 @@
     },
     {
       "schema": 1,
+      "slug": "appsec-audit-crew",
+      "name": "AppSec Audit Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A whole-application security and privacy audit: threat model and ASVS requirements first, a deletion path for every personal field, and a test for every control.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "appsec-engineer",
+        "privacy-engineer",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp"
+      ],
+      "for_what": "A deep audit of a whole application: threat model, ASVS 5.0 requirements, authentication and authorization, dependencies and secrets, personal data and its deletion, and a test for each control that goes red when the control is removed.",
+      "not_for": "Hardening a single API (that is api-hardening-crew), compliance paperwork or legal conclusions, a penetration test, or one known finding in one file. A single finding is small, sequential work for the security reviewer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "code-review-crew",
+      "name": "Code Review Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Four reviewers, one lens each, whose findings end as one list with one verdict: correctness, security, performance and the tests in the change.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "code-reviewer",
+        "security-reviewer",
+        "performance-engineer",
+        "test-engineer"
+      ],
+      "integrations": [
+        "github-mcp"
+      ],
+      "for_what": "A pull request or diff large enough to cross several concerns, reviewed through separate lenses (correctness, security, performance, tests) and merged into one finding list with one verdict.",
+      "not_for": "Writing the code, style-only linting, or a diff of a few lines or a single file. One reviewer reads that faster than four can hand it round, and the extra lenses find nothing the first did not.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "data-pipeline-crew",
+      "name": "Data Pipeline Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "ELT and dbt pipelines on PostgreSQL where the grain is written down, migrations and DDL cannot take a lock by surprise, and every load is tested by running it twice.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "sql-data-engineer",
+        "postgres-database-administrator",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "postgres-mcp",
+        "dbt-mcp"
+      ],
+      "for_what": "Building or changing ELT or dbt pipelines into PostgreSQL: the model and its grain, schema migrations that are safe under load, data-quality tests, and loads proved idempotent.",
+      "not_for": "Machine-learning modelling, dashboards, a warehouse that is not PostgreSQL, or a single query fix. One query is small, sequential work for the data engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "docs-crew",
+      "name": "Docs Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A documentation set with a shape CI can hold: typed sections and no orphan pages, a reference generated from a linted OpenAPI document, and pages whose samples were run.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "documentation-architect",
+        "technical-writer",
+        "api-designer"
+      ],
+      "integrations": [
+        "context7-mcp",
+        "github-mcp"
+      ],
+      "for_what": "Building or restructuring the documentation for a codebase or SDK: the information architecture and a docs build CI can fail, an API reference from a linted contract, and guides, tutorials and ADRs whose samples run.",
+      "not_for": "Marketing copy, translation, or fixing one page or one README. That is small, same-file work for the technical writer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "incident-response-crew",
+      "name": "Incident Response Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An incident run to a written end: mitigate first, find the signal, prove the root cause with a reproduction, and close on a regression test and a blameless postmortem.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "site-reliability-engineer",
+        "observability-engineer",
+        "debugger",
+        "test-engineer"
+      ],
+      "integrations": [
+        "sentry-mcp",
+        "github-mcp",
+        "grafana-mcp"
+      ],
+      "for_what": "A production incident with user impact: triage and mitigation against the SLO, the signal that shows what happened, a reproduced root cause, a fix proven by a test that failed before it, and a blameless postmortem with owned actions.",
+      "not_for": "A bug found in development with no production impact, capacity planning, or a one-file fix whose cause is already known. Those are sequential jobs for the debugger alone; four experts would only relay it.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "legacy-modernization-crew",
+      "name": "Legacy Modernization Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Business rules written down and traced to the code, old behaviour pinned by tests that are proved to bite, one slice moved at a time, and the security checks carried across.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "modernization-engineer",
+        "business-analyst",
+        "test-engineer",
+        "security-reviewer"
+      ],
+      "integrations": [
+        "github-mcp",
+        "context7-mcp",
+        "serena-mcp"
+      ],
+      "for_what": "Migrating or upgrading a legacy codebase: the business rules extracted and traced, the current behaviour pinned by characterization tests, the code moved one slice at a time behind a seam, and each slice security-reviewed.",
+      "not_for": "Greenfield work, a routine version bump, or a change confined to one module. Those are small and sequential, and the modernization engineer alone does them with less overhead.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "llm-app-crew",
+      "name": "LLM App Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An LLM feature designed as the simplest thing that works, with typed and scoped tools, an eval set before every prompt change, and a review that treats model output as untrusted input.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "agent-designer",
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "context7-mcp",
+        "exa-mcp"
+      ],
+      "for_what": "Building a RAG, agent or LLM-backed feature: the design and its tools, an evaluation set with a recorded baseline, and a prompt-injection and excessive-agency review before it ships.",
+      "not_for": "Model training, classic machine-learning pipelines, or a single prompt tweak on a feature that already has an eval set. That last one is small, sequential work for the agent designer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "mobile-app-crew",
+      "name": "Mobile App Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A React Native app on Expo built to its SDK, audited with a screen reader on a device, gated end to end, and released with a version that never changes and a way to withdraw it.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "react-native-mobile-engineer",
+        "accessibility-specialist",
+        "qa-automation-lead",
+        "release-manager"
+      ],
+      "integrations": [
+        "mobile-mcp"
+      ],
+      "for_what": "Building and shipping a React Native app on Expo: SDK-aligned dependencies and secure storage, a screen-reader audit on a device, end-to-end journeys on an emulator, and a release and OTA plan that says how it is withdrawn.",
+      "not_for": "A Flutter or native Android app, backend work, store listing copy, or a change to one screen. One screen is small, same-file work for the mobile engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "performance-crew",
+      "name": "Performance Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Latency and throughput fixed by measurement: see where the time goes, change one thing in the browser or the database, and count nothing smaller than the run-to-run spread.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "performance-engineer",
+        "observability-engineer",
+        "postgres-database-administrator",
+        "frontend-engineer"
+      ],
+      "integrations": [
+        "chrome-devtools-mcp",
+        "sentry-mcp",
+        "postgres-mcp"
+      ],
+      "for_what": "Profiling and fixing latency or throughput on a web application backed by PostgreSQL: the signals that show where time goes, Core Web Vitals in the browser, query plans and indexes in the database, and every change measured against a baseline.",
+      "not_for": "Feature work, correctness bugs, or a single slow query that is already identified. That is one sequential change for one expert, and a crew adds cost without adding a measurement.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "product-discovery-crew",
+      "name": "Product Discovery Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An idea turned into a brief, tested requirements and a plan, with no code: the problem first, users watched rather than asked, and requirements a tester could fail.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "business-analyst",
+        "product-manager",
+        "ux-researcher",
+        "technical-program-manager"
+      ],
+      "integrations": [
+        "notion-mcp",
+        "exa-mcp",
+        "atlassian-mcp"
+      ],
+      "for_what": "Turning an idea into a product brief, a usability-tested problem statement, requirements with acceptance criteria traced both ways, and a delivery plan with its assumptions approved. No code.",
+      "not_for": "Implementation, a mature product with a settled backlog, or a single small story. One product manager writes that in one sequential pass; four experts would only hand it round.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "release-crew",
+      "name": "Release Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A release cut the same way every time: a version derived from history, a gate whose red means stop, a rollout with a rollback somebody has run, and a watch on the error budget afterwards.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "release-manager",
+        "devops-platform-engineer",
+        "site-reliability-engineer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "sentry-mcp"
+      ],
+      "for_what": "Cutting a release of a running service: version and changelog derived from the history, the release gate, a staged rollout with tested rollback criteria, and post-deploy checks against the SLO.",
+      "not_for": "Feature design, building infrastructure from nothing, or a routine patch release one agent can follow the release-manager checklist through in order. Sequential, small work is worse with more agents, not better.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "saas-launch-crew",
       "name": "SaaS Launch Crew",
       "version": "1.0.0",
@@ -2401,9 +6150,336 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "spec-driven-feature-crew",
+      "name": "Spec-Driven Feature Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Four experts that take one feature from a spec somebody could fail, through a plan and test-first code, to a check the builder did not run.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "product-manager",
+        "technical-program-manager",
+        "test-engineer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "context7-mcp"
+      ],
+      "for_what": "A new feature in one repository with a test suite, taken from idea to a spec with acceptance criteria, a plan with its assumptions written down, code driven by failing tests, and an independent check against the spec.",
+      "not_for": "A one-line fix, a prototype with no spec, a project with no tests, or a change confined to one file. Those are small, sequential jobs one agent does better alone, and handing them between four experts only adds cost.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "tech-research-crew",
+      "name": "Tech Research Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A researcher who grades every source, a writer who turns it into a brief or an ADR, and a checker who runs the claims the decision rests on.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "research-engineer",
+        "technical-writer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "exa-mcp",
+        "context7-mcp",
+        "notion-mcp"
+      ],
+      "for_what": "Choosing a library, vendor or approach by researching it across many sources and writing the result up as a cited brief or ADR, with the claims the decision rests on checked by running them.",
+      "not_for": "A question with one known answer, anything that changes code, or a short note one agent can write in one sequential pass. A crew costs many times the tokens of a single chat, and small work never pays that back.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "ui-build-crew",
+      "name": "UI Build Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A design turned into components somebody can measure: built to WCAG 2.2 AA and Core Web Vitals, audited by hand where a scanner stops, and gated end to end.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "frontend-engineer",
+        "accessibility-specialist",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "figma-mcp",
+        "playwright-mcp",
+        "chrome-devtools-mcp"
+      ],
+      "for_what": "Turning a design into accessible, tested web components or pages, held to WCAG 2.2 AA, Core Web Vitals and a byte budget, with an end-to-end gate on the journeys that matter.",
+      "not_for": "Backend or API work, brand identity or visual taste, or a tweak to one component in one file. Small, same-file changes go faster with the frontend engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "web-launch-crew",
+      "name": "Web Launch Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Everything a public launch can be checked against: what a crawler can see, Core Web Vitals in the field, WCAG 2.2 AA by hand, and a success metric that could come back negative.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "technical-seo-specialist",
+        "performance-engineer",
+        "accessibility-specialist",
+        "product-manager"
+      ],
+      "integrations": [
+        "chrome-devtools-mcp"
+      ],
+      "for_what": "Checking a public website before and after launch: crawlability and indexing, Core Web Vitals, WCAG 2.2 AA, and a launch metric with a counter-metric and a date to look at it.",
+      "not_for": "Building the site, launch copy or growth marketing, buying advertising, or a change to one page. A single page is small, same-file work that one expert checks faster than four.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ],
   "integrations": [
+    {
+      "schema": 1,
+      "slug": "agent-device",
+      "name": "agent-device",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Callstack's app-automation server: drive and verify iOS, Android, TV, desktop and web apps from an agent, and keep screenshots, logs and traces. Needs Xcode (macOS) or the Android SDK.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/callstack/agent-device",
+      "upstream_version": "0.21.14",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json agent-device '{\"command\":\"npx\",\"args\":[\"-y\",\"agent-device@0.21.14\",\"mcp\"],\"env\":{\"AGENT_DEVICE_NO_UPDATE_NOTIFIER\":\"1\"}}'",
+        "codex": "codex mcp add agent-device --env \"AGENT_DEVICE_NO_UPDATE_NOTIFIER=1\" -- npx -y agent-device@0.21.14 mcp",
+        "gemini-cli": "gemini mcp add agent-device -e \"AGENT_DEVICE_NO_UPDATE_NOTIFIER=1\" npx -y agent-device@0.21.14 mcp"
+      },
+      "permissions_summary": "Controls the simulators, emulators and connected devices on the machine: boots and shuts them down, installs and removes apps, taps and types, changes OS settings and app permissions, sends push notifications, and reads screens, logs and app network traffic.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "atlassian-mcp",
+      "name": "Atlassian Rovo MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Jira, Confluence, Compass and the rest of Atlassian Cloud through Atlassian's hosted server, as the signed-in user.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/atlassian/atlassian-mcp-server",
+      "upstream_version": "v2",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp",
+        "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp",
+        "gemini-cli": "gemini mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp"
+      },
+      "permissions_summary": "Reads and writes Jira, Confluence, Compass, Bitbucket and other Atlassian Cloud data with the signed-in user's own permissions: it creates and edits work items and pages, not only reads them.",
+      "fits": [
+        "software",
+        "product",
+        "docs",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "aws-documentation-mcp",
+      "name": "AWS Documentation MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Search, read and get recommendations from the public AWS documentation, with no AWS credentials.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/awslabs/mcp/tree/main/src/aws-documentation-mcp-server",
+      "upstream_version": "1.2.1",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json aws-documentation '{\"command\":\"uvx\",\"args\":[\"awslabs.aws-documentation-mcp-server==1.2.1\"],\"env\":{\"FASTMCP_LOG_LEVEL\":\"ERROR\",\"AWS_DOCUMENTATION_PARTITION\":\"aws\"}}'",
+        "codex": "codex mcp add aws-documentation --env FASTMCP_LOG_LEVEL=ERROR --env AWS_DOCUMENTATION_PARTITION=aws -- uvx awslabs.aws-documentation-mcp-server==1.2.1",
+        "gemini-cli": "gemini mcp add aws-documentation -e FASTMCP_LOG_LEVEL=ERROR -e AWS_DOCUMENTATION_PARTITION=aws uvx awslabs.aws-documentation-mcp-server==1.2.1"
+      },
+      "permissions_summary": "Reads pages on docs.aws.amazon.com and calls AWS's public documentation search and recommendation APIs; it holds no AWS credentials and reaches no account.",
+      "fits": [
+        "devops",
+        "software",
+        "docs"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "azure-devops-mcp",
+      "name": "Azure DevOps MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Work items, projects and teams from one Azure DevOps organisation, with the tool domains narrowed to what the work needs.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/microsoft/azure-devops-mcp",
+      "upstream_version": "2.10.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --transport stdio azure-devops -- npx -y @azure-devops/mcp@2.10.0 \"<your-organization>\" -d core work-items",
+        "codex": "codex mcp add azure-devops -- npx -y @azure-devops/mcp@2.10.0 \"<your-organization>\" -d core work-items",
+        "gemini-cli": "gemini mcp add azure-devops npx -- -y @azure-devops/mcp@2.10.0 \"<your-organization>\" -d core work-items"
+      },
+      "permissions_summary": "Signs in as you and acts with your Azure DevOps permissions in one organisation; with the core and work-items domains it reads projects and work items and can create, update, link and comment on work items.",
+      "fits": [
+        "software",
+        "devops",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "brave-search-mcp",
+      "name": "Brave Search MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Web, news, image, video and local search from Brave's own index, plus page content extracted for an agent to ground on.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/brave/brave-search-mcp-server",
+      "upstream_version": "2.1.4",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json brave-search '{\"command\":\"npx\",\"args\":[\"-y\",\"@brave/brave-search-mcp-server@2.1.4\"],\"env\":{\"BRAVE_API_KEY\":\"${BRAVE_API_KEY}\"}}'",
+        "codex": "codex mcp add brave-search --env \"BRAVE_API_KEY=${BRAVE_API_KEY}\" -- npx -y @brave/brave-search-mcp-server@2.1.4",
+        "gemini-cli": "gemini mcp add brave-search -e 'BRAVE_API_KEY=${BRAVE_API_KEY}' npx -y @brave/brave-search-mcp-server@2.1.4"
+      },
+      "needs_secrets": [
+        "BRAVE_API_KEY"
+      ],
+      "permissions_summary": "Sends the agent's search queries, and any location it passes, to the Brave Search API, billed to the key; it only reads search results and changes nothing.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
     {
       "schema": 1,
       "slug": "chrome-devtools-mcp",
@@ -2433,6 +6509,84 @@
       "fits": [
         "software",
         "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "clickhouse-mcp",
+      "name": "ClickHouse MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/ClickHouse/mcp-clickhouse",
+      "upstream_version": "0.7.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json clickhouse '{\"command\":\"uvx\",\"args\":[\"mcp-clickhouse==0.7.0\"],\"env\":{\"CLICKHOUSE_HOST\":\"${CLICKHOUSE_HOST}\",\"CLICKHOUSE_USER\":\"${CLICKHOUSE_USER}\",\"CLICKHOUSE_PASSWORD\":\"${CLICKHOUSE_PASSWORD}\",\"CLICKHOUSE_ALLOW_WRITE_ACCESS\":\"false\"}}'",
+        "codex": "codex mcp add clickhouse --env \"CLICKHOUSE_HOST=$CLICKHOUSE_HOST\" --env \"CLICKHOUSE_USER=$CLICKHOUSE_USER\" --env \"CLICKHOUSE_PASSWORD=$CLICKHOUSE_PASSWORD\" --env \"CLICKHOUSE_ALLOW_WRITE_ACCESS=false\" -- uvx mcp-clickhouse==0.7.0",
+        "gemini-cli": "gemini mcp add clickhouse -e 'CLICKHOUSE_HOST=$CLICKHOUSE_HOST' -e 'CLICKHOUSE_USER=$CLICKHOUSE_USER' -e 'CLICKHOUSE_PASSWORD=$CLICKHOUSE_PASSWORD' -e 'CLICKHOUSE_ALLOW_WRITE_ACCESS=false' uvx mcp-clickhouse==0.7.0"
+      },
+      "needs_secrets": [
+        "CLICKHOUSE_HOST",
+        "CLICKHOUSE_USER",
+        "CLICKHOUSE_PASSWORD"
+      ],
+      "permissions_summary": "Reads every database and table the ClickHouse user can read and runs SQL with the readonly=1 setting; it writes only if CLICKHOUSE_ALLOW_WRITE_ACCESS is set to true, which these commands do not.",
+      "fits": [
+        "data",
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "cloudflare-mcp",
+      "name": "Cloudflare MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The whole Cloudflare API and Cloudflare's documentation through Cloudflare's hosted Code Mode server: the agent writes JavaScript that Cloudflare runs against your account.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/cloudflare/mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add --transport http cloudflare-api https://mcp.cloudflare.com/mcp",
+        "codex": "codex mcp add cloudflare-api --url https://mcp.cloudflare.com/mcp",
+        "gemini-cli": "gemini mcp add --transport http cloudflare-api https://mcp.cloudflare.com/mcp"
+      },
+      "permissions_summary": "Calls any Cloudflare API endpoint the permissions you grant allow, through code it runs on Cloudflare: Workers, DNS records, R2, KV, D1, firewall and Access settings, read and write, including deletes.",
+      "fits": [
+        "software",
+        "devops",
+        "security"
       ],
       "files": [
         "CHANGELOG.md",
@@ -2478,6 +6632,41 @@
     },
     {
       "schema": 1,
+      "slug": "dbt-mcp",
+      "name": "dbt MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Parse, list, compile and trace the lineage of a local dbt project, with no dbt platform account and nothing that runs models.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/dbt-labs/dbt-mcp",
+      "upstream_version": "2.4.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json dbt '{\"command\":\"uvx\",\"args\":[\"dbt-mcp==2.4.0\"],\"env\":{\"DBT_PROJECT_DIR\":\"/path/to/dbt/project\",\"DBT_PATH\":\"/path/to/dbt\",\"DBT_MCP_ENABLE_TOOLS\":\"parse,list,compile,get_lineage_dev,get_node_details_dev\",\"DO_NOT_TRACK\":\"true\"}}'",
+        "codex": "codex mcp add dbt --env \"DBT_PROJECT_DIR=/path/to/dbt/project\" --env \"DBT_PATH=/path/to/dbt\" --env \"DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev\" --env \"DO_NOT_TRACK=true\" -- uvx dbt-mcp==2.4.0",
+        "gemini-cli": "gemini mcp add dbt -e 'DBT_PROJECT_DIR=/path/to/dbt/project' -e 'DBT_PATH=/path/to/dbt' -e 'DBT_MCP_ENABLE_TOOLS=parse,list,compile,get_lineage_dev,get_node_details_dev' -e 'DO_NOT_TRACK=true' uvx dbt-mcp==2.4.0"
+      },
+      "permissions_summary": "Runs the local dbt executable on one project to parse, list and compile it and read its manifest; compile may query the warehouse through the profile dbt uses, and no tool that builds, runs or tests models is enabled.",
+      "fits": [
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "exa-mcp",
       "name": "Exa Search MCP",
       "version": "1.0.0",
@@ -2509,6 +6698,43 @@
         "research",
         "software",
         "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "fetch-mcp",
+      "name": "Fetch MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "upstream_version": "2026.8.18",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json fetch '{\"command\":\"uvx\",\"args\":[\"mcp-server-fetch==2026.8.18\"]}'",
+        "codex": "codex mcp add fetch -- uvx mcp-server-fetch==2026.8.18",
+        "gemini-cli": "gemini mcp add fetch uvx mcp-server-fetch==2026.8.18"
+      },
+      "permissions_summary": "Sends GET requests to any URL the agent asks for, following redirects, from the machine it runs on, including localhost and private network addresses.",
+      "fits": [
+        "research",
+        "docs",
+        "software"
       ],
       "files": [
         "CHANGELOG.md",
@@ -2594,6 +6820,81 @@
     },
     {
       "schema": 1,
+      "slug": "firecrawl-mcp",
+      "name": "Firecrawl MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Scrape, crawl, map and search the web through Firecrawl, and get pages back as Markdown or as JSON to a schema.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/firecrawl/firecrawl-mcp-server",
+      "upstream_version": "3.25.4",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json firecrawl '{\"command\":\"npx\",\"args\":[\"-y\",\"firecrawl-mcp@3.25.4\"],\"env\":{\"FIRECRAWL_API_KEY\":\"${FIRECRAWL_API_KEY}\"}}'",
+        "codex": "codex mcp add firecrawl --env \"FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}\" -- npx -y firecrawl-mcp@3.25.4",
+        "gemini-cli": "gemini mcp add firecrawl -e 'FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}' npx -y firecrawl-mcp@3.25.4"
+      },
+      "needs_secrets": [
+        "FIRECRAWL_API_KEY"
+      ],
+      "permissions_summary": "Sends URLs and queries to Firecrawl, which fetches pages, clicks and types in them and runs research jobs, billed to the key's credits; it can also create recurring monitors that post to a webhook.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "git-mcp",
+      "name": "Git MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Status, diffs, log and commits on one local Git repository, named on the command line.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "upstream_version": "2026.8.18",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json git '{\"command\":\"uvx\",\"args\":[\"mcp-server-git==2026.8.18\",\"--repository\",\"/path/to/repo\"]}'",
+        "codex": "codex mcp add git -- uvx mcp-server-git==2026.8.18 --repository /path/to/repo",
+        "gemini-cli": "gemini mcp add git uvx mcp-server-git==2026.8.18 --repository /path/to/repo"
+      },
+      "permissions_summary": "Reads the history, diffs and working tree of the repository passed with --repository, and writes to it: stages files, commits, unstages, creates and switches branches. It does not push.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "github-mcp",
       "name": "GitHub MCP Server",
       "version": "1.0.0",
@@ -2633,6 +6934,159 @@
     },
     {
       "schema": 1,
+      "slug": "gitlab-mcp",
+      "name": "GitLab MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "GitLab's built-in MCP server (beta): projects, work items, merge requests and pipelines on your own GitLab instance or GitLab.com.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://gitlab.com/gitlab-org/gitlab",
+      "upstream_version": "gitlab-18.6",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add -s user --transport http GitLab \"https://<your-gitlab-host>/api/v4/mcp\"",
+        "codex": "codex mcp add GitLab --url \"https://<your-gitlab-host>/api/v4/mcp\"",
+        "gemini-cli": "gemini mcp add -t http GitLab \"https://<your-gitlab-host>/api/v4/mcp\""
+      },
+      "permissions_summary": "Signs in as you through OAuth with the mcp scope and acts with your GitLab permissions: reads projects, work items, merge requests and pipelines, and can commit, open and merge merge requests, and run or delete pipelines.",
+      "fits": [
+        "software",
+        "devops",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "grafana-mcp",
+      "name": "Grafana MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Search dashboards, query Prometheus and Loki, and read alerts and incidents in Grafana, with every write tool switched off.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/grafana/mcp-grafana",
+      "upstream_version": "1.5.1",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json grafana '{\"command\":\"uvx\",\"args\":[\"mcp-grafana==1.5.1\",\"--disable-write\",\"--usage-stats=disabled\"],\"env\":{\"GRAFANA_URL\":\"${GRAFANA_URL}\",\"GRAFANA_SERVICE_ACCOUNT_TOKEN\":\"${GRAFANA_SERVICE_ACCOUNT_TOKEN}\"}}'",
+        "codex": "codex mcp add grafana --env \"GRAFANA_URL=$GRAFANA_URL\" --env \"GRAFANA_SERVICE_ACCOUNT_TOKEN=$GRAFANA_SERVICE_ACCOUNT_TOKEN\" -- uvx mcp-grafana==1.5.1 --disable-write --usage-stats=disabled",
+        "gemini-cli": "gemini mcp add grafana -e 'GRAFANA_URL=$GRAFANA_URL' -e 'GRAFANA_SERVICE_ACCOUNT_TOKEN=$GRAFANA_SERVICE_ACCOUNT_TOKEN' uvx mcp-grafana==1.5.1 --disable-write --usage-stats=disabled"
+      },
+      "needs_secrets": [
+        "GRAFANA_URL",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN"
+      ],
+      "permissions_summary": "Reads dashboards, datasources, alert rules, incidents and on-call data, and runs read queries against the datasources, in the Grafana instance the service account can reach; write tools are not registered.",
+      "fits": [
+        "devops",
+        "software",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "launchdarkly-mcp",
+      "name": "LaunchDarkly MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "LaunchDarkly's own server for feature flags and AI Configs, pinned and started with read tools only; writes, including flag toggles in live environments, are one flag away.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/launchdarkly/mcp-server",
+      "upstream_version": "0.6.2",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json launchdarkly '{\"command\":\"npx\",\"args\":[\"-y\",\"--package\",\"@launchdarkly/mcp-server@0.6.2\",\"--\",\"mcp\",\"start\",\"--scope\",\"read\",\"--api-key\",\"${LD_ACCESS_TOKEN}\"]}'",
+        "gemini-cli": "gemini mcp add launchdarkly npx -- -y --package @launchdarkly/mcp-server@0.6.2 -- mcp start --scope read --api-key '${LD_ACCESS_TOKEN}'"
+      },
+      "needs_secrets": [
+        "LD_ACCESS_TOKEN"
+      ],
+      "permissions_summary": "As installed, reads feature flags, flag status, AI Configs, environments, code references and the audit log that the access token can see. Without --scope read it also creates, updates, toggles and deletes flags and AI Configs, in any environment the token reaches.",
+      "fits": [
+        "software",
+        "devops",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "linear-mcp",
+      "name": "Linear MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Linear issues, projects and comments through Linear's hosted server, read-only unless you choose the full endpoint.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://linear.app/docs/mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --transport http linear-server https://mcp.linear.app/mcp/readonly",
+        "codex": "codex mcp add linear --url https://mcp.linear.app/mcp/readonly",
+        "gemini-cli": "gemini mcp add --transport http linear https://mcp.linear.app/mcp/readonly"
+      },
+      "permissions_summary": "As installed, reads the issues, projects and comments the signed-in user can see. The full /mcp endpoint, which you opt into, also creates and updates them.",
+      "fits": [
+        "software",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "memory-mcp",
       "name": "Memory MCP",
       "version": "1.0.0",
@@ -2661,6 +7115,189 @@
         "software",
         "research",
         "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "mobile-mcp",
+      "name": "Mobile MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Drive iOS and Android simulators, emulators and real devices from an agent: read the screen, tap, type, install apps and read logs. Needs Xcode (macOS) or the Android SDK.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/mobile-next/mobile-mcp",
+      "upstream_version": "1.0.5",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json mobile-mcp '{\"command\":\"npx\",\"args\":[\"-y\",\"@mobilenext/mobile-mcp@1.0.5\"],\"env\":{\"MOBILEMCP_DISABLE_TELEMETRY\":\"1\"}}'",
+        "codex": "codex mcp add mobile-mcp --env \"MOBILEMCP_DISABLE_TELEMETRY=1\" -- npx -y @mobilenext/mobile-mcp@1.0.5",
+        "gemini-cli": "gemini mcp add mobile-mcp -e \"MOBILEMCP_DISABLE_TELEMETRY=1\" npx -y @mobilenext/mobile-mcp@1.0.5"
+      },
+      "permissions_summary": "Controls every simulator, emulator and USB-connected device on the machine: reads the screen, taps, types, installs and uninstalls apps, opens URLs, reads device logs and crash reports, and writes screenshots and recordings to disk.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "mobilebuild-mcp",
+      "name": "MobileBuildMCP (formerly XcodeBuildMCP)",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build, run and test iOS and macOS apps on simulators from an agent, through xcodebuild. macOS with Xcode only; error reporting to Sentry turned off.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/getsentry/MobileBuildMCP",
+      "upstream_version": "2.7.1",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json mobilebuildmcp '{\"command\":\"npx\",\"args\":[\"-y\",\"mobilebuildmcp@2.7.1\",\"mcp\"],\"env\":{\"MOBILEBUILDMCP_SENTRY_DISABLED\":\"true\"}}'",
+        "codex": "codex mcp add mobilebuildmcp --env \"MOBILEBUILDMCP_SENTRY_DISABLED=true\" -- npx -y mobilebuildmcp@2.7.1 mcp",
+        "gemini-cli": "gemini mcp add mobilebuildmcp -e \"MOBILEBUILDMCP_SENTRY_DISABLED=true\" npx -y mobilebuildmcp@2.7.1 mcp"
+      },
+      "permissions_summary": "Runs xcodebuild on the project it is pointed at, which runs the project's build scripts and Swift macros, and boots, installs, launches and records on simulators; more tool groups, including device installs and an LLDB console, can be switched on.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "mongodb-mcp",
+      "name": "MongoDB MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Query collections, inspect schemas and indexes, and explain plans on a MongoDB deployment, in read-only mode.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/mongodb-js/mongodb-mcp-server",
+      "upstream_version": "3.0.4",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json mongodb '{\"command\":\"npx\",\"args\":[\"-y\",\"mongodb-mcp-server@3.0.4\",\"--readOnly\",\"--telemetry\",\"disabled\"],\"env\":{\"MDB_MCP_CONNECTION_STRING\":\"${MDB_MCP_CONNECTION_STRING}\"}}'",
+        "codex": "codex mcp add mongodb --env \"MDB_MCP_CONNECTION_STRING=$MDB_MCP_CONNECTION_STRING\" -- npx -y mongodb-mcp-server@3.0.4 --readOnly --telemetry disabled",
+        "gemini-cli": "gemini mcp add mongodb -e 'MDB_MCP_CONNECTION_STRING=$MDB_MCP_CONNECTION_STRING' npx -y mongodb-mcp-server@3.0.4 --readOnly --telemetry disabled"
+      },
+      "needs_secrets": [
+        "MDB_MCP_CONNECTION_STRING"
+      ],
+      "permissions_summary": "Reads every database and collection the connection string's user can read: documents, schemas, indexes, statistics and query plans; create, update and delete tools are not registered.",
+      "fits": [
+        "software",
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "netlify-mcp",
+      "name": "Netlify MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Netlify's own server: projects, deploys, environment variables, forms, access controls and extensions on the Netlify account you are logged in to.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/netlify/netlify-mcp",
+      "upstream_version": "1.15.1",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json netlify '{\"command\":\"npx\",\"args\":[\"-y\",\"@netlify/mcp@1.15.1\"]}'",
+        "codex": "codex mcp add netlify -- npx -y @netlify/mcp@1.15.1",
+        "gemini-cli": "gemini mcp add netlify npx -y @netlify/mcp@1.15.1"
+      },
+      "permissions_summary": "Reads and changes every Netlify team and project your login reaches: creates projects, zips and uploads a local folder to deploy it, sets and deletes environment variables and secrets, changes access controls and forms, installs extensions.",
+      "fits": [
+        "software",
+        "devops"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "next-devtools-mcp",
+      "name": "Next.js DevTools MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read build and runtime errors, routes and logs from a running Next.js 16+ dev server, and point the agent at the docs for the installed version.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/vercel/next-devtools-mcp",
+      "upstream_version": "0.4.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json next-devtools '{\"command\":\"npx\",\"args\":[\"-y\",\"next-devtools-mcp@0.4.0\"],\"env\":{\"NEXT_TELEMETRY_DISABLED\":\"1\"}}'",
+        "codex": "codex mcp add next-devtools --env NEXT_TELEMETRY_DISABLED=1 -- npx -y next-devtools-mcp@0.4.0",
+        "gemini-cli": "gemini mcp add next-devtools -e NEXT_TELEMETRY_DISABLED=1 npx -y next-devtools-mcp@0.4.0"
+      },
+      "permissions_summary": "Probes local ports for Next.js dev servers and calls the runtime tools they expose at /_next/mcp, which read errors, routes, logs and project metadata; it needs no credentials.",
+      "fits": [
+        "software",
+        "quality"
       ],
       "files": [
         "CHANGELOG.md",
@@ -2710,6 +7347,82 @@
     },
     {
       "schema": 1,
+      "slug": "nx-mcp",
+      "name": "Nx MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An Nx monorepo's project graph, project configuration, generators and running tasks, read by an agent, with Nx Cloud left out.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/nrwl/nx-console/tree/master/apps/nx-mcp",
+      "upstream_version": "0.25.0",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json nx-mcp '{\"command\":\"npx\",\"args\":[\"-y\",\"nx-mcp@0.25.0\",\"--no-minimal\",\"--disableTelemetry\"],\"env\":{\"NX_NO_CLOUD\":\"true\"}}'",
+        "codex": "codex mcp add nx-mcp --env \"NX_NO_CLOUD=true\" -- npx -y nx-mcp@0.25.0 --no-minimal --disableTelemetry",
+        "gemini-cli": "gemini mcp add nx-mcp -e \"NX_NO_CLOUD=true\" npx -y nx-mcp@0.25.0 --no-minimal --disableTelemetry"
+      },
+      "permissions_summary": "Reads the Nx workspace it starts in (project graph, project configuration, generators, output of running tasks) and sends documentation questions to nx.dev; it changes no source files, and NX_NO_CLOUD keeps its Nx Cloud tools off.",
+      "fits": [
+        "software",
+        "devops"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "perplexity-mcp",
+      "name": "Perplexity MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Web search, quick answers, reasoning and deep research from Perplexity's API, with sources, from inside an agent.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/perplexityai/modelcontextprotocol",
+      "upstream_version": "1.2.1",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json perplexity '{\"command\":\"npx\",\"args\":[\"-y\",\"@perplexity-ai/mcp-server@1.2.1\"],\"env\":{\"PERPLEXITY_API_KEY\":\"${PERPLEXITY_API_KEY}\"}}'",
+        "codex": "codex mcp add perplexity --env \"PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}\" -- npx -y @perplexity-ai/mcp-server@1.2.1",
+        "gemini-cli": "gemini mcp add perplexity -e 'PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}' npx -y @perplexity-ai/mcp-server@1.2.1"
+      },
+      "needs_secrets": [
+        "PERPLEXITY_API_KEY"
+      ],
+      "permissions_summary": "Sends the agent's questions and search queries to the Perplexity API, which searches the web and answers with its models, billed per request and per token to the key's account; it changes nothing.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "playwright-mcp",
       "name": "Playwright MCP",
       "version": "1.0.0",
@@ -2738,6 +7451,45 @@
         "software",
         "quality",
         "design"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "postgres-mcp",
+      "name": "Postgres MCP Pro",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Schemas, query plans, index advice and health checks on a PostgreSQL database, in the read-only restricted mode.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/crystaldba/postgres-mcp",
+      "upstream_version": "0.3.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json postgres '{\"command\":\"uvx\",\"args\":[\"--with\",\"mcp<2\",\"postgres-mcp==0.3.0\",\"--access-mode=restricted\"],\"env\":{\"DATABASE_URI\":\"${DATABASE_URI}\"}}'",
+        "codex": "codex mcp add postgres --env \"DATABASE_URI=$DATABASE_URI\" -- uvx --with \"mcp<2\" postgres-mcp==0.3.0 --access-mode=restricted",
+        "gemini-cli": "gemini mcp add postgres -e 'DATABASE_URI=$DATABASE_URI' uvx --with 'mcp<2' postgres-mcp==0.3.0 --access-mode=restricted"
+      },
+      "needs_secrets": [
+        "DATABASE_URI"
+      ],
+      "permissions_summary": "Reads every schema, table and statistics view the connection string's user can read, and runs SQL only inside read-only transactions with a 30-second limit; without --access-mode=restricted it can write.",
+      "fits": [
+        "software",
+        "data"
       ],
       "files": [
         "CHANGELOG.md",
@@ -2778,6 +7530,407 @@
         "software",
         "devops",
         "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "sequential-thinking-mcp",
+      "name": "Sequential Thinking MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A scratchpad tool the model calls to write its reasoning as numbered, revisable steps; it reaches nothing outside itself.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+      "upstream_version": "2026.8.31",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json sequential-thinking '{\"command\":\"npx\",\"args\":[\"-y\",\"@modelcontextprotocol/server-sequential-thinking@2026.8.31\"],\"env\":{\"DISABLE_THOUGHT_LOGGING\":\"true\"}}'",
+        "codex": "codex mcp add sequential-thinking --env DISABLE_THOUGHT_LOGGING=true -- npx -y @modelcontextprotocol/server-sequential-thinking@2026.8.31",
+        "gemini-cli": "gemini mcp add sequential-thinking -e DISABLE_THOUGHT_LOGGING=true npx -y @modelcontextprotocol/server-sequential-thinking@2026.8.31"
+      },
+      "permissions_summary": "Keeps the thoughts the model sends it in memory for the session and returns a count; it reads and writes no file, network or account.",
+      "fits": [
+        "software",
+        "research",
+        "ai"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "serena-mcp",
+      "name": "Serena",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Find, read and edit code by symbol through a language server, instead of by line and by grep.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/oraios/serena",
+      "upstream_version": "1.7.0",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json serena '{\"command\":\"uvx\",\"args\":[\"-p\",\"3.13\",\"--from\",\"serena-agent==1.7.0\",\"serena\",\"start-mcp-server\",\"--context\",\"claude-code\",\"--project-from-cwd\",\"--open-web-dashboard\",\"false\"],\"env\":{\"SERENA_USAGE_REPORTING\":\"false\"}}'",
+        "codex": "codex mcp add serena --env \"SERENA_USAGE_REPORTING=false\" -- uvx -p 3.13 --from serena-agent==1.7.0 serena start-mcp-server --context codex --project-from-cwd --open-web-dashboard false",
+        "gemini-cli": "gemini mcp add serena -e \"SERENA_USAGE_REPORTING=false\" uvx -p 3.13 --from serena-agent==1.7.0 serena start-mcp-server --context ide --project-from-cwd --open-web-dashboard false"
+      },
+      "permissions_summary": "Reads and edits code in the project it starts in (replacing, inserting and renaming symbols, rewriting file content) and writes its own .serena folder there; the contexts used here leave out its shell command tool.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "shopify-dev-mcp",
+      "name": "Shopify Dev MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Search Shopify's developer documentation and API schemas, and validate GraphQL, Liquid, theme and UI-extension code against them.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://shopify.dev/docs/apps/build/ai-toolkit",
+      "upstream_version": "1.15.4",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json shopify-dev-mcp '{\"command\":\"npx\",\"args\":[\"-y\",\"@shopify/dev-mcp@1.15.4\"],\"env\":{\"OPT_OUT_INSTRUMENTATION\":\"true\"}}'",
+        "codex": "codex mcp add shopify-dev-mcp --env \"OPT_OUT_INSTRUMENTATION=true\" -- npx -y @shopify/dev-mcp@1.15.4",
+        "gemini-cli": "gemini mcp add shopify-dev-mcp -e \"OPT_OUT_INSTRUMENTATION=true\" npx -y @shopify/dev-mcp@1.15.4"
+      },
+      "permissions_summary": "Sends documentation searches to shopify.dev and validates the code the agent passes it, reading theme files from a path the agent names; it needs no Shopify account and cannot reach a store.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "storybook-mcp",
+      "name": "Storybook MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Storybook's official MCP addon: the agent reads your components' docs and stories, previews them and runs their tests from the local dev server.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/storybookjs/storybook",
+      "upstream_version": "10.6.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "npx storybook add @storybook/addon-mcp@10.6.0 && claude mcp add-json storybook '{\"type\":\"http\",\"url\":\"http://localhost:6006/mcp\"}'",
+        "codex": "npx storybook add @storybook/addon-mcp@10.6.0 && codex mcp add storybook --url http://localhost:6006/mcp",
+        "gemini-cli": "npx storybook add @storybook/addon-mcp@10.6.0 && gemini mcp add -t http storybook http://localhost:6006/mcp"
+      },
+      "permissions_summary": "Serves from your local Storybook dev server with no credentials: reads component docs and stories, runs story tests through Vitest when that addon is installed, and publishes a review of your current changes to its own review page.",
+      "fits": [
+        "software",
+        "design",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "stripe-mcp",
+      "name": "Stripe MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The Stripe API and Stripe's documentation through Stripe's hosted server, for the accounts and sandboxes you authorise.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/stripe/ai",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --transport http stripe https://mcp.stripe.com/",
+        "codex": "codex mcp add stripe --url https://mcp.stripe.com",
+        "gemini-cli": "gemini mcp add --transport http stripe https://mcp.stripe.com"
+      },
+      "permissions_summary": "Reads and writes the Stripe accounts and sandboxes you authorise through any Stripe API method, so it moves money: refunds, invoices, subscriptions. Stripe asks a human to confirm refunds and outbound payments.",
+      "fits": [
+        "software",
+        "finance",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "supabase-mcp",
+      "name": "Supabase MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Query one Supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/supabase/mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --scope project --transport http supabase \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\"",
+        "codex": "codex mcp add supabase --url \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\"",
+        "gemini-cli": "gemini mcp add -t http supabase \"https://mcp.supabase.com/mcp?read_only=true&project_ref=<your-project-ref>\""
+      },
+      "permissions_summary": "Signs in as you through OAuth and, as installed here, reads one project read-only; without read_only it can run SQL that changes data, apply migrations and deploy functions.",
+      "fits": [
+        "software",
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "svelte-mcp",
+      "name": "Svelte MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Current Svelte 5 and SvelteKit documentation, and a static checker that tells the agent what is wrong with the component it just wrote.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/sveltejs/ai-tools",
+      "upstream_version": "0.1.26",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json svelte '{\"command\":\"npx\",\"args\":[\"-y\",\"@sveltejs/mcp@0.1.26\"]}'",
+        "codex": "codex mcp add svelte -- npx -y @sveltejs/mcp@0.1.26",
+        "gemini-cli": "gemini mcp add svelte npx -y @sveltejs/mcp@0.1.26"
+      },
+      "permissions_summary": "Fetches Svelte and SvelteKit documentation from svelte.dev and checks the code the agent passes it locally; it reads and writes no project files and needs no account.",
+      "fits": [
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "tavily-mcp",
+      "name": "Tavily MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Search, extract, map and crawl the web through Tavily, with results shaped for an agent rather than a person.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/tavily-ai/tavily-mcp",
+      "upstream_version": "0.2.22",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json tavily '{\"command\":\"npx\",\"args\":[\"-y\",\"tavily-mcp@0.2.22\"],\"env\":{\"TAVILY_API_KEY\":\"${TAVILY_API_KEY}\"}}'",
+        "codex": "codex mcp add tavily --env \"TAVILY_API_KEY=${TAVILY_API_KEY}\" -- npx -y tavily-mcp@0.2.22",
+        "gemini-cli": "gemini mcp add tavily -e 'TAVILY_API_KEY=${TAVILY_API_KEY}' npx -y tavily-mcp@0.2.22"
+      },
+      "needs_secrets": [
+        "TAVILY_API_KEY"
+      ],
+      "permissions_summary": "Sends the agent's queries and URLs to the Tavily API, which searches, fetches and crawls pages and runs research jobs billed to the key's credits; it changes nothing.",
+      "fits": [
+        "research",
+        "software",
+        "marketing"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "terraform-mcp",
+      "name": "Terraform MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Look up providers, modules and policies in the public Terraform Registry, so an agent writes HCL against the current schema.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/hashicorp/terraform-mcp-server",
+      "upstream_version": "1.3.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json terraform '{\"command\":\"docker\",\"args\":[\"run\",\"-i\",\"--rm\",\"hashicorp/terraform-mcp-server:1.3.0\",\"--toolsets=registry\"]}'",
+        "codex": "codex mcp add terraform -- docker run -i --rm hashicorp/terraform-mcp-server:1.3.0 --toolsets=registry",
+        "gemini-cli": "gemini mcp add terraform docker run -i --rm hashicorp/terraform-mcp-server:1.3.0 --toolsets=registry"
+      },
+      "permissions_summary": "Runs a container on this machine that reads public provider, module and policy documentation from the Terraform Registry; with no token set it reaches no workspace, state or run.",
+      "fits": [
+        "devops",
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "time-mcp",
+      "name": "Time MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "The current time in any IANA time zone, and conversion between zones, so an agent stops guessing the date.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+      "upstream_version": "2026.8.18",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json time '{\"command\":\"uvx\",\"args\":[\"mcp-server-time==2026.8.18\"]}'",
+        "codex": "codex mcp add time -- uvx mcp-server-time==2026.8.18",
+        "gemini-cli": "gemini mcp add time uvx mcp-server-time==2026.8.18"
+      },
+      "permissions_summary": "Reads the system clock and time zone of the machine it runs on and converts times between zones; it reaches no network, file or account.",
+      "fits": [
+        "software",
+        "operations",
+        "product"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
+      "slug": "vercel-mcp",
+      "name": "Vercel MCP",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Projects, deployments, build and runtime logs and Web Analytics through Vercel's hosted server (public beta), as the signed-in user; it can also deploy and make purchases.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://vercel.com/docs/agent-resources/vercel-mcp",
+      "upstream_version": "hosted",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add --transport http vercel https://mcp.vercel.com",
+        "codex": "codex mcp add vercel --url https://mcp.vercel.com",
+        "gemini-cli": "gemini mcp add vercel npx -y mcp-remote@0.14.3 https://mcp.vercel.com"
+      },
+      "permissions_summary": "Acts as your Vercel user on the teams you authorise: reads projects, deployments, logs and analytics, deploys files to preview or production, opens links past deployment protection, and can buy domains, credits and plan upgrades.",
+      "fits": [
+        "software",
+        "devops"
       ],
       "files": [
         "CHANGELOG.md",

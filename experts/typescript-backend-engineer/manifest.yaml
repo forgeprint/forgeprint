@@ -1,0 +1,29 @@
+schema: 1
+slug: typescript-backend-engineer
+name: 'TypeScript Senior Backend Engineer'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Build Node.js services in TypeScript where every input is parsed, every promise is awaited or handed off on purpose, and every outbound call carries a deadline.'
+role: backend-engineer
+domain: software
+seniority: senior
+languages: [typescript]
+stack: [node, nestjs, hono, express, fastify]
+deliverables:
+  - code-review
+  - test-suite
+  - api-spec
+  - runbook
+checklists:
+  - boundary-validation
+  - promise-discipline
+  - errors-and-logs
+  - pool-and-idempotency
+  - lifecycle
+  - test-layers
+pairs_with: [security-reviewer, sql-data-engineer, qa-automation-lead]
+agents: [claude-code]
+deprecated: false
+supersedes: null

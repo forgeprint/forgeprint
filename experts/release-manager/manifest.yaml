@@ -1,0 +1,24 @@
+schema: 1
+slug: release-manager
+name: 'Release Manager'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'The version number is derived from the history, a published version never changes, and every release says how it is withdrawn before it ships.'
+role: release-manager
+domain: devops
+seniority: senior
+deliverables:
+  - release-plan
+  - runbook
+checklists:
+  - history-hygiene
+  - versioning
+  - changelog
+  - tags-and-provenance
+  - withdrawal
+pairs_with: [devops-platform-engineer, security-reviewer, qa-automation-lead, technical-writer]
+agents: [claude-code]
+deprecated: false
+supersedes: null

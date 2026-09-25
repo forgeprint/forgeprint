@@ -2,43 +2,150 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://forgeprint.github.io/forgeprint/</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/catalog.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/ai-chat-web-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/angular-app.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/astro-content-site.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/bevy-game.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/blazor-web-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/browser-extension.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/dbt-duckdb-pipeline.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/django-web-app.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/dotnet-mcp-server.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/dotnet-multitenant-saas-api.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/dotnet-web-api.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/expo-mobile-app.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/fastapi-service.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/flask-api.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/go-cli.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/go-http-service.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/godot-game.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/langgraph-agent.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/laravel-web-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/nestjs-api.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/nextjs-fullstack-app.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/node-cli.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/nuxt-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/phaser-web-game.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/python-background-worker.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/python-cli.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/python-library.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/python-mcp-server.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/python-rag-service.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/rust-axum-service.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/rust-cli.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/streamlit-data-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/sveltekit-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/tanstack-start-app.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/tauri-desktop-app.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/terraform-module.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/ts-http-service.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/ts-library.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/b/ts-mcp-server.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/b/vite-react-spa.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/accessibility-specialist.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/agent-designer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/android-mobile-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/api-designer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/appsec-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/business-analyst.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/code-reviewer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/coding-mentor.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/dart-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/debugger.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/devops-platform-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/documentation-architect.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/dotnet-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/flutter-mobile-engineer.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/frontend-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/go-backend-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/go-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/java-backend-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/java-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/kotlin-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/modernization-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/observability-engineer.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/performance-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/php-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/postgres-database-administrator.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/privacy-engineer.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/product-manager.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/python-backend-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/python-senior-architect.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/qa-automation-lead.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/react-native-mobile-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/release-manager.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/research-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/ruby-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/rust-senior-architect.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/security-reviewer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/site-reliability-engineer.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/sql-data-engineer.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/technical-program-manager.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/technical-seo-specialist.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/e/technical-writer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/test-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/typescript-backend-engineer.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/typescript-senior-architect.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/e/ux-researcher.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/c/api-hardening-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/appsec-audit-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/code-review-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/data-pipeline-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/docs-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/incident-response-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/legacy-modernization-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/llm-app-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/mobile-app-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/performance-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/product-discovery-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/release-crew.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/c/saas-launch-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/spec-driven-feature-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/tech-research-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/ui-build-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/c/web-launch-crew.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/agent-device.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/atlassian-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/aws-documentation-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/azure-devops-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/brave-search-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/clickhouse-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/cloudflare-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/context7-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/dbt-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/exa-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/fetch-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/figma-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/filesystem-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/firecrawl-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/git-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/github-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/gitlab-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/grafana-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/launchdarkly-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/linear-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/memory-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/mobile-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/mobilebuild-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/mongodb-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/netlify-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/next-devtools-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/notion-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/nx-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/perplexity-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/playwright-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/postgres-mcp.html</loc></url>
   <url><loc>https://forgeprint.github.io/forgeprint/i/sentry-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/sequential-thinking-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/serena-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/shopify-dev-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/storybook-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/stripe-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/supabase-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/svelte-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/tavily-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/terraform-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/time-mcp.html</loc></url>
+  <url><loc>https://forgeprint.github.io/forgeprint/i/vercel-mcp.html</loc></url>
 </urlset>
