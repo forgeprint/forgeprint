@@ -9,6 +9,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 ## Blueprints
 
 - [AI Chat Web App](https://forgeprint.github.io/forgeprint/b/ai-chat-web-app.html): Next.js chat on the AI SDK with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no API key needed to build or test.
+- [Android Compose App](https://forgeprint.github.io/forgeprint/b/android-compose-app.html): Kotlin and Jetpack Compose on AGP 9: a StateFlow ViewModel, a screen test on the JVM under Robolectric, lint as a gate and an unsigned R8 release, proved without a device or an account.
 - [Angular App](https://forgeprint.github.io/forgeprint/b/angular-app.html): Angular 22 single-page app: standalone and zoneless, signals for state, a lazy feature behind a functional guard, one HTTP interceptor, Vitest in jsdom, and a build per locale that fails over budget.
 - [Astro Content Site](https://forgeprint.github.io/forgeprint/b/astro-content-site.html): Static content site in Astro with Tailwind, a typed content collection, and tests that assert the built HTML carries the SEO and accessibility work.
 - [Bevy Game](https://forgeprint.github.io/forgeprint/b/bevy-game.html): Desktop 2D game in Rust on Bevy 0.19: the rules as ECS plugins in a crate with no window or renderer, tested headless one frame at a time, and a thin binary that draws them.

@@ -1,0 +1,19 @@
+schema: 1
+slug: android-compose-app
+name: 'Android Compose App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Kotlin and Jetpack Compose on AGP 9: a StateFlow ViewModel, a screen test on the JVM under Robolectric, lint as a gate and an unsigned R8 release, proved without a device or an account.'
+stack: [jetpack-compose]
+languages: [kotlin]
+platforms: [android]
+distribution: [free, paid, internal]
+project_type: mobile
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [java>=21, curl, sha256sum]
+deprecated: false
+supersedes: null
