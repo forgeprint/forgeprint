@@ -5560,6 +5560,41 @@
     },
     {
       "schema": 1,
+      "slug": "data-pipeline-crew",
+      "name": "Data Pipeline Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "ELT and dbt pipelines on PostgreSQL where the grain is written down, migrations and DDL cannot take a lock by surprise, and every load is tested by running it twice.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "sql-data-engineer",
+        "postgres-database-administrator",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "postgres-mcp",
+        "dbt-mcp"
+      ],
+      "for_what": "Building or changing ELT or dbt pipelines into PostgreSQL: the model and its grain, schema migrations that are safe under load, data-quality tests, and loads proved idempotent.",
+      "not_for": "Machine-learning modelling, dashboards, a warehouse that is not PostgreSQL, or a single query fix. One query is small, sequential work for the data engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "docs-crew",
       "name": "Docs Crew",
       "version": "1.0.0",
