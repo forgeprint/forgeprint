@@ -3165,6 +3165,45 @@
     },
     {
       "schema": 1,
+      "slug": "mongodb-mcp",
+      "name": "MongoDB MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Query collections, inspect schemas and indexes, and explain plans on a MongoDB deployment, in read-only mode.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/mongodb-js/mongodb-mcp-server",
+      "upstream_version": "3.0.4",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json mongodb '{\"command\":\"npx\",\"args\":[\"-y\",\"mongodb-mcp-server@3.0.4\",\"--readOnly\",\"--telemetry\",\"disabled\"],\"env\":{\"MDB_MCP_CONNECTION_STRING\":\"${MDB_MCP_CONNECTION_STRING}\"}}'",
+        "codex": "codex mcp add mongodb --env \"MDB_MCP_CONNECTION_STRING=$MDB_MCP_CONNECTION_STRING\" -- npx -y mongodb-mcp-server@3.0.4 --readOnly --telemetry disabled",
+        "gemini-cli": "gemini mcp add mongodb -e 'MDB_MCP_CONNECTION_STRING=$MDB_MCP_CONNECTION_STRING' npx -y mongodb-mcp-server@3.0.4 --readOnly --telemetry disabled"
+      },
+      "needs_secrets": [
+        "MDB_MCP_CONNECTION_STRING"
+      ],
+      "permissions_summary": "Reads every database and collection the connection string's user can read: documents, schemas, indexes, statistics and query plans; create, update and delete tools are not registered.",
+      "fits": [
+        "software",
+        "data"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "notion-mcp",
       "name": "Notion MCP",
       "version": "1.0.0",
