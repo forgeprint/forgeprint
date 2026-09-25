@@ -1,0 +1,26 @@
+schema: 1
+slug: nestjs-api
+name: 'NestJS API'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'NestJS 12 HTTP API on Postgres with a global JWT guard, validated input, RFC 9457 errors, TypeORM migrations, OpenAPI, end-to-end tests against a real database and a non-root container.'
+stack: [node, nestjs, postgres, docker]
+languages: [typescript]
+platforms: [linux, docker]
+distribution: [internal, saas]
+project_type: api
+audience: [intermediate]
+requirements: [auth, migrations, api-docs, testing, containerization, ci]
+agents: [claude-code]
+requires_tools: [node>=22.13, docker, curl]
+recommended_experts:
+  - security-reviewer
+  - qa-automation-lead
+recommended_crew: api-hardening-crew
+integrations:
+  - github-mcp
+  - context7-mcp
+deprecated: false
+supersedes: null
