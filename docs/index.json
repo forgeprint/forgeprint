@@ -5628,6 +5628,41 @@
         "README.md",
         "manifest.yaml"
       ]
+    },
+    {
+      "schema": 1,
+      "slug": "ui-build-crew",
+      "name": "UI Build Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A design turned into components somebody can measure: built to WCAG 2.2 AA and Core Web Vitals, audited by hand where a scanner stops, and gated end to end.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "frontend-engineer",
+        "accessibility-specialist",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "figma-mcp",
+        "playwright-mcp",
+        "chrome-devtools-mcp"
+      ],
+      "for_what": "Turning a design into accessible, tested web components or pages, held to WCAG 2.2 AA, Core Web Vitals and a byte budget, with an end-to-end gate on the journeys that matter.",
+      "not_for": "Backend or API work, brand identity or visual taste, or a tweak to one component in one file. Small, same-file changes go faster with the frontend engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
     }
   ],
   "integrations": [

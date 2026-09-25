@@ -100,6 +100,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [SaaS Launch Crew](https://forgeprint.github.io/forgeprint/c/saas-launch-crew.html): The four specialists a multi-tenant SaaS needs before its first customer, and the two integrations they all reach for.
 - [Spec-Driven Feature Crew](https://forgeprint.github.io/forgeprint/c/spec-driven-feature-crew.html): Four experts that take one feature from a spec somebody could fail, through a plan and test-first code, to a check the builder did not run.
 - [Tech Research Crew](https://forgeprint.github.io/forgeprint/c/tech-research-crew.html): A researcher who grades every source, a writer who turns it into a brief or an ADR, and a checker who runs the claims the decision rests on.
+- [UI Build Crew](https://forgeprint.github.io/forgeprint/c/ui-build-crew.html): A design turned into components somebody can measure: built to WCAG 2.2 AA and Core Web Vitals, audited by hand where a scanner stops, and gated end to end.
 
 ## Integrations
 
