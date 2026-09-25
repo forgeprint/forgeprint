@@ -5526,6 +5526,42 @@
     },
     {
       "schema": 1,
+      "slug": "incident-response-crew",
+      "name": "Incident Response Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An incident run to a written end: mitigate first, find the signal, prove the root cause with a reproduction, and close on a regression test and a blameless postmortem.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "site-reliability-engineer",
+        "observability-engineer",
+        "debugger",
+        "test-engineer"
+      ],
+      "integrations": [
+        "sentry-mcp",
+        "github-mcp",
+        "grafana-mcp"
+      ],
+      "for_what": "A production incident with user impact: triage and mitigation against the SLO, the signal that shows what happened, a reproduced root cause, a fix proven by a test that failed before it, and a blameless postmortem with owned actions.",
+      "not_for": "A bug found in development with no production impact, capacity planning, or a one-file fix whose cause is already known. Those are sequential jobs for the debugger alone; four experts would only relay it.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "saas-launch-crew",
       "name": "SaaS Launch Crew",
       "version": "1.0.0",
