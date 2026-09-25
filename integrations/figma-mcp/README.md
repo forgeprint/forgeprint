@@ -24,7 +24,7 @@ Reads the Figma files the access token can reach, through Figma's API.
 **claude-code**
 
 ```bash
-claude mcp add-json figma '{"command":"npx","args":["-y","figma-developer-mcp@0.13.2","--stdio"],"env":{"FIGMA_API_KEY":"$FIGMA_API_KEY"}}'
+claude mcp add-json figma '{"command":"npx","args":["-y","figma-developer-mcp@0.13.2","--stdio"],"env":{"FIGMA_API_KEY":"${FIGMA_API_KEY}"}}'
 ```
 
 **codex**
@@ -33,10 +33,16 @@ claude mcp add-json figma '{"command":"npx","args":["-y","figma-developer-mcp@0.
 codex mcp add figma --env FIGMA_API_KEY=$FIGMA_API_KEY -- npx -y figma-developer-mcp@0.13.2 --stdio
 ```
 
+`codex mcp add --env` stores the value the shell expanded, so the key is
+written in plain text to `~/.codex/config.toml`. To keep only its name there,
+add the server by hand with `env_vars = ["FIGMA_API_KEY"]` instead of
+`env`: Codex then forwards the variable from your environment when it starts
+the server.
+
 **gemini-cli**
 
 ```bash
-gemini mcp add figma -e FIGMA_API_KEY=$FIGMA_API_KEY npx -y figma-developer-mcp@0.13.2 --stdio
+gemini mcp add figma -e 'FIGMA_API_KEY=${FIGMA_API_KEY}' npx -y figma-developer-mcp@0.13.2 --stdio
 ```
 
 Only the agents whose command syntax has been verified are listed. An agent
