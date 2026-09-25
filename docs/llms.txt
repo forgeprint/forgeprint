@@ -67,6 +67,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [AWS Documentation MCP Server](https://forgeprint.github.io/forgeprint/i/aws-documentation-mcp.html): Search, read and get recommendations from the public AWS documentation, with no AWS credentials.
 - [Azure DevOps MCP Server](https://forgeprint.github.io/forgeprint/i/azure-devops-mcp.html): Work items, projects and teams from one Azure DevOps organisation, with the tool domains narrowed to what the work needs.
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
+- [ClickHouse MCP Server](https://forgeprint.github.io/forgeprint/i/clickhouse-mcp.html): List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
 - [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
 - [Fetch MCP](https://forgeprint.github.io/forgeprint/i/fetch-mcp.html): Fetch a URL and hand the agent its content as Markdown, including addresses on your own network.

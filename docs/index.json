@@ -3515,6 +3515,47 @@
     },
     {
       "schema": 1,
+      "slug": "clickhouse-mcp",
+      "name": "ClickHouse MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/ClickHouse/mcp-clickhouse",
+      "upstream_version": "0.7.0",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add-json clickhouse '{\"command\":\"uvx\",\"args\":[\"mcp-clickhouse==0.7.0\"],\"env\":{\"CLICKHOUSE_HOST\":\"${CLICKHOUSE_HOST}\",\"CLICKHOUSE_USER\":\"${CLICKHOUSE_USER}\",\"CLICKHOUSE_PASSWORD\":\"${CLICKHOUSE_PASSWORD}\",\"CLICKHOUSE_ALLOW_WRITE_ACCESS\":\"false\"}}'",
+        "codex": "codex mcp add clickhouse --env \"CLICKHOUSE_HOST=$CLICKHOUSE_HOST\" --env \"CLICKHOUSE_USER=$CLICKHOUSE_USER\" --env \"CLICKHOUSE_PASSWORD=$CLICKHOUSE_PASSWORD\" --env \"CLICKHOUSE_ALLOW_WRITE_ACCESS=false\" -- uvx mcp-clickhouse==0.7.0",
+        "gemini-cli": "gemini mcp add clickhouse -e 'CLICKHOUSE_HOST=$CLICKHOUSE_HOST' -e 'CLICKHOUSE_USER=$CLICKHOUSE_USER' -e 'CLICKHOUSE_PASSWORD=$CLICKHOUSE_PASSWORD' -e 'CLICKHOUSE_ALLOW_WRITE_ACCESS=false' uvx mcp-clickhouse==0.7.0"
+      },
+      "needs_secrets": [
+        "CLICKHOUSE_HOST",
+        "CLICKHOUSE_USER",
+        "CLICKHOUSE_PASSWORD"
+      ],
+      "permissions_summary": "Reads every database and table the ClickHouse user can read and runs SQL with the readonly=1 setting; it writes only if CLICKHOUSE_ALLOW_WRITE_ACCESS is set to true, which these commands do not.",
+      "fits": [
+        "data",
+        "software"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "context7-mcp",
       "name": "Context7",
       "version": "1.0.0",
