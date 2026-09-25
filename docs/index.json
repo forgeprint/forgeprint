@@ -2245,6 +2245,65 @@
     },
     {
       "schema": 1,
+      "slug": "go-backend-engineer",
+      "name": "Go Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Go services where a context reaches every call, every zero-valued timeout is replaced, errors wrap with %w, and no test ends with a goroutine still running.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "go"
+      ],
+      "stack": [
+        "go",
+        "gin"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "context-propagation",
+        "server-and-client-timeouts",
+        "error-wrapping",
+        "sql-pool",
+        "goroutine-lifecycle",
+        "table-tests"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/context-propagation.md",
+        "checklists/error-wrapping.md",
+        "checklists/goroutine-lifecycle.md",
+        "checklists/server-and-client-timeouts.md",
+        "checklists/sql-pool.md",
+        "checklists/table-tests.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "go-senior-architect",
       "name": "Go Senior Software Architect",
       "version": "1.0.0",
