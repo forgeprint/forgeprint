@@ -2505,6 +2505,44 @@
   "integrations": [
     {
       "schema": 1,
+      "slug": "atlassian-mcp",
+      "name": "Atlassian Rovo MCP Server",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Jira, Confluence, Compass and the rest of Atlassian Cloud through Atlassian's hosted server, as the signed-in user.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/atlassian/atlassian-mcp-server",
+      "upstream_version": "v2",
+      "verified_on": "2026-09-24",
+      "install": {
+        "claude-code": "claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp",
+        "codex": "codex mcp add atlassian --url https://mcp.atlassian.com/v2/mcp",
+        "gemini-cli": "gemini mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp"
+      },
+      "permissions_summary": "Reads and writes Jira, Confluence, Compass, Bitbucket and other Atlassian Cloud data with the signed-in user's own permissions: it creates and edits work items and pages, not only reads them.",
+      "fits": [
+        "software",
+        "product",
+        "docs",
+        "operations"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "chrome-devtools-mcp",
       "name": "Chrome DevTools MCP",
       "version": "1.1.0",

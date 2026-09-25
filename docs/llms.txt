@@ -48,6 +48,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 ## Integrations
 
+- [Atlassian Rovo MCP Server](https://forgeprint.github.io/forgeprint/i/atlassian-mcp.html): Jira, Confluence, Compass and the rest of Atlassian Cloud through Atlassian's hosted server, as the signed-in user.
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
 - [Exa Search MCP](https://forgeprint.github.io/forgeprint/i/exa-mcp.html): Web search built for agents: results as content rather than as a list of links to fetch.
