@@ -1,0 +1,21 @@
+schema: 1
+slug: azure-devops-mcp
+name: 'Azure DevOps MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Work items, projects and teams from one Azure DevOps organisation, with the tool domains narrowed to what the work needs.'
+kind: mcp
+upstream: https://github.com/microsoft/azure-devops-mcp
+upstream_version: '2.10.0'
+verified_on: 2026-09-24
+install:
+  claude-code: 'claude mcp add --transport stdio azure-devops -- npx -y @azure-devops/mcp@2.10.0 "<your-organization>" -d core work-items'
+  codex: 'codex mcp add azure-devops -- npx -y @azure-devops/mcp@2.10.0 "<your-organization>" -d core work-items'
+  gemini-cli: 'gemini mcp add azure-devops npx -- -y @azure-devops/mcp@2.10.0 "<your-organization>" -d core work-items'
+permissions_summary: 'Signs in as you and acts with your Azure DevOps permissions in one organisation; with the core and work-items domains it reads projects and work items and can create, update, link and comment on work items.'
+fits: [software, devops, product]
+agents: [claude-code]
+deprecated: false
+supersedes: null
