@@ -5668,6 +5668,41 @@
     },
     {
       "schema": 1,
+      "slug": "release-crew",
+      "name": "Release Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A release cut the same way every time: a version derived from history, a gate whose red means stop, a rollout with a rollback somebody has run, and a watch on the error budget afterwards.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "release-manager",
+        "devops-platform-engineer",
+        "site-reliability-engineer",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "github-mcp",
+        "sentry-mcp"
+      ],
+      "for_what": "Cutting a release of a running service: version and changelog derived from the history, the release gate, a staged rollout with tested rollback criteria, and post-deploy checks against the SLO.",
+      "not_for": "Feature design, building infrastructure from nothing, or a routine patch release one agent can follow the release-manager checklist through in order. Sequential, small work is worse with more agents, not better.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "saas-launch-crew",
       "name": "SaaS Launch Crew",
       "version": "1.0.0",
