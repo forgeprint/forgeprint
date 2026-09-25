@@ -2182,6 +2182,70 @@
       "i18n": []
     },
     {
+      "slug": "tanstack-start-app",
+      "name": "TanStack Start App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "TanStack Start on Vite: file-based routes with validated params, server functions, a sealed session cookie behind a beforeLoad guard, and requests against the built Node server as proof.",
+      "stack": [
+        "react",
+        "vite",
+        "tanstack",
+        "tailwind"
+      ],
+      "languages": [
+        "typescript"
+      ],
+      "platforms": [
+        "web",
+        "linux"
+      ],
+      "distribution": [
+        "saas",
+        "internal",
+        "open-source"
+      ],
+      "project_type": "web",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "node>=22.12.0",
+        "npm>=10",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "terraform-module",
       "name": "Terraform Module",
       "version": "1.1.0",
