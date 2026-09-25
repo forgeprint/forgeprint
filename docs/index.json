@@ -475,6 +475,65 @@
       "i18n": []
     },
     {
+      "slug": "android-compose-app",
+      "name": "Android Compose App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Kotlin and Jetpack Compose on AGP 9: a StateFlow ViewModel, a screen test on the JVM under Robolectric, lint as a gate and an unsigned R8 release, proved without a device or an account.",
+      "stack": [
+        "jetpack-compose"
+      ],
+      "languages": [
+        "kotlin"
+      ],
+      "platforms": [
+        "android"
+      ],
+      "distribution": [
+        "free",
+        "paid",
+        "internal"
+      ],
+      "project_type": "mobile",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "java>=21",
+        "curl",
+        "sha256sum"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "angular-app",
       "name": "Angular App",
       "version": "1.0.0",

@@ -8,6 +8,7 @@
 
 # One line per blueprint, ordered by slug.
 /blueprints/ai-chat-web-app/ @aliosmanmho
+/blueprints/android-compose-app/ @aliosmanmho
 /blueprints/angular-app/ @aliosmanmho
 /blueprints/astro-content-site/ @aliosmanmho
 /blueprints/bevy-game/ @aliosmanmho
