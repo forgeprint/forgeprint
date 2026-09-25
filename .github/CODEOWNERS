@@ -10,6 +10,7 @@
 /blueprints/angular-app/ @aliosmanmho
 /blueprints/astro-content-site/ @aliosmanmho
 /blueprints/blazor-web-app/ @aliosmanmho
+/blueprints/browser-extension/ @aliosmanmho
 /blueprints/django-web-app/ @aliosmanmho
 /blueprints/dotnet-mcp-server/ @aliosmanmho
 /blueprints/dotnet-multitenant-saas-api/ @aliosmanmho
