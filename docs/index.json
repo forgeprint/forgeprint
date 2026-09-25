@@ -1608,6 +1608,75 @@
       "i18n": []
     },
     {
+      "slug": "rust-axum-service",
+      "name": "Rust Axum Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "HTTP service in Rust on axum and sqlx with Postgres, embedded migrations, deny-by-default JWT auth, per-caller data, problem documents, and tests against a real database.",
+      "stack": [
+        "rust",
+        "axum",
+        "sqlx",
+        "postgres",
+        "docker"
+      ],
+      "languages": [
+        "rust"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "open-source",
+        "internal",
+        "saas"
+      ],
+      "project_type": "api",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "auth",
+        "migrations",
+        "containerization",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "cargo>=1.94",
+        "rustfmt",
+        "cargo-clippy",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "rust-cli",
       "name": "Rust CLI",
       "version": "1.0.0",
