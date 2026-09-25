@@ -421,6 +421,10 @@ function hostsIn(text: string): string[] {
     // that matter for those commands — no privilege, no pipe from a download —
     // are checked on the command itself.
     if (authority.includes('$')) continue;
+    // An XML namespace is a name that happens to look like a URL: every
+    // Android manifest must declare `xmlns:android="http://schemas.android.com/..."`
+    // exactly, and nothing is fetched from it.
+    if (/xmlns(?::[\w.-]+)?\s*=\s*["']$/.test(text.slice(0, match.index))) continue;
     const authorityOnly = authority.split('@').pop() ?? authority;
     // Backslashes come from regexes written inside a command; the port may be a
     // pattern rather than a number, so everything after the colon goes.

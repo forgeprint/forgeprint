@@ -198,6 +198,27 @@ describe('lintSetup', () => {
     assert.ok(!rules(source).includes('registry-only'));
   });
 
+  it('allows an XML namespace, which names a schema and fetches nothing', () => {
+    // Every Android manifest must declare this namespace exactly.
+    const source = [
+      '1. Write the manifest:',
+      '',
+      '   ```xml',
+      '   <manifest xmlns:android="http://schemas.android.com/apk/res/android" />',
+      '   ```',
+      '',
+      '   Verify: `test -f AndroidManifest.xml`',
+      '',
+    ].join('\n');
+    assert.ok(!rules(source).includes('registry-only'));
+  });
+
+  it('still rejects the same host outside a namespace declaration', () => {
+    const source =
+      '1. Fetch it: `curl -o s.xsd http://schemas.android.com/apk/res/android`\n   Verify: `test -f s.xsd`\n';
+    assert.ok(rules(source).includes('registry-only'));
+  });
+
   it('rejects a host that is not a package registry', () => {
     const source =
       '1. Fetch it: `curl -o tool.zip https://files.example.com/tool.zip`\n   Verify: `test -f tool.zip`\n';
