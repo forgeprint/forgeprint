@@ -88,6 +88,26 @@ describe('resolveSetupOptions', () => {
     assert.doesNotMatch(markdown, /\n\n\n/);
   });
 
+  it('keeps the blank lines inside a code block, which are the file', () => {
+    // ruff and PEP 8 want two blank lines between top-level definitions; a
+    // file written by a recipe step must come out as it was written.
+    const recipe = [
+      '1. Write it:',
+      '',
+      '   ```python',
+      '   import os',
+      '',
+      '',
+      '   def main():',
+      '       pass',
+      '   ```',
+      '',
+      '   Verify: `python app.py`',
+    ].join('\n');
+    const { markdown } = resolveSetupOptions(recipe, { database: 'postgres' });
+    assert.equal(markdown, recipe);
+  });
+
   it('is a no-op on a recipe with no guards', () => {
     const plain = '1. One: `a`\n   Verify: `b`';
     assert.equal(resolveSetupOptions(plain, { database: 'postgres' }).markdown, plain);

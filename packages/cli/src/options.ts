@@ -123,8 +123,14 @@ export function resolveSetupOptions(
 function collapseBlankRuns(lines: readonly string[]): string[] {
   const result: string[] = [];
   let blanks = 0;
+  let inFence = false;
   for (const line of lines) {
-    if (line.trim().length === 0) {
+    // Inside a code block the blank lines are the file's own: PEP 8 wants two
+    // between top-level definitions, and a recipe writes the file verbatim.
+    if (/^\s*(?:```|~~~)/.test(line)) inFence = !inFence;
+    if (inFence) {
+      blanks = 0;
+    } else if (line.trim().length === 0) {
       blanks += 1;
       if (blanks > 1) continue;
     } else {
