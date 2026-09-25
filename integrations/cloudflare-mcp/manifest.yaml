@@ -1,0 +1,21 @@
+schema: 1
+slug: cloudflare-mcp
+name: 'Cloudflare MCP Server'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "The whole Cloudflare API and Cloudflare's documentation through Cloudflare's hosted Code Mode server: the agent writes JavaScript that Cloudflare runs against your account."
+kind: mcp
+upstream: https://github.com/cloudflare/mcp
+upstream_version: 'hosted'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add --transport http cloudflare-api https://mcp.cloudflare.com/mcp'
+  codex: 'codex mcp add cloudflare-api --url https://mcp.cloudflare.com/mcp'
+  gemini-cli: 'gemini mcp add --transport http cloudflare-api https://mcp.cloudflare.com/mcp'
+permissions_summary: 'Calls any Cloudflare API endpoint the permissions you grant allow, through code it runs on Cloudflare: Workers, DNS records, R2, KV, D1, firewall and Access settings, read and write, including deletes.'
+fits: [software, devops, security]
+agents: [claude-code]
+deprecated: false
+supersedes: null
