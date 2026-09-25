@@ -1,0 +1,19 @@
+schema: 1
+slug: tauri-desktop-app
+name: 'Tauri Desktop App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Tauri 2 desktop app: logic in a plain Rust crate tested without a webview, one IPC command behind a least-privilege capability, a strict CSP, and a Vite + TypeScript frontend tested with Vitest.'
+stack: [tauri, rust, vite]
+languages: [rust, typescript]
+platforms: [windows, linux, macos]
+distribution: [free, open-source, internal]
+project_type: desktop
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [cargo>=1.85, rustfmt, cargo-clippy, node>=22.12, npm]
+deprecated: false
+supersedes: null
