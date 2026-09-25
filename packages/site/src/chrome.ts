@@ -62,6 +62,8 @@ export const CHROME = {
   rolesWrite: 'write one',
   rolesRest: 'and it appears here instead.',
   pinned: 'pinned {version}',
+  hosted: 'hosted, checked {date}',
+  hostedCannotPin: 'Hosted by the vendor: it cannot be pinned, and can change at any time.',
   needsSecret: 'needs 1 secret',
   needsSecrets: 'needs {n} secrets',
   agentVerification: 'Agent verification',

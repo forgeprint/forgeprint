@@ -202,3 +202,48 @@ describe('filtering crews', () => {
     assert.ok(card.includes('sample-mcp'), card);
   });
 });
+
+describe('the catalog tabs, as a keyboard user meets them', () => {
+  const html = pageAt('catalog.html');
+
+  it('ties each tab to its panel, both ways', () => {
+    assert.match(html, /role="tab" id="tab-experts"[^>]*aria-controls="experts"/);
+    assert.match(
+      html,
+      /id="experts" data-kind="expert" role="tabpanel" aria-labelledby="tab-experts"/,
+    );
+  });
+
+  it('keeps only the selected tab in the tab order', () => {
+    assert.match(html, /aria-selected="true" tabindex="0"/);
+    assert.match(html, /aria-selected="false" tabindex="-1"/);
+  });
+
+  it('moves between tabs with the arrow keys, Home and End', () => {
+    assert.match(html, /ArrowRight/);
+    assert.match(html, /ArrowLeft/);
+    assert.match(html, /'Home'/);
+    assert.match(html, /'End'/);
+  });
+});
+
+describe('a hosted integration', () => {
+  const hosted = {
+    ...INDEX,
+    integrations: [
+      { ...(INDEX.integrations?.[0] ?? {}), slug: 'sample-hosted', upstream_version: 'hosted' },
+    ],
+  } as unknown as IndexWithUnits;
+  const pages = renderSite(hosted);
+  const card = pages.find((page) => page.path === 'catalog.html')?.html ?? '';
+  const detail = pages.find((page) => page.path === 'i/sample-hosted.html')?.html ?? '';
+
+  it('says hosted and when it was checked, not "pinned hosted"', () => {
+    assert.doesNotMatch(card, /pinned hosted/);
+    assert.match(card, /hosted, checked \d{4}-\d{2}-\d{2}/);
+  });
+
+  it('says on its page that a hosted server cannot be pinned', () => {
+    assert.match(detail, /cannot be pinned/);
+  });
+});

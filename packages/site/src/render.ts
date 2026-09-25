@@ -110,7 +110,7 @@ ${tabs(counts)}
         ${
           empty
             ? `<p class="muted">${t('catalogEmpty')}</p>`
-            : `<div class="cards" id="blueprints" data-kind="blueprint">
+            : `<div class="cards" id="blueprints" data-kind="blueprint" role="tabpanel" aria-labelledby="tab-blueprints" tabindex="0">
 ${cards}
 </div>`
         }
@@ -162,10 +162,31 @@ ${panel('integration', integrationCards(units))}
       function select(kind) {
         const tab = tabs.find((candidate) => candidate.dataset.kind === kind);
         if (!tab) return false;
-        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        for (const other of tabs) {
+          other.setAttribute('aria-selected', String(other === tab));
+          // Roving tabindex: only the selected tab is in the tab order, and
+          // the arrow keys move between the others (WAI-ARIA APG, Tabs).
+          other.tabIndex = other === tab ? 0 : -1;
+        }
         apply();
         return true;
       }
+
+      const KEYS = { ArrowRight: 1, ArrowLeft: -1 };
+      tabs.forEach((tab, position) => {
+        tab.addEventListener('keydown', (event) => {
+          let next = -1;
+          if (event.key in KEYS) next = (position + KEYS[event.key] + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          if (next < 0) return;
+          event.preventDefault();
+          const target = tabs[next];
+          select(target.dataset.kind);
+          history.replaceState(null, '', '#' + target.dataset.kind + 's');
+          target.focus();
+        });
+      });
 
       // The address names the tab (catalog.html#experts), so a unit page can
       // link back to where its reader came from, and a tab can be shared.
@@ -520,14 +541,14 @@ function tabs(counts: Record<string, number>): string {
     .filter(([, count]) => count > 0)
     .map(
       ([kind, count], at) =>
-        `            <button type="button" role="tab" data-kind="${escape(kind)}" aria-selected="${at === 0 ? 'true' : 'false'}">${kind in labels ? t(labels[kind as keyof typeof labels]) : escape(kind)} <span class="count">${String(count)}</span></button>`,
+        `            <button type="button" role="tab" id="tab-${escape(kind)}s" aria-controls="${escape(kind)}s" data-kind="${escape(kind)}" aria-selected="${at === 0 ? 'true' : 'false'}" tabindex="${at === 0 ? '0' : '-1'}">${kind in labels ? t(labels[kind as keyof typeof labels]) : escape(kind)} <span class="count">${String(count)}</span></button>`,
     )
     .join('\n');
 }
 
 function panel(kind: string, cards: string): string {
   if (cards.trim() === '') return '';
-  return `        <div class="cards" id="${escape(kind)}s" data-kind="${escape(kind)}" hidden>
+  return `        <div class="cards" id="${escape(kind)}s" data-kind="${escape(kind)}" role="tabpanel" aria-labelledby="tab-${escape(kind)}s" tabindex="0" hidden>
 ${cards}
         </div>`;
 }

@@ -48,14 +48,14 @@
       <section class="catalog">
         <div class="catalog-head">
           <div class="tabs" role="tablist" aria-label="What to browse" data-i18n-aria-label="site.tabsLabel">
-            <button type="button" role="tab" data-kind="blueprint" aria-selected="true"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">40</span></button>
-            <button type="button" role="tab" data-kind="expert" aria-selected="false"><span data-i18n="site.tabExpert">Experts</span> <span class="count">45</span></button>
-            <button type="button" role="tab" data-kind="crew" aria-selected="false"><span data-i18n="site.tabCrew">Crews</span> <span class="count">17</span></button>
-            <button type="button" role="tab" data-kind="integration" aria-selected="false"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">44</span></button>
+            <button type="button" role="tab" id="tab-blueprints" aria-controls="blueprints" data-kind="blueprint" aria-selected="true" tabindex="0"><span data-i18n="site.tabBlueprint">Blueprints</span> <span class="count">40</span></button>
+            <button type="button" role="tab" id="tab-experts" aria-controls="experts" data-kind="expert" aria-selected="false" tabindex="-1"><span data-i18n="site.tabExpert">Experts</span> <span class="count">45</span></button>
+            <button type="button" role="tab" id="tab-crews" aria-controls="crews" data-kind="crew" aria-selected="false" tabindex="-1"><span data-i18n="site.tabCrew">Crews</span> <span class="count">17</span></button>
+            <button type="button" role="tab" id="tab-integrations" aria-controls="integrations" data-kind="integration" aria-selected="false" tabindex="-1"><span data-i18n="site.tabIntegration">Integrations</span> <span class="count">44</span></button>
           </div>
           <input id="filter" type="search" placeholder="Filter by language, stack, role…" data-i18n-placeholder="site.filterPlaceholder" autocomplete="off" aria-label="Filter the catalog" data-i18n-aria-label="site.filterLabel" />
         </div>
-        <div class="cards" id="blueprints" data-kind="blueprint">
+        <div class="cards" id="blueprints" data-kind="blueprint" role="tabpanel" aria-labelledby="tab-blueprints" tabindex="0">
         <article class="card" data-terms="ai-chat-web-app ai chat web app next.js chat on the ai sdk with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no api key needed to build or test. agent typescript nextjs react ai-sdk tailwind realtime testing ci web linux open-source saas internal">
           <h3><a href="b/ai-chat-web-app.html">AI Chat Web App</a> </h3>
           <p lang="en">Next.js chat on the AI SDK with one streaming route, bounded input, the key and system prompt kept server-side, and tests against a mock model — no API key needed to build or test.</p>
@@ -257,7 +257,7 @@
           <p class="tags"><span>TypeScript</span><span>Web application</span></p>
         </article>
 </div>
-        <div class="cards" id="experts" data-kind="expert" hidden>
+        <div class="cards" id="experts" data-kind="expert" role="tabpanel" aria-labelledby="tab-experts" tabindex="0" hidden>
         <article class="card" data-terms="accessibility-specialist accessibility specialist audit against wcag 2.2 aa: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction. accessibility-specialist quality senior accessibility-audit test-suite compliance-checklist code-review">
           <h3><a href="e/accessibility-specialist.html">Accessibility Specialist</a> </h3>
           <p lang="en">Audit against WCAG 2.2 AA: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction.</p>
@@ -529,7 +529,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="crews" data-kind="crew" hidden>
+        <div class="cards" id="crews" data-kind="crew" role="tabpanel" aria-labelledby="tab-crews" tabindex="0" hidden>
         <article class="card" data-terms="api-hardening-crew api hardening crew three specialists for an api that already has users, where the job is finding what is wrong rather than deciding what to build. hardening an api that is already in production: finding the authorization gaps, making the suite worth gating on, and turning a rollback from a belief into a tested path. security-reviewer qa-automation-lead devops-platform-engineer github-mcp playwright-mcp">
           <h3><a href="c/api-hardening-crew.html">API Hardening Crew</a> </h3>
           <p class="byline-small">Assembled by @aliosmanmho</p>
@@ -650,7 +650,7 @@
           <p class="agents" aria-label="Agent verification" data-i18n-aria-label="site.agentVerification"><span class="agent tested" title="Tested with Claude Code" data-i18n-title="site.testedWith" data-arg-agent="Claude Code"><span aria-hidden="true">✓</span> Claude Code</span><span class="agent" title="Codex CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Codex CLI"><span aria-hidden="true">·</span> Codex CLI</span><span class="agent" title="GitHub Copilot CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="GitHub Copilot CLI"><span aria-hidden="true">·</span> GitHub Copilot CLI</span><span class="agent" title="Cursor: not tested" data-i18n-title="site.notTested" data-arg-agent="Cursor"><span aria-hidden="true">·</span> Cursor</span><span class="agent" title="Gemini CLI: not tested" data-i18n-title="site.notTested" data-arg-agent="Gemini CLI"><span aria-hidden="true">·</span> Gemini CLI</span><span class="agent" title="Windsurf: not tested" data-i18n-title="site.notTested" data-arg-agent="Windsurf"><span aria-hidden="true">·</span> Windsurf</span><span class="agent" title="Cline: not tested" data-i18n-title="site.notTested" data-arg-agent="Cline"><span aria-hidden="true">·</span> Cline</span><span class="agent" title="OpenCode: not tested" data-i18n-title="site.notTested" data-arg-agent="OpenCode"><span aria-hidden="true">·</span> OpenCode</span><span class="agent" title="Kiro: not tested" data-i18n-title="site.notTested" data-arg-agent="Kiro"><span aria-hidden="true">·</span> Kiro</span></p>
         </article>
         </div>
-        <div class="cards" id="integrations" data-kind="integration" hidden>
+        <div class="cards" id="integrations" data-kind="integration" role="tabpanel" aria-labelledby="tab-integrations" tabindex="0" hidden>
         <article class="card" data-terms="agent-device agent-device callstack's app-automation server: drive and verify ios, android, tv, desktop and web apps from an agent, and keep screenshots, logs and traces. needs xcode (macos) or the android sdk. mcp software quality">
           <h3><a href="i/agent-device.html">agent-device</a> <span class="tier">mcp</span></h3>
           <p lang="en">Callstack's app-automation server: drive and verify iOS, Android, TV, desktop and web apps from an agent, and keep screenshots, logs and traces. Needs Xcode (macOS) or the Android SDK.</p>
@@ -689,7 +689,7 @@
         <article class="card" data-terms="cloudflare-mcp cloudflare mcp server the whole cloudflare api and cloudflare's documentation through cloudflare's hosted code mode server: the agent writes javascript that cloudflare runs against your account. mcp software devops security">
           <h3><a href="i/cloudflare-mcp.html">Cloudflare MCP Server</a> <span class="tier">mcp</span></h3>
           <p lang="en">The whole Cloudflare API and Cloudflare's documentation through Cloudflare's hosted Code Mode server: the agent writes JavaScript that Cloudflare runs against your account.</p>
-          <p class="tags"><span data-i18n="site.pinned" data-arg-version="hosted">pinned hosted</span><span>software</span><span>devops</span><span>security</span></p>
+          <p class="tags"><span data-i18n="site.hosted" data-arg-date="2026-09-25">hosted, checked 2026-09-25</span><span>software</span><span>devops</span><span>security</span></p>
         </article>
         <article class="card" data-terms="context7-mcp context7 library documentation at the version in use, fetched on demand instead of recalled from training. mcp software docs">
           <h3><a href="i/context7-mcp.html">Context7</a> <span class="tier">mcp</span></h3>
@@ -754,7 +754,7 @@
         <article class="card" data-terms="linear-mcp linear mcp linear issues, projects and comments through linear's hosted server, read-only unless you choose the full endpoint. mcp software product">
           <h3><a href="i/linear-mcp.html">Linear MCP</a> <span class="tier">mcp</span></h3>
           <p lang="en">Linear issues, projects and comments through Linear's hosted server, read-only unless you choose the full endpoint.</p>
-          <p class="tags"><span data-i18n="site.pinned" data-arg-version="hosted">pinned hosted</span><span>software</span><span>product</span></p>
+          <p class="tags"><span data-i18n="site.hosted" data-arg-date="2026-09-24">hosted, checked 2026-09-24</span><span>software</span><span>product</span></p>
         </article>
         <article class="card" data-terms="memory-mcp memory mcp a local knowledge graph an agent writes to and reads back across sessions. mcp software research operations">
           <h3><a href="i/memory-mcp.html">Memory MCP</a> <span class="tier">mcp</span></h3>
@@ -839,12 +839,12 @@
         <article class="card" data-terms="stripe-mcp stripe mcp the stripe api and stripe's documentation through stripe's hosted server, for the accounts and sandboxes you authorise. mcp software finance operations">
           <h3><a href="i/stripe-mcp.html">Stripe MCP</a> <span class="tier">mcp</span></h3>
           <p lang="en">The Stripe API and Stripe's documentation through Stripe's hosted server, for the accounts and sandboxes you authorise.</p>
-          <p class="tags"><span data-i18n="site.pinned" data-arg-version="hosted">pinned hosted</span><span>software</span><span>finance</span><span>operations</span></p>
+          <p class="tags"><span data-i18n="site.hosted" data-arg-date="2026-09-24">hosted, checked 2026-09-24</span><span>software</span><span>finance</span><span>operations</span></p>
         </article>
         <article class="card" data-terms="supabase-mcp supabase mcp server query one supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only. mcp software data">
           <h3><a href="i/supabase-mcp.html">Supabase MCP Server</a> <span class="tier">mcp</span></h3>
           <p lang="en">Query one Supabase project's schema, data, logs and docs from an agent, scoped to that project and read-only.</p>
-          <p class="tags"><span data-i18n="site.pinned" data-arg-version="hosted">pinned hosted</span><span>software</span><span>data</span></p>
+          <p class="tags"><span data-i18n="site.hosted" data-arg-date="2026-09-24">hosted, checked 2026-09-24</span><span>software</span><span>data</span></p>
         </article>
         <article class="card" data-terms="svelte-mcp svelte mcp current svelte 5 and sveltekit documentation, and a static checker that tells the agent what is wrong with the component it just wrote. mcp software">
           <h3><a href="i/svelte-mcp.html">Svelte MCP</a> <span class="tier">mcp</span></h3>
@@ -869,7 +869,7 @@
         <article class="card" data-terms="vercel-mcp vercel mcp projects, deployments, build and runtime logs and web analytics through vercel's hosted server (public beta), as the signed-in user; it can also deploy and make purchases. mcp software devops">
           <h3><a href="i/vercel-mcp.html">Vercel MCP</a> <span class="tier">mcp</span></h3>
           <p lang="en">Projects, deployments, build and runtime logs and Web Analytics through Vercel's hosted server (public beta), as the signed-in user; it can also deploy and make purchases.</p>
-          <p class="tags"><span data-i18n="site.pinned" data-arg-version="hosted">pinned hosted</span><span>software</span><span>devops</span></p>
+          <p class="tags"><span data-i18n="site.hosted" data-arg-date="2026-09-25">hosted, checked 2026-09-25</span><span>software</span><span>devops</span></p>
         </article>
         </div>
         <p id="nothing" class="muted" hidden><span data-i18n="site.nothingMatches">Nothing matches that.</span></p>
@@ -941,10 +941,31 @@ const filter = document.getElementById('filter');
       function select(kind) {
         const tab = tabs.find((candidate) => candidate.dataset.kind === kind);
         if (!tab) return false;
-        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        for (const other of tabs) {
+          other.setAttribute('aria-selected', String(other === tab));
+          // Roving tabindex: only the selected tab is in the tab order, and
+          // the arrow keys move between the others (WAI-ARIA APG, Tabs).
+          other.tabIndex = other === tab ? 0 : -1;
+        }
         apply();
         return true;
       }
+
+      const KEYS = { ArrowRight: 1, ArrowLeft: -1 };
+      tabs.forEach((tab, position) => {
+        tab.addEventListener('keydown', (event) => {
+          let next = -1;
+          if (event.key in KEYS) next = (position + KEYS[event.key] + tabs.length) % tabs.length;
+          else if (event.key === 'Home') next = 0;
+          else if (event.key === 'End') next = tabs.length - 1;
+          if (next < 0) return;
+          event.preventDefault();
+          const target = tabs[next];
+          select(target.dataset.kind);
+          history.replaceState(null, '', '#' + target.dataset.kind + 's');
+          target.focus();
+        });
+      });
 
       // The address names the tab (catalog.html#experts), so a unit page can
       // link back to where its reader came from, and a tab can be shared.
