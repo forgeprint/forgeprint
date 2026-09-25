@@ -2734,6 +2734,68 @@
     },
     {
       "schema": 1,
+      "slug": "typescript-backend-engineer",
+      "name": "TypeScript Senior Backend Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Node.js services in TypeScript where every input is parsed, every promise is awaited or handed off on purpose, and every outbound call carries a deadline.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "backend-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "typescript"
+      ],
+      "stack": [
+        "node",
+        "nestjs",
+        "hono",
+        "express",
+        "fastify"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "api-spec",
+        "runbook"
+      ],
+      "checklists": [
+        "boundary-validation",
+        "promise-discipline",
+        "errors-and-logs",
+        "pool-and-idempotency",
+        "lifecycle",
+        "test-layers"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/boundary-validation.md",
+        "checklists/errors-and-logs.md",
+        "checklists/lifecycle.md",
+        "checklists/pool-and-idempotency.md",
+        "checklists/promise-discipline.md",
+        "checklists/test-layers.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "typescript-senior-architect",
       "name": "TypeScript Senior Software Architect",
       "version": "1.0.0",
