@@ -2989,6 +2989,63 @@
     },
     {
       "schema": 1,
+      "slug": "php-senior-architect",
+      "name": "PHP Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Commit the lock, pin the platform, declare strict types everywhere, make the layer rules a failing Deptrac run, and keep Laravel at the edge of a domain it does not own.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "php"
+      ],
+      "stack": [
+        "laravel"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "c4-diagram",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "composer-discipline",
+        "layer-rules",
+        "type-strictness",
+        "laravel-edges",
+        "queue-boundaries"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "sql-data-engineer",
+        "devops-platform-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/composer-discipline.md",
+        "checklists/laravel-edges.md",
+        "checklists/layer-rules.md",
+        "checklists/queue-boundaries.md",
+        "checklists/type-strictness.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "postgres-database-administrator",
       "name": "PostgreSQL Database Administrator",
       "version": "1.0.0",
