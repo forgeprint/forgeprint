@@ -1988,6 +1988,53 @@
     },
     {
       "schema": 1,
+      "slug": "code-reviewer",
+      "name": "Code Reviewer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Read the whole diff against its stated intent, run it, and raise only findings that name an input and the wrong result it produces.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "code-reviewer",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "code-review",
+        "refactoring-plan"
+      ],
+      "checklists": [
+        "intent-and-scope",
+        "correctness",
+        "tests-in-the-change",
+        "maintainability",
+        "comments-and-verdict"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/comments-and-verdict.md",
+        "checklists/correctness.md",
+        "checklists/intent-and-scope.md",
+        "checklists/maintainability.md",
+        "checklists/tests-in-the-change.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "debugger",
       "name": "Debugger",
       "version": "1.0.0",
