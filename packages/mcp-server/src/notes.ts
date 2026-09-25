@@ -29,6 +29,20 @@ export const RESOLVE_TRIGGER =
  * one returns text built from the catalog and changes nothing, anywhere (rule
  * 21), so a client need not ask for approval as if a call could do harm. The
  * catalog is a closed domain: no tool reaches beyond it.
+ *
+ * `openWorldHint` is false although the default catalog is fetched over the
+ * network. The index and the files beside it come from two fixed addresses,
+ * GitHub Pages and the raw repository, which serve the same one catalog; no
+ * tool takes a URL, and no input decides which host is contacted. That is the
+ * closed domain the specification illustrates with a memory tool, not the open
+ * one it illustrates with web search. Integrations describe third-party
+ * software, but no tool contacts it. `FORGEPRINT_INDEX_URL` and
+ * `FORGEPRINT_FILES_URL` let whoever configures the server point it at another
+ * copy of the catalog; that is still one catalog, chosen before any call.
+ *
+ * `destructiveHint` and `idempotentHint` only carry meaning when
+ * `readOnlyHint` is false. They are stated anyway, so a client that reads
+ * them without that rule still sees a harmless, repeatable call.
  */
 export const READ_ONLY_TOOL = {
   readOnlyHint: true,
