@@ -13,6 +13,9 @@ import {
   isReleaseVersion,
   mcpRegistryVersion,
   notesPath,
+  parseCiRuns,
+  parsePluginManifest,
+  parseServerManifest,
   publishable,
   publishedCodeUnchanged,
   readWorkspacePackages,
@@ -92,10 +95,8 @@ function ciState(root: string): { known: boolean; green: boolean; detail: string
     root,
   );
   if (!result.ok) return { known: false, green: false, detail: 'gh could not reach GitHub' };
-  let runs: { headSha: string; conclusion: string; status: string; workflowName: string }[];
-  try {
-    runs = JSON.parse(result.output) as typeof runs;
-  } catch {
+  const runs = parseCiRuns(result.output);
+  if (runs === undefined) {
     return { known: false, green: false, detail: 'unreadable response from gh' };
   }
   const forHead = runs.filter((r) => r.headSha === sha);
@@ -274,10 +275,7 @@ function readDistributionManifests(root: string): DistributionManifest[] {
 
   const serverPath = join(root, 'server.json');
   if (existsSync(serverPath)) {
-    const server = JSON.parse(readFileSync(serverPath, 'utf8')) as {
-      version?: string;
-      packages?: { identifier?: string; version?: string }[];
-    };
+    const server = parseServerManifest(readFileSync(serverPath, 'utf8'));
     const versions: { field: string; value: string }[] = [];
     if (typeof server.version === 'string')
       versions.push({ field: 'version', value: server.version });
@@ -295,7 +293,7 @@ function readDistributionManifests(root: string): DistributionManifest[] {
       const relative = `skills/${entry}/.claude-plugin/plugin.json`;
       const file = join(root, relative);
       if (!existsSync(file)) continue;
-      const plugin = JSON.parse(readFileSync(file, 'utf8')) as { version?: string };
+      const plugin = parsePluginManifest(readFileSync(file, 'utf8'), relative);
       manifests.push({
         path: relative,
         versions:
@@ -311,7 +309,7 @@ function readDistributionManifests(root: string): DistributionManifest[] {
 function mcpServerName(root: string): string | undefined {
   const file = join(root, 'server.json');
   if (!existsSync(file)) return undefined;
-  const server = JSON.parse(readFileSync(file, 'utf8')) as { name?: string };
+  const server = parseServerManifest(readFileSync(file, 'utf8'));
   return server.name;
 }
 

@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { z } from 'zod';
 
 /**
  * Cutting a release, as one command.
@@ -68,6 +69,65 @@ export function readWorkspacePackages(root: string): WorkspacePackage[] {
     });
   }
   return packages.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+const ciRunsSchema = z.array(
+  z.object({
+    headSha: z.string(),
+    // gh leaves the conclusion empty, or null, while a run is still going.
+    conclusion: z
+      .string()
+      .nullish()
+      .transform((value) => value ?? ''),
+    status: z.string(),
+    workflowName: z.string(),
+  }),
+);
+
+export type CiRun = z.infer<typeof ciRunsSchema>[number];
+
+/**
+ * The runs `gh run list --json` reported, or `undefined` when the output is not
+ * that shape. An error body such as "Bad credentials" is JSON too, and a cast
+ * would have read it as a list with no runs in it.
+ */
+export function parseCiRuns(output: string): CiRun[] | undefined {
+  try {
+    const result = ciRunsSchema.safeParse(JSON.parse(output));
+    return result.success ? result.data : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const serverManifestSchema = z.object({
+  name: z.string().optional(),
+  version: z.string().optional(),
+  packages: z
+    .array(z.object({ identifier: z.string().optional(), version: z.string().optional() }))
+    .optional(),
+});
+
+export type ServerManifest = z.infer<typeof serverManifestSchema>;
+
+/** `server.json`, checked rather than cast, so a wrong field says which file. */
+export function parseServerManifest(text: string): ServerManifest {
+  const result = serverManifestSchema.safeParse(JSON.parse(text));
+  if (!result.success) {
+    throw new Error(`server.json: ${result.error.issues.map((i) => i.message).join('; ')}`);
+  }
+  return result.data;
+}
+
+const pluginManifestSchema = z.object({ version: z.string().optional() });
+
+/** A skill's `.claude-plugin/plugin.json`, checked rather than cast. */
+export function parsePluginManifest(text: string, path: string): { version?: string | undefined } {
+  const result = pluginManifestSchema.safeParse(JSON.parse(text));
+  if (!result.success) {
+    throw new Error(`${path}: ${result.error.issues.map((i) => i.message).join('; ')}`);
+  }
+  return result.data;
 }
 
 /** The packages a release actually publishes. */
