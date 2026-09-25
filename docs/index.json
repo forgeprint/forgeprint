@@ -1541,6 +1541,73 @@
       "i18n": []
     },
     {
+      "slug": "python-rag-service",
+      "name": "Python RAG Service",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "FastAPI RAG on PostgreSQL and pgvector: ingest chunks and embeds, ask answers only from retrieved chunks and cites them, and a deterministic fake model runs every test.",
+      "stack": [
+        "python",
+        "fastapi",
+        "postgres",
+        "pgvector",
+        "docker"
+      ],
+      "languages": [
+        "python"
+      ],
+      "platforms": [
+        "linux",
+        "docker"
+      ],
+      "distribution": [
+        "internal",
+        "saas"
+      ],
+      "project_type": "agent",
+      "audience": [
+        "advanced"
+      ],
+      "requirements": [
+        "search",
+        "api-docs",
+        "migrations",
+        "containerization",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "python>=3.13",
+        "docker",
+        "curl"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "rust-cli",
       "name": "Rust CLI",
       "version": "1.0.0",
