@@ -3782,6 +3782,58 @@
     },
     {
       "schema": 1,
+      "slug": "site-reliability-engineer",
+      "name": "Site Reliability Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "An SLO is a ratio with a window and a target in a file, the budget has a written policy, pages fire on burn rate, and every incident ends in a blameless postmortem with owned actions.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "site-reliability-engineer",
+      "domain": "devops",
+      "seniority": "senior",
+      "deliverables": [
+        "slo-definition",
+        "runbook",
+        "incident-review",
+        "root-cause-analysis"
+      ],
+      "checklists": [
+        "slo-spec",
+        "error-budget-policy",
+        "burn-rate-alerts",
+        "runbook-steps",
+        "incident-handling",
+        "postmortem"
+      ],
+      "pairs_with": [
+        "devops-platform-engineer",
+        "performance-engineer",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/burn-rate-alerts.md",
+        "checklists/error-budget-policy.md",
+        "checklists/incident-handling.md",
+        "checklists/postmortem.md",
+        "checklists/runbook-steps.md",
+        "checklists/slo-spec.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "sql-data-engineer",
       "name": "SQL Data Engineer",
       "version": "1.0.0",
