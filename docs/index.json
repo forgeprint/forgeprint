@@ -4847,6 +4847,42 @@
     },
     {
       "schema": 1,
+      "slug": "mobilebuild-mcp",
+      "name": "MobileBuildMCP (formerly XcodeBuildMCP)",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build, run and test iOS and macOS apps on simulators from an agent, through xcodebuild. macOS with Xcode only; error reporting to Sentry turned off.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "kind": "mcp",
+      "upstream": "https://github.com/getsentry/MobileBuildMCP",
+      "upstream_version": "2.7.1",
+      "verified_on": "2026-09-25",
+      "install": {
+        "claude-code": "claude mcp add-json mobilebuildmcp '{\"command\":\"npx\",\"args\":[\"-y\",\"mobilebuildmcp@2.7.1\",\"mcp\"],\"env\":{\"MOBILEBUILDMCP_SENTRY_DISABLED\":\"true\"}}'",
+        "codex": "codex mcp add mobilebuildmcp --env \"MOBILEBUILDMCP_SENTRY_DISABLED=true\" -- npx -y mobilebuildmcp@2.7.1 mcp",
+        "gemini-cli": "gemini mcp add mobilebuildmcp -e \"MOBILEBUILDMCP_SENTRY_DISABLED=true\" npx -y mobilebuildmcp@2.7.1 mcp"
+      },
+      "permissions_summary": "Runs xcodebuild on the project it is pointed at, which runs the project's build scripts and Swift macros, and boots, installs, launches and records on simulators; more tool groups, including device installs and an LLDB console, can be switched on.",
+      "fits": [
+        "software",
+        "quality"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "mongodb-mcp",
       "name": "MongoDB MCP Server",
       "version": "1.0.0",
