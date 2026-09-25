@@ -16,6 +16,7 @@
 /blueprints/go-cli/ @aliosmanmho
 /blueprints/go-http-service/ @aliosmanmho
 /blueprints/langgraph-agent/ @aliosmanmho
+/blueprints/laravel-web-app/ @aliosmanmho
 /blueprints/nestjs-api/ @aliosmanmho
 /blueprints/nextjs-fullstack-app/ @aliosmanmho
 /blueprints/node-cli/ @aliosmanmho
