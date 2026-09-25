@@ -1,0 +1,22 @@
+schema: 1
+slug: brave-search-mcp
+name: 'Brave Search MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Web, news, image, video and local search from Brave's own index, plus page content extracted for an agent to ground on."
+kind: mcp
+upstream: https://github.com/brave/brave-search-mcp-server
+upstream_version: '2.1.4'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json brave-search ''{"command":"npx","args":["-y","@brave/brave-search-mcp-server@2.1.4"],"env":{"BRAVE_API_KEY":"${BRAVE_API_KEY}"}}'''
+  codex: 'codex mcp add brave-search --env "BRAVE_API_KEY=${BRAVE_API_KEY}" -- npx -y @brave/brave-search-mcp-server@2.1.4'
+  gemini-cli: "gemini mcp add brave-search -e 'BRAVE_API_KEY=${BRAVE_API_KEY}' npx -y @brave/brave-search-mcp-server@2.1.4"
+needs_secrets: [BRAVE_API_KEY]
+permissions_summary: "Sends the agent's search queries, and any location it passes, to the Brave Search API, billed to the key; it only reads search results and changes nothing."
+fits: [research, software, marketing]
+agents: [claude-code]
+deprecated: false
+supersedes: null

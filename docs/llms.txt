@@ -67,6 +67,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 - [Atlassian Rovo MCP Server](https://forgeprint.github.io/forgeprint/i/atlassian-mcp.html): Jira, Confluence, Compass and the rest of Atlassian Cloud through Atlassian's hosted server, as the signed-in user.
 - [AWS Documentation MCP Server](https://forgeprint.github.io/forgeprint/i/aws-documentation-mcp.html): Search, read and get recommendations from the public AWS documentation, with no AWS credentials.
 - [Azure DevOps MCP Server](https://forgeprint.github.io/forgeprint/i/azure-devops-mcp.html): Work items, projects and teams from one Azure DevOps organisation, with the tool domains narrowed to what the work needs.
+- [Brave Search MCP](https://forgeprint.github.io/forgeprint/i/brave-search-mcp.html): Web, news, image, video and local search from Brave's own index, plus page content extracted for an agent to ground on.
 - [Chrome DevTools MCP](https://forgeprint.github.io/forgeprint/i/chrome-devtools-mcp.html): Read the console, the network log and a performance trace from a running Chrome, from an agent.
 - [ClickHouse MCP Server](https://forgeprint.github.io/forgeprint/i/clickhouse-mcp.html): List databases and tables and run SQL on a ClickHouse cluster, with every query sent as readonly=1.
 - [Context7](https://forgeprint.github.io/forgeprint/i/context7-mcp.html): Library documentation at the version in use, fetched on demand instead of recalled from training.
