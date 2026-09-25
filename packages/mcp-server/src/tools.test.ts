@@ -104,6 +104,27 @@ function safeParse(text: string): any {
 }
 
 describe('the tool surface', () => {
+  it('declares every tool read-only, non-destructive and closed-world', async () => {
+    // Every tool returns text and changes nothing (rule 21). Without the
+    // annotations a client falls back to the spec's defaults, which treat a
+    // tool as possibly destructive and open-world, and may ask for approval
+    // on every call for no reason.
+    const { tools } = await client.listTools();
+    assert.ok(tools.length > 0);
+    for (const tool of tools) {
+      assert.deepEqual(
+        {
+          readOnlyHint: tool.annotations?.readOnlyHint,
+          destructiveHint: tool.annotations?.destructiveHint,
+          idempotentHint: tool.annotations?.idempotentHint,
+          openWorldHint: tool.annotations?.openWorldHint,
+        },
+        { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+        tool.name,
+      );
+    }
+  });
+
   it('registers exactly the documented tools, and nothing else', async () => {
     // Six for blueprints, four for the kinds that arrived with ADR 0012. The
     // list is asserted exactly because an undocumented tool is a promise
