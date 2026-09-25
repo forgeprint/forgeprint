@@ -1,0 +1,21 @@
+schema: 1
+slug: django-web-app
+name: 'Django Web App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Server-rendered Django 6.1 application with a custom user model, login and logout, migrations, settings that refuse to start in production without a real secret, and tests that prove it.'
+stack: [django, python, postgres]
+languages: [python]
+platforms: [web, linux]
+distribution: [saas, internal, open-source]
+project_type: web
+audience: [intermediate]
+requirements: [auth, migrations, testing, ci]
+agents: [claude-code]
+options:
+  database: [postgres, sqlite]
+requires_tools: [python>=3.13, docker]
+deprecated: false
+supersedes: null

@@ -8,6 +8,7 @@
 
 # One line per blueprint, ordered by slug.
 /blueprints/astro-content-site/ @aliosmanmho
+/blueprints/django-web-app/ @aliosmanmho
 /blueprints/dotnet-mcp-server/ @aliosmanmho
 /blueprints/dotnet-multitenant-saas-api/ @aliosmanmho
 /blueprints/dotnet-web-api/ @aliosmanmho
