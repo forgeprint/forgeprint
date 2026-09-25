@@ -1,13 +1,16 @@
 # Setup
 
-Creates an HTTP service in TypeScript on Hono, with bearer token verification,
-tests that prove an unauthenticated request is refused, a container and CI.
+Creates an HTTP service in TypeScript on Hono or Express (`options.framework`),
+with bearer token verification, tests that prove an unauthenticated request is
+refused, a container and CI.
 
 Run every step from the directory that will hold the project. Each step is one
 action and ends with the command that proves it worked. Stop at the first
 verification that fails.
 
 Requires Node.js 22 or newer and Docker.
+
+<!-- if options.framework == hono -->
 
 1. Create `package.json` with:
 
@@ -36,6 +39,39 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f package.json`
 
+<!-- endif -->
+
+<!-- if options.framework == express -->
+
+1. Create `package.json` with:
+
+   ```json
+   {
+     "name": "service",
+     "version": "0.1.0",
+     "private": true,
+     "type": "module",
+     "scripts": {
+       "build": "tsc --build",
+       "start": "node dist/main.js",
+       "test": "node --test dist/*.test.js"
+     },
+     "dependencies": {
+       "express": "5.2.1",
+       "jose": "6.2.12"
+     },
+     "devDependencies": {
+       "typescript": "7.0.2",
+       "@types/express": "5.0.6",
+       "@types/node": "26.6.2"
+     }
+   }
+   ```
+
+   Verify: `test -f package.json`
+
+<!-- endif -->
+
 2. Create `tsconfig.json` with:
 
    ```json
@@ -58,7 +94,9 @@ Requires Node.js 22 or newer and Docker.
    Verify: `test -f tsconfig.json`
 
 3. Install the pinned dependencies: `npm install --no-audit --no-fund`
-   Verify: `node -e "await import('hono')"`
+   Verify: `npm ls --depth=0`
+
+<!-- if options.framework == hono -->
 
 4. Create `src/auth.ts` with:
 
@@ -271,6 +309,305 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f src/main.ts`
 
+<!-- endif -->
+
+<!-- if options.framework == express -->
+
+4. Create `src/auth.ts` with:
+
+   ```typescript
+   import { jwtVerify, type JWTPayload } from 'jose';
+   import type { NextFunction, Request, Response } from 'express';
+
+   /**
+    * What this middleware leaves in `res.locals`, so a handler that reads
+    * `res.locals.claims` is typed rather than `any`. Express types `locals` as
+    * an open record unless it is told otherwise.
+    */
+   export type Locals = { claims: JWTPayload };
+
+   export interface AuthSettings {
+     readonly secret: Uint8Array;
+     readonly audience: string;
+     readonly issuer: string;
+   }
+
+   /**
+    * The only place that decides who a caller is.
+    *
+    * Every option passed to jwtVerify is load bearing. `algorithms` stops a
+    * token signed the wrong way from being accepted — without it, algorithm
+    * confusion is live. `audience` stops a token minted for a different
+    * service working here. `requiredClaims` stops a token with no `exp` being
+    * valid forever.
+    *
+    * Async is safe here without a wrapper: Express 5 passes a rejected promise
+    * to the error handler, where Express 4 left the request hanging.
+    */
+   export function requireBearer(settings: AuthSettings) {
+     return async (req: Request, res: Response<unknown, Locals>, next: NextFunction) => {
+       const header = req.get('authorization') ?? '';
+       const raw = header.startsWith('Bearer ') ? header.slice(7) : '';
+       if (raw === '') {
+         // 401, not 403: "who are you", not "you may not".
+         res.status(401).json({ error: 'a bearer token is required' });
+         return;
+       }
+
+       try {
+         const { payload } = await jwtVerify(raw, settings.secret, {
+           algorithms: ['HS256'],
+           audience: settings.audience,
+           issuer: settings.issuer,
+           requiredClaims: ['exp', 'sub'],
+         });
+         res.locals.claims = payload;
+       } catch {
+         // Which check failed is useful to an attacker and to nobody else.
+         res.status(401).json({ error: 'the token was not accepted' });
+         return;
+       }
+
+       next();
+     };
+   }
+   ```
+
+   Verify: `test -f src/auth.ts`
+
+5. Create `src/app.ts` with:
+
+   ```typescript
+   import express, { type ErrorRequestHandler, type Express, type Response } from 'express';
+
+   import { requireBearer, type AuthSettings, type Locals } from './auth.js';
+
+   /**
+    * The last handler. Without it Express answers an error with its own page,
+    * which includes the stack trace unless NODE_ENV is `production` — and the
+    * node image does not set it. The detail goes to the log, not the caller.
+    */
+   export const hideErrors: ErrorRequestHandler = (error, _req, res, _next) => {
+     console.error(error);
+     res.status(500).json({ error: 'internal error' });
+   };
+
+   /**
+    * A constructor rather than a module-level app: a test builds a fresh one
+    * with its own settings, and the entry point builds one from the
+    * environment.
+    */
+   export function createApp(settings: AuthSettings): Express {
+     const app = express();
+     // Announcing the framework and its version helps nobody who is meant to be
+     // calling this service.
+     app.disable('x-powered-by');
+
+     // Liveness touches nothing: no token, no dependency. It answers whether
+     // the process is up, which is the only thing an orchestrator is asking,
+     // and it has to keep answering when something downstream is down.
+     app.get('/health', (_req, res) => {
+       res.json({ status: 'ok' });
+     });
+
+     // Everything else is mounted behind the middleware, so a new route is
+     // authenticated by where it is declared rather than by remembering.
+     const protectedRoutes = express.Router();
+     protectedRoutes.use(requireBearer(settings));
+     protectedRoutes.get('/items', (_req, res: Response<unknown, Locals>) => {
+       res.json({ items: [], subject: res.locals.claims.sub ?? null });
+     });
+
+     app.use(protectedRoutes);
+     app.use(hideErrors);
+
+     return app;
+   }
+   ```
+
+   Verify: `test -f src/app.ts`
+
+6. Create `src/app.test.ts` with:
+
+   ```typescript
+   import assert from 'node:assert/strict';
+   import type { AddressInfo } from 'node:net';
+   import { after, before, describe, it } from 'node:test';
+
+   import express, { type Express } from 'express';
+   import { SignJWT } from 'jose';
+
+   import { createApp, hideErrors } from './app.js';
+   import type { AuthSettings } from './auth.js';
+
+   const settings: AuthSettings = {
+     secret: new TextEncoder().encode('not-a-real-secret-only-for-tests-0000'),
+     audience: 'service-tests',
+     issuer: 'service-tests',
+   };
+
+   async function token(secret: Uint8Array): Promise<string> {
+     return new SignJWT({ sub: 'user-1' })
+       .setProtectedHeader({ alg: 'HS256' })
+       .setAudience(settings.audience)
+       .setIssuer(settings.issuer)
+       .setExpirationTime('1h')
+       .sign(secret);
+   }
+
+   // An Express app is a Node request listener, not a fetch handler, so it is
+   // served on a port the operating system picks, on loopback only, and called
+   // with the fetch built into Node. No test client library is needed.
+   async function serve(app: Express): Promise<{ url: string; close: () => Promise<void> }> {
+     const server = app.listen(0, '127.0.0.1');
+     await new Promise<void>((resolve, reject) => {
+       server.once('listening', resolve);
+       server.once('error', reject);
+     });
+     const { port } = server.address() as AddressInfo;
+     return {
+       url: `http://127.0.0.1:${port}`,
+       close: () => new Promise<void>((resolve) => server.close(() => resolve())),
+     };
+   }
+
+   /** The routes an app declares, found by walking its router and every router mounted on it. */
+   type Layer = { route?: { path: string; stack: { method: string }[] }; handle: unknown };
+   function routesOf(stack: readonly Layer[]): { method: string; path: string }[] {
+     return stack.flatMap((layer) => {
+       if (layer.route !== undefined) {
+         const { path } = layer.route;
+         const methods = new Set(layer.route.stack.map((l) => l.method.toUpperCase()));
+         return [...methods].map((method) => ({ method, path }));
+       }
+       const nested = (layer.handle as { stack?: Layer[] }).stack;
+       return nested === undefined ? [] : routesOf(nested);
+     });
+   }
+
+   describe('routes', () => {
+     let server: { url: string; close: () => Promise<void> };
+     before(async () => {
+       server = await serve(createApp(settings));
+     });
+     after(() => server.close());
+
+     const call = (path: string, init: RequestInit = {}): Promise<Response> =>
+       fetch(`${server.url}${path}`, init);
+     const bearer = (value: string): RequestInit => ({
+       headers: { authorization: `Bearer ${value}` },
+     });
+
+     it('health needs no token', async () => {
+       assert.equal((await call('/health')).status, 200);
+     });
+
+     it('a protected route refuses a request with no token', async () => {
+       assert.equal((await call('/items')).status, 401);
+     });
+
+     it('a protected route refuses a forged token', async () => {
+       // The test that fails the day verification is reduced to decoding.
+       const forged = await token(
+         new TextEncoder().encode('a-different-secret-entirely-000000000'),
+       );
+       assert.equal((await call('/items', bearer(forged))).status, 401);
+     });
+
+     it('a protected route accepts a valid token', async () => {
+       assert.equal((await call('/items', bearer(await token(settings.secret)))).status, 200);
+     });
+
+     it('does not announce the framework', async () => {
+       assert.equal((await call('/health')).headers.get('x-powered-by'), null);
+     });
+
+     // A route is authenticated by where it is declared, and nothing stops
+     // somebody declaring one on `app` above the protected router. Express keeps
+     // its routes in `app.router.stack`, so the convention can be a check rather
+     // than a habit.
+     it('every route outside the allow-list needs a token', async () => {
+       const publicRoutes = new Set(['GET /health']);
+       const routes = routesOf(createApp(settings).router.stack);
+
+       let checked = 0;
+       for (const route of routes) {
+         const name = `${route.method} ${route.path}`;
+         if (publicRoutes.has(name)) continue;
+
+         const response = await call(route.path, { method: route.method });
+         assert.equal(response.status, 401, `${name} answered without a token`);
+         checked += 1;
+       }
+
+       // A walk that finds only the public routes asserts nothing, which is
+       // the way this kind of test fails silently — for example the day the
+       // shape of a mounted router changes and the walk stops descending.
+       assert.ok(checked > 0, 'no protected route was found in the route table');
+     });
+   });
+
+   describe('errors', () => {
+     it('a failing handler answers 500 without its detail', async () => {
+       const app = express();
+       app.get('/fails', () => {
+         throw new Error('detail-that-must-not-leak');
+       });
+       app.use(hideErrors);
+       const server = await serve(app);
+       const original = console.error;
+       console.error = () => {};
+       try {
+         const response = await fetch(`${server.url}/fails`);
+         assert.equal(response.status, 500);
+         assert.doesNotMatch(await response.text(), /detail-that-must-not-leak/);
+       } finally {
+         console.error = original;
+         await server.close();
+       }
+     });
+   });
+   ```
+
+   Verify: `test -f src/app.test.ts`
+
+7. Create `src/main.ts` with:
+
+   ```typescript
+   import { createApp } from './app.js';
+
+   function required(name: string): string {
+     const value = process.env[name];
+     if (value === undefined || value === '') {
+       throw new Error(`${name} is required`);
+     }
+     return value;
+   }
+
+   // Read at module scope, so a missing variable stops the process before
+   // anything listens. Checked per request instead, the service answers 500 to
+   // everything while /health still returns 200 and an orchestrator calls the
+   // container ready.
+   const app = createApp({
+     secret: new TextEncoder().encode(required('JWT_SECRET')),
+     audience: required('JWT_AUDIENCE'),
+     issuer: required('JWT_ISSUER'),
+   });
+
+   const port = Number(process.env.PORT ?? '8080');
+   // Express 5 hands a failed listen to the callback instead of throwing it, so
+   // a port that is already taken has to be rethrown here or the process runs on
+   // having bound nothing.
+   app.listen(port, '0.0.0.0', (error) => {
+     if (error !== undefined) throw error;
+     console.log(`listening on ${port}`);
+   });
+   ```
+
+   Verify: `test -f src/main.ts`
+
+<!-- endif -->
+
 8. Create `.gitignore` with:
 
    ```text
@@ -351,7 +688,7 @@ Requires Node.js 22 or newer and Docker.
     ```markdown
     # service
 
-    An HTTP service on Hono with bearer token verification.
+    An HTTP service in TypeScript with bearer token verification.
 
     ## Run it
 

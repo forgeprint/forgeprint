@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TypeScript HTTP Service — Forgeprint</title>
-    <meta name="description" content="HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused." />
+    <meta name="description" content="HTTP service in TypeScript on Hono or Express with bearer token verification, a container, and tests that prove an unauthenticated request is refused." />
     <link rel="icon" href="../brand/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../forgeprint.css" />
     <link rel="canonical" href="https://forgeprint.github.io/forgeprint/b/ts-http-service.html" />
@@ -12,11 +12,11 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Forgeprint" />
     <meta property="og:title" content="TypeScript HTTP Service — Forgeprint" />
-    <meta property="og:description" content="HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused." />
+    <meta property="og:description" content="HTTP service in TypeScript on Hono or Express with bearer token verification, a container, and tests that prove an unauthenticated request is refused." />
     <meta property="og:url" content="https://forgeprint.github.io/forgeprint/b/ts-http-service.html" />
     <meta property="og:image" content="https://forgeprint.github.io/forgeprint/brand/forgeprint-avatar-512.png" />
     <meta name="twitter:card" content="summary" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"TypeScript HTTP Service","description":"HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.","version":"1.1.0","programmingLanguage":["typescript"],"codeRepository":"https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/b/ts-http-service.html"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"TypeScript HTTP Service","description":"HTTP service in TypeScript on Hono or Express with bearer token verification, a container, and tests that prove an unauthenticated request is refused.","version":"1.2.0","programmingLanguage":["typescript"],"codeRepository":"https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service","license":"https://creativecommons.org/licenses/by/4.0/","author":[{"@type":"Person","name":"@aliosmanmho","url":"https://github.com/aliosmanmho"}],"isPartOf":{"@type":"WebSite","name":"Forgeprint","url":"https://forgeprint.github.io/forgeprint/"},"url":"https://forgeprint.github.io/forgeprint/b/ts-http-service.html"}</script>
   </head>
   <body>
     <header class="topbar">
@@ -36,7 +36,7 @@
       <header class="hero blueprint">
         <p class="slug">ts-http-service</p>
         <h1>TypeScript HTTP Service </h1>
-        <p class="tagline" lang="en">HTTP service in TypeScript on Hono with bearer token verification, a container, and tests that prove an unauthenticated request is refused.</p>
+        <p class="tagline" lang="en">HTTP service in TypeScript on Hono or Express with bearer token verification, a container, and tests that prove an unauthenticated request is refused.</p>
         
         
         <p class="byline"><span data-i18n="site.blueprintBy">Blueprint by</span> <a class="person" href="https://github.com/aliosmanmho"><img class="avatar" src="https://github.com/aliosmanmho.png?size=64" width="32" height="32" loading="lazy" alt="" /><span>@aliosmanmho</span></a></p>
@@ -49,17 +49,22 @@
       <section>
         <h2><span data-i18n="site.useIt">Use it</span></h2>
         <p><span data-i18n="site.useBlueprint">Ask your agent for it by name, or let resolve find it from your profile.</span></p>
-        <pre class="install"><code>get_blueprint { "slug": "ts-http-service" }</code></pre>
+        <pre class="install"><code>get_blueprint { "slug": "ts-http-service", "options": { "framework": "hono" } }</code></pre>
       </section>
 
-      
+      <section>
+        <h2><span data-i18n="site.options">Options</span></h2>
+        <dl class="options">
+          <dt>framework</dt><dd><code>hono</code> · <code>express</code></dd>
+        </dl>
+      </section>
 
       <section>
         <h2><span data-i18n="site.whatItIs">What it is</span></h2>
         <table class="facts">
           <tr><th><span data-i18n="site.languages">Languages</span></th><td>TypeScript</td></tr>
           <tr><th><span data-i18n="site.projectType">Project type</span></th><td>API service</td></tr>
-          <tr><th><span data-i18n="site.stack">Stack</span></th><td>Node.js, Hono, Docker</td></tr>
+          <tr><th><span data-i18n="site.stack">Stack</span></th><td>Node.js, Hono, Express, Docker</td></tr>
           <tr><th><span data-i18n="site.platforms">Platforms</span></th><td>Linux, Docker</td></tr>
           <tr><th><span data-i18n="site.distribution">Distribution</span></th><td>Open source, Internal, SaaS</td></tr>
           <tr><th><span data-i18n="site.setsUp">Sets up</span></th><td>Authentication, Continuous integration, Containerization</td></tr>
@@ -78,7 +83,7 @@
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service/overview.md"><code>overview.md</code></a></li>
           <li><a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service/setup.md"><code>setup.md</code></a></li>
         </ul>
-        <p class="muted"><span data-i18n="site.version" data-arg-version="1.1.0">Version 1.1.0</span> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service/CHANGELOG.md"><span data-i18n="site.changelog">changelog</span></a> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service"><span data-i18n="site.folder">folder on GitHub</span></a></p>
+        <p class="muted"><span data-i18n="site.version" data-arg-version="1.2.0">Version 1.2.0</span> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service/CHANGELOG.md"><span data-i18n="site.changelog">changelog</span></a> · <a href="https://github.com/forgeprint/forgeprint/tree/main/blueprints/ts-http-service"><span data-i18n="site.folder">folder on GitHub</span></a></p>
       </section>
     </main>
     <footer>
