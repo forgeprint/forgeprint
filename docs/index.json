@@ -1834,6 +1834,57 @@
   "experts": [
     {
       "schema": 1,
+      "slug": "accessibility-specialist",
+      "name": "Accessibility Specialist",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Audit against WCAG 2.2 AA: automated checks first, then the manual passes a scanner cannot make, and every finding names a success criterion and a reproduction.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "accessibility-specialist",
+      "domain": "quality",
+      "seniority": "senior",
+      "deliverables": [
+        "accessibility-audit",
+        "test-suite",
+        "compliance-checklist",
+        "code-review"
+      ],
+      "checklists": [
+        "automated-baseline",
+        "keyboard-and-focus",
+        "screen-reader",
+        "zoom-contrast-and-targets",
+        "forms-and-errors",
+        "motion-and-media"
+      ],
+      "pairs_with": [
+        "qa-automation-lead",
+        "technical-writer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/automated-baseline.md",
+        "checklists/forms-and-errors.md",
+        "checklists/keyboard-and-focus.md",
+        "checklists/motion-and-media.md",
+        "checklists/screen-reader.md",
+        "checklists/zoom-contrast-and-targets.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "agent-designer",
       "name": "Agent Designer",
       "version": "1.0.0",
