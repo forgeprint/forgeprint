@@ -2338,6 +2338,66 @@
     },
     {
       "schema": 1,
+      "slug": "android-mobile-engineer",
+      "name": "Android Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build Android apps in Kotlin and Compose where state is hoisted, flows stop with the lifecycle, migrations are tested, keys stay in the Keystore, and R8 and a baseline profile ship.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "kotlin"
+      ],
+      "stack": [
+        "jetpack-compose"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report",
+        "migration-plan"
+      ],
+      "checklists": [
+        "compose-state",
+        "coroutines-lifecycle",
+        "room-migrations",
+        "keystore-and-permissions",
+        "compose-semantics-tests",
+        "build-gates"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer",
+        "sql-data-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/build-gates.md",
+        "checklists/compose-semantics-tests.md",
+        "checklists/compose-state.md",
+        "checklists/coroutines-lifecycle.md",
+        "checklists/keystore-and-permissions.md",
+        "checklists/room-migrations.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "api-designer",
       "name": "API Designer",
       "version": "1.0.0",
