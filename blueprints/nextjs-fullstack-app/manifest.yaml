@@ -1,19 +1,21 @@
 schema: 1
 slug: nextjs-fullstack-app
 name: 'Next.js Full-stack App'
-version: 1.0.0
+version: 1.1.0
 tier: community
 provenance: generated
 maintainers: [aliosmanmho]
-summary: 'Full-stack Next.js application with Tailwind and Postgres through Drizzle, with migrations generated, applied and proved by a test.'
+summary: 'Full-stack Next.js application with Tailwind and Postgres through Drizzle, with migrations generated, applied and proved by a test, and optional Stripe Checkout payments.'
 stack: [nextjs, react, tailwind, postgres]
 languages: [typescript]
 platforms: [web, linux, docker]
 distribution: [open-source, saas, internal]
 project_type: web
 audience: [intermediate]
-requirements: [migrations, ci, testing]
+requirements: [migrations, ci, testing, payments]
 agents: [claude-code]
+options:
+  payments: [none, stripe]
 requires_tools: [node>=22, docker]
 deprecated: false
 supersedes: null
