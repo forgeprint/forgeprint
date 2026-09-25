@@ -1,0 +1,21 @@
+schema: 1
+slug: shopify-dev-mcp
+name: 'Shopify Dev MCP'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: "Search Shopify's developer documentation and API schemas, and validate GraphQL, Liquid, theme and UI-extension code against them."
+kind: mcp
+upstream: https://shopify.dev/docs/apps/build/ai-toolkit
+upstream_version: '1.15.4'
+verified_on: 2026-09-25
+install:
+  claude-code: 'claude mcp add-json shopify-dev-mcp ''{"command":"npx","args":["-y","@shopify/dev-mcp@1.15.4"],"env":{"OPT_OUT_INSTRUMENTATION":"true"}}'''
+  codex: 'codex mcp add shopify-dev-mcp --env "OPT_OUT_INSTRUMENTATION=true" -- npx -y @shopify/dev-mcp@1.15.4'
+  gemini-cli: 'gemini mcp add shopify-dev-mcp -e "OPT_OUT_INSTRUMENTATION=true" npx -y @shopify/dev-mcp@1.15.4'
+permissions_summary: 'Sends documentation searches to shopify.dev and validates the code the agent passes it, reading theme files from a path the agent names; it needs no Shopify account and cannot reach a store.'
+fits: [software]
+agents: [claude-code]
+deprecated: false
+supersedes: null
