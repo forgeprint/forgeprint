@@ -1405,6 +1405,68 @@
       "i18n": []
     },
     {
+      "slug": "flutter-mobile-app",
+      "name": "Flutter Mobile App",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Flutter 3.47 with Riverpod 3, go_router typed routes, rules in plain Dart, 36 tests including the accessibility guideline matchers, and a release web build as the proof.",
+      "stack": [
+        "flutter"
+      ],
+      "languages": [
+        "dart"
+      ],
+      "platforms": [
+        "ios",
+        "android",
+        "web"
+      ],
+      "distribution": [
+        "free",
+        "paid",
+        "internal"
+      ],
+      "project_type": "mobile",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "flutter>=3.47.5",
+        "dart>=3.13.4"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "flutter-mobile-engineer"
+      ],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "go-cli",
       "name": "Go CLI",
       "version": "1.0.0",
