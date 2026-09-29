@@ -218,31 +218,28 @@ Recorded so the next round does not re-litigate them without new evidence.
 Each has three or four members, one of them a checking role, and a `not_for`
 that names sequential, small and same-file work.
 
-- [ ] `code-review-crew`
-- [ ] `tech-research-crew`
+- [x] `code-review-crew` — #179
+- [x] `tech-research-crew` — #180
 - [x] `spec-driven-feature-crew` — #174
-- [ ] `ui-build-crew` (D5)
-- [ ] `incident-response-crew`
-- [ ] `llm-app-crew`
-- [ ] `legacy-modernization-crew`
-- [ ] `product-discovery-crew`
-- [ ] `release-crew`
-- [ ] `docs-crew` (D19)
-- [ ] `performance-crew`
-- [ ] `appsec-audit-crew` (D7)
-- [ ] `data-pipeline-crew`
-- [ ] `web-launch-crew` (D6)
-- [ ] `mobile-app-crew`
+- [x] `ui-build-crew` (D5) — #181
+- [x] `incident-response-crew` — #182
+- [x] `llm-app-crew` — #183
+- [x] `legacy-modernization-crew` — #184
+- [x] `product-discovery-crew` — #185
+- [x] `release-crew` — #186
+- [x] `docs-crew` (D19) — #187
+- [x] `performance-crew` — #188
+- [x] `appsec-audit-crew` (D7) — #189
+- [x] `data-pipeline-crew` — #190
+- [x] `web-launch-crew` (D6) — #191
+- [x] `mobile-app-crew` — #192
 - Deferred: `fullstack-squad-crew` (D9), `ml-platform-crew` (D10)
 
-The other fourteen wait for members still in review (D33): `code-review-crew`
-#82; `tech-research-crew` #70; `ui-build-crew` #71; `incident-response-crew`
-#146, #147, #80, #68; `llm-app-crew` #69; `legacy-modernization-crew` #152,
-#157, #118; `product-discovery-crew` #157, #158; `release-crew` #148, #146;
-`docs-crew` #155; `performance-crew` #147, #74, #111; `appsec-audit-crew` #149,
-#151; `data-pipeline-crew` #74, #111, #116; `web-launch-crew` #153, #71;
-`mobile-app-crew` #130, #71, #148, #138. `phoenix-liveview-app` and
-`flutter-mobile-app` wait for the CI toolchains in #86.
+All fifteen were built once their members were on `main` (D33), which the
+merge order made true in one sitting. What is left of this plan is
+`flutter-mobile-app` and `phoenix-liveview-app`, whose toolchains arrived with
+#86, and the two integrations held on their upstreams' state, `azure-mcp`
+(D16) and `blender-mcp` (D17).
 
 ---
 
