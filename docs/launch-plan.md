@@ -17,8 +17,9 @@ the maintainer, the listing is a liability.
 2. ~~Repository prerequisites~~ — done: `mcpName`, `server.json`, the plugin
    marketplace file.
 3. ~~The **official MCP registry**~~ — done, 2026-09-22:
-   `io.github.forgeprint/forgeprint` 0.2.1, active. Several directories read
-   it, so the rest starts from there.
+   `io.github.forgeprint/forgeprint`, and `active` at every version since; the
+   current one is 0.3.1. Several directories read it, so the rest starts from
+   there.
 4. Directories that index by themselves: Glama, PulseMCP (when it reopens).
 5. Submissions with a human on the other end: mcp.so, awesome-mcp-servers.
 6. Lists with an eligibility window: awesome-claude-code, awesome-copilot.
@@ -28,11 +29,11 @@ the maintainer, the listing is a liability.
 
 ## Repository prerequisites
 
-| What                                              | Where                                                                           | Why                                                                                                                                                    |
-| ------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ✅ `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json` — **0.2.1 still has to be published to npm** | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
-| ✅ `server.json`                                  | repository root                                                                 | The registry's own manifest (below)                                                                                                                    |
-| ✅ `.claude-plugin/marketplace.json`              | repository root                                                                 | Lets anyone run `/plugin marketplace add forgeprint/forgeprint`. There is no central Claude Code plugin registry, so this file **is** the distribution |
+| What                                              | Where                                                   | Why                                                                                                                                                    |
+| ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ✅ `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json` — published, `0.3.1` | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
+| ✅ `server.json`                                  | repository root                                         | The registry's own manifest (below)                                                                                                                    |
+| ✅ `.claude-plugin/marketplace.json`              | repository root                                         | Lets anyone run `/plugin marketplace add forgeprint/forgeprint`. There is no central Claude Code plugin registry, so this file **is** the distribution |
 
 ---
 
@@ -40,19 +41,23 @@ the maintainer, the listing is a liability.
 
 _Source: `modelcontextprotocol/registry` — `docs/modelcontextprotocol-io/quickstart.mdx`, `authentication.mdx`, `package-types.mdx`._
 
-| Requirement                                                | Forgeprint today                                                                                                                                                                          |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.2.0`; 0.2.1 pending                                                                                                                                                  |
-| `mcpName` in `package.json`, matching `server.json` `name` | ✅ added; publish 0.2.1 to npm before registering                                                                                                                                         |
-| Namespace proven by GitHub OAuth                           | `io.github.forgeprint/*` needs **two** things from @aliosmanmho: the **Owner** role in the org, and a **public** membership. Both, or the registry hands out `io.github.<user>/*` instead |
-| `server.json` at the repository root                       | ✅ committed                                                                                                                                                                              |
+The **Forgeprint today** column was last read from npm and from the registry's
+own API on **2026-10-02**; the requirements themselves still date from
+2026-09-22.
+
+| Requirement                                                | Forgeprint today                                                                                                                                                                |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.3.1` is the `latest` tag                                                                                                                                   |
+| `mcpName` in `package.json`, matching `server.json` `name` | ✅ both say `io.github.forgeprint/forgeprint`                                                                                                                                   |
+| Namespace proven by GitHub OAuth                           | ✅ settled: the registry lists the server under `io.github.forgeprint/`, which it only does once the publisher holds the **Owner** role in the org with a **public** membership |
+| `server.json` at the repository root                       | ✅ committed, at 0.3.1                                                                                                                                                          |
 
 Install the publisher. There is no npm package for it: a prebuilt binary, or
 Homebrew on macOS.
 
 ```powershell
 # Windows
-$dir = "$env:USERPROFILEin"
+$dir = "$env:USERPROFILE\bin"
 New-Item -ItemType Directory -Force $dir | Out-Null
 $arch = if ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -eq "Arm64") { "arm64" } else { "amd64" }
 Invoke-WebRequest -Uri "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_windows_$arch.tar.gz" -OutFile "$dir\mcp-publisher.tar.gz"
@@ -68,8 +73,8 @@ brew install mcp-publisher
 Then, **from the repository root**, because `publish` reads `./server.json`:
 
 ```powershell
-& "$env:USERPROFILEin\mcp-publisher.exe" login github     # device flow, as the org Owner
-& "$env:USERPROFILEin\mcp-publisher.exe" publish
+& "$env:USERPROFILE\bin\mcp-publisher.exe" login github     # device flow, as the org Owner
+& "$env:USERPROFILE\bin\mcp-publisher.exe" publish
 ```
 
 `mcp-publisher init` writes a `server.json` template; this repository already
@@ -106,9 +111,9 @@ classic personal access token whose only scope is `read:org`. The registry
 never reads your code, so it needs nothing else.
 
 ```powershell
-& "$env:USERPROFILEin\mcp-publisher.exe" logout
-& "$env:USERPROFILEin\mcp-publisher.exe" login github --token <PAT>
-& "$env:USERPROFILEin\mcp-publisher.exe" publish C:\Project\Forgeprint\server.json
+& "$env:USERPROFILE\bin\mcp-publisher.exe" logout
+& "$env:USERPROFILE\bin\mcp-publisher.exe" login github --token <PAT>
+& "$env:USERPROFILE\bin\mcp-publisher.exe" publish C:\Project\Forgeprint\server.json
 ```
 
 This is what published `io.github.forgeprint/forgeprint` 0.2.1 on 2026-09-22.
