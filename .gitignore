@@ -21,3 +21,7 @@ id_ed25519
 
 # Release check logs, written when `forgeprint release` fails so the output survives.
 docs/releases/.check-*.log
+
+# JetBrains project files: per-machine state, and `workspace.xml` carries local
+# filesystem paths, which §5b keeps out of a public repository.
+.idea/
