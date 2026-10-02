@@ -4,8 +4,16 @@ Thank you for considering a contribution. This document is the contract: a pull
 request that follows it gets reviewed quickly, and one that does not gets sent
 back with a list.
 
-> **Status: pre-release.** The catalog is still empty and parts of the tooling
-> land in later phases. Commands that do not exist yet are marked below.
+> **Status on 2026-10-02.** The catalog holds 45 blueprints, 45 experts, 17
+> crews and 45 integrations, and every command named below exists. Five
+> blueprints are `official`; everything else is `community`, and most of it was
+> drafted by a tool rather than lived through
+> ([ADR 0011](docs/decisions/0011-generated-blueprints.md)). An entry you
+> actually use, and correct, is worth more to this catalog than a new one.
+
+New here? [`docs/creator-kit.md`](docs/creator-kit.md) is the shorter way in:
+what is missing, what your name gets attached to, and what is already refused.
+This document is the contract it points at.
 
 Everything in this repository is written in **English** — code, comments,
 commits, issues, blueprints. Translations have exactly one home, described in
@@ -28,7 +36,7 @@ folder is one contribution, whichever kind it is.
 | **Blueprint**   | What are you building?              | `blueprints/<slug>/`   | [`blueprint-author`](skills/blueprint-author/SKILL.md) |
 | **Expert**      | How should the agent work?          | `experts/<slug>/`      | [`expert-author`](skills/expert-author/SKILL.md)       |
 | **Crew**        | Who belongs together on this job?   | `crews/<slug>/`        | [`crew-author`](skills/crew-author/SKILL.md)           |
-| **Integration** | How do I install this tool, safely? | `integrations/<slug>/` | —                                                      |
+| **Integration** | How do I install this tool, safely? | `integrations/<slug>/` | no skill yet — CLAUDE.md §3.1b                         |
 
 Two smaller contributions are worth knowing about before you write anything
 large:
