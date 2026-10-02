@@ -1,0 +1,20 @@
+schema: 1
+slug: flutter-mobile-app
+name: 'Flutter Mobile App'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Flutter 3.47 with Riverpod 3, go_router typed routes, rules in plain Dart, 36 tests including the accessibility guideline matchers, and a release web build as the proof.'
+stack: [flutter]
+languages: [dart]
+platforms: [ios, android, web]
+distribution: [free, paid, internal]
+project_type: mobile
+audience: [intermediate]
+requirements: [testing, ci]
+agents: [claude-code]
+requires_tools: [flutter>=3.47.5, dart>=3.13.4]
+recommended_experts: [flutter-mobile-engineer]
+deprecated: false
+supersedes: null
