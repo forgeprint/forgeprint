@@ -284,6 +284,7 @@ Transparency is what earns trust, so these are not optional:
 - `gitleaks` runs as a pre-commit hook, and `forgeprint lint-setup` scans blueprint files for secret patterns.
 - **Read the diff before every commit** and ask whether anything above is in it. Unsure means do not commit; ask the maintainer.
 - GitHub push protection is on. Do not rely on it — catch it locally, because all push protection does is refuse the push after the commit already exists.
+- **A commit carries an email too.** The author, the committer and the `Signed-off-by` line all use `aliosmanmho@users.noreply.github.com`. A machine whose global git config holds a personal address will put it in every commit, and a squash merge does not remove it from the pull request branch.
 
 ---
 
@@ -297,6 +298,21 @@ A blueprint is a design somebody else will build on. It is reviewed as a design,
 - `critical` or `high` open findings mean the blueprint cannot be `tier: official`.
 - The deterministic half of the checklist belongs in `forgeprint lint-setup` — running as root, a `latest` tag, an unpinned version, `http` where `https` is meant, wildcard CORS, a secret in code. What needs judgment stays in the skill.
 - The reference list is re-checked every 90 days; the roadmap carries it.
+
+---
+
+## 5d. Working from a fresh clone
+
+What a new checkout needs, and the few things that have cost a session's time before.
+
+- **Set up:** `pnpm install --frozen-lockfile && pnpm run build`. Node ≥ 20 and pnpm; everything else a blueprint needs belongs to that blueprint's own recipe, not to this repository.
+- **Set the commit identity before the first commit** (§5b): `git config user.email aliosmanmho@users.noreply.github.com`.
+- **`docs/` is generated.** `forgeprint build-index` and `node packages/site/dist/bin.js` write it, and it is committed (§4). Every unit pull request therefore rewrites the same few files, so **each merge conflicts every other open pull request**. The fix is mechanical, not a judgement: rebuild the branch on the new `main`, take the unit's own folder from the branch, regenerate `docs/`, and force-push with lease. Nothing in a unit folder actually conflicts.
+- **The sign-off must name the commit's own author**, and it has to sit in the same trailer block as any `Co-authored-by` line, with no blank line between them. Git reads only the last paragraph as trailers, and the DCO check reads what git reads.
+- **CI installs the toolchains**, pinned by SHA in `.github/workflows/setup-test.yml`: .NET, Python, Go, Java, PHP, Ruby, Rust, Flutter, Elixir/OTP and `uv`. A recipe that needs something else needs a pull request against that workflow first, or its `setup-test` will fail on the tool check and say so.
+- **A pull request's `setup-test` runs only the first value of each `options` field.** The rest run in the scheduled `--all-options` job, so run every value locally before opening the pull request.
+- **On Windows**, `forgeprint test-setup` needs Git Bash and says so through `FORGEPRINT_BASH`. Vite and Vitest can fail when the temp directory is an 8.3 short-form path (the kind with a `~1` in it); set `TEMP`/`TMP` to the long form for that run.
+- **Work in a git worktree** when the main checkout belongs to the maintainer, and keep one writer per worktree. Two processes rebuilding the same branch in one worktree have closed a pull request by accident.
 
 ---
 
