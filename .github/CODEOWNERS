@@ -33,6 +33,7 @@
 /blueprints/node-cli/ @aliosmanmho
 /blueprints/nuxt-app/ @aliosmanmho
 /blueprints/phaser-web-game/ @aliosmanmho
+/blueprints/phoenix-liveview-app/ @aliosmanmho
 /blueprints/python-background-worker/ @aliosmanmho
 /blueprints/python-cli/ @aliosmanmho
 /blueprints/python-library/ @aliosmanmho
