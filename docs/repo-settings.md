@@ -201,5 +201,16 @@ issue.
 Commits made through the GitHub web interface are required to carry a DCO
 sign-off. Commits made from a terminal are signed off with `git commit -s`.
 
-Enforcement is by convention today. A `Signed-off-by` check moves into the CLI
-and the workflows later, so that it is verified the same way locally and in CI.
+A DCO check now runs on every pull request and reports one per commit, so
+enforcement is no longer by convention. Two things make it fail on a commit
+that looks signed off:
+
+- **The sign-off has to name the commit's own author**, both the name and the
+  email. A sign-off pasted from another commit, or written with a different
+  spelling of the name, is reported as missing.
+- **It has to be a trailer.** Git reads only the last paragraph of the message
+  as trailers, so `Signed-off-by` and `Co-authored-by` belong in one block with
+  no blank line between them. A blank line turns the sign-off into body text.
+
+Rewriting a commit message — resynchronising a branch after a merge, for
+instance — drops the sign-off unless the tool doing it puts the line back.
