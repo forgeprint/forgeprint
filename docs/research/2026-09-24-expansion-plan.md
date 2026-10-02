@@ -238,10 +238,16 @@ that names sequential, small and same-file work.
 
 All fifteen were built once their members were on `main` (D33), which the
 merge order made true in one sitting. With `flutter-mobile-app`,
-`phoenix-liveview-app` and `mcp-for-blender` open, one box is left: `azure-mcp`,
-whose npm `latest` was still `3.0.0-beta.47` on 2026-09-30. A 2.0.5 exists, but
-it has had no release since 2026-07-10 while the 3.x betas continued, so
-pinning it would pin the line the publisher left behind. D16 stands.
+`phoenix-liveview-app` and `mcp-for-blender` merged, one box is left:
+`azure-mcp`, whose npm `latest` was still `3.0.0-beta.47` on 2026-09-30. A
+2.0.5 exists, but it has had no release since 2026-07-10 while the 3.x betas
+continued, so pinning it would pin the line the publisher left behind. D16
+stands.
+
+Re-checked 2026-10-02: `latest` is `3.0.0-beta.49`, published that same day,
+and 2.0.5 is still the newest non-prerelease. Three betas in three days against
+nothing on the 2.x line in nearly three months is the hold holding, not the
+hold going stale.
 
 ---
 
