@@ -1,5 +1,13 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { createInterface } from 'node:readline/promises';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { listBlueprintSlugs } from './catalog.js';
 import { repoPaths } from './paths.js';
@@ -21,8 +29,10 @@ import {
   readWorkspacePackages,
   registryVersion,
   run,
+  tarballName,
   type DistributionManifest,
   type PublishOutcome,
+  type Publisher,
   type WorkspacePackage,
 } from './release.js';
 
@@ -46,6 +56,16 @@ export interface ReleaseOptions {
   dryRun?: boolean;
   /** Wait while a workflow is still running, rather than refusing. Default on. */
   wait?: boolean;
+  /**
+   * Tag and release, but leave npm to the release workflow.
+   *
+   * The tag push is what starts that workflow, so this is the normal path once
+   * a trusted publisher is configured: this command stops at the tag, the
+   * workflow publishes with no token anywhere, and rerunning this afterwards
+   * finishes the MCP Registry step — which needs the npm package to exist
+   * first, and cannot be done by a workflow.
+   */
+  skipNpm?: boolean;
 }
 
 const say = (line = ''): void => {
@@ -187,6 +207,42 @@ async function waitForCi(
   }
 }
 
+/** The maintainer's path: one command, authenticated by the user-config token. */
+function publishWithPnpm(pkg: WorkspacePackage, root: string): { ok: boolean; output: string } {
+  return run('pnpm', ['publish', '--filter', pkg.name, '--access', 'public'], root);
+}
+
+/**
+ * The workflow's path: pack with pnpm, publish the tarball with npm.
+ *
+ * Neither tool can do both halves. Only pnpm rewrites `workspace:*` into a
+ * real version as it packs — publishing `forgeprint-mcp` with plain `npm`
+ * ships a `package.json` nobody can install — and only the npm CLI is what
+ * npm documents trusted publishing for, so only it performs the OIDC
+ * exchange and attaches provenance.
+ *
+ * No token is involved, which is the whole point: there is nothing here to
+ * leak, expire, or be a stage-only token nobody can tell apart from a working
+ * one (§7 of docs/releasing.md, at length).
+ */
+function publishWithNpm(pkg: WorkspacePackage, root: string): { ok: boolean; output: string } {
+  const dir = mkdtempSync(join(tmpdir(), 'forgeprint-pack-'));
+  const packed = run('pnpm', ['pack', '--pack-destination', dir], pkg.dir);
+  if (!packed.ok) return packed;
+
+  const tarball = join(dir, tarballName(pkg.name, pkg.version));
+  if (!existsSync(tarball)) {
+    return {
+      ok: false,
+      output:
+        `pnpm pack did not write ${tarball}. What it said:\n${packed.output.trim()}\n` +
+        "The name is npm's own rule rather than pack's output; if pack has changed where it " +
+        'writes, tarballName in release.ts is what needs to change.',
+    };
+  }
+  return run('npm', ['publish', tarball, '--access', 'public'], root);
+}
+
 /**
  * Publish one package and then ask the registry what actually happened.
  *
@@ -199,12 +255,13 @@ async function publishOne(
   pkg: WorkspacePackage,
   root: string,
   version: string,
+  publisher: Publisher = 'pnpm',
 ): Promise<PublishOutcome> {
   const before = registryVersion(pkg.name, root);
   if (before === version) return { kind: 'already-published' };
 
   say(`  publishing ${pkg.name}@${version}`);
-  const result = run('pnpm', ['publish', '--filter', pkg.name, '--access', 'public'], root);
+  const result = publisher === 'pnpm' ? publishWithPnpm(pkg, root) : publishWithNpm(pkg, root);
   const outcome = result.ok
     ? ({ kind: 'published' } as const)
     : classifyPublishError(result.output);
@@ -484,9 +541,11 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
   say(`  tag      ${tag} -> ${run('git', ['rev-parse', '--short', 'HEAD'], root).output.trim()}`);
   say(`  release  ${tag} from ${notes}`);
   say(
-    pending.length === 0
-      ? '  npm      nothing to publish; the registry already serves every package'
-      : `  npm      ${pending.map((p) => p.name).join(', ')}`,
+    options.skipNpm === true
+      ? '  npm      left to the release workflow, which the tag push starts'
+      : pending.length === 0
+        ? '  npm      nothing to publish; the registry already serves every package'
+        : `  npm      ${pending.map((p) => p.name).join(', ')}`,
   );
   say();
   if (options.dryRun) return;
@@ -530,6 +589,20 @@ ${pushed.output.trim()}`);
       fail(`the tag is pushed but the release was not created; notes are in ${notes}`);
     }
     say(`  ok     release created (${notesBody.split('\n').length} lines of notes)`);
+  }
+
+  // The MCP Registry proves ownership by reading `mcpName` out of the published
+  // npm package, so it cannot go first. With --skip-npm the package is not there
+  // yet: the workflow is still publishing it, and this stops here rather than
+  // telling the registry about a version npm does not serve.
+  if (options.skipNpm === true) {
+    say();
+    say("Tagged and released. npm is the release workflow's job now:");
+    say(`  gh run watch                          (or the Actions tab, workflow "release")`);
+    say(
+      `  forgeprint release ${version}${' '.repeat(Math.max(1, 21 - version.length))}(once it is green — finishes the MCP Registry)`,
+    );
+    return;
   }
 
   for (const pkg of pending) {
@@ -581,4 +654,108 @@ ${pushed.output.trim()}`);
   say();
   say('Released. What is left is outside this command:');
   say('  docs/dogfood.md                       (if a first-time user would notice this release)');
+}
+
+export interface PublishOptions {
+  version: string;
+  /** Use npm trusted publishing (OIDC) rather than a token. The workflow's path. */
+  trusted?: boolean;
+}
+
+/**
+ * Publish the packages to npm, and nothing else.
+ *
+ * `release` tags, writes a GitHub release, publishes, and tells the MCP
+ * Registry. This is only the npm step, pulled out so a workflow can be the
+ * thing that runs it on a tag — which is the point of trusted publishing: the
+ * token stops living on anybody's machine.
+ *
+ * It holds no logic the workflow could have held instead (ADR 0002): which
+ * packages, in what order, whether each is already served, and what an error
+ * means are all decided here, so a maintainer running this on a laptop gets
+ * the same answer the workflow gets. The YAML calls one command.
+ *
+ * The order packages publish in is their name order, which puts `forgeprint`
+ * before `forgeprint-mcp` — the dependency before its dependent. npm does not
+ * check that a dependency exists at publish time, so this is tidiness rather
+ * than a requirement, but it is the order somebody debugging would expect.
+ */
+export async function publish(root: string, options: PublishOptions): Promise<void> {
+  const { version } = options;
+  if (!isReleaseVersion(version)) fail(`not a release version: ${version}`);
+
+  const publisher: Publisher = options.trusted === true ? 'npm-trusted' : 'pnpm';
+  const packages = publishable(readWorkspacePackages(root));
+  if (packages.length === 0) fail('no publishable packages found under packages/');
+
+  say(`Publishing Forgeprint ${version} to npm (${publisher})`);
+  say();
+
+  // The same version and changelog check the release command runs. A workflow
+  // fires on whatever tag was pushed, so "the tag says 0.4.0 and the packages
+  // say 0.3.1" is a thing that can actually arrive here.
+  const problems = [
+    ...checkVersions(packages, version, (p) => readChangelog(p.dir)),
+    ...checkDistributionVersions(readDistributionManifests(root), version),
+  ];
+  if (problems.length > 0) {
+    for (const p of problems) process.stderr.write(`error  ${p.package}: ${p.problem}\n`);
+    fail(`the tag says ${version} and the repository does not agree`);
+  }
+  say(`  ok     ${packages.length} package(s) at ${version}, each with a changelog entry`);
+
+  const pending = packages.filter((p) => registryVersion(p.name, root) !== version);
+  if (pending.length === 0) {
+    say('  ok     nothing to publish; the registry already serves every package');
+    return;
+  }
+
+  for (const pkg of pending) {
+    const outcome = await publishOne(pkg, root, version, publisher);
+    switch (outcome.kind) {
+      case 'published':
+        say(`  ok     ${pkg.name}@${version} published`);
+        break;
+      case 'already-published':
+        say(`  ok     ${pkg.name}@${version} was already on the registry`);
+        break;
+      case 'unauthorized':
+        fail(
+          publisher === 'npm-trusted'
+            ? `npm refused the OIDC exchange while publishing ${pkg.name}.\n` +
+                'This is configuration, not credentials: npm matches a trusted publisher on the ' +
+                'organization, the repository and the workflow *filename* — all case-sensitive, ' +
+                'and the filename only, not its path. Check that npmjs.com lists this repository ' +
+                'and release.yml as a trusted publisher for this package, and that the job grants ' +
+                'id-token: write. See docs/releasing.md.'
+            : `npm rejected your credentials while publishing ${pkg.name}. ` +
+                'Run `npm whoami`; a 401 there means log in again.',
+        );
+        break;
+      case 'stage-only':
+        fail(
+          `npm refused to publish ${pkg.name}: only staging was allowed (403 E_STAGE_REQUIRED).\n` +
+            (publisher === 'npm-trusted'
+              ? 'Under trusted publishing this is the "allowed actions" setting on the publisher: ' +
+                'it has to permit npm publish, not only npm stage publish.'
+              : 'Generate a granular access token with "Read and write" — the option with nothing ' +
+                'in parentheses — and leave "Bypass two-factor authentication" unchecked. ' +
+                'See docs/releasing.md §7.'),
+        );
+        break;
+      case 'needs-interactive':
+        fail(
+          `npm asked ${pkg.name} for a browser 2FA challenge, which cannot happen inside this ` +
+            'command. Trusted publishing exists so that this does not: a workflow has no browser. ' +
+            `By hand: pnpm publish --filter ${pkg.name} --access public`,
+        );
+        break;
+      case 'failed':
+        fail(`${pkg.name} did not publish: ${outcome.detail}`);
+    }
+  }
+
+  say();
+  say('Published. The MCP Registry is a separate step, and needs the maintainer:');
+  say('  forgeprint release <version>          (npm is already done; it finishes the registry)');
 }

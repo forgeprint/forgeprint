@@ -20,7 +20,7 @@ import { lintSetup } from './lint-setup.js';
 import type { Manifest } from './manifest.js';
 import { checkOptions, resolveSetupOptions } from './options.js';
 import { parseRecipe } from './recipe.js';
-import { release } from './release-run.js';
+import { publish, release } from './release-run.js';
 import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
 import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
 import {
@@ -476,6 +476,7 @@ ${String(problems.length)} render(s) failed`);
     .option('--skip-ci', 'do not ask GitHub whether CI is green on HEAD')
     .option('--no-wait', 'do not wait for a workflow that is still running')
     .option('--dry-run', 'print the plan and stop')
+    .option('--skip-npm', 'tag and release only; the release workflow publishes to npm')
     .option('-y, --yes', 'do not ask for confirmation')
     .action(
       async (
@@ -486,11 +487,21 @@ ${String(problems.length)} render(s) failed`);
           dryRun?: boolean;
           yes?: boolean;
           wait?: boolean;
+          skipNpm?: boolean;
         },
       ) => {
         await release(rootOf(), { version, ...options });
       },
     );
+
+  program
+    .command('publish')
+    .description('publish the packages to npm, and nothing else')
+    .argument('<version>', 'the version every published package is at, e.g. 0.3.0')
+    .option('--trusted', 'authenticate with npm trusted publishing (OIDC); no token')
+    .action(async (version: string, options: { trusted?: boolean }) => {
+      await publish(rootOf(), { version, ...options });
+    });
 
   return program;
 }

@@ -136,6 +136,31 @@ export function publishable(packages: WorkspacePackage[]): WorkspacePackage[] {
 }
 
 /**
+ * How a tarball gets to npm. The difference is authentication, not packing.
+ *
+ * `pnpm` is the maintainer's path: a granular access token in the user config,
+ * and `pnpm publish` reads the workspace to rewrite `workspace:*` as it packs.
+ *
+ * `npm-trusted` is the workflow's: no token anywhere, an OIDC exchange npm's
+ * trusted publishing performs, and provenance npm attaches by itself. It is
+ * two commands instead of one because each half can only be done by one of
+ * the two tools — `pnpm pack` is what rewrites `workspace:*`, and `npm publish`
+ * is what npm documents trusted publishing for.
+ */
+export type Publisher = 'pnpm' | 'npm-trusted';
+
+/**
+ * The file `pnpm pack` writes for a package, by npm's own naming rule.
+ *
+ * Computed rather than read out of the command's output: pack prints a banner
+ * around the path, and a banner is the kind of thing that changes between
+ * versions without anybody calling it a breaking change.
+ */
+export function tarballName(name: string, version: string): string {
+  return `${name.replace(/^@/, '').replace(/\//g, '-')}-${version}.tgz`;
+}
+
+/**
  * Whether a CHANGELOG has an entry for this version.
  *
  * The same rule blueprints live under (rule 17): a bump without an entry is a
