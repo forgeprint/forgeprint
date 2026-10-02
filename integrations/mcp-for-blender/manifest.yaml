@@ -1,0 +1,21 @@
+schema: 1
+slug: mcp-for-blender
+name: 'MCP for Blender'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'Drive a running Blender from an agent: read the scene, take viewport screenshots, fetch assets, and run Python inside Blender. Safe mode and telemetry-off are set here.'
+kind: mcp
+upstream: https://github.com/ahujasid/mcp-for-blender
+upstream_version: '2.1.1'
+verified_on: 2026-09-30
+install:
+  claude-code: 'claude mcp add-json blender ''{"command":"uvx","args":["mcp-for-blender==2.1.1"],"env":{"BLENDER_MCP_SAFE_MODE":"1","DISABLE_TELEMETRY":"1"}}'''
+  codex: 'codex mcp add blender --env "BLENDER_MCP_SAFE_MODE=1" --env "DISABLE_TELEMETRY=1" -- uvx mcp-for-blender==2.1.1'
+  gemini-cli: 'gemini mcp add blender -e "BLENDER_MCP_SAFE_MODE=1" -e "DISABLE_TELEMETRY=1" uvx mcp-for-blender==2.1.1'
+permissions_summary: 'Runs Python inside your running Blender and edits the open scene; safe mode restricts that Python to an allowlist but is not a sandbox. Reads the scene and the viewport, downloads assets from third-party services, and sends usage events to the publisher unless telemetry is turned off.'
+fits: [design, software]
+agents: [claude-code]
+deprecated: false
+supersedes: null
