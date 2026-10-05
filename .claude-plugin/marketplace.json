@@ -25,6 +25,17 @@
       "name": "expert-author",
       "source": "./skills/expert-author",
       "description": "Turn how somebody actually works into a Forgeprint expert that passes the quality gate."
+    },
+    {
+      "name": "forgelore",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/forgeprint/forgelore.git",
+        "path": "plugin"
+      },
+      "description": "Remembers fixes and dead ends, and injects one only when the same error comes back. Requires the forgelore binary on your PATH.",
+      "category": "memory",
+      "tags": ["memory", "errors", "tokens"]
     }
   ]
 }
