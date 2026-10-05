@@ -1,0 +1,50 @@
+# Does this repository's Actions environment have what npm trusted publishing
+# needs? Nothing else, and nothing published.
+#
+# Two releases were burned finding this out the expensive way. `release.yml`
+# only runs from a tag, so every hypothesis about why `npm publish` answered
+# ENEEDAUTH cost a version number — and `npm publish --dry-run` does not
+# authenticate, so it proves nothing about the exchange.
+#
+# This answers the two questions that do not need a publish:
+#   - which npm actually runs (trusted publishing needs 11.5.1 or later, and
+#     Node 22 bundles npm 10, which cannot do it at all);
+#   - whether the OIDC request variables are present, which is what
+#     `id-token: write` is for. Without them npm has nothing to exchange and
+#     says ENEEDAUTH, which reads exactly like a missing login.
+#
+# It prints whether the variables are set, never their values: the request
+# token is a credential.
+#
+# What it cannot answer is whether npmjs.com accepts the exchange. Only a real
+# publish does that.
+
+name: oidc-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Install npm
+        run: npm install --global npm@12.2.0
+
+      - name: Report
+        run: |
+          echo "node:            $(node -v)"
+          echo "npm:             $(npm -v)"
+          echo "npm resolves to: $(command -v npm)"
+          echo "request url set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}${ACTIONS_ID_TOKEN_REQUEST_URL:-no}"
+          echo "request token set: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-no}"
+          echo "npm userconfig:  ${NPM_CONFIG_USERCONFIG:-unset}"
+          echo "auth lines in effect: $(npm config list 2>/dev/null | grep -c authToken || true)"
