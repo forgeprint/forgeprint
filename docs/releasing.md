@@ -27,6 +27,7 @@ stopped halfway finishes by running the same command.
 | `--skip-check` | CI already ran `pnpm run check` on this commit           |
 | `--skip-ci`    | Actions is unavailable and you verified it yourself (§4) |
 | `--no-wait`    | refuse rather than wait for a workflow still running     |
+| `--skip-npm`   | let the release workflow publish to npm (§7)             |
 | `-y`           | do not ask; for a plan you have already read             |
 
 One thing stays outside it: the [dogfood test](dogfood.md), which it prints
@@ -196,9 +197,68 @@ install. Confirm it landed right:
 npm view forgeprint-mcp dependencies.forgeprint
 ```
 
-Publishing is manual today. Replacing it with npm trusted publishing — Actions
-OIDC and provenance — is on the roadmap; until then the token stays on the
-maintainer's machine.
+### Two ways to publish, and which one to use
+
+| Path                     | Command                                             | Authentication                 |
+| ------------------------ | --------------------------------------------------- | ------------------------------ |
+| **Workflow** (preferred) | `pnpm forgeprint release <v> --skip-npm`, then wait | npm trusted publishing (OIDC)  |
+| **Laptop** (§4 fallback) | `pnpm forgeprint release <v>`                       | A granular access token, below |
+
+The workflow path exists so that no token has to exist. `--skip-npm` stops the
+release command after the tag and the GitHub release; pushing the tag is what
+starts [`.github/workflows/release.yml`](../.github/workflows/release.yml),
+which runs the gate again and then `forgeprint publish <v> --trusted`. npm
+exchanges the job's OIDC token for publish rights and attaches provenance
+itself — on a public repository you get provenance whether or not you ask.
+
+Then finish the release, because the MCP Registry cannot be done by a workflow:
+
+```bash
+gh run watch                     # or the Actions tab, workflow "release"
+pnpm forgeprint release 0.3.0    # npm is already served, so this does the registry step
+```
+
+That second run publishes nothing: every package is already on the registry, so
+it skips to the MCP Registry, which proves ownership by reading `mcpName` out of
+the **published** npm package and therefore could never have gone first.
+
+The laptop path is unchanged and is not deprecated. Actions being unavailable
+delays a release; it does not block one (§4).
+
+#### The one-time setup, which only the maintainer can do
+
+Nothing in this repository can configure the other end. On npmjs.com, for each
+of `forgeprint` and `forgeprint-mcp`, under **Settings → Trusted publisher**:
+
+| Field             | Value                      |
+| ----------------- | -------------------------- |
+| Organization      | `forgeprint`               |
+| Repository        | `forgeprint`               |
+| Workflow filename | `release.yml`              |
+| Environment       | leave empty                |
+| Allowed actions   | must include `npm publish` |
+
+Every field is case-sensitive, and the workflow field is the **filename**, not
+the path — `release.yml`, never `.github/workflows/release.yml`. Getting it
+wrong produces `E404 Not Found - PUT https://registry.npmjs.org/<package>`,
+which reads as "no such package" and means "the OIDC exchange was refused".
+`forgeprint publish` says so when it sees a 401 or 404 from a `--trusted` run,
+because that error message has cost other projects an afternoon.
+
+Two things are worth knowing before the first attempt:
+
+- **A brand-new package cannot be published this way.** A trusted publisher is
+  configured on a package that exists, so the first version of anything new
+  goes up from a laptop with a token. Both current packages exist.
+- **OIDC authenticates `npm publish` only** — not `npm dist-tag`, `npm whoami`
+  or `npm deprecate`. Those still need a token when they are needed.
+
+Requirements, which the workflow already pins: npm CLI 11.5.1 or later and Node
+22.14.0 or later. Node 22 bundles npm 10, so the workflow installs npm itself;
+leaving that out is the other way this fails.
+
+Until the trusted publishers are configured, `--skip-npm` has nothing to hand
+the work to. Use the laptop path.
 
 ### The token, which is where the time goes
 

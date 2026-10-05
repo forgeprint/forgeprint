@@ -14,6 +14,7 @@ import {
   publishable,
   publishedCodeUnchanged,
   quoteForShell,
+  tarballName,
   type DistributionManifest,
   type WorkspacePackage,
 } from './release.js';
@@ -188,6 +189,20 @@ describe('publishable', () => {
   it('leaves out the private packages, which npm must never see', () => {
     const names = publishable([pkg('a', '1.0.0'), pkg('site', '1.0.0', true)]).map((p) => p.name);
     assert.deepEqual(names, ['a']);
+  });
+});
+
+describe('tarballName', () => {
+  it('names an unscoped package the way npm packs it', () => {
+    assert.equal(tarballName('forgeprint-mcp', '0.3.1'), 'forgeprint-mcp-0.3.1.tgz');
+  });
+
+  it('flattens a scope, because a tarball has no directories', () => {
+    assert.equal(tarballName('@forgeprint/site', '1.0.0'), 'forgeprint-site-1.0.0.tgz');
+  });
+
+  it('keeps a prerelease version intact', () => {
+    assert.equal(tarballName('forgeprint', '1.0.0-rc.1'), 'forgeprint-1.0.0-rc.1.tgz');
   });
 });
 

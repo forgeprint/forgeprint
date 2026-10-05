@@ -1,0 +1,72 @@
+# Publishing to npm from a tag, with no token anywhere.
+#
+# npm trusted publishing: the job asks GitHub for a short-lived OIDC token, npm
+# checks it against a trusted publisher configured on npmjs.com, and attaches
+# provenance by itself. Nothing here is a secret, so there is nothing to leak,
+# nothing to expire between releases, and no way to end up with the stage-only
+# token that `docs/releasing.md` §7 spends a page on.
+#
+# **The filename is load-bearing.** npm matches a trusted publisher on the
+# organization, the repository and this file's *name* — `release.yml`, not its
+# path — and every field is case-sensitive. Renaming this file breaks publishing
+# until somebody edits the publisher on npmjs.com to match.
+#
+# §4 still holds: this is the convenient path, not the only one. Every step is a
+# command that runs on a laptop, and `forgeprint release <version>` publishes
+# without Actions at all. Actions being unavailable delays a release; it does
+# not block one.
+#
+# Actions are pinned to full commit SHAs because a tag can be moved and a SHA
+# cannot; the repository requires it. See docs/repo-settings.md.
+
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+# contents: read is all a publish needs — the tag and the release already exist
+# by the time this runs, because pushing the tag is what started it.
+permissions:
+  contents: read
+  id-token: write
+
+# Never cancel a publish half-way. A cancelled `npm publish` is the one failure
+# mode where the registry's state and the log disagree.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Trusted publishing needs Node 22.14.0 or later. `22` resolves to the
+      # newest 22.x, which has been past that since 22.14.0 itself.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Node 22 bundles npm 10, and trusted publishing needs 11.5.1 or later —
+      # so the bundled one cannot do this at all. pnpm is pinned to the version
+      # `packageManager` names, as everywhere else.
+      - name: Install npm and pnpm
+        run: npm install --global npm@12.2.0 pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # A tag can point at any commit, including one that never passed a pull
+      # request. The gate runs again rather than being assumed.
+      - name: Check
+        run: pnpm run check
+
+      # `${GITHUB_REF_NAME#v}` turns v0.3.1 into 0.3.1. Everything else — which
+      # packages, in what order, which are already served, and what each npm
+      # error means — is in the command, not in this file (ADR 0002), so a
+      # maintainer gets the same answer locally.
+      - name: Publish
+        run: pnpm forgeprint publish "${GITHUB_REF_NAME#v}" --trusted

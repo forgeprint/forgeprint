@@ -345,7 +345,7 @@ a decision behind an empty box is how the decision gets made again.
 - [x] Pages site (`docs/`, branch deploy, no Actions required)
 - [x] Workflows (active once Actions is available): validate, similarity, setup-test matrix, build-pages
 - [x] Compatibility tests for `npx skills add` / `gh skills install` (ADR 0006)
-- [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand. `forgeprint release` cut the manual work down; the token on the maintainer's machine is what is left
+- [ ] npm trusted publishing (Actions OIDC + provenance), so releases are published from a tag instead of by hand. Built: `.github/workflows/release.yml`, `forgeprint publish --trusted` (pack with pnpm so `workspace:*` is rewritten, publish the tarball with npm so the OIDC exchange happens), and `release --skip-npm` to hand npm over and stop at the tag. What is left is the half this repository cannot do: a trusted publisher on npmjs.com for each package, matched on the workflow **filename** ([releasing.md §7](docs/releasing.md)), and one release that proves it end to end. The box ticks then, not now
 - [ ] Re-check `docs/review-standards.md` every 90 days: each reference's current version, and whether a new one belongs on the list (§5c). First one due 2026-12-21
 
 ### Phase E — Experts, crews, integrations, agent independence
