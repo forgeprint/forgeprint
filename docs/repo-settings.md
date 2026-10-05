@@ -130,6 +130,41 @@ Workflows will only ever call the CLI commands. They contain no logic of their
 own, so that every check also runs on a laptop — see
 [ADR 0002](decisions/0002-actions-optional.md).
 
+### Notifications, because a red `main` is not self-announcing
+
+| Setting                         | State                   |
+| ------------------------------- | ----------------------- |
+| Notifications → Actions (email) | **On**, from 2026-10-05 |
+
+Turned on after `main` stayed red for a week with nobody noticing. The record,
+because it is the argument for keeping this on:
+
+| When       | Signal                                    | What it said                                     |
+| ---------- | ----------------------------------------- | ------------------------------------------------ |
+| 2026-09-28 | the weekly scheduled `setup-test`         | `rails-web-app` step 14 failed — run 36423490597 |
+| 2026-10-02 | the push to `main` after three merges     | the same step — run 36948349015                  |
+| 2026-10-05 | a pull request touching `packages/cli/**` | the same step, found at last                     |
+
+Nothing was broken by the second or third signal; all three were the same
+defect, from a recipe that had merged while `setup-test` was waiting for Ruby
+on the runner and so had never once been executed. **The canary worked.** The
+Monday run fired, went red, and said exactly what was wrong — seven days
+before anybody read it.
+
+Two things it is worth being clear about:
+
+- **The desktop Auto-fix monitor does not cover this.** It watches pull
+  requests, and a push to `main` is not one. Neither is a scheduled run. So
+  the only thing standing between a red `main` and a week of silence is this
+  email.
+- **It is a notification, not a gate.** Nothing blocks on it, and nothing in
+  the repository depends on it, which is how ADR 0002 wants it. It only
+  shortens the gap between a check going red and somebody knowing.
+
+A pull request's `setup-test` runs the first value of each `options` field; the
+`main` and scheduled runs take every combination. So a red that only the full
+matrix finds will arrive by this email and by no other route.
+
 ---
 
 ## Pages
