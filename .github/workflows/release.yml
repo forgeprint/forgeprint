@@ -45,10 +45,18 @@ jobs:
 
       # Trusted publishing needs Node 22.14.0 or later. `22` resolves to the
       # newest 22.x, which has been past that since 22.14.0 itself.
+      # No `registry-url`. Given one, setup-node writes an .npmrc holding
+      # `_authToken=${NODE_AUTH_TOKEN}` and points NPM_CONFIG_USERCONFIG at it,
+      # so npm finds an auth token already configured — an empty one, since
+      # trusted publishing sets no NODE_AUTH_TOKEN — and sends that instead of
+      # asking GitHub for an OIDC token. The exchange never happens and the
+      # registry answers ENEEDAUTH. 0.4.0's publish step failed on this job with
+      # npm's own output discarded, so this is the leading suspect rather than a
+      # proved cause; the discarding is fixed in the same pull request.
+      # registry.npmjs.org is npm's default, so nothing is lost by omitting it.
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
 
       # Node 22 bundles npm 10, and trusted publishing needs 11.5.1 or later —
       # so the bundled one cannot do this at all. pnpm is pinned to the version

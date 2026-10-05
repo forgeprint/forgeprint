@@ -422,3 +422,31 @@ describe('parseServerManifest', () => {
     assert.throws(() => parseServerManifest('{"version":120}'), /server\.json/);
   });
 });
+
+describe('classifyPublishError, no credentials against refused ones', () => {
+  // These two used to be one outcome with one message, and that message
+  // described only the second. They need different repairs: the first means
+  // npm never asked GitHub for a token, the second that the registry turned
+  // the token down.
+  it('reads ENEEDAUTH as having no credentials at all', () => {
+    assert.equal(
+      classifyPublishError('npm error code ENEEDAUTH\nnpm error need auth').kind,
+      'no-auth',
+    );
+  });
+
+  it('reads a 404 as a refused request', () => {
+    assert.equal(
+      classifyPublishError('npm error 404 Not Found - PUT https://registry.npmjs.org/forgeprint')
+        .kind,
+      'unauthorized',
+    );
+  });
+
+  it('reads a 401 as a refused request', () => {
+    assert.equal(
+      classifyPublishError('npm error code E401\nnpm error 401 Unauthorized').kind,
+      'unauthorized',
+    );
+  });
+});
