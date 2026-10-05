@@ -16,6 +16,7 @@ import {
   checkDistributionVersions,
   checkVersions,
   classifyPublishError,
+  decideCi,
   draftNotes,
   failureLines,
   isReleaseVersion,
@@ -544,12 +545,32 @@ export async function release(root: string, options: ReleaseOptions): Promise<vo
   const ci = options.skipCi
     ? { known: false, green: false, detail: 'not checked' }
     : await waitForCi(root, options.wait !== false);
-  if (ci.known && !ci.green) fail(`CI is not green on HEAD — ${ci.detail}`);
-  say(
-    ci.known
-      ? `  ok     CI green on HEAD (${ci.detail})`
-      : `  note   CI state unknown (${ci.detail}); releasing on your own verification`,
-  );
+  switch (decideCi({ skipCi: options.skipCi, known: ci.known, green: ci.green })) {
+    case 'red':
+      fail(`CI is not green on HEAD — ${ci.detail}`);
+      break;
+    case 'green':
+      say(`  ok     CI green on HEAD (${ci.detail})`);
+      break;
+    case 'declared':
+      say('  note   CI not checked (--skip-ci)');
+      break;
+    case 'unverified': {
+      say(`  note   CI state unknown (${ci.detail})`);
+      if (options.yes === true) {
+        fail(
+          'CI could not be verified and --yes cannot answer for you.\n' +
+            'Pass --skip-ci to say you have verified this commit yourself, or drop --yes ' +
+            'and answer the question.',
+        );
+      }
+      if (!(await confirm('CI could not be verified. Tag this commit anyway?'))) {
+        say('stopped');
+        return;
+      }
+      break;
+    }
+  }
 
   // 5. The workspace itself.
   if (!options.skipCheck) {

@@ -3,6 +3,19 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.3 — 2026-10-06
+
+- **A CI state that could not be read is no longer a pass.** `release` printed
+  `CI state unknown` as a note and carried on, so `--yes` tagged 0.4.1 while
+  `setup-test` was still running: `gh` had timed out, and nothing between the
+  note and the tag asked anybody. The four states are now a decision —
+  `red` refuses, `green` proceeds, `--skip-ci` is the maintainer saying they
+  verified it, and unverifiable asks. Releasing without Actions stays possible,
+  because §4 says it must; it just stops being the default.
+- **`--yes` cannot answer that question.** It means "do not ask whether I
+  meant it", not "an unverifiable check counts as verified", so an unverifiable
+  CI with `--yes` is refused and names the flag that does answer it.
+
 ## 0.4.2 — 2026-10-05
 
 What 0.4.0 and 0.4.1 actually failed on, named.

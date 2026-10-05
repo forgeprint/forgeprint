@@ -261,6 +261,25 @@ Three things are worth knowing before the first attempt:
 - **OIDC authenticates `npm publish` only** — not `npm dist-tag`, `npm whoami`
   or `npm deprecate`. Those still need a token when they are needed.
 
+### An unverified CI is a question, not a note
+
+`release` asks GitHub whether CI is green on the commit it is about to tag, and
+there are four answers rather than two:
+
+| Answer            | What `release` does                                           |
+| ----------------- | ------------------------------------------------------------- |
+| failed            | refuses                                                       |
+| green             | proceeds                                                      |
+| `--skip-ci`       | proceeds, and the flag is your statement that you verified it |
+| could not be read | asks, and `--yes` is refused with the flag that answers it    |
+
+The last row is the one that bit. `gh` timing out used to print
+`CI state unknown` and continue, so 0.4.1 was tagged while `setup-test` was
+still running. Releasing without Actions has to stay possible — §4 — so this
+is a question rather than a refusal; it just is not answered by default, and
+`--yes` does not answer it, because "do not ask whether I meant it" is a
+different statement from "an unverifiable check counts as verified".
+
 **Rehearse it before spending a version.** `release.yml` takes a manual run:
 
 ```bash
