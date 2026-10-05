@@ -101,12 +101,30 @@ jobs:
       #        workflow filename.
       #
       # Nothing is published either way and no version number is spent.
+      # Two packages and two npm majors, because one failing run cannot tell a
+      # per-package configuration problem from an account-wide or client-side
+      # one, and that is the question left after the fields on npmjs.com were
+      # confirmed correct.
+      #
+      #   both packages fail the same way -> not the per-package publisher
+      #   one fails, one passes          -> that package's publisher
+      #   npm 11 passes where 12 fails   -> the client, not the configuration
       - name: Rehearse the exchange
         if: github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: |
-          npm pack forgeprint@0.3.1
-          npm publish forgeprint-0.3.1.tgz --access public --loglevel verbose 2>&1 | tail -30
+          rehearse() {
+            echo "::group::$1@$2 with npm $(npm -v)"
+            npm pack "$1@$2" >/dev/null 2>&1 || { echo "pack failed"; echo '::endgroup::'; return; }
+            npm publish "$1-$2.tgz" --access public --loglevel verbose 2>&1 |
+              grep -iE "oidc|token/exchange|ENEEDAUTH|E403|cannot publish|previously published" |
+              head -8
+            echo '::endgroup::'
+          }
+          rehearse forgeprint 0.3.1
+          rehearse forgeprint-mcp 0.3.1
+          npm install --global npm@11 >/dev/null 2>&1
+          rehearse forgeprint 0.3.1
 
       - name: Install dependencies
         if: github.event_name == 'push'
