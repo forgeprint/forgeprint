@@ -359,7 +359,7 @@ a decision behind an empty box is how the decision gets made again.
 - [ ] ~~Crew runtime~~ (`.forgeprint/` workspace, `forgeprint crew *`, hierarchical crews) — **deferred** by ADR 0014. The principles ship as an expert; the runtime waits for Scenario D, an issue trail, or demand, and the ADR says which evidence counts
 
 ### Phase F — Catalog expansion from the 2026-09-24 research
-- [ ] Every candidate the four reports found, in ten phases: groundwork (ADR for per-language experts, taxonomy, pin updates), then experts, integrations, blueprints and crews. The phases, the conflicts decided along the way and the refusals are in [docs/research/2026-09-24-expansion-plan.md](docs/research/2026-09-24-expansion-plan.md); an item is ticked there when its pull request opens
+- [ ] Every candidate the four reports found, in ten phases: groundwork (ADR for per-language experts, taxonomy, pin updates), then experts, integrations, blueprints and crews. The phases, the conflicts decided along the way and the refusals are in [docs/research/2026-09-24-expansion-plan.md](docs/research/2026-09-24-expansion-plan.md); an item is ticked there when its pull request opens. **Every box there is ticked but one:** `azure-mcp`, held by D16 because npm's `latest` is still a beta — re-checked 2026-10-02, and it is. The box stays open while a candidate is outstanding rather than ticking and hiding it
 
 ### Phase 4 — Community
 - [x] Contributor visibility: every blueprint page names and links its maintainer, and the open blueprint requests are listed live (ADR 0007)
