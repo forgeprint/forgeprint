@@ -549,20 +549,61 @@ Git, Docker and curl.
 24. Confirm that the key which decrypts the credentials file is ignored by Git, so it is never committed: `git check-ignore --quiet config/master.key`
     Verify: `grep -qx "/config/master.key" .dockerignore`
 
-25. Build the container image the generator wrote: `docker build --tag rails-web-app-check:dev .`
+25. The generator leaves every production database path commented out — Rails does not presume a location for a SQLite file that has to outlive the container — so a production boot dies inside `db:prepare` with `No database file specified` before anything listens on a port. Write the four paths the image expects, under the `storage` directory it already creates, into `config/database.yml`:
+
+    ```yaml
+    # SQLite in every environment. The production files live under `storage`,
+    # which the image creates and a deployment has to mount as a persistent
+    # volume: a SQLite database left in the container's writable layer is
+    # deleted with the container.
+    default: &default
+      adapter: sqlite3
+      max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+      timeout: 5000
+
+    development:
+      <<: *default
+      database: storage/development.sqlite3
+
+    # Erased and rebuilt by the test run; never point this at another environment.
+    test:
+      <<: *default
+      database: storage/test.sqlite3
+
+    production:
+      primary:
+        <<: *default
+        database: storage/production.sqlite3
+      cache:
+        <<: *default
+        database: storage/production_cache.sqlite3
+        migrations_paths: db/cache_migrate
+      queue:
+        <<: *default
+        database: storage/production_queue.sqlite3
+        migrations_paths: db/queue_migrate
+      cable:
+        <<: *default
+        database: storage/production_cable.sqlite3
+        migrations_paths: db/cable_migrate
+    ```
+
+    Verify: `ruby -ryaml -e 'c = YAML.load_file("config/database.yml", aliases: true)["production"]; exit(%w[primary cache queue cable].all? { |k| c.dig(k, "database").to_s.start_with?("storage/") })'`
+
+26. Build the container image the generator wrote: `docker build --tag rails-web-app-check:dev .`
     Verify: `test "$(docker image inspect --format '{{.Config.User}}' rails-web-app-check:dev)" = "1000:1000"`
 
-26. Confirm that the image carries the encrypted credentials but not the key that opens them: `docker run --rm rails-web-app-check:dev test ! -e config/master.key`
+27. Confirm that the image carries the encrypted credentials but not the key that opens them: `docker run --rm rails-web-app-check:dev test ! -e config/master.key`
     Verify: `docker run --rm rails-web-app-check:dev test -f config/credentials.yml.enc`
 
-27. Remove a check container left behind by an earlier attempt: `docker rm --force rails-web-app-check > /dev/null 2>&1 || true`
+28. Remove a check container left behind by an earlier attempt: `docker rm --force rails-web-app-check > /dev/null 2>&1 || true`
     Verify: `test -z "$(docker ps --all --filter name=rails-web-app-check --quiet)"`
 
-28. Start the image in production mode on a port the operating system chooses. The secret key base is generated for this check and never printed, and the job supervisor runs inside the web server, so the check also proves the queue database is prepared. The retry is not politeness: the entrypoint prepares four SQLite databases before the server listens: `docker run --detach --name rails-web-app-check --env SECRET_KEY_BASE="$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')" --env SOLID_QUEUE_IN_PUMA=1 --publish 127.0.0.1::80 rails-web-app-check:dev`
+29. Start the image in production mode on a port the operating system chooses. The secret key base is generated for this check and never printed, and the job supervisor runs inside the web server, so the check also proves the queue database is prepared. The retry is not politeness: the entrypoint prepares four SQLite databases before the server listens: `docker run --detach --name rails-web-app-check --env SECRET_KEY_BASE="$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')" --env SOLID_QUEUE_IN_PUMA=1 --publish 127.0.0.1::80 rails-web-app-check:dev`
     Verify: `curl -fsS --retry 60 --retry-delay 1 --retry-all-errors "http://$(docker port rails-web-app-check 80)/up"`
 
-29. Ask the running container for the protected page without a session, and record the status it answers with: `curl -s -o /dev/null -w "%{http_code}" "http://$(docker port rails-web-app-check 80)/" > tmp/root-status.txt`
+30. Ask the running container for the protected page without a session, and record the status it answers with: `curl -s -o /dev/null -w "%{http_code}" "http://$(docker port rails-web-app-check 80)/" > tmp/root-status.txt`
     Verify: `test "$(cat tmp/root-status.txt)" = "302"`
 
-30. Stop the check container: `docker rm --force rails-web-app-check`
+31. Stop the check container: `docker rm --force rails-web-app-check`
     Verify: `test -z "$(docker ps --all --filter name=rails-web-app-check --quiet)"`
