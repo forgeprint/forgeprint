@@ -1,5 +1,25 @@
 # Changelog — rails-web-app
 
+## 1.2.1 — 2026-10-05
+
+The health check in step 29 now says why it failed.
+
+It spent three rounds of debugging printing sixty identical `curl: (7)` lines
+and not one word about the container, while a single `docker logs` answered the
+whole question — the container had died in `db:prepare` and nothing was
+listening. The check is the same; it drops curl's per-attempt noise and, when
+the retries run out, prints the last forty lines of the container's log before
+failing.
+
+Measured against a container that publishes a port and never listens:
+
+|        | exit | output                                            |
+| ------ | ---- | ------------------------------------------------- |
+| before | 52   | four identical lines, nothing about the container |
+| after  | 1    | the container's own error                         |
+
+Both fail, which was never the problem. Only one of them tells you what to fix.
+
 ## 1.2.0 — 2026-10-05
 
 The recipe now configures the production databases it always claimed to set
