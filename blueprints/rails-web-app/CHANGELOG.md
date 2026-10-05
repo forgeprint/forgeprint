@@ -1,5 +1,17 @@
 # Changelog — rails-web-app
 
+## 1.0.1 — 2026-10-05
+
+Step 14's verification could not pass. `Fugit` is a transitive dependency of
+Solid Queue, not an autoloaded constant, so `bin/rails runner` raised
+`uninitialized constant Fugit` and the step failed on every run. The script
+now requires the gem before using it; nothing about the recipe's output
+changes.
+
+The step had never run in CI: 1.0.0 merged while `setup-test` was still
+waiting for Ruby on the runner, so the first full run after it arrived is what
+found this.
+
 ## 1.0.0 — 2026-09-25
 
 First version, and the catalog's first Ruby blueprint.

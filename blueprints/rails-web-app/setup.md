@@ -272,7 +272,7 @@ Git, Docker and curl.
         schedule: every day at 4am
     ```
 
-    Verify: `bin/rails runner 'exit(Fugit.parse(YAML.load_file("config/recurring.yml").dig("production", "purge_expired_sessions", "schedule")).is_a?(Fugit::Cron))'`
+    Verify: `bin/rails runner 'require "fugit"; exit(Fugit.parse(YAML.load_file("config/recurring.yml").dig("production", "purge_expired_sessions", "schedule")).is_a?(Fugit::Cron))'`
 
 15. Replace `test/models/user_test.rb` with the generated test and the password floor:
 
