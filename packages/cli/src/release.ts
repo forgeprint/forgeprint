@@ -39,6 +39,7 @@ export type PublishOutcome =
   | { kind: 'published' }
   | { kind: 'already-published' }
   | { kind: 'unauthorized' }
+  | { kind: 'no-auth' }
   | { kind: 'stage-only' }
   | { kind: 'needs-interactive' }
   | { kind: 'failed'; detail: string };
@@ -230,9 +231,16 @@ export function classifyPublishError(output: string): PublishOutcome {
   if (text.includes('not running in an interactive terminal')) {
     return { kind: 'needs-interactive' };
   }
+  // npm never had credentials to send. Under a token that means nobody logged
+  // in; under trusted publishing it means the OIDC exchange never happened,
+  // which is a different repair from an exchange the registry refused — and
+  // the two used to share one message that only described the second.
+  if (text.includes('eneedauth') || text.includes('requires you to be logged in')) {
+    return { kind: 'no-auth' };
+  }
   // npm answers an unauthorized request for a package you cannot write with
   // 404, so a missing-package error is almost always a rejected token.
-  if (text.includes('404') || text.includes('401') || text.includes('eneedauth')) {
+  if (text.includes('404') || text.includes('401')) {
     return { kind: 'unauthorized' };
   }
   return { kind: 'failed', detail: output.trim().split('\n').slice(-5).join('\n') };

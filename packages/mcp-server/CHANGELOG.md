@@ -4,6 +4,11 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.4.1 — 2026-10-05
+
+- No change to the server. The version follows the workspace; 0.4.0 was tagged
+  and never reached npm.
+
 ## 0.4.0 — 2026-10-05
 
 **Annotations, so a client stops asking permission to read.**

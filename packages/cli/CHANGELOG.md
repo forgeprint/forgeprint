@@ -3,6 +3,30 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.1 — 2026-10-05
+
+0.4.0's own release, which did not reach npm. The tag stays where it is and
+the version moves, as it did for 0.2.9 — the fix changed this package, so the
+old tag would no longer describe what npm gets.
+
+- **A failed publish prints what npm said.** The classifier printed its
+  conclusion and threw the output away, so 0.4.0's `publish --trusted` failure
+  arrived as one sentence of advice with no status code behind it — the exact
+  afternoon that message was written to save. npm's output is now printed
+  above the advice, every path.
+- **"No credentials" and "credentials refused" are separate outcomes.**
+  `ENEEDAUTH` used to be classified with 404 and 401 and share their message,
+  which described a trusted publisher that does not match. Under OIDC the two
+  are different repairs: `ENEEDAUTH` means the exchange was never attempted,
+  a 404 that it was attempted and refused. Each says so now.
+- **The release workflow no longer passes `registry-url` to
+  `actions/setup-node`.** Given one it writes an .npmrc holding
+  `_authToken=${NODE_AUTH_TOKEN}` and points `NPM_CONFIG_USERCONFIG` at it, so
+  npm finds an auth token already configured — empty, because trusted
+  publishing sets no `NODE_AUTH_TOKEN` — and sends that instead of asking
+  GitHub for a token. `registry.npmjs.org` is npm's default, so the field
+  bought nothing.
+
 ## 0.4.0 — 2026-10-05
 
 Eleven days of tooling, and the half of trusted publishing that lives in this

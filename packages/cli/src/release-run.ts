@@ -256,9 +256,9 @@ async function publishOne(
   root: string,
   version: string,
   publisher: Publisher = 'pnpm',
-): Promise<PublishOutcome> {
+): Promise<{ outcome: PublishOutcome; output: string }> {
   const before = registryVersion(pkg.name, root);
-  if (before === version) return { kind: 'already-published' };
+  if (before === version) return { outcome: { kind: 'already-published' }, output: '' };
 
   say(`  publishing ${pkg.name}@${version}`);
   const result = publisher === 'pnpm' ? publishWithPnpm(pkg, root) : publishWithNpm(pkg, root);
@@ -268,14 +268,18 @@ async function publishOne(
 
   // A refusal is a refusal. Waiting on the registry for something it was never
   // sent turns a clear diagnosis into a two-minute pause before the same one.
-  if (!CAN_STILL_LAND.has(outcome.kind)) return outcome;
+  if (!CAN_STILL_LAND.has(outcome.kind)) return { outcome, output: result.output };
 
   // Whatever it said, the registry decides. 0.3.0 reported success and then
   // served 404 for that version for about ninety seconds, so this waits
   // between attempts rather than asking five times in as many seconds.
   for (let attempt = 0; attempt < REGISTRY_ATTEMPTS; attempt += 1) {
     if (registryVersion(pkg.name, root) === version) {
-      return outcome.kind === 'published' ? { kind: 'published' } : { kind: 'already-published' };
+      return {
+        outcome:
+          outcome.kind === 'published' ? { kind: 'published' } : { kind: 'already-published' },
+        output: result.output,
+      };
     }
     if (attempt < REGISTRY_ATTEMPTS - 1) {
       run('npm', ['cache', 'clean', '--force'], root);
@@ -294,11 +298,29 @@ async function publishOne(
   }
   if (outcome.kind === 'published') {
     return {
-      kind: 'failed',
-      detail: 'publish reported success, but the registry does not serve it',
+      outcome: {
+        kind: 'failed',
+        detail: 'publish reported success, but the registry does not serve it',
+      },
+      output: result.output,
     };
   }
-  return outcome;
+  return { outcome, output: result.output };
+}
+
+/**
+ * What npm itself said, before any advice about it.
+ *
+ * A classifier that prints only its own conclusion is asking to be trusted
+ * about a thing it inferred. 0.4.0's release failed on a `publish --trusted`
+ * run whose whole diagnosis was one sentence of advice, and the status code
+ * that would have separated "the publisher does not match" from "npm never
+ * got a token" had been thrown away.
+ */
+function reportPublishOutput(output: string): void {
+  const text = output.trim();
+  if (text === '') return;
+  process.stderr.write(`\nWhat npm said:\n${text}\n\n`);
 }
 
 function readChangelog(dir: string): string | undefined {
@@ -606,13 +628,22 @@ ${pushed.output.trim()}`);
   }
 
   for (const pkg of pending) {
-    const outcome = await publishOne(pkg, root, version);
+    const { outcome, output } = await publishOne(pkg, root, version);
+    if (outcome.kind !== 'published' && outcome.kind !== 'already-published')
+      reportPublishOutput(output);
     switch (outcome.kind) {
       case 'published':
         say(`  ok     ${pkg.name}@${version} published`);
         break;
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
+        break;
+      case 'no-auth':
+        fail(
+          `npm had no credentials to send while publishing ${pkg.name} (ENEEDAUTH). ` +
+            'Run `npm whoami`: if that fails too, log in. ' +
+            'The tag and release are done — rerun this command afterwards to finish.',
+        );
         break;
       case 'unauthorized':
         fail(
@@ -711,7 +742,9 @@ export async function publish(root: string, options: PublishOptions): Promise<vo
   }
 
   for (const pkg of pending) {
-    const outcome = await publishOne(pkg, root, version, publisher);
+    const { outcome, output } = await publishOne(pkg, root, version, publisher);
+    if (outcome.kind !== 'published' && outcome.kind !== 'already-published')
+      reportPublishOutput(output);
     switch (outcome.kind) {
       case 'published':
         say(`  ok     ${pkg.name}@${version} published`);
@@ -719,15 +752,29 @@ export async function publish(root: string, options: PublishOptions): Promise<vo
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
         break;
+      case 'no-auth':
+        fail(
+          publisher === 'npm-trusted'
+            ? `npm had nothing to authenticate with while publishing ${pkg.name} (ENEEDAUTH), ` +
+                'which means the OIDC exchange was never attempted rather than refused.\n' +
+                'The usual cause is an .npmrc that already configures an auth token: ' +
+                'actions/setup-node writes one when it is given registry-url, and npm uses that ' +
+                'empty placeholder instead of asking GitHub for a token. The job must also grant ' +
+                'id-token: write. See docs/releasing.md.'
+            : `npm had no credentials to send while publishing ${pkg.name} (ENEEDAUTH). ` +
+                'Run `npm whoami`: if that fails too, log in.',
+        );
+        break;
       case 'unauthorized':
         fail(
           publisher === 'npm-trusted'
-            ? `npm refused the OIDC exchange while publishing ${pkg.name}.\n` +
-                'This is configuration, not credentials: npm matches a trusted publisher on the ' +
-                'organization, the repository and the workflow *filename* — all case-sensitive, ' +
+            ? `npm attempted the OIDC exchange while publishing ${pkg.name} and the registry ` +
+                'refused it.\n' +
+                'That is configuration rather than credentials: npm matches a trusted publisher on ' +
+                'the organization, the repository and the workflow *filename* — all case-sensitive, ' +
                 'and the filename only, not its path. Check that npmjs.com lists this repository ' +
-                'and release.yml as a trusted publisher for this package, and that the job grants ' +
-                'id-token: write. See docs/releasing.md.'
+                'and release.yml as a trusted publisher for this package. What npm said is above; ' +
+                'a 404 on a package that plainly exists is this. See docs/releasing.md.'
             : `npm rejected your credentials while publishing ${pkg.name}. ` +
                 'Run `npm whoami`; a 401 there means log in again.',
         );

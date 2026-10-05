@@ -245,13 +245,27 @@ which reads as "no such package" and means "the OIDC exchange was refused".
 `forgeprint publish` says so when it sees a 401 or 404 from a `--trusted` run,
 because that error message has cost other projects an afternoon.
 
-Two things are worth knowing before the first attempt:
+Three things are worth knowing before the first attempt:
 
+- **Do not give `actions/setup-node` a `registry-url`.** With one it writes an
+  `.npmrc` containing `_authToken=${NODE_AUTH_TOKEN}` and points
+  `NPM_CONFIG_USERCONFIG` at it. Trusted publishing sets no `NODE_AUTH_TOKEN`,
+  so npm finds an auth token already configured, sends that empty value, and
+  never asks GitHub for an OIDC token at all: the registry answers
+  `ENEEDAUTH`. It reads like a credentials problem and is a configuration one,
+  in the workflow rather than on npmjs.com. `registry.npmjs.org` is npm's
+  default, so the field buys nothing. This is how 0.4.0's release failed.
 - **A brand-new package cannot be published this way.** A trusted publisher is
   configured on a package that exists, so the first version of anything new
   goes up from a laptop with a token. Both current packages exist.
 - **OIDC authenticates `npm publish` only** — not `npm dist-tag`, `npm whoami`
   or `npm deprecate`. Those still need a token when they are needed.
+
+`ENEEDAUTH` and a `404` on a package that plainly exists are different
+failures and `forgeprint publish` now says which is which: the first means the
+exchange was never attempted, the second that npmjs.com refused it. Both print
+npm's own output above the advice, because 0.4.0's failure arrived as advice
+alone and the status code behind it had been discarded.
 
 Requirements, which the workflow already pins: npm CLI 11.5.1 or later and Node
 22.14.0 or later. Node 22 bundles npm 10, so the workflow installs npm itself;
