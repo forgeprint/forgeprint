@@ -3,6 +3,22 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.2 — 2026-10-05
+
+What 0.4.0 and 0.4.1 actually failed on, named.
+
+- **A missing trusted publisher is reported as a missing trusted publisher.**
+  npm reports it as `ENEEDAUTH`, "you need to authorize this machine", because
+  after the registry declines the OIDC exchange npm falls through to an
+  unauthenticated publish. The cause is one line above the symptom and only at
+  `--loglevel verbose`: a 404 from
+  `/-/npm/v1/oidc/token/exchange/package/<name>`, whose body says "package not
+  found" for a package the registry plainly serves. That endpoint is per
+  package, so it means no publisher is registered on that package.
+- **`npm publish` runs at `--loglevel verbose`** on the trusted path, because
+  the line that says why is not printed at the default level. Two releases
+  were spent on hypotheses that line would have settled.
+
 ## 0.4.1 — 2026-10-05
 
 0.4.0's own release, which did not reach npm. The tag stays where it is and

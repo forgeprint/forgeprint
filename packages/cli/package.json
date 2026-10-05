@@ -1,6 +1,6 @@
 {
   "name": "forgeprint",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Forgeprint catalog tooling. Every pipeline step runs here, not in CI configuration.",
   "keywords": [
     "forgeprint",

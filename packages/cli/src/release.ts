@@ -40,6 +40,7 @@ export type PublishOutcome =
   | { kind: 'already-published' }
   | { kind: 'unauthorized' }
   | { kind: 'no-auth' }
+  | { kind: 'no-trusted-publisher' }
   | { kind: 'stage-only' }
   | { kind: 'needs-interactive' }
   | { kind: 'failed'; detail: string };
@@ -230,6 +231,15 @@ export function classifyPublishError(output: string): PublishOutcome {
   // a subprocess. Not a credential problem — the same token works by hand.
   if (text.includes('not running in an interactive terminal')) {
     return { kind: 'needs-interactive' };
+  }
+  // The registry answered the OIDC exchange with "package not found" for a
+  // package it plainly serves, which is how it says no trusted publisher is
+  // registered for that package. npm then falls through to an unauthenticated
+  // publish and reports ENEEDAUTH, so this has to be read before that: the
+  // 404 is the cause and ENEEDAUTH is the symptom. 0.4.0 and 0.4.1 both died
+  // here, and the exchange line only appears at --loglevel verbose.
+  if (text.includes('oidc token exchange error') && text.includes('package not found')) {
+    return { kind: 'no-trusted-publisher' };
   }
   // npm never had credentials to send. Under a token that means nobody logged
   // in; under trusted publishing it means the OIDC exchange never happened,

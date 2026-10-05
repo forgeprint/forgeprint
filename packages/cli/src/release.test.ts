@@ -450,3 +450,22 @@ describe('classifyPublishError, no credentials against refused ones', () => {
     );
   });
 });
+
+describe('classifyPublishError, the registry declining the exchange', () => {
+  // npm swallows the registry's 404 and reports ENEEDAUTH, so the cause has to
+  // be read before the symptom. The exchange line only exists at
+  // --loglevel verbose, which is why publishWithNpm asks for it.
+  it('names a missing trusted publisher rather than the login it looks like', () => {
+    const output = [
+      'npm http fetch POST 404 https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/forgeprint 1278ms',
+      'npm verbose oidc Failed token exchange request with body message: OIDC token exchange error - package not found',
+      'npm error code ENEEDAUTH',
+      'npm error need auth This command requires you to be logged in to https://registry.npmjs.org/',
+    ].join('\n');
+    assert.equal(classifyPublishError(output).kind, 'no-trusted-publisher');
+  });
+
+  it('still reads a bare ENEEDAUTH as having no credentials', () => {
+    assert.equal(classifyPublishError('npm error code ENEEDAUTH').kind, 'no-auth');
+  });
+});
