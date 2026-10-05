@@ -261,6 +261,21 @@ Three things are worth knowing before the first attempt:
 - **OIDC authenticates `npm publish` only** — not `npm dist-tag`, `npm whoami`
   or `npm deprecate`. Those still need a token when they are needed.
 
+**Rehearse it before spending a version.** `release.yml` takes a manual run:
+
+```bash
+gh workflow run release.yml --ref main
+```
+
+That path publishes nothing. It reports the environment and then tries to
+publish a version npmjs.com already serves, which cannot be published over —
+so npm has to authenticate first and is refused for the version instead.
+`E403 cannot publish over the previously published versions` is the pass;
+`ENEEDAUTH` means it is still not working. The rehearsal belongs in that file
+and nowhere else, because the publisher is matched on the workflow
+**filename** — the same rehearsal in its own workflow is refused for not
+matching, with the identical error message.
+
 **A trusted publisher is configured per package, and the symptom of a missing
 one is a login error.** 0.4.0 and 0.4.1 both failed this way. What npm reports
 is `ENEEDAUTH`, "This command requires you to be logged in"; what actually

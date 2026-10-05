@@ -24,6 +24,12 @@ name: release
 on:
   push:
     tags: ['v*']
+  # The rehearsal below, which needs no tag. It has to live in this file rather
+  # than in a workflow of its own: npm matches the publisher on this file's
+  # name, so a diagnostic anywhere else is refused for not matching and reports
+  # "package not found" — the same words a missing publisher produces. One
+  # workflow of mine did exactly that and could never have passed.
+  workflow_dispatch:
 
 # contents: read is all a publish needs — the tag and the release already exist
 # by the time this runs, because pushing the tag is what started it.
@@ -64,12 +70,52 @@ jobs:
       - name: Install npm and pnpm
         run: npm install --global npm@12.2.0 pnpm@12.5.1
 
+      # Everything from here is one of two paths: a tag publishes, a manual run
+      # rehearses and publishes nothing.
+
+      # What the environment has, printed as presence and never as values —
+      # the request token is a credential (§5b).
+      - name: Report the publish environment
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -u
+          set_or_not() { if [ -n "${1:-}" ]; then echo yes; else echo no; fi; }
+          echo "node:                 $(node -v)"
+          echo "npm:                  $(npm -v)"
+          echo "request url set:      $(set_or_not "${ACTIONS_ID_TOKEN_REQUEST_URL:-}")"
+          echo "request token set:    $(set_or_not "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}")"
+          echo "npm userconfig:       ${NPM_CONFIG_USERCONFIG:-unset}"
+          echo "auth lines in effect: $(npm config list 2>/dev/null | grep -c authToken || true)"
+
+      # The exchange itself, with nothing at stake.
+      #
+      # A version npmjs.com already serves cannot be published over — that is
+      # immutable — so npm authenticates first and is then refused for the
+      # version rather than for the credentials. The two refusals are the
+      # answer:
+      #
+      #   E403 "cannot publish over the previously published versions"
+      #        the exchange worked. This is the pass.
+      #   404 on .../oidc/token/exchange/package/<name>, then ENEEDAUTH
+      #        no publisher on that package matches this repository and this
+      #        workflow filename.
+      #
+      # Nothing is published either way and no version number is spent.
+      - name: Rehearse the exchange
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        run: |
+          npm pack forgeprint@0.3.1
+          npm publish forgeprint-0.3.1.tgz --access public --loglevel verbose 2>&1 | tail -30
+
       - name: Install dependencies
+        if: github.event_name == 'push'
         run: pnpm install --frozen-lockfile
 
       # A tag can point at any commit, including one that never passed a pull
       # request. The gate runs again rather than being assumed.
       - name: Check
+        if: github.event_name == 'push'
         run: pnpm run check
 
       # `${GITHUB_REF_NAME#v}` turns v0.3.1 into 0.3.1. Everything else — which
@@ -77,4 +123,5 @@ jobs:
       # error means — is in the command, not in this file (ADR 0002), so a
       # maintainer gets the same answer locally.
       - name: Publish
+        if: github.event_name == 'push'
         run: pnpm forgeprint publish "${GITHUB_REF_NAME#v}" --trusted
