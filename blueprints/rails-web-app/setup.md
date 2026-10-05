@@ -600,7 +600,7 @@ Git, Docker and curl.
     Verify: `test -z "$(docker ps --all --filter name=rails-web-app-check --quiet)"`
 
 29. Start the image in production mode on a port the operating system chooses. The secret key base is generated for this check and never printed, and the job supervisor runs inside the web server, so the check also proves the queue database is prepared. The retry is not politeness: the entrypoint prepares four SQLite databases before the server listens: `docker run --detach --name rails-web-app-check --env SECRET_KEY_BASE="$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')" --env SOLID_QUEUE_IN_PUMA=1 --publish 127.0.0.1::80 rails-web-app-check:dev`
-    Verify: `curl -fsS --retry 60 --retry-delay 1 --retry-all-errors "http://$(docker port rails-web-app-check 80)/up"`
+    Verify: `curl -fs --retry 60 --retry-delay 1 --retry-all-errors "http://$(docker port rails-web-app-check 80)/up" || { docker logs --tail 40 rails-web-app-check; false; }`
 
 30. Ask the running container for the protected page without a session, and record the status it answers with: `curl -s -o /dev/null -w "%{http_code}" "http://$(docker port rails-web-app-check 80)/" > tmp/root-status.txt`
     Verify: `test "$(cat tmp/root-status.txt)" = "302"`
