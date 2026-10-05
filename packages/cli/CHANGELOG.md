@@ -3,6 +3,70 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.0 — 2026-10-05
+
+Eleven days of tooling, and the half of trusted publishing that lives in this
+repository.
+
+- **`release` can hand npm over.** `publish <version> --trusted` packs with
+  pnpm — so `workspace:*` is rewritten to a real version — and publishes the
+  tarball with npm, which is the client that performs the OIDC exchange.
+  `release --skip-npm` stops after the tag and the GitHub release, and pushing
+  that tag is what starts
+  [`release.yml`](../../.github/workflows/release.yml). No token exists
+  anywhere on that path and npm attaches provenance itself. The other end is
+  configured on npmjs.com and matched on the workflow **filename**, which is
+  the one field worth reading twice
+  ([releasing.md](../../docs/releasing.md)).
+- **Rule 9 keys an expert on `role + domain + seniority + languages`**
+  (ADR 0015). The triple alone meant one architect held every language.
+  `languages` compares as a set, so order does not matter; an expert that
+  names none is the stack-neutral one, and there is still exactly one of those
+  per triple. A language-specific expert must have checklists about its
+  language, and a label with nothing behind it is still caught by
+  `similarity`.
+- **`lint-setup` refuses a write step whose target is not a file.** A step
+  whose sentence ended on `` `storage` `` took the directory as the path and
+  died with `EISDIR` — inside a container, after the twenty-four steps before
+  it had already run. The rule reads the path through the same `writeTarget`
+  the runner uses: two implementations of it would have disagreed eventually,
+  and the disagreement was the bug. `test-setup` now catches what no shape
+  check can see — a plausible path that is a directory on disk — and names the
+  rule instead of surfacing `EISDIR`.
+- **The package registries of Flutter, Phoenix, Gradle and Android** —
+  pub.dev, the three hex.pm hosts, the Gradle plugin and service hosts,
+  maven.google.com and dl.google.com. Each is where that ecosystem's own
+  tooling installs from. An `xmlns` value is a name rather than a host, so the
+  `http://schemas.android.com/...` every Android manifest must declare
+  verbatim no longer reads as an unencrypted fetch.
+- **A secret written into an install command is caught, and a long variable
+  name is not.** The check flagged any twenty-character run, so
+  `--env SAMPLE_SERVICE_CLIENT_SECRET_VALUE=$...` failed validation; and it
+  looked for `=NAME=`, which never occurs, so a literal value passed. It now
+  flags a named secret assigned anything that does not begin with `$`, and a
+  key-shaped run that mixes upper case, lower case and digits — a shape that
+  variable names and flags do not have.
+- **Resolving options keeps the blank lines inside code blocks.** Blank runs
+  were collapsed everywhere, so a recipe that writes Python lost the two
+  blank lines ruff expects between top-level definitions, and `get_blueprint`
+  served the same damaged text.
+- **`gh` output and the distribution manifests are parsed, not cast.**
+  `JSON.parse(...) as T` let an error body read as a list of no CI runs, and a
+  wrong field in `server.json` or a `plugin.json` pass silently. Each goes
+  through a zod schema now: an unreadable `gh` response is reported as unknown
+  CI, and a wrong manifest field names its file.
+- **Two publish failures survive pnpm's formatting.** pnpm wraps its report to
+  the terminal width and prefixes continuation lines with a box character, so
+  "not running in an interactive terminal" arrived split across lines and
+  matched nothing — 0.3.1's release printed the raw error instead of the
+  instruction written for it. Phrases are matched after the box drawing is
+  stripped, and the fixtures are pnpm's own output pasted verbatim rather than
+  retyped onto one line.
+- **An expired MCP Registry token under an organization** is told to use a
+  `read:org` PAT through `MCP_GITHUB_TOKEN`. The advice before was the browser
+  login, which cannot see the organization, and nothing in a namespace's name
+  distinguishes the two cases — so it says both rather than guessing.
+
 ## 0.3.1 — 2026-09-24
 
 `release`, taught by what publishing 0.3.0 actually took.

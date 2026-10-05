@@ -4,6 +4,28 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.4.0 — 2026-10-05
+
+**Annotations, so a client stops asking permission to read.**
+
+- **All ten tools declare them.** Under the specification's defaults a client
+  may treat every call as destructive and open-world and ask for approval each
+  time. This server installs nothing and runs nothing (rules 21 and 22), so
+  all ten are `readOnlyHint`, non-destructive, idempotent and closed-world
+  from one shared `READ_ONLY_TOOL`, and a test asserts it for every listed
+  tool. The comment says why a server that fetches over the network is still a
+  closed domain: two fixed addresses serving one catalog, no tool that takes a
+  URL, and the environment overrides choosing another copy of that same
+  catalog before any call rather than during one.
+- **The catalog fetch times out.** It had none, so a stalled network held a
+  tool call open indefinitely. `fetchText` aborts after 15 seconds and fails
+  like any other fetch, proved against a server that never answers.
+- **The package README lists all ten tools**, their annotations, and the
+  protocol revisions the SDK negotiates — it had six tools and no protocol.
+
+Found by trying this repository's own `agent-designer` and
+`typescript-backend-engineer` experts on the server they describe.
+
 ## 0.3.1 — 2026-09-24
 
 **The server now says when to use it, not only what it does.**
