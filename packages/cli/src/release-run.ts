@@ -240,7 +240,16 @@ function publishWithNpm(pkg: WorkspacePackage, root: string): { ok: boolean; out
         'writes, tarballName in release.ts is what needs to change.',
     };
   }
-  return run('npm', ['publish', tarball, '--access', 'public'], root);
+  // `--loglevel verbose` because the one line that says *why* a trusted
+  // publish failed is only printed at that level. npm asks GitHub for a token,
+  // posts it to the registry's exchange endpoint, and when that answers 404 it
+  // falls through to an unauthenticated publish and reports ENEEDAUTH. At the
+  // default level the 404 is invisible and the symptom is all that is left —
+  // which is how two releases went out blaming the wrong half of the setup.
+  //
+  // The extra output is npm's own and the runner masks the request token in
+  // it; this command already prints what npm said on every failure.
+  return run('npm', ['publish', tarball, '--access', 'public', '--loglevel', 'verbose'], root);
 }
 
 /**
@@ -638,6 +647,13 @@ ${pushed.output.trim()}`);
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
         break;
+      case 'no-trusted-publisher':
+        fail(
+          `npmjs.com has no trusted publisher registered for ${pkg.name}, and this run is ` +
+            'not using one anyway — so something has set the trusted path on by mistake. ' +
+            'Publishing from a laptop uses a token: see docs/releasing.md.',
+        );
+        break;
       case 'no-auth':
         fail(
           `npm had no credentials to send while publishing ${pkg.name} (ENEEDAUTH). ` +
@@ -751,6 +767,20 @@ export async function publish(root: string, options: PublishOptions): Promise<vo
         break;
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
+        break;
+      case 'no-trusted-publisher':
+        fail(
+          `npmjs.com has no trusted publisher registered for ${pkg.name}.\n` +
+            'GitHub issued the OIDC token and npm posted it to ' +
+            `/-/npm/v1/oidc/token/exchange/package/${pkg.name}, which answered 404 ` +
+            '"package not found" — that endpoint is per package, and for a package the ' +
+            'registry plainly serves this means no publisher is configured on it rather ' +
+            'than a missing package.\n' +
+            'It is configured per package, not per organization: open the package on ' +
+            'npmjs.com, Settings, Trusted publisher, and give it this repository with ' +
+            'release.yml as the workflow filename and the environment left empty. ' +
+            'See docs/releasing.md.',
+        );
         break;
       case 'no-auth':
         fail(

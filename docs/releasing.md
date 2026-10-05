@@ -261,11 +261,25 @@ Three things are worth knowing before the first attempt:
 - **OIDC authenticates `npm publish` only** — not `npm dist-tag`, `npm whoami`
   or `npm deprecate`. Those still need a token when they are needed.
 
-`ENEEDAUTH` and a `404` on a package that plainly exists are different
-failures and `forgeprint publish` now says which is which: the first means the
-exchange was never attempted, the second that npmjs.com refused it. Both print
-npm's own output above the advice, because 0.4.0's failure arrived as advice
-alone and the status code behind it had been discarded.
+**A trusted publisher is configured per package, and the symptom of a missing
+one is a login error.** 0.4.0 and 0.4.1 both failed this way. What npm reports
+is `ENEEDAUTH`, "This command requires you to be logged in"; what actually
+happened is one line further down, and only at `--loglevel verbose`:
+
+```
+npm http fetch GET  .../idtoken/...?audience=npm%3Aregistry.npmjs.org 200
+npm http fetch POST 404 https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/forgeprint
+npm verbose oidc Failed token exchange request with body message:
+                 OIDC token exchange error - package not found
+```
+
+GitHub issued the token; the registry declined the exchange. That endpoint is
+per package, so "package not found" on a package npm plainly serves means no
+publisher is registered **on that package** — configuring one package does not
+cover the other. npm then falls through to an unauthenticated publish, which
+is where the login error comes from. `forgeprint publish` asks for verbose
+output and names this case now, because the symptom points at the wrong half
+of the setup.
 
 Requirements, which the workflow already pins: npm CLI 11.5.1 or later and Node
 22.14.0 or later. Node 22 bundles npm 10, so the workflow installs npm itself;
