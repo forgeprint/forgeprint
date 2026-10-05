@@ -1,5 +1,30 @@
 # Changelog — rails-web-app
 
+## 1.1.0 — 2026-10-05
+
+Two steps could not pass. Both were found by the first `setup-test` run that
+ever executed this recipe: 1.0.0 merged while the job was still waiting for
+Ruby on the runner, so nothing had run it until then.
+
+**Step 14** used `Fugit`, which Solid Queue brings in as a transitive
+dependency and requires lazily, inside a code path `bin/rails runner` never
+loads. Zeitwerk autoloads the application, not gems, so the constant was
+absent and the step raised `uninitialized constant Fugit`. The script requires
+the gem before using it.
+
+**Step 23** ran `bin/brakeman`, and Rails' binstub for it adds
+`--ensure-latest` — which fails whenever a newer Brakeman exists than the one
+the Gemfile pins, and scans nothing on the way out. Brakeman 8.1.0 was
+released on 2026-10-01 and the step broke the same day. It now runs
+`bundle exec brakeman`, which respects the pin, as step 4's version check
+already did. The `ci.yml` the recipe writes changes the same way and for the
+same reason: otherwise every project started from this blueprint goes red on
+somebody else's release schedule.
+
+The pinned Brakeman stays at 8.0.6. Bumping it is a separate decision — a
+Brakeman minor release adds checks, and new checks can fail step 23 on their
+own merits, which is worth finding out deliberately rather than inside a fix.
+
 ## 1.0.0 — 2026-09-25
 
 First version, and the catalog's first Ruby blueprint.
