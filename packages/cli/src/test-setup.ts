@@ -8,7 +8,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import type { RecipeStep } from './recipe.js';
@@ -118,6 +118,23 @@ async function write(
       ok: false,
       exitCode: null,
       output: `refusing to write outside the project directory: ${path}`,
+      ms: Date.now() - started,
+    };
+  }
+  // lint-setup refuses a target that does not look like a file at all; this
+  // catches the one it cannot see, a path that looks right and is a directory
+  // on disk. Without it the only sign is an EISDIR from inside writeFile,
+  // which reads as a bug in the runner rather than a sentence in the recipe.
+  if (existsSync(target) && statSync(target).isDirectory()) {
+    return {
+      step,
+      phase: 'action',
+      ok: false,
+      exitCode: null,
+      output:
+        `${path} is a directory, so it cannot be written as a file. ` +
+        'The path a step writes to is the last code span before its block: check that the ' +
+        'step ends on the path rather than on some other word in backticks.',
       ms: Date.now() - started,
     };
   }
