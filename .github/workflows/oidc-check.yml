@@ -16,8 +16,10 @@
 # It prints whether the variables are set, never their values: the request
 # token is a credential.
 #
-# What it cannot answer is whether npmjs.com accepts the exchange. Only a real
-# publish does that.
+# It also rehearses the exchange itself, against a version npmjs.com already
+# serves. That cannot be published over, so npm must authenticate and then be
+# refused for the version rather than the credentials — which is a pass with
+# nothing published and no version number spent.
 
 name: oidc-check
 
@@ -41,10 +43,45 @@ jobs:
 
       - name: Report
         run: |
-          echo "node:            $(node -v)"
-          echo "npm:             $(npm -v)"
-          echo "npm resolves to: $(command -v npm)"
-          echo "request url set: ${ACTIONS_ID_TOKEN_REQUEST_URL:+yes}${ACTIONS_ID_TOKEN_REQUEST_URL:-no}"
-          echo "request token set: ${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+yes}${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-no}"
-          echo "npm userconfig:  ${NPM_CONFIG_USERCONFIG:-unset}"
+          set -u
+          # `${VAR:+yes}${VAR:-no}` looks like a ternary and is not: when VAR is
+          # set, the second expansion yields VAR itself, so the first run of this
+          # printed the request URL it promised to withhold. One run's endpoint,
+          # useless without the token the runner masks — but the file said it
+          # printed presence, so now it does.
+          set_or_not() { if [ -n "${1:-}" ]; then echo yes; else echo no; fi; }
+          echo "node:                 $(node -v)"
+          echo "npm:                  $(npm -v)"
+          echo "npm resolves to:      $(command -v npm)"
+          echo "request url set:      $(set_or_not "${ACTIONS_ID_TOKEN_REQUEST_URL:-}")"
+          echo "request token set:    $(set_or_not "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}")"
+          echo "npm userconfig:       ${NPM_CONFIG_USERCONFIG:-unset}"
           echo "auth lines in effect: $(npm config list 2>/dev/null | grep -c authToken || true)"
+
+      # The exchange itself, with nothing at stake.
+      #
+      # A version npmjs.com already serves cannot be published over — that is
+      # immutable. So npm has to authenticate first and then be refused for the
+      # version rather than for the credentials, and the two refusals are the
+      # answer:
+      #
+      #   E403 "cannot publish over the previously published versions" —
+      #        the OIDC exchange worked. This is the pass.
+      #   ENEEDAUTH —
+      #        npm never got a token. Same failure the releases hit.
+      #
+      # Nothing is published either way, and no version number is spent.
+      - name: Rehearse the exchange against a version that already exists
+        continue-on-error: true
+        run: |
+          npm pack forgeprint@0.3.1
+          npm publish forgeprint-0.3.1.tgz --access public --loglevel verbose 2>&1 | tail -40
+
+      # npm writes the OIDC attempt to its debug log and not to the terminal, so
+      # this is the only place that says whether an exchange happened at all.
+      - name: The npm debug log
+        if: always()
+        run: |
+          log=$(ls -t "${HOME}"/.npm/_logs/*debug*.log 2>/dev/null | head -1)
+          if [ -z "${log}" ]; then echo "no debug log"; exit 0; fi
+          grep -iE "oidc|id.token|trusted|exchange|401|403|404|needauth" "${log}" | tail -40 || true
