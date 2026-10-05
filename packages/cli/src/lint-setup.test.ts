@@ -426,3 +426,44 @@ describe('two guard groups on one field', () => {
     assert.deepEqual(lintSetup(source, { options: { transport: ['stdio', 'http'] } }), []);
   });
 });
+
+describe('write-target-not-a-file', () => {
+  const recipe = (lead: string) => `# Setup
+
+1. ${lead}
+
+   \`\`\`yaml
+   production:
+     primary:
+       database: storage/production.sqlite3
+   \`\`\`
+
+   Verify: \`test -f config/database.yml\`
+`;
+
+  it('refuses a step whose sentence ends on a word that is not the path', () => {
+    const problems = lintSetup(
+      recipe('Write the paths into `config/database.yml`, under `storage`:'),
+    );
+    const rules = problems.map((p) => p.rule);
+    assert.ok(rules.includes('write-target-not-a-file'), rules.join(', '));
+  });
+
+  it('accepts the same step once the path is last', () => {
+    const problems = lintSetup(
+      recipe('Write the paths, under `storage`, into `config/database.yml`:'),
+    );
+    assert.deepEqual(
+      problems.filter((p) => p.rule === 'write-target-not-a-file'),
+      [],
+    );
+  });
+
+  it('accepts an extensionless file a project really has', () => {
+    const problems = lintSetup(recipe('Create `Dockerfile` with:'));
+    assert.deepEqual(
+      problems.filter((p) => p.rule === 'write-target-not-a-file'),
+      [],
+    );
+  });
+});

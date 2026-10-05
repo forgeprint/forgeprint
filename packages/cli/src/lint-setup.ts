@@ -7,6 +7,8 @@
  * that reaches outside the project.
  */
 
+import { looksLikeFilePath, writeTarget } from './recipe.js';
+
 export interface SetupProblem {
   readonly line: number;
   readonly rule: string;
@@ -339,6 +341,20 @@ export function lintSetup(source: string, { options = {} }: LintOptions = {}): S
         step.line,
         'step-needs-verification',
         `step ${step.number} has no "Verify: \`command\`" line`,
+      );
+    }
+
+    // The file a write step writes to is the last code span before its block,
+    // so a sentence that ends on some other word in backticks hands the runner
+    // that word. One ending on `storage` had it try to write a file over a
+    // directory, which surfaced as an EISDIR from inside the step and passed
+    // this linter on the way there.
+    const target = writeTarget(step.body);
+    if (target !== undefined && !looksLikeFilePath(target)) {
+      add(
+        step.line,
+        'write-target-not-a-file',
+        `step ${step.number} would write to \`${target}\`, which does not name a file. The path is the last code span before the block; put it last, after any other backticks`,
       );
     }
 

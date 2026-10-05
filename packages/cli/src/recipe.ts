@@ -128,10 +128,15 @@ function readStep(raw: {
     };
   }
 
-  const path = lastCodeSpan(body.slice(0, fence.start).join('\n'));
+  const path = pathBeforeFence(body, fence.start);
   if (path === undefined) {
     return {
       message: `step ${raw.number} writes a file but does not name it; put the path in backticks before the block`,
+    };
+  }
+  if (!looksLikeFilePath(path)) {
+    return {
+      message: `step ${raw.number} would write to \`${path}\`, which does not name a file. The path is the last code span before the block, so a sentence that ends on another word in backticks hands that word to the writer; put the path last.`,
     };
   }
   return {
@@ -166,6 +171,63 @@ function readFence(body: readonly string[]): Fence | undefined {
 function lastCodeSpan(text: string): string | undefined {
   const spans = [...text.matchAll(/`([^`]+)`/g)];
   return spans.length === 0 ? undefined : spans[spans.length - 1]?.[1];
+}
+
+/** The path a write step writes to: the last code span before its block. */
+function pathBeforeFence(body: readonly string[], fenceStart: number): string | undefined {
+  return lastCodeSpan(body.slice(0, fenceStart).join('\n'));
+}
+
+/**
+ * The file a step writes, read the way `parseRecipe` reads it.
+ *
+ * Exported so that `lint-setup` checks the path the runner will actually use
+ * rather than its own idea of it. Two implementations of this rule would
+ * disagree eventually, and the disagreement is the bug.
+ */
+export function writeTarget(body: readonly string[]): string | undefined {
+  const lines = body.filter((text) => !VERIFY_PATTERN.test(text));
+  const fence = readFence(lines);
+  return fence === undefined ? undefined : pathBeforeFence(lines, fence.start);
+}
+
+/**
+ * Extensionless files a project legitimately keeps at its root.
+ *
+ * Short on purpose, and measured rather than imagined: of the 609 write
+ * targets in the catalog on 2026-10-05, seven have neither a directory nor a
+ * suffix, and they are two of these names. A recipe that needs another one
+ * adds it here, in the same pull request, the way the taxonomy is extended.
+ */
+export const EXTENSIONLESS_FILES: readonly string[] = [
+  'Brewfile',
+  'CODEOWNERS',
+  'Caddyfile',
+  'Containerfile',
+  'Dockerfile',
+  'Gemfile',
+  'Jenkinsfile',
+  'Justfile',
+  'LICENSE',
+  'Makefile',
+  'NOTICE',
+  'Procfile',
+  'Rakefile',
+  'Vagrantfile',
+];
+
+/**
+ * Whether a write target names a file at all.
+ *
+ * It is the last code span before the block, so a sentence that happens to end
+ * on a word in backticks hands the runner that word. One that ended on
+ * `storage` had the runner try to write a file over a directory, and the only
+ * sign was an `EISDIR` from deep inside the step.
+ */
+export function looksLikeFilePath(path: string): boolean {
+  if (path.includes('/')) return true;
+  if (path.includes('.')) return true;
+  return EXTENSIONLESS_FILES.includes(path);
 }
 
 function summarize(body: readonly string[]): string {

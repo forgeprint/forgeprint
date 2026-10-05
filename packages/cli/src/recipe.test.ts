@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { parseRecipe } from './recipe.js';
+import { parseRecipe, looksLikeFilePath, writeTarget } from './recipe.js';
 
 const RECIPE = [
   '# Setup',
@@ -101,5 +101,53 @@ describe('parseRecipe', () => {
       parseRecipe('# Setup\n\nJust do the usual.\n').problems[0]?.message ?? '',
       /no numbered steps/,
     );
+  });
+});
+
+describe('looksLikeFilePath', () => {
+  it('accepts a path with a directory in it', () => {
+    assert.equal(looksLikeFilePath('config/database.yml'), true);
+  });
+
+  it('accepts a bare name with a suffix', () => {
+    assert.equal(looksLikeFilePath('Program.cs'), true);
+  });
+
+  it('accepts the extensionless files a project really has', () => {
+    assert.equal(looksLikeFilePath('Dockerfile'), true);
+    assert.equal(looksLikeFilePath('Gemfile'), true);
+  });
+
+  it('refuses a bare word, which is how a directory gets written as a file', () => {
+    assert.equal(looksLikeFilePath('storage'), false);
+    assert.equal(looksLikeFilePath('tmp'), false);
+  });
+});
+
+describe('writeTarget', () => {
+  it('takes the last code span before the block, as the runner does', () => {
+    const body = [
+      'Write the four paths, under `storage`, into `config/database.yml`:',
+      '',
+      '```yaml',
+      'production:',
+      '```',
+      '   Verify: `test -f config/database.yml`',
+    ];
+    assert.equal(writeTarget(body), 'config/database.yml');
+  });
+
+  it('is undefined for a step with no block', () => {
+    assert.equal(writeTarget(['Run it: `npm test`']), undefined);
+  });
+
+  it('reports the wrong word when the path is not last', () => {
+    const body = [
+      'Write it into `config/database.yml`, under `storage`:',
+      '```yaml',
+      'a: 1',
+      '```',
+    ];
+    assert.equal(writeTarget(body), 'storage');
   });
 });
