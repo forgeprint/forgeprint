@@ -2481,7 +2481,7 @@
     {
       "slug": "rails-web-app",
       "name": "Rails Web App",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"

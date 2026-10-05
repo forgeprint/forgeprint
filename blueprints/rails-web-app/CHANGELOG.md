@@ -1,5 +1,28 @@
 # Changelog — rails-web-app
 
+## 1.2.0 — 2026-10-05
+
+The recipe now configures the production databases it always claimed to set
+up, which is what the container needed to start at all.
+
+`rails new` leaves every production path in `config/database.yml` commented
+out — Rails does not presume a location for a SQLite file that has to outlive
+the container, and the developer is expected to choose one. Nothing in the
+recipe chose. So the production boot died inside `db:prepare` with
+`ArgumentError: No database file specified`, the container exited 1, and the
+health check spent sixty seconds failing to connect to a port nothing was
+listening on. A new step 25 writes the four paths under `storage`; the old
+steps 25 to 30 are now 26 to 31.
+
+Found the way the previous two were: by the recipe finally running far enough
+to reach it. Steps 29 and 30 had never executed either, and both pass now —
+the protected root answers 302, which is what step 30 asserts.
+
+The health check is unchanged, and it is worth saying why it was so unhelpful:
+sixty identical `curl: (7)` lines and not one word about the container. One
+`docker logs` gave the whole answer in a second. That is a defect in how the
+step reports rather than in what it checks, and it is left for its own change.
+
 ## 1.1.0 — 2026-10-05
 
 Two steps could not pass. Both were found by the first `setup-test` run that
