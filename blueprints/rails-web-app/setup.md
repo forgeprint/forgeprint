@@ -473,7 +473,10 @@ Git, Docker and curl.
               bundler-cache: true
 
           - name: Scan for common Rails security vulnerabilities using static analysis
-            run: bin/brakeman --no-pager --quiet --exit-on-warn --exit-on-error
+            # Not bin/brakeman: its binstub adds --ensure-latest, which fails
+            # the build whenever a newer Brakeman is released than the pinned
+            # one, without scanning anything.
+            run: bundle exec brakeman --no-pager --quiet --exit-on-warn --exit-on-error
 
           - name: Scan for known security vulnerabilities in gems used
             run: bin/bundler-audit
@@ -540,8 +543,8 @@ Git, Docker and curl.
 22. Check the style against the Rails omakase rules: `bin/rubocop`
     Verify: `bin/rubocop --list-target-files | grep -q "app/jobs/purge_expired_sessions_job.rb"`
 
-23. Scan for security problems with Brakeman, failing on any warning: `bin/brakeman --no-pager --quiet --exit-on-warn --exit-on-error`
-    Verify: `bin/brakeman --no-pager --quiet --format json | ruby -rjson -e 'exit(JSON.parse($stdin.read)["warnings"].empty?)'`
+23. Scan for security problems with Brakeman, failing on any warning. `bundle exec` rather than `bin/brakeman`, because Rails' binstub adds `--ensure-latest`, which fails whenever a newer Brakeman exists than the one this Gemfile pins — a check that turns every upstream release into a red build and scans nothing while it does: `bundle exec brakeman --no-pager --quiet --exit-on-warn --exit-on-error`
+    Verify: `bundle exec brakeman --no-pager --quiet --format json | ruby -rjson -e 'exit(JSON.parse($stdin.read)["warnings"].empty?)'`
 
 24. Confirm that the key which decrypts the credentials file is ignored by Git, so it is never committed: `git check-ignore --quiet config/master.key`
     Verify: `grep -qx "/config/master.key" .dockerignore`
