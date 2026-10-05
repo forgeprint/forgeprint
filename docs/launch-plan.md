@@ -17,9 +17,10 @@ the maintainer, the listing is a liability.
 2. ~~Repository prerequisites~~ — done: `mcpName`, `server.json`, the plugin
    marketplace file.
 3. ~~The **official MCP registry**~~ — done, 2026-09-22:
-   `io.github.forgeprint/forgeprint`, and `active` at every version since; the
-   current one is 0.3.1. Several directories read it, so the rest starts from
-   there.
+   `io.github.forgeprint/forgeprint`, and `active` at every version it has
+   carried. npm is at 0.4.2; the registry entry for that version waits on the
+   publisher login, which only the maintainer can do (§1 below). Several
+   directories read the registry, so the rest starts from there.
 4. Directories that index by themselves: Glama, PulseMCP (when it reopens).
 5. Submissions with a human on the other end: mcp.so, awesome-mcp-servers.
 6. Lists with an eligibility window: awesome-claude-code, awesome-copilot.
@@ -31,7 +32,7 @@ the maintainer, the listing is a liability.
 
 | What                                              | Where                                                   | Why                                                                                                                                                    |
 | ------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ✅ `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json` — published, `0.3.1` | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
+| ✅ `"mcpName": "io.github.forgeprint/forgeprint"` | `packages/mcp-server/package.json` — published, `0.4.2` | The registry verifies ownership by reading `mcpName` from the published package. It must be on npm **before** publishing to the registry               |
 | ✅ `server.json`                                  | repository root                                         | The registry's own manifest (below)                                                                                                                    |
 | ✅ `.claude-plugin/marketplace.json`              | repository root                                         | Lets anyone run `/plugin marketplace add forgeprint/forgeprint`. There is no central Claude Code plugin registry, so this file **is** the distribution |
 
@@ -41,16 +42,17 @@ the maintainer, the listing is a liability.
 
 _Source: `modelcontextprotocol/registry` — `docs/modelcontextprotocol-io/quickstart.mdx`, `authentication.mdx`, `package-types.mdx`._
 
-The **Forgeprint today** column was last read from npm and from the registry's
-own API on **2026-10-02**; the requirements themselves still date from
-2026-09-22.
+The **Forgeprint today** column was last read from npm on **2026-10-05**; the
+requirements themselves still date from 2026-09-22. The registry's own API
+answered 504 at that moment, so the version it serves is not restated here —
+`forgeprint release <version>` reads it before it publishes and says so.
 
 | Requirement                                                | Forgeprint today                                                                                                                                                                |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.3.1` is the `latest` tag                                                                                                                                   |
+| Package published on the public npm registry               | ✅ `forgeprint-mcp@0.4.2` is the `latest` tag, published from a tag over OIDC with npm's own provenance attached — no token exists on the path                                  |
 | `mcpName` in `package.json`, matching `server.json` `name` | ✅ both say `io.github.forgeprint/forgeprint`                                                                                                                                   |
 | Namespace proven by GitHub OAuth                           | ✅ settled: the registry lists the server under `io.github.forgeprint/`, which it only does once the publisher holds the **Owner** role in the org with a **public** membership |
-| `server.json` at the repository root                       | ✅ committed, at 0.3.1                                                                                                                                                          |
+| `server.json` at the repository root                       | ✅ committed, at 0.4.2                                                                                                                                                          |
 
 Install the publisher. There is no npm package for it: a prebuilt binary, or
 Homebrew on macOS.
@@ -69,6 +71,28 @@ Remove-Item "$dir\mcp-publisher.tar.gz"
 # macOS / Linux
 brew install mcp-publisher
 ```
+
+Without Homebrew, which is the case on at least one machine that releases from
+here. Pinned, verified against the signature the release carries, and no
+download piped into a shell (rule 20):
+
+```bash
+V=1.8.1
+A="mcp-publisher_$(uname -s | tr 'A-Z' 'a-z')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz"
+gh release download "v$V" --repo modelcontextprotocol/registry --pattern "$A" --pattern "$A.sigstore.json"
+# the bundle's signed digest has to be this file's digest
+test "$(shasum -a 256 "$A" | cut -d' ' -f1 | xxd -r -p | base64)" \
+  = "$(node -p "require('./$A.sigstore.json').messageSignature.messageDigest.digest")"
+mkdir -p ~/.local/bin && tar -xzf "$A" -C /tmp mcp-publisher
+install -m 0755 /tmp/mcp-publisher ~/.local/bin/mcp-publisher
+mcp-publisher --version      # expects 1.8.1, and its commit matches the certificate's
+```
+
+The signing certificate in that bundle carries
+`modelcontextprotocol/registry` and `token.actions.githubusercontent.com`, so
+the identity is checkable too; `openssl x509 -text` shows it. Verifying the
+signature's chain to Sigstore's root needs `cosign`, which the digest check
+above does not replace.
 
 Then, **from the repository root**, because `publish` reads `./server.json`:
 
