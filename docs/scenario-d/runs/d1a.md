@@ -47,7 +47,7 @@ claude -p --strict-mcp-config --model opus \
 | Turns                 | 8                                                    |                                    |
 | Cost                  | **$0.677**                                           | the session's own usage report     |
 | Tokens                | out 15 817 · cache read 348 310 · cache write 36 317 | input proper: 16                   |
-| Checks passed         | **5 of 5**                                           | run after it said it was done      |
+| Checks passed         | **7 of 7**                                           | run after it said it was done      |
 | **False completions** | **0**                                                | it said done and every check held  |
 | Rework                | 0                                                    | no subagent to discard             |
 | Collisions            | 0                                                    | no subagent to collide             |
@@ -105,3 +105,10 @@ nobody asked for and nothing in the task forbade.
 
 Nothing to report: no intervention was possible, none was needed, and the run
 ended on its own after eight turns.
+
+## Re-checked after the gate was fixed
+
+D3's first turn passed this script with no implementation at all, so
+`check 0` and `check 1c` were added. This run was re-checked against the
+stronger gate and passes it — 7 of 7 where it used to read 5 of 5. The
+verdict did not move; only the denominator did.

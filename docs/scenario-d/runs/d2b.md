@@ -34,7 +34,7 @@ protocol was designed to look for.
 | Turns                 | 10         | 9      | 8      | 9      |
 | Cost                  | **$0.629** | $0.568 | $0.677 | $0.694 |
 | Tokens out            | **14 130** | 12 017 | 15 817 | 15 999 |
-| Checks passed         | 5 of 5     | 5 of 5 | 5 of 5 | 5 of 5 |
+| Checks passed         | 7 of 7     | 7 of 7 | 7 of 7 | 7 of 7 |
 | **False completions** | **0**      | 0      | 0      | 0      |
 | Subagents spawned     | **0**      | 0      | 0      | 0      |
 | Rework / collisions   | 0 / 0      | 0 / 0  | 0 / 0  | 0 / 0  |
@@ -83,3 +83,10 @@ prompt as the run with half the assertions.
 
 Headless, so no question could be asked and no intervention was possible. The
 run ended on its own after ten turns.
+
+## Re-checked after the gate was fixed
+
+D3's first turn passed this script with no implementation at all, so
+`check 0` and `check 1c` were added. This run was re-checked against the
+stronger gate and passes it — 7 of 7 where it used to read 5 of 5. The
+verdict did not move; only the denominator did.
