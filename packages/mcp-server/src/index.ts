@@ -4,7 +4,7 @@ import { CONTENT_IS_DATA, RESOLVE_TRIGGER } from './notes.js';
 import { registerTools } from './tools.js';
 
 export const SERVER_NAME = 'forgeprint';
-export const SERVER_VERSION = '0.4.3';
+export const SERVER_VERSION = '0.4.4';
 
 export * from './catalog.js';
 export * from './notes.js';

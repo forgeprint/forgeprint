@@ -6,6 +6,7 @@ import {
   checkVersions,
   classifyPublishError,
   decideCi,
+  type PublishOutcome,
   draftNotes,
   failureLines,
   hasChangelogEntry,
@@ -489,5 +490,30 @@ describe('decideCi', () => {
 
   it('calls an unreachable gh unverified rather than green', () => {
     assert.equal(decideCi({ known: false, green: false }), 'unverified');
+  });
+});
+
+describe('PublishOutcome covers a publish the registry has not caught up with', () => {
+  // 0.4.3 published both packages and failed the release workflow, because a
+  // version npm had accepted was not yet being served and the only outcome for
+  // that was 'failed'. A published version is immutable, so the gap is
+  // propagation; calling it a failure invites a re-run of a release that
+  // already happened.
+  it('is a distinct kind from a real failure', () => {
+    const accepted: PublishOutcome = { kind: 'accepted-not-served' };
+    const failed: PublishOutcome = { kind: 'failed', detail: 'anything' };
+    assert.notEqual(accepted.kind, failed.kind);
+  });
+
+  it('is not what a classifier returns for an error', () => {
+    // Nothing npm prints should ever produce it: it is reached only after npm
+    // reported success and the registry had not caught up.
+    for (const output of [
+      'npm error code ENEEDAUTH',
+      'npm error 404 Not Found - PUT https://registry.npmjs.org/forgeprint',
+      'npm error code E403 E_STAGE_REQUIRED',
+    ]) {
+      assert.notEqual(classifyPublishError(output).kind, 'accepted-not-served');
+    }
   });
 });
