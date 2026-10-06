@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { describe, it } from 'node:test';
 import { findAgent, loadAgentRegistry, type Agent } from './agents.js';
 import { findRepoRoot } from './paths.js';
-import { RenderError, renderForAgent, writeRendered } from './render.js';
+import { entryFilesWithRecipe, RenderError, renderForAgent, writeRendered } from './render.js';
 import { loadTaxonomy, terms } from './taxonomy.js';
 
 const root = findRepoRoot();
@@ -103,5 +103,44 @@ describe('writing', () => {
       readFileSync(join(out, '.cursor', 'rules', 'sample-api.mdc'), 'utf8'),
       /How to work in this project/,
     );
+  });
+});
+
+describe('entryFilesWithRecipe', () => {
+  const setup = [
+    '1. Always: `npm init -y`',
+    '',
+    '<!-- if options.framework == hono -->',
+    '2. Hono only: `npm i hono`',
+    '<!-- endif -->',
+    '<!-- if options.framework == express -->',
+    '2. Express only: `npm i express`',
+    '<!-- endif -->',
+  ].join('\n');
+
+  // `get` printed "read setup.md and run it" and wrote every file except that
+  // one, which left an agent with no MCP client (ADR 0013) holding an entry
+  // without the thing the entry is for.
+  it('adds the recipe to what an agent is given', () => {
+    const { files } = entryFilesWithRecipe([{ path: 'CLAUDE.md', contents: '#' }], setup);
+    assert.deepEqual(
+      files.map((f) => f.path),
+      ['CLAUDE.md', 'setup.md'],
+    );
+  });
+
+  it('resolves the options rather than handing over both halves', () => {
+    const { files, unresolved } = entryFilesWithRecipe([], setup, { framework: 'hono' });
+    const recipe = files[0]?.contents ?? '';
+    assert.match(recipe, /npm i hono/);
+    assert.doesNotMatch(recipe, /npm i express/);
+    assert.doesNotMatch(recipe, /if options/);
+    assert.deepEqual(unresolved, []);
+  });
+
+  it('names a field nobody chose, and leaves its blocks guarded', () => {
+    const { files, unresolved } = entryFilesWithRecipe([], setup);
+    assert.deepEqual(unresolved, ['framework']);
+    assert.match(files[0]?.contents ?? '', /if options\.framework/);
   });
 });

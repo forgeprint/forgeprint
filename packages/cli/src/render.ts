@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import type { Agent } from './agents.js';
+import { resolveSetupOptions } from './options.js';
 
 /**
  * One file `render` would write, and what would be in it.
@@ -104,4 +105,27 @@ export function writeRendered(outDir: string, files: readonly RenderedFile[]): s
     written.push(file.path);
   }
   return written;
+}
+
+/**
+ * An entry's files for an agent, plus the recipe — which is the one file the
+ * entry is actually for.
+ *
+ * `get` used to print "read setup.md and run it" while writing everything
+ * except setup.md, so an agent with no MCP client (ADR 0013) was told to run a
+ * file the command had not given it. Options are resolved here rather than
+ * left as HTML comments: an unresolved block is two recipes, and the reader
+ * has to know which half applies. A field nobody chose stays guarded and is
+ * named back to the caller.
+ */
+export function entryFilesWithRecipe(
+  rendered: readonly RenderedFile[],
+  setup: string,
+  chosen: Readonly<Record<string, string>> = {},
+): { files: readonly RenderedFile[]; unresolved: readonly string[] } {
+  const resolved = resolveSetupOptions(setup, chosen);
+  return {
+    files: [...rendered, { path: 'setup.md', contents: resolved.markdown }],
+    unresolved: resolved.unresolved,
+  };
 }

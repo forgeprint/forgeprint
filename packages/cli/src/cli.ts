@@ -33,11 +33,11 @@ import {
 } from './similarity.js';
 import { findRepoRoot, repoPaths } from './paths.js';
 import { loadTaxonomy, type Taxonomy } from './taxonomy.js';
-import { renderForAgent, writeRendered, type RenderInput } from './render.js';
+import { entryFilesWithRecipe, renderForAgent, writeRendered, type RenderInput } from './render.js';
 import { validateCatalog } from './validate.js';
 import { validateUnits } from './validate-units.js';
 
-export const VERSION = '0.4.4';
+export const VERSION = '0.4.5';
 
 interface GlobalOptions {
   root?: string;
@@ -179,12 +179,19 @@ ${String(problems.length)} render(s) failed`);
     .requiredOption('--agent <id>', 'agent to write for, from schema/agents.yaml')
     .option('--out <dir>', 'where to write', '.')
     .option('--expert', 'fetch an expert rather than a blueprint')
+    .option('--options <pairs>', 'option values for setup.md, for example framework=hono')
     .option('--dry-run', 'list what would be written, without writing it')
     .description('write an entry to disk for one agent, without an MCP client')
     .action(
       (
         slug: string,
-        options: { agent: string; out: string; expert?: boolean; dryRun?: boolean },
+        options: {
+          agent: string;
+          out: string;
+          expert?: boolean;
+          options?: string;
+          dryRun?: boolean;
+        },
       ) => {
         // The path for agents that do not speak MCP (ADR 0013). Deliberately
         // the same code as `render`: two ways in, one answer out, so an agent
@@ -199,7 +206,32 @@ ${String(problems.length)} render(s) failed`);
           options.expert === true
             ? expertRenderInput(root, taxonomy, slug)
             : blueprintRenderInput(root, taxonomy, slug);
-        const files = renderForAgent(agent, input);
+        const files = [...renderForAgent(agent, input)];
+
+        // The recipe, for a blueprint. This command exists for agents with no
+        // MCP client (ADR 0013), and it used to print "read setup.md and run
+        // it" while writing every file except that one — so the one thing the
+        // entry is for had to come from somewhere this command does not name.
+        //
+        // Options are resolved here rather than left as HTML comments, because
+        // an unresolved block is two recipes and the reader has to know which
+        // half to follow. An option nobody chose stays guarded, and the
+        // command says which ones those were.
+        let unresolvedFields: readonly string[] = [];
+        if (options.expert !== true) {
+          const folder = readBlueprintFolder(root, slug);
+          const manifest = readManifest(taxonomy, folder);
+          const chosen = options.options === undefined ? {} : parsePairs(options.options);
+          checkOptions(manifest, chosen);
+          const withRecipe = entryFilesWithRecipe(
+            files,
+            readBlueprintFile(folder, 'setup.md'),
+            chosen,
+          );
+          unresolvedFields = withRecipe.unresolved;
+          files.length = 0;
+          files.push(...withRecipe.files);
+        }
 
         if (options.dryRun === true) {
           for (const file of files) console.log(`would write  ${file.path}`);
@@ -212,7 +244,13 @@ ${String(problems.length)} render(s) failed`);
           const folder = readBlueprintFolder(root, slug);
           const manifest = readManifest(taxonomy, folder);
           console.log('');
-          console.log(`next  read setup.md and run it step by step: ${manifest.name}`);
+          console.log(`next  run setup.md step by step: ${manifest.name}`);
+          if (unresolvedFields.length > 0) {
+            console.log(
+              `      ${unresolvedFields.join(', ')} not chosen — those blocks are still guarded; ` +
+                'pass --options to resolve them',
+            );
+          }
           for (const named of manifest.integrations ?? []) {
             console.log(`      integration: ${named} — read its README before installing`);
           }

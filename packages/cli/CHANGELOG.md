@@ -3,6 +3,16 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.5 — 2026-10-06
+
+- **`get` writes the recipe it tells you to run.** It printed "read setup.md
+  and run it step by step" and wrote every file except that one, so the path
+  built for agents with no MCP client (ADR 0013) handed over an entry without
+  the thing the entry is for. It now writes `setup.md` too, with `--options`
+  resolved, because an unresolved block is two recipes and the reader has to
+  know which half applies. A field nobody chose stays guarded and is named in
+  the output.
+
 ## 0.4.4 — 2026-10-06
 
 - **A publish the registry has not caught up with is not a failed publish.**
