@@ -24,12 +24,27 @@ name: release
 on:
   push:
     tags: ['v*']
-  # The rehearsal below, which needs no tag. It has to live in this file rather
-  # than in a workflow of its own: npm matches the publisher on this file's
-  # name, so a diagnostic anywhere else is refused for not matching and reports
-  # "package not found" — the same words a missing publisher produces. One
-  # workflow of mine did exactly that and could never have passed.
+  # A manual run does one of two things, and the version input decides which.
+  #
+  # Empty: the rehearsal below, which publishes nothing. It has to live in this
+  # file rather than in a workflow of its own, because npm matches the publisher
+  # on this file's *name* — a diagnostic anywhere else is refused for not
+  # matching and reports "package not found", the same words a missing
+  # publisher produces. One workflow of mine did exactly that and could never
+  # have passed.
+  #
+  # Set: publish that version, checking out its tag. This is the recovery path,
+  # and it exists because a tag-triggered run uses the workflow file *from the
+  # tag* — so a bug in this file cannot be fixed by re-running the tag, and
+  # three releases were re-numbered rather than repaired. Checking out the tag
+  # means a recovery publishes exactly what the tag describes, while running
+  # the corrected workflow from the default branch.
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Publish this already-tagged version (e.g. 0.4.4). Empty rehearses.'
+        required: false
+        default: ''
 
 # contents: read is all a publish needs — the tag and the release already exist
 # by the time this runs, because pushing the tag is what started it.
@@ -48,6 +63,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # A recovery run publishes the tag's content, not the default
+          # branch's, so what goes to npm is what the tag says it is.
+          ref: ${{ inputs.version != '' && format('v{0}', inputs.version) || github.ref }}
 
       # Trusted publishing needs Node 22.14.0 or later. `22` resolves to the
       # newest 22.x, which has been past that since 22.14.0 itself.
@@ -67,6 +86,24 @@ jobs:
       # Node 22 bundles npm 10, and trusted publishing needs 11.5.1 or later —
       # so the bundled one cannot do this at all. pnpm is pinned to the version
       # `packageManager` names, as everywhere else.
+      # One place decides what this run is, so every step below reads a variable
+      # instead of repeating an expression about events and inputs.
+      - name: Decide what this run publishes
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -eu
+          if [ "${GITHUB_EVENT_NAME}" = push ]; then
+            v="${GITHUB_REF_NAME#v}"
+          else
+            v="${INPUT_VERSION}"
+          fi
+          if [ -n "$v" ] && ! printf '%s' "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "not a version: $v"; exit 1
+          fi
+          echo "RELEASE_VERSION=$v" >> "$GITHUB_ENV"
+          if [ -n "$v" ]; then echo "publishing $v from $(git rev-parse --short HEAD)"; else echo 'rehearsing; nothing will be published'; fi
+
       - name: Install npm and pnpm
         run: npm install --global npm@12.2.0 pnpm@12.5.1
 
@@ -76,7 +113,7 @@ jobs:
       # What the environment has, printed as presence and never as values —
       # the request token is a credential (§5b).
       - name: Report the publish environment
-        if: github.event_name == 'workflow_dispatch'
+        if: env.RELEASE_VERSION == ''
         run: |
           set -u
           set_or_not() { if [ -n "${1:-}" ]; then echo yes; else echo no; fi; }
@@ -110,7 +147,7 @@ jobs:
       #   one fails, one passes          -> that package's publisher
       #   npm 11 passes where 12 fails   -> the client, not the configuration
       - name: Rehearse the exchange
-        if: github.event_name == 'workflow_dispatch'
+        if: env.RELEASE_VERSION == ''
         continue-on-error: true
         run: |
           rehearse() {
@@ -157,21 +194,27 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           MCP_PUBLISHER_VERSION: 1.8.1
+        # Into RUNNER_TEMP, not the checkout. Downloading it into the working
+        # tree put mcp-publisher_linux_amd64.tar.gz.sigstore.json in front of
+        # `prettier --check .`, which failed `pnpm run check` and skipped the
+        # publish on 0.4.4's first attempt.
         run: |
+          set -eu
           A="mcp-publisher_linux_amd64.tar.gz"
+          cd "$RUNNER_TEMP"
           gh release download "v${MCP_PUBLISHER_VERSION}" \
             --repo modelcontextprotocol/registry --pattern "$A" --pattern "$A.sigstore.json"
-          signed=$(node -p "require('./$A.sigstore.json').messageSignature.messageDigest.digest")
+          signed=$(node -p "require('$RUNNER_TEMP/$A.sigstore.json').messageSignature.messageDigest.digest")
           actual=$(sha256sum "$A" | cut -d' ' -f1 | xxd -r -p | base64)
           test "$signed" = "$actual" || { echo "digest mismatch"; exit 1; }
           tar -xzf "$A" mcp-publisher
-          ./mcp-publisher --version
+          "$RUNNER_TEMP/mcp-publisher" --version
 
       - name: Rehearse the MCP Registry login over OIDC
-        if: github.event_name == 'workflow_dispatch'
+        if: env.RELEASE_VERSION == ''
         continue-on-error: true
         run: |
-          ./mcp-publisher login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
           # Claims only. The token itself is a credential (§5b).
           node -e "
             const j = require(process.env.HOME + '/.config/mcp-publisher/token.json');
@@ -182,22 +225,21 @@ jobs:
           "
 
       - name: Install dependencies
-        if: github.event_name == 'push'
+        if: env.RELEASE_VERSION != ''
         run: pnpm install --frozen-lockfile
 
       # A tag can point at any commit, including one that never passed a pull
       # request. The gate runs again rather than being assumed.
       - name: Check
-        if: github.event_name == 'push'
+        if: env.RELEASE_VERSION != ''
         run: pnpm run check
 
-      # `${GITHUB_REF_NAME#v}` turns v0.3.1 into 0.3.1. Everything else — which
-      # packages, in what order, which are already served, and what each npm
-      # error means — is in the command, not in this file (ADR 0002), so a
-      # maintainer gets the same answer locally.
+      # Which packages, in what order, which are already served, and what each
+      # npm error means is in the command rather than in this file (ADR 0002),
+      # so a maintainer gets the same answer locally.
       - name: Publish
-        if: github.event_name == 'push'
-        run: pnpm forgeprint publish "${GITHUB_REF_NAME#v}" --trusted
+        if: env.RELEASE_VERSION != ''
+        run: pnpm forgeprint publish "$RELEASE_VERSION" --trusted
 
       # The MCP Registry, which has to come after npm: it proves ownership by
       # reading `mcpName` out of the *published* package, so it cannot go first.
@@ -216,13 +258,13 @@ jobs:
       # does: `forgeprint release <version>` from a laptop finishes the registry
       # step on its own and skips what the registry already serves.
       - name: Publish to the MCP Registry
-        if: github.event_name == 'push'
+        if: env.RELEASE_VERSION != ''
         run: |
-          ./mcp-publisher login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
           node -e "
             const j = require(process.env.HOME + '/.config/mcp-publisher/token.json');
             const p = JSON.parse(Buffer.from(j.token.split('.')[1], 'base64url').toString());
             console.log('granted to:', p.auth_method_sub);
             console.log('permissions:', JSON.stringify(p.permissions));
           "
-          ./mcp-publisher publish server.json
+          "$RUNNER_TEMP/mcp-publisher" publish server.json
