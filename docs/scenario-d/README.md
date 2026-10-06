@@ -4,13 +4,15 @@ The protocol is [docs/scenario-d.md](../scenario-d.md). This folder is what it
 asks to exist **before the first run**, because a check written after watching a
 run is a check that run passes.
 
-| File                           | What it is                                                |
-| ------------------------------ | --------------------------------------------------------- |
-| [`prompt-d1.md`](prompt-d1.md) | the baseline prompt, pasted unchanged                     |
-| [`prompt-d2.md`](prompt-d2.md) | D1 plus one sentence allowing subagents                   |
-| [`prompt-d3.md`](prompt-d3.md) | D2 with the `technical-program-manager` expert named      |
-| [`checks.sh`](checks.sh)       | the three acceptance checks a script can hold honestly    |
-| [`record.md`](record.md)       | one copy per run, including the two checks that are yours |
+| File                           | What it is                                                                    |
+| ------------------------------ | ----------------------------------------------------------------------------- |
+| [`prompt-d1.md`](prompt-d1.md) | the baseline prompt, pasted unchanged                                         |
+| [`prompt-d2.md`](prompt-d2.md) | D1 plus one sentence allowing subagents                                       |
+| [`prompt-d3.md`](prompt-d3.md) | D2 with the `technical-program-manager` expert named                          |
+| [`checks.sh`](checks.sh)       | the three acceptance checks a script can hold honestly                        |
+| [`check5.mjs`](check5.mjs)     | acceptance check 5, which needs a token and so cannot sit in the shell script |
+| [`record.md`](record.md)       | one copy per run, including the two checks that are yours                     |
+| [`runs/`](runs)                | the filled records, one per run                                               |
 
 The prompts differ by exactly what the protocol allows, and that is checkable
 rather than asserted:
