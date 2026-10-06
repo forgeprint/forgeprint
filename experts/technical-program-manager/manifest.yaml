@@ -1,7 +1,7 @@
 schema: 1
 slug: technical-program-manager
 name: 'Technical Program Manager'
-version: 1.0.0
+version: 1.0.1
 tier: community
 provenance: generated
 maintainers: [aliosmanmho]

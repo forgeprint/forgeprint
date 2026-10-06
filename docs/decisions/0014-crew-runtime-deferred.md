@@ -80,6 +80,21 @@ Any of these, recorded in a dated report under `docs/research/` or
   without it. If the expert measurably reduces rejected work, conflicts or user
   interventions, and the failures that remain are ones a deterministic check
   would have caught, the checks are worth writing.
+
+  **Ran 2026-10-06, six runs
+  ([report](../research/2026-10-06-scenario-d.md)): this does not reopen.**
+  Rejected work, conflicts and false completions were zero in every
+  configuration, because **no run split the work** — the two that were merely
+  permitted never raised it, and the two with the expert decided against it,
+  one of them on arithmetic about the task's width. So the difference this
+  bullet asks for could not have appeared.
+  
+  The clause after the comma did get an answer, though. The one run that used a
+  subagent used it as an independent reviewer, and it found a boolean field
+  accepting `null` and an error response echoing an unvalidated key — both
+  deterministic, neither needing a runtime, a workspace or a crew command. That
+  is an argument for writing those two checks and nothing more, which is what
+  this bullet says to do with them.
 - **The expert is used and the same failure keeps coming back.** An issue trail
   showing agents that read P2 and still mark their own work verified is the
   argument for a command that will not let them.
