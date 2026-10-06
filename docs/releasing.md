@@ -33,6 +33,25 @@ stopped halfway finishes by running the same command.
 One thing stays outside it: the [dogfood test](dogfood.md), which it prints
 when it finishes.
 
+### When a release workflow fails, re-run it with the version input
+
+A tag-triggered run uses the workflow file **from the tag**, so a bug in
+`release.yml` cannot be fixed by re-running the tag — the re-run has the bug.
+Three releases were re-numbered for that before the recovery path existed.
+
+```bash
+gh workflow run release.yml --ref main -f version=0.4.4
+```
+
+That runs the corrected workflow from the default branch while checking out
+`v0.4.4`, so what goes to npm is what the tag describes. Leave `version` empty
+and the same workflow rehearses instead, publishing nothing.
+
+It refuses a version that is not a version, and `forgeprint publish` refuses
+one the repository does not agree with and skips a package the registry already
+serves — so a recovery run cannot publish something other than the tag, and
+re-running it twice costs nothing.
+
 ### The MCP Registry is published by the tag, not by hand
 
 `release.yml` does it, straight after npm, because the registry proves
