@@ -22,7 +22,11 @@ gets the same answer locally that a pull request gets in CI (ADR 0002).
   that cannot see an organization namespace. The token goes in
   `login github -token`. `docs/launch-plan.md` already had it right, so the
   repository was contradicting itself and the wrong copy was the one the tool
-  printed.
+  printed. Two more things the step needed and did not say: an empty `-token`
+  silently becomes a device flow, so the snippet prompts and checks the
+  length; and the registry token `login` stores expires **five minutes** after
+  it is issued, so the publish has to follow the login rather than wait for a
+  convenient moment.
 
 ## 0.4.3 — 2026-10-06
 
