@@ -109,24 +109,30 @@ The frozen baseline is **3 routes and 14 assertions**, which is where
 
 ## Running a run
 
+The last argument is the working directory, and round 2's is **its own**:
+round 1's six run directories are `run-d1a` … `run-d3b` beside the
+baselines, and `run.sh` refuses a run directory that already exists, because a
+run is never re-used. Giving round 2 the same working directory means its first
+run is refused and its second would land on round 1's evidence.
+
 ```bash
-bash run.sh start d1 a ~/scenario-d/baseline-r2 ~/scenario-d
+bash run.sh start d1 a ~/scenario-d/baseline-r2 ~/scenario-d/round-2
 ```
 
-That copies the baseline to `run-d1a`, installs the expert when the
+That copies the baseline to `round-2/run-d1a`, installs the expert when the
 configuration is D3, runs the one invocation, and writes the session's own
 usage report next to it. Then the gate, which is yours to run and never read
 off the agent's own report:
 
 ```bash
-bash checks.sh ~/scenario-d/run-d1a ~/scenario-d/baseline-r2
-node check-app.mjs ~/scenario-d/run-d1a
+bash checks.sh ~/scenario-d/round-2/run-d1a ~/scenario-d/baseline-r2
+node check-app.mjs ~/scenario-d/round-2/run-d1a
 ```
 
 If `check 0` failed, and only then, [`reply.md`](reply.md) applies:
 
 ```bash
-bash run.sh reply ~/scenario-d d1a
+bash run.sh reply ~/scenario-d/round-2 d1a
 ```
 
 ## The gate was checked in both directions
