@@ -3061,7 +3061,7 @@
     {
       "slug": "ts-http-service",
       "name": "TypeScript HTTP Service",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"
