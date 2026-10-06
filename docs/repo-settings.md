@@ -177,6 +177,14 @@ That means `docs/` is part of the deployment, not a scratch folder:
 - `docs/index.html`, `docs/assets/`, `docs/i18n/` — the landing page,
   hand-written. `docs/i18n/<lang>.json` also holds the `site` section the
   generated pages translate their chrome from.
+  One thing in there **is** checked: the status line's counts. JavaScript
+  replaces them with live numbers from `index.json`, so the written ones are
+  what a visitor without scripts — or a crawler that does not run them — reads,
+  and they drifted to 17 blueprints while the catalog held 45. `build-site
+--check` now compares the numbers in `index.html` and in every
+  `i18n/<lang>.json`, in both modes, and says what the catalog says instead.
+  It compares numbers rather than sentences, so a translation stays free to
+  word the line its own way.
 - `docs/index.json` — the generated catalog index, committed.
 - `docs/catalog.html`, `docs/b/`, `docs/e/`, `docs/c/`, `docs/i/`,
   `docs/forgeprint.css`, `docs/site.js` — the catalog, generated from the index

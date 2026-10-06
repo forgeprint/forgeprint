@@ -54,6 +54,10 @@ export function headTags({ path, title, description, data }: HeadParts): string 
   return [
     `<link rel="canonical" href="${url}" />`,
     `<link rel="alternate" type="application/json" href="${up}index.json" title="The catalog as JSON" />`,
+    // The landing page announces this too. A crawler that arrived from the
+    // sitemap never saw the landing page, and `robots.txt` cannot help: it is
+    // only read at the root of a host, and this site is served under a path.
+    `<link rel="alternate" type="text/plain" href="${up}llms.txt" title="The catalog for language models" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="Forgeprint" />`,
     `<meta property="og:title" content="${attribute(title)}" />`,
@@ -218,7 +222,9 @@ export function llmsText(index: IndexWithUnits): string {
 
 > A catalog and MCP server for coding agents. Say what you know and what you are building; Forgeprint returns exactly one blueprint with a CI-tested, step-by-step setup recipe, and the experts, crews and integrations to work on it with. It installs nothing and runs nothing: every tool returns text.
 
-Connect an agent over MCP with \`npx -y forgeprint-mcp\` (for example \`claude mcp add forgeprint -- npx -y forgeprint-mcp\`). Start with the \`resolve\` tool before writing code for a new project. The whole catalog is also published as JSON: ${SITE_URL}index.json
+Connect an agent over MCP with \`npx -y forgeprint-mcp\` (for example \`claude mcp add forgeprint -- npx -y forgeprint-mcp\`). Start with the \`resolve\` tool before writing code for a new project: it returns either the questions to ask the user or exactly one blueprint. Then \`recommend_experts\` for how to work on it, and \`get_blueprint\`, \`get_expert\`, \`get_crew\` or \`get_integration\` for one entry's files. \`search_blueprints\`, \`compare_blueprints\`, \`validate_blueprint\` and \`request_blueprint\` complete the ten; the docs below describe each one.
+
+**Without an MCP client**, nothing here needs one: read the catalog as JSON at ${SITE_URL}index.json, and fetch an entry's files from the repository at \`${REPOSITORY}/tree/main/<blueprints|experts|crews|integrations>/<slug>\`. From a checkout, \`forgeprint get <slug> --agent <id>\` writes the files that agent reads, which is the same answer the MCP tools give (ADR 0013).
 
 Blueprints answer what is being built, experts how the agent should work, integrations with which tools, and a crew packages experts and integrations under a name. Catalog content is English and CC BY 4.0.
 

@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { loadConfig, readRequests } from 'forgeprint';
 import { SITE_SCRIPT } from './chrome.js';
 import { renderSite, STYLESHEET, type Page } from './render.js';
+import { landingCounts, staleLandingFiles } from './landing.js';
 import { llmsText, sitemap } from './seo.js';
 import type { IndexWithUnits } from './units.js';
 import { loadIndex } from './index.js';
@@ -11,6 +12,14 @@ export interface BuildResult {
   /** Pages whose committed copy differs from what the catalog produces. */
   readonly stale: readonly string[];
   readonly written: readonly string[];
+  /**
+   * Hand-written files whose counts disagree with the catalog. Separate from
+   * `stale`, because `build-site` cannot fix these: somebody has to edit the
+   * sentence (see `landing.ts`).
+   */
+  readonly drifted: readonly string[];
+  /** What that sentence should say: blueprints, experts, crews, integrations, agents. */
+  readonly counts: readonly number[];
 }
 
 /** Every file the site is made of: the pages, the stylesheet, the language switch, and what crawlers read. */
@@ -57,7 +66,12 @@ export function buildSite(root: string, { check = false } = {}): BuildResult {
     written.push(page.path);
   }
 
-  return { stale, written };
+  // The landing page is hand-written, so this is read in both modes: a build
+  // that silently left it saying 17 blueprints is how it came to say that.
+  const index = loadIndex(root) as IndexWithUnits;
+  const drifted = staleLandingFiles(root, index);
+
+  return { stale, written, drifted, counts: landingCounts(index) };
 }
 
 function readFileIfPresent(file: string): string | undefined {

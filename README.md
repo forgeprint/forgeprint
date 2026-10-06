@@ -129,6 +129,19 @@ You point your agent at the MCP server and talk normally.
 | `compare_blueprints` | A pros-and-cons table for 2–4 candidates, built from their `overview.md` files                     |
 | `validate_blueprint` | Schema errors and a similarity report, for contributors                                            |
 | `request_blueprint`  | A GitHub issue payload when nothing matches                                                        |
+| `recommend_experts`  | For a task, at most one crew or at most three experts, each with a reason — never a list to browse |
+| `get_expert`         | One expert: its `SKILL.md`, checklists and sourced references                                      |
+| `get_crew`           | One crew: its members in full, and the install command for each integration it names               |
+| `get_integration`    | One pinned install recipe for third-party software, with the secrets it needs and what they reach  |
+
+**Without an MCP client**, nothing above is required. The catalog is published
+as JSON at
+[forgeprint.github.io/forgeprint/index.json](https://forgeprint.github.io/forgeprint/index.json)
+and as [llms.txt](https://forgeprint.github.io/forgeprint/llms.txt), every
+entry's files are in this repository, and from a checkout
+`pnpm forgeprint get <slug> --agent <id>` writes the files that agent reads —
+the same answer the tools give, because it is the same code
+([ADR 0013](docs/decisions/0013-agent-agnostic.md)).
 
 Forgeprint replies in English. Your agent presents it in your language: the
 tools take a `locale` hint and hand it back, so nothing in the catalog has to

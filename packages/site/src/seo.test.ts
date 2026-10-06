@@ -111,6 +111,14 @@ describe('what a crawler reads on every page', () => {
       );
     }
   });
+
+  // A crawler that came from the sitemap never saw the landing page, and
+  // `robots.txt` lives at the host root rather than under this path.
+  it('announces llms.txt from every page, not only from the landing page', () => {
+    for (const page of PAGES) {
+      assert.match(page.html, /<link rel="alternate" type="text\/plain" href="[^"]*llms\.txt"/);
+    }
+  });
 });
 
 describe('sitemap.xml', () => {
@@ -146,6 +154,30 @@ describe('llms.txt', () => {
   it('says how an agent connects, and where the whole index is', () => {
     assert.match(text, /npx -y forgeprint-mcp/);
     assert.ok(text.includes(`${SITE_URL}index.json`));
+  });
+
+  it('names every tool, so a model learns the catalog has more than blueprints', () => {
+    for (const tool of [
+      'resolve',
+      'search_blueprints',
+      'get_blueprint',
+      'compare_blueprints',
+      'validate_blueprint',
+      'request_blueprint',
+      'recommend_experts',
+      'get_expert',
+      'get_crew',
+      'get_integration',
+    ]) {
+      assert.ok(text.includes(`\`${tool}\``), tool);
+    }
+  });
+
+  // ADR 0013: an agent without an MCP client is served the same answer, and
+  // the only place it could read that is here.
+  it('says what to do without an MCP client', () => {
+    assert.match(text, /Without an MCP client/);
+    assert.match(text, /forgeprint get <slug> --agent <id>/);
   });
 
   it('leaves out a kind with nothing in it', () => {

@@ -2,7 +2,9 @@
 
 > A catalog and MCP server for coding agents. Say what you know and what you are building; Forgeprint returns exactly one blueprint with a CI-tested, step-by-step setup recipe, and the experts, crews and integrations to work on it with. It installs nothing and runs nothing: every tool returns text.
 
-Connect an agent over MCP with `npx -y forgeprint-mcp` (for example `claude mcp add forgeprint -- npx -y forgeprint-mcp`). Start with the `resolve` tool before writing code for a new project. The whole catalog is also published as JSON: https://forgeprint.github.io/forgeprint/index.json
+Connect an agent over MCP with `npx -y forgeprint-mcp` (for example `claude mcp add forgeprint -- npx -y forgeprint-mcp`). Start with the `resolve` tool before writing code for a new project: it returns either the questions to ask the user or exactly one blueprint. Then `recommend_experts` for how to work on it, and `get_blueprint`, `get_expert`, `get_crew` or `get_integration` for one entry's files. `search_blueprints`, `compare_blueprints`, `validate_blueprint` and `request_blueprint` complete the ten; the docs below describe each one.
+
+**Without an MCP client**, nothing here needs one: read the catalog as JSON at https://forgeprint.github.io/forgeprint/index.json, and fetch an entry's files from the repository at `https://github.com/forgeprint/forgeprint/tree/main/<blueprints|experts|crews|integrations>/<slug>`. From a checkout, `forgeprint get <slug> --agent <id>` writes the files that agent reads, which is the same answer the MCP tools give (ADR 0013).
 
 Blueprints answer what is being built, experts how the agent should work, integrations with which tools, and a crew packages experts and integrations under a name. Catalog content is English and CC BY 4.0.
 

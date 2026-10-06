@@ -39,7 +39,7 @@
       "kiro": "Add this to .kiro/settings/mcp.json."
     },
     "ctaSecondary": "Browse the catalog",
-    "status": "Pre-release · 17 blueprints · 8 experts · 2 crews · 10 integrations · 9 agents",
+    "status": "Pre-release · 45 blueprints · 45 experts · 17 crews · 45 integrations · 9 agents",
     "statusLive": "Pre-release · {b} blueprints · {e} experts · {c} crews · {i} integrations · {a} agents",
     "copy": "Copy",
     "copied": "Copied",
