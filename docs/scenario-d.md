@@ -90,3 +90,31 @@ down; say which it is.
 
 Whatever it shows goes on the record: a dated report in `docs/research/`,
 linked from the expert's overview and from ADR 0014. Measured, not promised.
+
+---
+
+## Round 2
+
+Round 1 ran on 2026-10-06 and its result is
+[the report](research/2026-10-06-scenario-d.md): ADR 0014 stays deferred,
+because the evidence it names could not occur — **no run split the work**, so
+there were no collisions, no rework and no worker marking its own work done.
+The task was too narrow for splitting to be the cheaper option, and D3b said so
+with numbers.
+
+Round 2 keeps everything above and changes the three things that report's last
+section asks for. Its materials are
+[`docs/scenario-d/round-2/`](scenario-d/round-2/README.md), and round 1's stay
+where the report links them.
+
+|                      | Round 1                                         | Round 2                                                                                                                     |
+| -------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| The task             | two resources sharing one relationship          | **four independent resources**, sixteen routes, two shared surfaces (`app.ts`, and `body.ts` because one field is a number) |
+| Runs                 | two per configuration                           | **three** per configuration, because D3's two disagreed                                                                     |
+| The gate             | five checks                                     | those, plus a route floor and the **two deterministic checks** round 1's reviewer found — and only those, per ADR 0014      |
+| The reply            | written mid-round, applied to one configuration | committed before run 1, identical for all nine                                                                              |
+| Assumptions surfaced | unmeasurable headless                           | redefined as **decisions named**, asked or recorded, with its complement **decisions settled silently**                     |
+| Starting project     | `ts-http-service` 1.2.0                         | **1.3.0**, which now ships the body validation those runs each improvised                                                   |
+
+The last row is why **round 2's numbers are not comparable to round 1's**.
+Comparisons run inside a round, between D1, D2 and D3.
