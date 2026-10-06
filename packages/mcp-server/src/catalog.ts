@@ -10,12 +10,23 @@
 
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { DEFAULT_FILES_URL, DEFAULT_INDEX_URL, FALLBACK_INDEX_URL, fetchText } from 'forgeprint';
 import type { CatalogIndex, IndexEntry } from 'forgeprint';
 
-export const DEFAULT_INDEX_URL = 'https://forgeprint.github.io/forgeprint/index.json';
-export const FALLBACK_INDEX_URL =
-  'https://raw.githubusercontent.com/forgeprint/forgeprint/main/docs/index.json';
-export const DEFAULT_FILES_URL = 'https://raw.githubusercontent.com/forgeprint/forgeprint/main';
+/**
+ * Where the published catalog is, and how a text resource is fetched.
+ *
+ * Defined in `forgeprint` and re-exported here, because the CLI reads the same
+ * catalog over the same transport for agents with no MCP client (ADR 0013).
+ * Two copies of a URL is how one of them comes to point somewhere else.
+ */
+export {
+  DEFAULT_FILES_URL,
+  DEFAULT_INDEX_URL,
+  FALLBACK_INDEX_URL,
+  FETCH_TIMEOUT_MS,
+  fetchText,
+} from 'forgeprint';
 
 /** Where each kind's folders live, relative to the repository root. */
 export const UNIT_DIRECTORY = {
@@ -130,26 +141,6 @@ export function entryFor(index: CatalogIndex, slug: string): IndexEntry {
     );
   }
   return entry;
-}
-
-/** How long one request for the catalog may take before it is abandoned. */
-export const FETCH_TIMEOUT_MS = 15_000;
-
-/**
- * Fetch a text resource, and give up after `timeoutMs`.
- *
- * Without a limit a stalled network holds the tool call open for as long as
- * the operating system keeps the socket, and the agent waits on a tool that
- * will never answer. A timeout turns that into the same error as any other
- * failed fetch, which the caller already reports.
- */
-export async function fetchText(url: string, timeoutMs = FETCH_TIMEOUT_MS): Promise<string> {
-  const response = await fetch(url, {
-    headers: { accept: 'text/plain, application/json' },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return await response.text();
 }
 
 /**

@@ -4,6 +4,16 @@ The MCP server. It installs nothing and runs nothing: every tool returns text,
 and blueprint content is data rather than instructions for the agent
 (rules 21 and 22).
 
+## 0.5.0 — 2026-10-06
+
+- **One copy of the published catalog's URLs and of `fetchText`.** They now
+  live in `forgeprint` and are re-exported here, because the CLI reads the same
+  catalog over the same transport for agents with no MCP client (ADR 0013). Two
+  copies of a URL is how one of them comes to point somewhere else.
+- `get_blueprint` and `resolve` pass an index entry to `checkOptions` and
+  `missingOptions` directly. Those take a slug and the declared options now, so
+  the `asManifestLike` cast that pretended an entry was a manifest is gone.
+
 ## 0.4.5 — 2026-10-06
 
 - No change to the server. The version follows the workspace.

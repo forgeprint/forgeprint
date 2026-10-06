@@ -3,6 +3,33 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.5.0 — 2026-10-06
+
+- **`get` works outside a checkout.** ADR 0013 point 7 promises an agent with
+  no MCP client the same answer through the CLI, and names
+  `npx forgeprint get <slug> --agent <id>`. That command exited with `Not
+inside a Forgeprint repository`: every command resolved the catalog by
+  walking up for `schema/taxonomy.yaml`, which is exactly what `npx` does not
+  give you. It now reads the published index — Pages first, the raw repository
+  behind it — and fetches the entry's files from the repository, so the ADR's
+  own example runs. The index already carries the taxonomy, the agent registry
+  and each entry's file list, which is how the skills are found with no
+  directory to read.
+- **A checkout still wins when there is one**, and `--root` forces it. That is
+  the answer both to working offline and to trying an entry nobody has
+  published yet. `FORGEPRINT_INDEX_URL` and `FORGEPRINT_FILES_URL` point the
+  command at a mirror — the same two variables the server takes.
+- **`get` says which catalog answered.** Over the network that is the
+  difference between a current answer and a stale one, and the reader cannot
+  see it any other way.
+- The agent registry out of a published index is **validated, not trusted**:
+  `render` reads a file layout from it, and an index too old to carry one now
+  says so instead of failing three frames into rendering.
+- `checkOptions` and `missingOptions` take what they actually read — a slug and
+  the declared options — so a manifest from disk and an index entry from the
+  network both satisfy them. That deleted an `as unknown as` cast in the MCP
+  server.
+
 ## 0.4.5 — 2026-10-06
 
 - **`get` writes the recipe it tells you to run.** It printed "read setup.md

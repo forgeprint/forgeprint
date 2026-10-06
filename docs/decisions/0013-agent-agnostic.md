@@ -77,9 +77,22 @@ request type, `agent-verification`, exists for "I tested this one too". The
 site shows a badge per agent: green for tested, grey for unknown — never a
 third colour implying it probably works.
 
-**7. There is a path for agents with no MCP client.** `npx forgeprint get <slug>
---agent <id>` writes the same output to files. An agent that cannot speak MCP
-is not excluded from the catalog; it just gets it through the CLI.
+**7. There is a path for agents with no MCP client.**
+`npx -y forgeprint get <slug> --agent <id>` writes the same output to files,
+reading the published catalog — the index Pages serves, with the raw repository
+behind it — so it needs no checkout, no clone and no install. A checkout wins
+when the command is run inside one, which is what makes `--root` the answer
+both to working offline and to trying an entry nobody has published yet. An
+agent that cannot speak MCP is not excluded from the catalog; it gets it
+through the CLI.
+
+> **This was not true until 0.5.0.** Every command resolved the catalog by
+> walking up for `schema/taxonomy.yaml`, so the `npx` form above — the one this
+> decision names — exited with `Not inside a Forgeprint repository`, and only
+> somebody already inside a checkout could use it. Found on 2026-10-06 while
+> writing the documentation that quotes this paragraph. The decision did not
+> change; the code caught up with it. What a promise in an ADR is worth is
+> whether somebody ran it.
 
 ## Consequences
 

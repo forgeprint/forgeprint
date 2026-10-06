@@ -152,20 +152,31 @@ and for a script or a CI job that wants the files and nothing else.
 | One entry's files                | `https://github.com/forgeprint/forgeprint/tree/main/<blueprints\|experts\|crews\|integrations>/<slug>`                                                                                          |
 | What each agent reads            | [`schema/agents.yaml`](https://github.com/forgeprint/forgeprint/blob/main/schema/agents.yaml) — context files, MCP support, how it takes secrets, and the date the vendor's docs were last read |
 
-From a checkout, the CLI writes an entry straight into a project, for the agent
-you name:
+The CLI writes an entry straight into a project, for the agent you name, with
+no checkout and no install:
 
 ```bash
-pnpm forgeprint get ts-http-service --agent cursor --options framework=hono --out ../my-service
-pnpm forgeprint get code-reviewer --agent cursor --expert --out ../my-service
+npx -y forgeprint get ts-http-service --agent cursor --options framework=hono
+npx -y forgeprint get code-reviewer --agent cursor --expert
 ```
 
-`--dry-run` lists what it would write without writing it. The command needs a
-Forgeprint checkout, because it reads the catalog from disk: it looks for
-`schema/taxonomy.yaml` at or above the working directory, or takes
-`--root <path>`.
+That writes the context file in the layout that agent reads, every skill the
+entry ships, and — for a blueprint — `setup.md` with the options you chose
+already resolved. `--out <dir>` picks where, and `--dry-run` lists what it
+would write without writing it. The command prints which catalog answered,
+because over the network that is the difference between a current answer and a
+stale one.
+
+**Which catalog it reads.** A Forgeprint checkout wins when you are in one:
+`schema/taxonomy.yaml` at or above the working directory, or `--root <path>`.
+Outside one it reads the published index, with the raw repository as a fallback
+for the minutes when Pages is redeploying. So `--root` is the answer to both
+working offline and trying an entry that exists nowhere yet, and
+`FORGEPRINT_INDEX_URL` and `FORGEPRINT_FILES_URL` point it at a mirror — the
+same two variables the server takes.
+
 What the resolver does — asking the questions, then choosing — is the one thing
-it does not do. That is `resolve`, and it needs the server.
+the CLI does not do. That is `resolve`, and it needs the server.
 
 ---
 
