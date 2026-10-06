@@ -456,10 +456,14 @@ async function publishToMcpRegistry(root: string, version: string): Promise<void
           // pointed straight at it.
           // Nothing in the name says whether io.github.<x> is a person or an
           // organization, so the message says both rather than guessing.
+          // It names the -token flag because this message used to name an
+          // environment variable mcp-publisher has never read, which sent the
+          // maintainer into the device flow it was written to avoid.
           'mcp-publisher is not logged in, or its registry token has expired. ' +
-          'Under an organization namespace the browser login cannot see the organization: ' +
-          'set MCP_GITHUB_TOKEN to a classic PAT scoped to read:org, run `mcp-publisher login github`, ' +
-          'then unset it (docs/releasing.md, "Publishing under the organization"). ' +
+          'Under an organization namespace the browser device flow cannot see the organization, ' +
+          'so pass a classic PAT scoped to read:org instead: ' +
+          '`mcp-publisher login github -token "$PAT"` — the flag, not an environment variable; ' +
+          'mcp-publisher 1.8.1 reads no MCP_GITHUB_TOKEN. Delete the token afterwards. ' +
           'Under your own namespace, `mcp-publisher login github` alone is enough. Then:'
         : `mcp-publisher failed: ${result.output.trim().split('\n').slice(-3).join('\n')}\nFinish it by hand:`;
   say();

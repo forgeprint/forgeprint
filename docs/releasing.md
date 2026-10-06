@@ -87,18 +87,47 @@ is not bound to an app installation and can read your role directly:
 1. Create one at `https://github.com/settings/tokens/new?scopes=read:org`.
    Tick nothing else: the registry never reads or writes code, and a token with
    `repo` in it would be handed to a third party for no reason.
-2. Log in with it. **`login` reads the variable; `publish` does not** — `publish`
-   uses the registry token that `login` stored, so setting the variable and
-   going straight to `publish` retries with the old login:
+2. Log in with it. The token goes in the **`-token` flag**: `mcp-publisher`
+   1.8.1 reads no environment variable for it, and `mcp-publisher login github`
+   on its own runs the device flow — the one that cannot see the organization.
+   `login` is also the only command that takes it; `publish` uses the registry
+   token `login` stored, so passing it to `publish` retries with the old login.
 
    ```bash
-   export MCP_GITHUB_TOKEN=<token>     # PowerShell: $env:MCP_GITHUB_TOKEN = "<token>"
-   mcp-publisher login github           # no browser opens; that is how you know it read the variable
+   printf 'PAT: '; read -rs PAT; echo        # silent read, but prompt first — see below
+   [ -n "$PAT" ] && echo "set, ${#PAT} chars" || echo EMPTY
+   mcp-publisher login github -token "$PAT"  # no device code appears; that is the signal
+   unset PAT
    mcp-publisher publish server.json
    ```
 
-3. Unset the variable and delete the token. The registry token `login` stored is
-   what later publishes use.
+   **Print a prompt and check the length.** A silent `read` with no prompt
+   displays nothing, so the line looks finished, and pressing Enter captures an
+   empty string. `mcp-publisher` treats an empty `-token` as no token and runs
+   the device flow, which is how three logins in a row produced a personal
+   namespace while looking like successes. A classic PAT is 40 characters.
+
+   If a device code appears, the flag was empty and nothing is logged in yet.
+   Stop rather than completing the device flow: it authenticates you without
+   the organization, and the registry token it stores says so —
+   `permissions: [{ publish, io.github.<you>/* }]` and nothing for the
+   organization.
+
+3. Publish **now**, then delete the token on GitHub. The registry token
+   `login` stores carries `exp` five minutes after `iat` — measured, not
+   documented upstream — so "log in, come back later and publish" does not
+   work and "the stored token is what later publishes use" is only true inside
+   that window. Keep the PAT until the publish has succeeded.
+
+   What the stored token actually grants is readable without publishing
+   anything, which is the cheapest way to find out whether the login was the
+   one you meant:
+
+   ```bash
+   node -e "const j=require(process.env.HOME+'/.config/mcp-publisher/token.json');
+     const p=JSON.parse(Buffer.from(j.token.split('.')[1],'base64url').toString());
+     console.log(p.auth_method_sub, JSON.stringify(p.permissions))"
+   ```
 
 `release` recognises this refusal and says so rather than telling you to log in
 again.

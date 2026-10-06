@@ -16,6 +16,17 @@ gets the same answer locally that a pull request gets in CI (ADR 0002).
 - **The registry wait is five minutes rather than two and a half.** Not the
   fix, since no window is long enough to be a guarantee, but the common case
   should not be lost to it.
+- **The MCP Registry login advice names a flag that exists.** It said to set
+  `MCP_GITHUB_TOKEN`, which `mcp-publisher` 1.8.1 does not read, so following
+  it ran the device flow — the one the advice was written to avoid, and the one
+  that cannot see an organization namespace. The token goes in
+  `login github -token`. `docs/launch-plan.md` already had it right, so the
+  repository was contradicting itself and the wrong copy was the one the tool
+  printed. Two more things the step needed and did not say: an empty `-token`
+  silently becomes a device flow, so the snippet prompts and checks the
+  length; and the registry token `login` stores expires **five minutes** after
+  it is issued, so the publish has to follow the login rather than wait for a
+  convenient moment.
 
 ## 0.4.3 — 2026-10-06
 
