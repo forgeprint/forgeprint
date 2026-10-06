@@ -38,6 +38,7 @@ export interface VersionProblem {
 export type PublishOutcome =
   | { kind: 'published' }
   | { kind: 'already-published' }
+  | { kind: 'accepted-not-served' }
   | { kind: 'unauthorized' }
   | { kind: 'no-auth' }
   | { kind: 'no-trusted-publisher' }

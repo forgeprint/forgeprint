@@ -156,11 +156,13 @@ const CI_WAIT_MINUTES = 45;
 /**
  * How long to keep asking the registry after a publish.
  *
- * Six attempts thirty seconds apart is two and a half minutes. 0.3.0 took
- * ninety seconds to become visible, and the previous version of this loop —
- * five attempts with no wait at all — would have called that a failed publish.
+ * Ten attempts thirty seconds apart is five minutes. 0.3.0 took ninety seconds
+ * to become visible; 0.4.3's `forgeprint-mcp` had not appeared after two and a
+ * half, which failed the release workflow over a publish that had worked. The
+ * window is not the real fix — see `accepted-not-served` — but it costs
+ * nothing to stop losing the common case to it.
  */
-const REGISTRY_ATTEMPTS = 6;
+const REGISTRY_ATTEMPTS = 10;
 const REGISTRY_POLL_SECONDS = 30;
 
 /**
@@ -307,13 +309,12 @@ async function publishOne(
     }
   }
   if (outcome.kind === 'published') {
-    return {
-      outcome: {
-        kind: 'failed',
-        detail: 'publish reported success, but the registry does not serve it',
-      },
-      output: result.output,
-    };
+    // npm accepted the tarball and said so. A published version is immutable,
+    // so "accepted but not visible yet" is propagation rather than failure —
+    // and calling it a failure is worse than useless: 0.4.3 published both
+    // packages correctly and turned the release workflow red, which invites
+    // somebody to re-run a release that already happened.
+    return { outcome: { kind: 'accepted-not-served' }, output: result.output };
   }
   return { outcome, output: result.output };
 }
@@ -659,7 +660,11 @@ ${pushed.output.trim()}`);
 
   for (const pkg of pending) {
     const { outcome, output } = await publishOne(pkg, root, version);
-    if (outcome.kind !== 'published' && outcome.kind !== 'already-published')
+    if (
+      outcome.kind !== 'published' &&
+      outcome.kind !== 'already-published' &&
+      outcome.kind !== 'accepted-not-served'
+    )
       reportPublishOutput(output);
     switch (outcome.kind) {
       case 'published':
@@ -667,6 +672,13 @@ ${pushed.output.trim()}`);
         break;
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
+        break;
+      case 'accepted-not-served':
+        say(
+          `  ok     ${pkg.name}@${version} accepted by npm; the registry was still ` +
+            'serving the previous version when this finished. A published version is ' +
+            `immutable, so it will appear — confirm with: npm view ${pkg.name} version`,
+        );
         break;
       case 'no-trusted-publisher':
         fail(
@@ -780,7 +792,11 @@ export async function publish(root: string, options: PublishOptions): Promise<vo
 
   for (const pkg of pending) {
     const { outcome, output } = await publishOne(pkg, root, version, publisher);
-    if (outcome.kind !== 'published' && outcome.kind !== 'already-published')
+    if (
+      outcome.kind !== 'published' &&
+      outcome.kind !== 'already-published' &&
+      outcome.kind !== 'accepted-not-served'
+    )
       reportPublishOutput(output);
     switch (outcome.kind) {
       case 'published':
@@ -788,6 +804,13 @@ export async function publish(root: string, options: PublishOptions): Promise<vo
         break;
       case 'already-published':
         say(`  ok     ${pkg.name}@${version} was already on the registry`);
+        break;
+      case 'accepted-not-served':
+        say(
+          `  ok     ${pkg.name}@${version} accepted by npm; the registry was still ` +
+            'serving the previous version when this finished. A published version is ' +
+            `immutable, so it will appear — confirm with: npm view ${pkg.name} version`,
+        );
         break;
       case 'no-trusted-publisher':
         fail(

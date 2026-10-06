@@ -3,6 +3,20 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
+## 0.4.4 — 2026-10-06
+
+- **A publish the registry has not caught up with is not a failed publish.**
+  0.4.3 put both packages on npm correctly and turned the release workflow red:
+  npm accepted `forgeprint-mcp@0.4.3` and said so, the registry was still
+  serving the previous version two and a half minutes later, and the only
+  outcome for that was `failed`. A published version is immutable, so the gap
+  is propagation — and calling it a failure invites somebody to re-run a
+  release that already happened. It is now its own outcome, reported as
+  accepted with the command that confirms it.
+- **The registry wait is five minutes rather than two and a half.** Not the
+  fix, since no window is long enough to be a guarantee, but the common case
+  should not be lost to it.
+
 ## 0.4.3 — 2026-10-06
 
 - **A CI state that could not be read is no longer a pass.** `release` printed

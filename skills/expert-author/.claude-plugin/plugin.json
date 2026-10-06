@@ -1,7 +1,7 @@
 {
   "name": "expert-author",
   "description": "Turn how somebody actually works into a Forgeprint expert that passes the quality gate.",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "author": {
     "name": "Forgeprint",
     "url": "https://github.com/forgeprint/forgeprint"
