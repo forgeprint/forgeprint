@@ -150,9 +150,10 @@ jobs:
       # mcp-publisher is pinned, and the download is checked against the digest
       # its own signature bundle carries rather than trusted because it came
       # from a release page.
-      - name: Rehearse the MCP Registry login over OIDC
-        if: github.event_name == 'workflow_dispatch'
-        continue-on-error: true
+      # Both paths need the binary: one rehearses the login, the other
+      # publishes. Pinned, and checked against the digest its own signature
+      # bundle carries rather than trusted for coming from a release page.
+      - name: Install mcp-publisher
         env:
           GH_TOKEN: ${{ github.token }}
           MCP_PUBLISHER_VERSION: 1.8.1
@@ -166,6 +167,10 @@ jobs:
           tar -xzf "$A" mcp-publisher
           ./mcp-publisher --version
 
+      - name: Rehearse the MCP Registry login over OIDC
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        run: |
           ./mcp-publisher login github-oidc
           # Claims only. The token itself is a credential (§5b).
           node -e "
@@ -193,3 +198,31 @@ jobs:
       - name: Publish
         if: github.event_name == 'push'
         run: pnpm forgeprint publish "${GITHUB_REF_NAME#v}" --trusted
+
+      # The MCP Registry, which has to come after npm: it proves ownership by
+      # reading `mcpName` out of the *published* package, so it cannot go first.
+      #
+      # `login github-oidc` authenticates as this repository and the registry
+      # grants `io.github.forgeprint/*` — measured on a manual run before this
+      # step existed. No token is created and none is stored anywhere.
+      #
+      # It prints what the login granted before publishing, because the manual
+      # run measured a branch ref and a release runs from a tag. If a tag ever
+      # gets a different grant, the claims above the failure say so instead of
+      # leaving somebody to infer it. The registry token lives 300 seconds,
+      # which is why the login sits here rather than anywhere earlier.
+      #
+      # A failure here does not undo the npm publish and must not look like it
+      # does: `forgeprint release <version>` from a laptop finishes the registry
+      # step on its own and skips what the registry already serves.
+      - name: Publish to the MCP Registry
+        if: github.event_name == 'push'
+        run: |
+          ./mcp-publisher login github-oidc
+          node -e "
+            const j = require(process.env.HOME + '/.config/mcp-publisher/token.json');
+            const p = JSON.parse(Buffer.from(j.token.split('.')[1], 'base64url').toString());
+            console.log('granted to:', p.auth_method_sub);
+            console.log('permissions:', JSON.stringify(p.permissions));
+          "
+          ./mcp-publisher publish server.json

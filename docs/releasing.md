@@ -33,6 +33,31 @@ stopped halfway finishes by running the same command.
 One thing stays outside it: the [dogfood test](dogfood.md), which it prints
 when it finishes.
 
+### The MCP Registry is published by the tag, not by hand
+
+`release.yml` does it, straight after npm, because the registry proves
+ownership by reading `mcpName` out of the **published** package and therefore
+cannot go first. `mcp-publisher login github-oidc` takes no arguments:
+inside Actions it authenticates as this repository, and the registry grants
+`io.github.forgeprint/*`. No token is created, and none is stored on anybody's
+machine.
+
+Measured on a manual run before the step existed:
+
+```
+granted to: repo:forgeprint@.../forgeprint@...:ref:refs/heads/main via github-oidc
+permissions: [{"action":"publish","resource":"io.github.forgeprint/*"}]
+lifetime: 300 seconds
+```
+
+That measurement used a **branch** ref and a release runs from a tag, so the
+step prints the grant before it publishes rather than assuming the two match.
+
+Everything below is the laptop fallback, and it is still the right answer when
+Actions is unavailable (§4) or when a release has to be finished by hand.
+`forgeprint release <version>` skips the registry when it already serves the
+version, so running it after a workflow that succeeded costs nothing.
+
 ### mcp-publisher has to be on the PATH of the shell you release from
 
 The command publishes to the MCP Registry itself, and that needs the tool
