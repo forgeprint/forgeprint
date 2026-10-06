@@ -249,6 +249,12 @@ and 2.0.5 is still the newest non-prerelease. Three betas in three days against
 nothing on the 2.x line in nearly three months is the hold holding, not the
 hold going stale.
 
+Re-checked 2026-10-06: unchanged. `latest` is still `3.0.0-beta.49` from
+2026-10-02, the registry's `modified` is that same timestamp, and 2.0.5 is 88
+days old. The beta cadence has paused for four days — which says nothing about
+a stable release either way, and is recorded so the next reader does not read
+it as one. D16 asks for a non-prerelease version and there is not one.
+
 ---
 
 ## After the last phase
