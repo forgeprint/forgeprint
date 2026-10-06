@@ -34,6 +34,26 @@ note() { say 'note' "$1"; }
 cd "$run" || exit 1
 out=$(mktemp)
 
+# --- 0. was the work done at all? -----------------------------------------
+#
+# Every other check here asks whether something got worse, so all of them pass
+# on a run that changed nothing: the build builds, there are no new
+# suppressions, the baseline's own tests pass, no test is buried and the
+# route-table test holds because no route was added. D3's first run produced a
+# plan and no implementation, and this script reported 5 of 5.
+#
+# The protocol's check 1 asks for "at least one test per route and per
+# refusal". Counting that was a `note` here rather than an assertion, which is
+# how a gate comes to pass an empty run. The floor is cheap and absolute: the
+# recipe's own source has to have changed.
+if git -C "$run" diff --quiet --stat -- src 2>/dev/null \
+  && [ -z "$(git -C "$run" ls-files --others --exclude-standard -- src 2>/dev/null)" ]; then
+  no 'check 0   nothing under src/ changed — the task was not implemented'
+  note 'every check below passes on an untouched project; read them with that in mind'
+else
+  ok 'check 0   src/ changed, so there is something to check'
+fi
+
 # --- 4. the build, first: a project that does not build cannot be judged ----
 if npm run build >"$out" 2>&1; then
   ok 'check 4a  npm run build'
@@ -65,8 +85,20 @@ fi
 # node:test indents subtests, so every count here allows leading whitespace.
 # Anchoring at the start of the line sees only the top-level suites, which is
 # how this script first reported a passing baseline as a failure.
-note "assertions: $(grep -cE '^[[:space:]]*(ok|not ok) [0-9]+' "$out" || true), \
-$(grep -E '^# (pass|fail)' "$out" | tr '\n' ' ')"
+assertions=$(grep -cE '^[[:space:]]*(ok|not ok) [0-9]+' "$out" || true)
+note "assertions: ${assertions}, $(grep -E '^# (pass|fail)' "$out" | tr '\n' ' ')"
+
+# The baseline ships 5 tests. A run that added routes and did not add
+# assertions has not met check 1 whatever `npm test` says, and the four runs
+# before this check existed ranged from 49 to 94 — so the floor is not a
+# threshold anybody has to tune.
+baseline_assertions=$( (cd "$baseline" && npm test 2>&1 || true) |
+  grep -cE '^[[:space:]]*(ok|not ok) [0-9]+' || true)
+if [ "$assertions" -gt "$baseline_assertions" ]; then
+  ok "check 1c  more assertions than the baseline's ${baseline_assertions}"
+else
+  no "check 1c  ${assertions} assertions against the baseline's ${baseline_assertions} — nothing was added"
+fi
 
 # The blueprint runs `node --test dist/*.test.js`, which does not glob into
 # subdirectories — so a test file one level down never runs, and therefore
@@ -93,7 +125,7 @@ else
 fi
 
 rm -f "$out"
-printf '\n%s passed, %s failed, of the five assertions above' "$pass" "$fail"
-printf ' (protocol checks 1, 2 and 4).\n'
+printf '\n%s passed, %s failed, of the assertions above' "$pass" "$fail"
+printf ' (protocol checks 1, 2 and 4, plus a floor).\n'
 printf 'Checks 3 and 5 are yours: see docs/scenario-d/record.md.\n'
 [ "$fail" -eq 0 ]
