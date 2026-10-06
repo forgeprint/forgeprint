@@ -44,8 +44,10 @@ baseline established. Reading it as "D2 beats D1" would be wrong, though: no
 splitting happened, so the comparison is between two D1-shaped runs whose
 prompts differed by a sentence.
 
-**The assertion count is falling across runs and has nothing to do with the
-prompt:** 94, then 71, then 49. Check 1 only asks for a test per route and per
+**The assertion count varies widely across runs and has nothing to do with the
+prompt:** 94, then 71, then 49 — and D2b's 73 afterwards, which is why
+[that record](d2b.md) corrects this paragraph's original reading of a falling
+trend. Three points in a row are a line only if you stop looking. Check 1 only asks for a test per route and per
 refusal, and all three pass it, so the gate does not see this. It is the kind of
 variation that a five-check gate is not built to catch, and it belongs in the
 report rather than in a footnote.
