@@ -11,6 +11,7 @@ run is a check that run passes.
 | [`prompt-d3.md`](prompt-d3.md) | D2 with the `technical-program-manager` expert named                          |
 | [`checks.sh`](checks.sh)       | the three acceptance checks a script can hold honestly                        |
 | [`check5.mjs`](check5.mjs)     | acceptance check 5, which needs a token and so cannot sit in the shell script |
+| [`reply.md`](reply.md)         | the one reply, and the mechanical condition that fires it — fixed before use  |
 | [`record.md`](record.md)       | one copy per run, including the two checks that are yours                     |
 | [`runs/`](runs)                | the filled records, one per run                                               |
 
