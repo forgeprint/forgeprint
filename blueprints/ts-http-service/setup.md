@@ -96,9 +96,109 @@ Requires Node.js 22 or newer and Docker.
 3. Install the pinned dependencies: `npm install --no-audit --no-fund`
    Verify: `npm ls --depth=0`
 
+4. Create `src/body.ts` with:
+
+   ```typescript
+   /**
+    * Reading a JSON body, for routes that accept one.
+    *
+    * This exists because six agents asked to add a resource to this service
+    * each wrote their own version of it, and an independent review of one of
+    * those found two defects worth making impossible here instead
+    * (docs/research/2026-10-06-scenario-d.md):
+    *
+    * - a boolean field that accepted `null`, because the check was written as
+    *   a coercion rather than as a type test;
+    * - an error response that echoed the caller's unknown field name back,
+    *   which turns a validator into a reflector.
+    *
+    * So: every value is type-tested, and no message contains anything the
+    * caller sent. The messages name what this route accepts, which is not
+    * user input.
+    */
+
+   /** 16 KiB. Large enough for a form, small enough that nothing queues. */
+   const MAX_BODY_BYTES = 16 * 1024;
+
+   export type Field = { kind: 'string'; min: number; max: number } | { kind: 'boolean' };
+
+   export type Shape = Record<string, { field: Field; required: boolean }>;
+
+   export interface Refusal {
+     readonly status: 400 | 413 | 415;
+     readonly error: string;
+   }
+
+   export type Read<T> = { ok: true; value: T } | { ok: false; refusal: Refusal };
+
+   function accepts(shape: Shape): string {
+     // The accepted names, which came from this file rather than from the
+     // request. Listing the *rejected* name is the mistake this avoids.
+     return Object.keys(shape).sort().join(', ');
+   }
+
+   function check(field: Field, value: unknown): boolean {
+     if (field.kind === 'boolean') {
+       // `typeof` and nothing else. `Boolean(value)`, `value ?? false` and
+       // `!!value` all accept null, and one of them shipped.
+       return typeof value === 'boolean';
+     }
+     if (typeof value !== 'string') return false;
+     const trimmed = value.trim();
+     return trimmed.length >= field.min && trimmed.length <= field.max;
+   }
+
+   /**
+    * Parse and validate a body against a shape. `text` is the raw body, so the
+    * size limit is applied before anything is parsed.
+    */
+   export function readBody<T>(text: string, contentType: string | null, shape: Shape): Read<T> {
+     if (Buffer.byteLength(text, 'utf8') > MAX_BODY_BYTES) {
+       return { ok: false, refusal: { status: 413, error: 'the body is too large' } };
+     }
+     if (contentType === null || !contentType.toLowerCase().startsWith('application/json')) {
+       return { ok: false, refusal: { status: 415, error: 'the body must be application/json' } };
+     }
+
+     let parsed: unknown;
+     try {
+       parsed = JSON.parse(text);
+     } catch {
+       return { ok: false, refusal: { status: 400, error: 'the body is not valid JSON' } };
+     }
+     if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+       return { ok: false, refusal: { status: 400, error: 'the body must be a JSON object' } };
+     }
+
+     const body = parsed as Record<string, unknown>;
+     for (const key of Object.keys(body)) {
+       if (!(key in shape)) {
+         return {
+           ok: false,
+           refusal: { status: 400, error: `this route accepts only: ${accepts(shape)}` },
+         };
+       }
+     }
+     for (const [key, { field, required }] of Object.entries(shape)) {
+       if (!(key in body)) {
+         if (required) {
+           return { ok: false, refusal: { status: 400, error: `${key} is required` } };
+         }
+         continue;
+       }
+       if (!check(field, body[key])) {
+         return { ok: false, refusal: { status: 400, error: `${key} is not acceptable` } };
+       }
+     }
+     return { ok: true, value: body as T };
+   }
+   ```
+
+   Verify: `test -f src/body.ts`
+
 <!-- if options.framework == hono -->
 
-4. Create `src/auth.ts` with:
+5. Create `src/auth.ts` with:
 
    ```typescript
    import { jwtVerify, type JWTPayload } from 'jose';
@@ -155,12 +255,13 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f src/auth.ts`
 
-5. Create `src/app.ts` with:
+6. Create `src/app.ts` with:
 
    ```typescript
    import { Hono } from 'hono';
 
    import { requireBearer, type AuthSettings, type Env } from './auth.js';
+   import { readBody } from './body.js';
 
    /**
     * A constructor rather than a module-level app: a test builds a fresh one
@@ -183,6 +284,23 @@ Requires Node.js 22 or newer and Docker.
        c.json({ items: [], subject: c.get('claims').sub ?? null }),
      );
 
+     // A route that accepts a body validates it in one place, so the rules are
+     // read rather than remembered. Nothing is stored: this service has no
+     // database, and a create route that pretends otherwise misleads whoever
+     // builds on it.
+     protectedRoutes.post('/items', async (c) => {
+       const read = readBody<{ name: string; done?: boolean }>(
+         await c.req.text(),
+         c.req.header('content-type') ?? null,
+         {
+           name: { field: { kind: 'string', min: 1, max: 200 }, required: true },
+           done: { field: { kind: 'boolean' }, required: false },
+         },
+       );
+       if (!read.ok) return c.json({ error: read.refusal.error }, read.refusal.status);
+       return c.json({ item: { name: read.value.name, done: read.value.done ?? false } }, 201);
+     });
+
      app.route('/', protectedRoutes);
 
      return app;
@@ -191,7 +309,7 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f src/app.ts`
 
-6. Create `src/app.test.ts` with:
+7. Create `src/app.test.ts` with:
 
    ```typescript
    import assert from 'node:assert/strict';
@@ -271,12 +389,68 @@ Requires Node.js 22 or newer and Docker.
          assert.equal(response.status, 401, `${name} answered without a token`);
        }
      });
+
+     // The two defects an independent review found in agent-written validation,
+     // turned into tests here so the next reader inherits the answer rather than
+     // the question (docs/research/2026-10-06-scenario-d.md).
+     describe('a body is validated in one place', () => {
+       const create = async (body: string, contentType = 'application/json') => {
+         const res = await createApp(settings).request('/items', {
+           method: 'POST',
+           headers: {
+             authorization: `Bearer ${await token(settings.secret)}`,
+             'content-type': contentType,
+           },
+           body,
+         });
+         return { status: res.status, text: await res.text() };
+       };
+
+       it('accepts a valid body and defaults done to false', async () => {
+         const res = await create(JSON.stringify({ name: 'a name' }));
+         assert.equal(res.status, 201);
+         assert.deepEqual(JSON.parse(res.text), { item: { name: 'a name', done: false } });
+       });
+
+       // `Boolean(value)`, `value ?? false` and `!!value` all accept null. Only a
+       // `typeof` test refuses it, and one of those three shipped once.
+       it('refuses a boolean field that is null', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'a name', done: null }))).status, 400);
+       });
+
+       // An error that repeats the caller's field name has turned a validator
+       // into a reflector. The message names what the route accepts instead.
+       it('refuses an unknown field without repeating it back', async () => {
+         const res = await create(JSON.stringify({ name: 'a name', sneaky: 1 }));
+         assert.equal(res.status, 400);
+         assert.doesNotMatch(res.text, /sneaky/);
+       });
+
+       it('refuses a body that is not valid JSON', async () => {
+         assert.equal((await create('{')).status, 400);
+       });
+
+       it('refuses a body that is not a JSON object', async () => {
+         assert.equal((await create('"a string"')).status, 400);
+         assert.equal((await create('[]')).status, 400);
+       });
+
+       it('refuses a body that is not application/json', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'a name' }), 'text/plain')).status, 415);
+       });
+
+       // The size is checked before the parse, so this answers 413 rather than
+       // the 400 the over-long name would otherwise earn.
+       it('refuses a body over the size limit', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'x'.repeat(17 * 1024) }))).status, 413);
+       });
+     });
    });
    ```
 
    Verify: `test -f src/app.test.ts`
 
-7. Create `src/main.ts` with:
+8. Create `src/main.ts` with:
 
    ```typescript
    import { serve } from '@hono/node-server';
@@ -313,7 +487,7 @@ Requires Node.js 22 or newer and Docker.
 
 <!-- if options.framework == express -->
 
-4. Create `src/auth.ts` with:
+5. Create `src/auth.ts` with:
 
    ```typescript
    import { jwtVerify, type JWTPayload } from 'jose';
@@ -375,12 +549,13 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f src/auth.ts`
 
-5. Create `src/app.ts` with:
+6. Create `src/app.ts` with:
 
    ```typescript
    import express, { type ErrorRequestHandler, type Express, type Response } from 'express';
 
    import { requireBearer, type AuthSettings, type Locals } from './auth.js';
+   import { readBody } from './body.js';
 
    /**
     * The last handler. Without it Express answers an error with its own page,
@@ -418,6 +593,31 @@ Requires Node.js 22 or newer and Docker.
        res.json({ items: [], subject: res.locals.claims.sub ?? null });
      });
 
+     // The raw body, as text: the size and the content type are decided in
+     // body.ts rather than by a parser that answers for itself. The limit here
+     // is deliberately above body.ts's, so our own 413 is the one that answers.
+     protectedRoutes.use(express.text({ type: '*/*', limit: '1mb' }));
+
+     // A route that accepts a body validates it in one place, so the rules are
+     // read rather than remembered. Nothing is stored: this service has no
+     // database, and a create route that pretends otherwise misleads whoever
+     // builds on it.
+     protectedRoutes.post('/items', (req, res: Response<unknown, Locals>) => {
+       const read = readBody<{ name: string; done?: boolean }>(
+         typeof req.body === 'string' ? req.body : '',
+         req.header('content-type') ?? null,
+         {
+           name: { field: { kind: 'string', min: 1, max: 200 }, required: true },
+           done: { field: { kind: 'boolean' }, required: false },
+         },
+       );
+       if (!read.ok) {
+         res.status(read.refusal.status).json({ error: read.refusal.error });
+         return;
+       }
+       res.status(201).json({ item: { name: read.value.name, done: read.value.done ?? false } });
+     });
+
      app.use(protectedRoutes);
      app.use(hideErrors);
 
@@ -427,7 +627,7 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f src/app.ts`
 
-6. Create `src/app.test.ts` with:
+7. Create `src/app.test.ts` with:
 
    ```typescript
    import assert from 'node:assert/strict';
@@ -566,12 +766,75 @@ Requires Node.js 22 or newer and Docker.
          await server.close();
        }
      });
+
+     // The two defects an independent review found in agent-written validation,
+     // turned into tests here so the next reader inherits the answer rather than
+     // the question (docs/research/2026-10-06-scenario-d.md).
+     describe('a body is validated in one place', () => {
+       // The body has to be read before the server closes, so this returns the
+       // text rather than the response.
+       const create = async (body: string, contentType = 'application/json') => {
+         const { url, close } = await serve(createApp(settings));
+         try {
+           const res = await fetch(`${url}/items`, {
+             method: 'POST',
+             headers: {
+               authorization: `Bearer ${await token(settings.secret)}`,
+               'content-type': contentType,
+             },
+             body,
+           });
+           return { status: res.status, text: await res.text() };
+         } finally {
+           await close();
+         }
+       };
+
+       it('accepts a valid body and defaults done to false', async () => {
+         const res = await create(JSON.stringify({ name: 'a name' }));
+         assert.equal(res.status, 201);
+         assert.deepEqual(JSON.parse(res.text), { item: { name: 'a name', done: false } });
+       });
+
+       // `Boolean(value)`, `value ?? false` and `!!value` all accept null. Only a
+       // `typeof` test refuses it, and one of those three shipped once.
+       it('refuses a boolean field that is null', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'a name', done: null }))).status, 400);
+       });
+
+       // An error that repeats the caller's field name has turned a validator
+       // into a reflector. The message names what the route accepts instead.
+       it('refuses an unknown field without repeating it back', async () => {
+         const res = await create(JSON.stringify({ name: 'a name', sneaky: 1 }));
+         assert.equal(res.status, 400);
+         assert.doesNotMatch(res.text, /sneaky/);
+       });
+
+       it('refuses a body that is not valid JSON', async () => {
+         assert.equal((await create('{')).status, 400);
+       });
+
+       it('refuses a body that is not a JSON object', async () => {
+         assert.equal((await create('"a string"')).status, 400);
+         assert.equal((await create('[]')).status, 400);
+       });
+
+       it('refuses a body that is not application/json', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'a name' }), 'text/plain')).status, 415);
+       });
+
+       // The size is checked before the parse, so this answers 413 rather than
+       // the 400 the over-long name would otherwise earn.
+       it('refuses a body over the size limit', async () => {
+         assert.equal((await create(JSON.stringify({ name: 'x'.repeat(17 * 1024) }))).status, 413);
+       });
+     });
    });
    ```
 
    Verify: `test -f src/app.test.ts`
 
-7. Create `src/main.ts` with:
+8. Create `src/main.ts` with:
 
    ```typescript
    import { createApp } from './app.js';
@@ -608,7 +871,7 @@ Requires Node.js 22 or newer and Docker.
 
 <!-- endif -->
 
-8. Create `.gitignore` with:
+9. Create `.gitignore` with:
 
    ```text
    node_modules/
@@ -618,34 +881,34 @@ Requires Node.js 22 or newer and Docker.
 
    Verify: `test -f .gitignore`
 
-9. Create `Dockerfile` with:
+10. Create `Dockerfile` with:
 
-   ```dockerfile
-   FROM node:22-alpine AS build
-   WORKDIR /src
-   # Dependencies first, so a source change does not reinstall them.
-   COPY package.json package-lock.json* ./
-   RUN npm install --no-audit --no-fund
-   COPY . .
-   # Build, then drop the development dependencies from the tree that gets
-   # copied forward — TypeScript has no business in a running image.
-   RUN npm run build && npm prune --omit=dev
+    ```dockerfile
+    FROM node:22-alpine AS build
+    WORKDIR /src
+    # Dependencies first, so a source change does not reinstall them.
+    COPY package.json package-lock.json* ./
+    RUN npm install --no-audit --no-fund
+    COPY . .
+    # Build, then drop the development dependencies from the tree that gets
+    # copied forward — TypeScript has no business in a running image.
+    RUN npm run build && npm prune --omit=dev
 
-   FROM node:22-alpine
-   WORKDIR /app
-   COPY --from=build /src/node_modules ./node_modules
-   COPY --from=build /src/dist ./dist
-   COPY --from=build /src/package.json ./package.json
-   # The node image ships a non-root user. Using it is one line and skipping
-   # it is the most common container finding there is.
-   USER node
-   EXPOSE 8080
-   CMD ["node", "dist/main.js"]
-   ```
+    FROM node:22-alpine
+    WORKDIR /app
+    COPY --from=build /src/node_modules ./node_modules
+    COPY --from=build /src/dist ./dist
+    COPY --from=build /src/package.json ./package.json
+    # The node image ships a non-root user. Using it is one line and skipping
+    # it is the most common container finding there is.
+    USER node
+    EXPOSE 8080
+    CMD ["node", "dist/main.js"]
+    ```
 
-   Verify: `test -f Dockerfile`
+Verify: `test -f Dockerfile`
 
-10. Create `.dockerignore` with:
+11. Create `.dockerignore` with:
 
     ```text
     node_modules
@@ -656,7 +919,7 @@ Requires Node.js 22 or newer and Docker.
 
     Verify: `test -f .dockerignore`
 
-11. Create `.github/workflows/ci.yml` with:
+12. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: ci
@@ -683,7 +946,7 @@ Requires Node.js 22 or newer and Docker.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-12. Create `README.md` with:
+13. Create `README.md` with:
 
     ```markdown
     # service
@@ -703,29 +966,29 @@ Requires Node.js 22 or newer and Docker.
 
     Verify: `test -f README.md`
 
-13. Build it: `npm run build`
+14. Build it: `npm run build`
     Verify: `test -f dist/main.js`
 
-14. Run the tests: `npm test`
+15. Run the tests: `npm test`
     Verify: `npm test`
 
-15. Build the container image: `docker build -t ts-http-service:dev .`
+16. Build the container image: `docker build -t ts-http-service:dev .`
     Verify: `docker image inspect ts-http-service:dev > /dev/null`
 
-16. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force ts-service-check > /dev/null 2>&1 || true`
+17. Remove a check container left behind by an earlier attempt, so this does not depend on a clean machine: `docker rm --force ts-service-check > /dev/null 2>&1 || true`
     Verify: `test -z "$(docker ps -aq --filter name=ts-service-check)"`
 
-17. Start the container. It takes its configuration from the environment and refuses to start without it, so all three are supplied here: `docker run -d --name ts-service-check -e JWT_SECRET="local-development-only-not-a-real-secret" -e JWT_AUDIENCE="service" -e JWT_ISSUER="service" -p 127.0.0.1::8080 ts-http-service:dev`
+18. Start the container. It takes its configuration from the environment and refuses to start without it, so all three are supplied here: `docker run -d --name ts-service-check -e JWT_SECRET="local-development-only-not-a-real-secret" -e JWT_AUDIENCE="service" -e JWT_ISSUER="service" -p 127.0.0.1::8080 ts-http-service:dev`
     Verify: `test -n "$(docker ps -q --filter name=ts-service-check)"`
 
-18. Read the port the operating system chose: `docker port ts-service-check 8080 | head -1 > service.url`
+19. Read the port the operating system chose: `docker port ts-service-check 8080 | head -1 > service.url`
     Verify: `test -s service.url`
 
-19. Confirm the service answers, which proves the image runs as the non-root user: `curl -fsS --retry 30 --retry-all-errors --retry-delay 1 -o health.json "http://$(cat service.url)/health"`
+20. Confirm the service answers, which proves the image runs as the non-root user: `curl -fsS --retry 30 --retry-all-errors --retry-delay 1 -o health.json "http://$(cat service.url)/health"`
     Verify: `grep -q '"status":"ok"' health.json`
 
-20. Confirm a protected route refuses a request with no token. This is the step that proves the middleware is mounted, and it fails loudly the day somebody declares a route on the wrong app: `curl -sS -o refused.json -w "%{http_code}" "http://$(cat service.url)/items" > refused.code`
+21. Confirm a protected route refuses a request with no token. This is the step that proves the middleware is mounted, and it fails loudly the day somebody declares a route on the wrong app: `curl -sS -o refused.json -w "%{http_code}" "http://$(cat service.url)/items" > refused.code`
     Verify: `grep -q '^401$' refused.code`
 
-21. Stop the check container: `docker rm --force ts-service-check`
+22. Stop the check container: `docker rm --force ts-service-check`
     Verify: `test -z "$(docker ps -q --filter name=ts-service-check)"`

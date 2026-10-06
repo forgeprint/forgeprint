@@ -1,5 +1,29 @@
 # Changelog — ts-http-service
 
+## 1.3.0 — 2026-10-06
+
+Feature: a body-validation pattern and a create route that uses it, from what
+[Scenario D](../../docs/research/2026-10-06-scenario-d.md) measured.
+
+- **`src/body.ts`** — one place where a JSON body is read, size-checked,
+  content-type-checked, parsed and type-tested against a declared shape. It is
+  framework-agnostic, hand-written, and adds no dependency.
+- **`POST /items`** on both the Hono and the Express variant, because a
+  validator nothing calls is a worse convention than none. It stores nothing
+  and says so: this service has no database.
+- **Seven tests on each variant**, two of which exist for a reason rather than
+  for coverage. Six agents asked to add a resource to this blueprint each wrote
+  their own validator — three called the file `validate.ts` and three
+  `validation.ts` — and an independent review of one found a boolean field that
+  accepted `null` and an error response that echoed the caller's unknown field
+  name back. Both are now impossible by default and a test holds each: a
+  `typeof` test rather than a coercion, and messages that name what the route
+  accepts rather than what the caller sent.
+
+Verified in both directions on both variants: 22 of 22 recipe steps, 14 tests
+passing — and with each defect reintroduced by hand, exactly its own test fails
+and nothing else does.
+
 ## 1.2.0 — 2026-09-25
 
 Feature: framework option, Express 5, per D12 of
