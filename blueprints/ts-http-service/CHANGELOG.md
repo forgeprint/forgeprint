@@ -1,5 +1,31 @@
 # Changelog — ts-http-service
 
+## 1.3.1 — 2026-10-06
+
+Fix: the body validator treated a prototype key as a declared field.
+
+- **`src/body.ts`** checked unknown fields with `key in shape`, and `in` walks
+  the prototype chain. Every object has a `constructor`, a `toString` and a
+  `__proto__`, so all three passed the check and reached the validated value.
+  It is `Object.hasOwn` now, in both directions — the same mistake the other
+  way round would have found a field named `toString` present in every body.
+- **A test on each variant holds it**: those three keys answer 400 and none of
+  them is repeated back. `JSON.parse` makes `__proto__` an own property rather
+  than setting a prototype, so it arrives as a field and leaves as a refusal.
+- On this blueprint's own `POST /items` little escaped, because that handler
+  builds its response field by field. A route that spreads the validated body
+  into a stored record takes the key with it, which is what anybody adding a
+  resource writes.
+- Found by [Scenario D](../../docs/scenario-d/round-2/runs/d1a.md) round 2's
+  first run, which was asked for four resources and fixed this in its own copy
+  on the way. A measurement run, not a review — and the review standards that
+  would have caught it are worth the same question.
+
+Verified in both directions on both variants: 22 of 22 recipe steps, 15
+assertions on Hono and 18 on Express — and with the operator put back, the test
+that fails is `refuses a prototype key as the unknown field it is`, and no
+other.
+
 ## 1.3.0 — 2026-10-06
 
 Feature: a body-validation pattern and a create route that uses it, from what

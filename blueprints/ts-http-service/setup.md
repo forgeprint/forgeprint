@@ -172,7 +172,13 @@ Requires Node.js 22 or newer and Docker.
 
      const body = parsed as Record<string, unknown>;
      for (const key of Object.keys(body)) {
-       if (!(key in shape)) {
+       // `Object.hasOwn`, not `key in shape`: `in` walks the prototype chain,
+       // and every object has a `constructor`, a `toString` and a `__proto__`
+       // — so those three passed as declared fields and reached the value this
+       // returns. A route that spreads that value into a record takes them
+       // with it. Found by a measurement run
+       // (docs/research/2026-10-06-scenario-d.md), not by a review.
+       if (!Object.hasOwn(shape, key)) {
          return {
            ok: false,
            refusal: { status: 400, error: `this route accepts only: ${accepts(shape)}` },
@@ -180,7 +186,9 @@ Requires Node.js 22 or newer and Docker.
        }
      }
      for (const [key, { field, required }] of Object.entries(shape)) {
-       if (!(key in body)) {
+       // The same reason, the other way round: a shape that declared a field
+       // named `toString` would find it present in every body.
+       if (!Object.hasOwn(body, key)) {
          if (required) {
            return { ok: false, refusal: { status: 400, error: `${key} is required` } };
          }
@@ -424,6 +432,19 @@ Requires Node.js 22 or newer and Docker.
          const res = await create(JSON.stringify({ name: 'a name', sneaky: 1 }));
          assert.equal(res.status, 400);
          assert.doesNotMatch(res.text, /sneaky/);
+       });
+
+       // A prototype key is an unknown field like any other, and this is the
+       // test that says so. `key in shape` accepted all three, because `in`
+       // walks the prototype chain. `JSON.parse` makes `__proto__` an own
+       // property rather than setting the prototype, so it arrives here as a
+       // field and leaves as a refusal.
+       it('refuses a prototype key as the unknown field it is', async () => {
+         for (const key of ['constructor', 'toString', '__proto__']) {
+           const res = await create(`{"name":"a name","${key}":1}`);
+           assert.equal(res.status, 400, key);
+           assert.ok(!res.text.includes(key), `${key} was repeated back`);
+         }
        });
 
        it('refuses a body that is not valid JSON', async () => {
@@ -808,6 +829,19 @@ Requires Node.js 22 or newer and Docker.
          const res = await create(JSON.stringify({ name: 'a name', sneaky: 1 }));
          assert.equal(res.status, 400);
          assert.doesNotMatch(res.text, /sneaky/);
+       });
+
+       // A prototype key is an unknown field like any other, and this is the
+       // test that says so. `key in shape` accepted all three, because `in`
+       // walks the prototype chain. `JSON.parse` makes `__proto__` an own
+       // property rather than setting the prototype, so it arrives here as a
+       // field and leaves as a refusal.
+       it('refuses a prototype key as the unknown field it is', async () => {
+         for (const key of ['constructor', 'toString', '__proto__']) {
+           const res = await create(`{"name":"a name","${key}":1}`);
+           assert.equal(res.status, 400, key);
+           assert.ok(!res.text.includes(key), `${key} was repeated back`);
+         }
        });
 
        it('refuses a body that is not valid JSON', async () => {
