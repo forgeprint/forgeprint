@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.1 — 2026-10-06
+
+- **The overview says what Scenario D measured, including the part that does not
+  flatter it** ([report](../../docs/research/2026-10-06-scenario-d.md)). Six
+  runs: against the protocol's own measures — false completions, collisions,
+  rejected work — this expert is not better than the same task done without it,
+  because all three were zero everywhere and no run split the work. It cost
+  roughly twice as much. What it did do, once, was spend its one subagent on an
+  independent reviewer that found three defects the acceptance checks do not ask
+  about. No content changed; the claim the overview makes for itself did.
+
 ## 1.0.0 — 2026-09-24
 
 Seven principles for work split across several agents, adopted as content

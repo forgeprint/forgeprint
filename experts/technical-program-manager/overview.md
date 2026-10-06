@@ -79,6 +79,22 @@ caught two things the first draft got wrong: a lint step for a project that has
 no lint script, and test files placed where the project's test command never
 looks — tests that would never run and so never fail. That is one run, on a
 plan rather than on a delivery, with no second agent involved.
-[Scenario D](../../docs/scenario-d.md) is the run that would say whether it
-earns its place with several. If it changes nothing about what your agent does,
-say so in an issue — that is the evidence it most needs.
+[Scenario D ran on 2026-10-06](../../docs/research/2026-10-06-scenario-d.md),
+six runs, and the honest summary is this. Against the protocol's own measures —
+false completions, collisions, rejected work — this expert is **not** better
+than the same task done without it: all three were zero everywhere, because no
+run split the work, including both runs that had these principles. Both of those
+decided against splitting and said why, which is the first instruction here and
+is a defensible answer rather than a failure to follow it. It cost roughly twice
+as much: $1.24–1.37 against $0.68–0.69.
+
+What it did do, once: the run that used a subagent spent it on an independent
+read-only reviewer, which found three defects the acceptance checks do not ask
+about — a boolean field accepting `null`, an unvalidated key echoed back in an
+error, and a missing content-type check. Two were fixed before the run
+finished. That is one run, on a task too small to need splitting at all.
+
+So: it changes what an agent does, in the direction claimed here, and the
+measurable part of that change is one reviewer on one run. If it changes nothing
+about what your agent does, say so in an issue — that is still the evidence it
+most needs.
