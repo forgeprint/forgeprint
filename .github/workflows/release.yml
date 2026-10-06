@@ -126,6 +126,56 @@ jobs:
           npm install --global npm@11 >/dev/null 2>&1
           rehearse forgeprint 0.3.1
 
+      # The MCP Registry's side of the same question, and the reason this step
+      # exists at all: `mcp-publisher login github-oidc` takes no arguments.
+      # Inside Actions it authenticates as the repository, so the registry step
+      # would need no credential on anybody's laptop — the same answer as npm
+      # trusted publishing.
+      #
+      # Six interactive attempts with a personal access token produced three
+      # logins that reported success and granted `io.github.<person>/*`, never
+      # the organization namespace `server.json` needs. What the registry
+      # grants is readable from the token it stores, so this reads it and
+      # publishes nothing:
+      #
+      #   permissions includes io.github.forgeprint/*  -> move the registry
+      #                                                   step into this
+      #                                                   workflow and no
+      #                                                   token is ever made
+      #   only io.github.<person>/* , or login fails   -> OIDC is not the
+      #                                                   answer either, and
+      #                                                   the namespace itself
+      #                                                   is what to fix
+      #
+      # mcp-publisher is pinned, and the download is checked against the digest
+      # its own signature bundle carries rather than trusted because it came
+      # from a release page.
+      - name: Rehearse the MCP Registry login over OIDC
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MCP_PUBLISHER_VERSION: 1.8.1
+        run: |
+          A="mcp-publisher_linux_amd64.tar.gz"
+          gh release download "v${MCP_PUBLISHER_VERSION}" \
+            --repo modelcontextprotocol/registry --pattern "$A" --pattern "$A.sigstore.json"
+          signed=$(node -p "require('./$A.sigstore.json').messageSignature.messageDigest.digest")
+          actual=$(sha256sum "$A" | cut -d' ' -f1 | xxd -r -p | base64)
+          test "$signed" = "$actual" || { echo "digest mismatch"; exit 1; }
+          tar -xzf "$A" mcp-publisher
+          ./mcp-publisher --version
+
+          ./mcp-publisher login github-oidc
+          # Claims only. The token itself is a credential (§5b).
+          node -e "
+            const j = require(process.env.HOME + '/.config/mcp-publisher/token.json');
+            const p = JSON.parse(Buffer.from(j.token.split('.')[1], 'base64url').toString());
+            console.log('granted to:', p.auth_method_sub, 'via', p.auth_method);
+            console.log('permissions:', JSON.stringify(p.permissions));
+            console.log('lifetime:', p.exp - p.iat, 'seconds');
+          "
+
       - name: Install dependencies
         if: github.event_name == 'push'
         run: pnpm install --frozen-lockfile
