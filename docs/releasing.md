@@ -87,18 +87,25 @@ is not bound to an app installation and can read your role directly:
 1. Create one at `https://github.com/settings/tokens/new?scopes=read:org`.
    Tick nothing else: the registry never reads or writes code, and a token with
    `repo` in it would be handed to a third party for no reason.
-2. Log in with it. **`login` reads the variable; `publish` does not** — `publish`
-   uses the registry token that `login` stored, so setting the variable and
-   going straight to `publish` retries with the old login:
+2. Log in with it. The token goes in the **`-token` flag**: `mcp-publisher`
+   1.8.1 reads no environment variable for it, and `mcp-publisher login github`
+   on its own runs the device flow — the one that cannot see the organization.
+   `login` is also the only command that takes it; `publish` uses the registry
+   token `login` stored, so passing it to `publish` retries with the old login.
 
    ```bash
-   export MCP_GITHUB_TOKEN=<token>     # PowerShell: $env:MCP_GITHUB_TOKEN = "<token>"
-   mcp-publisher login github           # no browser opens; that is how you know it read the variable
+   read -rs PAT                                  # paste it; nothing is echoed or kept in history
+   mcp-publisher login github -token "$PAT"      # no device code appears; that is the signal
+   unset PAT
    mcp-publisher publish server.json
    ```
 
-3. Unset the variable and delete the token. The registry token `login` stored is
-   what later publishes use.
+   If a device code appears, the flag did not arrive and nothing is logged in
+   yet. Stop there rather than completing the device flow, which authenticates
+   as you without the organization and is refused at publish.
+
+3. Delete the token on GitHub. The registry token `login` stored is what later
+   publishes use, so the PAT's job is over as soon as `login` succeeds.
 
 `release` recognises this refusal and says so rather than telling you to log in
 again.
