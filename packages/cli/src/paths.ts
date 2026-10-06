@@ -7,19 +7,29 @@ const ROOT_MARKER = join('schema', 'taxonomy.yaml');
 /**
  * Walk upwards from `startDir` until a Forgeprint repository root is found, so
  * that every command works from any subdirectory the way git does.
+ *
+ * `undefined` rather than an error, for the one command that has somewhere
+ * else to look: `get` falls back to the published catalog, which is what
+ * ADR 0013 promises an agent run by `npx` outside any checkout.
  */
-export function findRepoRoot(startDir: string = process.cwd()): string {
+export function tryFindRepoRoot(startDir: string = process.cwd()): string | undefined {
   let dir = resolve(startDir);
   for (;;) {
     if (existsSync(join(dir, ROOT_MARKER))) return dir;
     const parent = dirname(dir);
-    if (parent === dir) {
-      throw new Error(
-        `Not inside a Forgeprint repository: no ${ROOT_MARKER} found at or above ${resolve(startDir)}`,
-      );
-    }
+    if (parent === dir) return undefined;
     dir = parent;
   }
+}
+
+export function findRepoRoot(startDir: string = process.cwd()): string {
+  const root = tryFindRepoRoot(startDir);
+  if (root === undefined) {
+    throw new Error(
+      `Not inside a Forgeprint repository: no ${ROOT_MARKER} found at or above ${resolve(startDir)}`,
+    );
+  }
+  return root;
 }
 
 export const repoPaths = {

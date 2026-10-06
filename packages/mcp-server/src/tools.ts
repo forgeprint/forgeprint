@@ -7,7 +7,6 @@ import {
   REQUIRED_BLUEPRINT_FILES,
   resolveSetupOptions,
   type CatalogIndex,
-  type IndexEntry,
   type SimilaritySubject,
 } from 'forgeprint';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -178,7 +177,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
       guard(async () => {
         const index = await source.loadIndex();
         const entry = entryFor(index, slug);
-        checkOptions(asManifestLike(entry), options);
+        checkOptions(entry, options);
 
         const wanted = [...REQUIRED_BLUEPRINT_FILES, ...paths].filter(
           (path, at, all) => all.indexOf(path) === at && entry.files.includes(path),
@@ -193,7 +192,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
           {
             blueprint: entry,
             chosen_options: options,
-            undecided_options: missingOptions(asManifestLike(entry), options),
+            undecided_options: missingOptions(entry, options),
             unresolved_option_guards: setup.unresolved,
             files,
             other_files: entry.files.filter((path) => !(path in files)),
@@ -359,7 +358,7 @@ export function registerTools(server: McpServer, source: CatalogSource): void {
             what_it_does_not_cover: best.mismatches,
             runner_up: runnerUp === undefined ? undefined : summarize(runnerUp),
             tools_the_setup_needs: best.entry.requires_tools,
-            decisions_still_to_make: missingOptions(asManifestLike(best.entry)),
+            decisions_still_to_make: missingOptions(best.entry),
             next_step: `Call get_blueprint with slug "${best.entry.slug}" and the chosen options, then follow setup.md.`,
             tier_note: tierNote(best.entry),
             suggested_alongside: suggests(best.entry),
@@ -575,10 +574,6 @@ function round(value: number): number {
 }
 
 /** The option-checking helpers want a manifest; an index entry carries the same fields. */
-function asManifestLike(entry: IndexEntry): Parameters<typeof checkOptions>[0] {
-  return entry as unknown as Parameters<typeof checkOptions>[0];
-}
-
 /** One `## Heading` section of a markdown document, heading included. */
 function section(markdown: string, heading: RegExp): string | undefined {
   const lines = markdown.split(/\r?\n/);

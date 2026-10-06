@@ -14,8 +14,6 @@
  * it is a document, and the point of `setup.md` is that it is a script.
  */
 
-import type { Manifest } from './manifest.js';
-
 const IF_PATTERN = /^\s*<!--\s*if\s+options\.([a-z0-9-]+)\s*==\s*([a-z0-9-]+)\s*-->\s*$/;
 const ENDIF_PATTERN = /^\s*<!--\s*endif\s*-->\s*$/;
 
@@ -28,11 +26,24 @@ export interface ResolveOptionsResult {
 export class UnknownOptionError extends Error {}
 
 /**
- * Validate a caller's option selection against what the manifest declares.
+ * What a declaration of options looks like to this check: a manifest read from
+ * a checkout, or an index entry read from the published catalog. Both say the
+ * same thing, and `get` serves both (ADR 0013).
+ */
+export interface DeclaresOptions {
+  readonly slug: string;
+  readonly options?: Readonly<Record<string, readonly string[]>> | undefined;
+}
+
+/**
+ * Validate a caller's option selection against what the entry declares.
  * Throws rather than guessing: a typo that silently selects the default would
  * hand somebody a recipe for a database they did not ask for.
  */
-export function checkOptions(manifest: Manifest, chosen: Readonly<Record<string, string>>): void {
+export function checkOptions(
+  manifest: DeclaresOptions,
+  chosen: Readonly<Record<string, string>>,
+): void {
   const declared = manifest.options ?? {};
   for (const [field, value] of Object.entries(chosen)) {
     const values = declared[field];
@@ -144,7 +155,7 @@ function collapseBlankRuns(lines: readonly string[]): string[] {
 
 /** Option fields a caller still has to choose, given what they have chosen. */
 export function missingOptions(
-  manifest: Manifest,
+  manifest: DeclaresOptions,
   chosen: Readonly<Record<string, string>> = {},
 ): { field: string; values: readonly string[] }[] {
   return Object.entries(manifest.options ?? {})

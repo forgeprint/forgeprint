@@ -134,14 +134,19 @@ You point your agent at the MCP server and talk normally.
 | `get_crew`           | One crew: its members in full, and the install command for each integration it names               |
 | `get_integration`    | One pinned install recipe for third-party software, with the secrets it needs and what they reach  |
 
-**Without an MCP client**, nothing above is required. The catalog is published
-as JSON at
+**Without an MCP client**, nothing above is required:
+
+```bash
+npx -y forgeprint get ts-http-service --agent cursor --options framework=hono
+```
+
+That writes the files that agent reads, and the recipe with your options
+resolved — the same answer the tools give, because it is the same code
+([ADR 0013](docs/decisions/0013-agent-agnostic.md)). It reads the published
+catalog, or a checkout when you are in one. The catalog is also published as
+JSON at
 [forgeprint.github.io/forgeprint/index.json](https://forgeprint.github.io/forgeprint/index.json)
-and as [llms.txt](https://forgeprint.github.io/forgeprint/llms.txt), every
-entry's files are in this repository, and from a checkout
-`pnpm forgeprint get <slug> --agent <id>` writes the files that agent reads —
-the same answer the tools give, because it is the same code
-([ADR 0013](docs/decisions/0013-agent-agnostic.md)).
+and as [llms.txt](https://forgeprint.github.io/forgeprint/llms.txt).
 
 Forgeprint replies in English. Your agent presents it in your language: the
 tools take a `locale` hint and hand it back, so nothing in the catalog has to

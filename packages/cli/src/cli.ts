@@ -31,13 +31,20 @@ import {
   EXPERT_LABELS,
   renderReport,
 } from './similarity.js';
-import { findRepoRoot, repoPaths } from './paths.js';
+import { findRepoRoot, repoPaths, tryFindRepoRoot } from './paths.js';
+import {
+  agentOrThrow,
+  blueprintRenderInput,
+  expertRenderInput,
+  localPlan,
+  publishedPlan,
+} from './get.js';
 import { loadTaxonomy, type Taxonomy } from './taxonomy.js';
 import { entryFilesWithRecipe, renderForAgent, writeRendered, type RenderInput } from './render.js';
 import { validateCatalog } from './validate.js';
 import { validateUnits } from './validate-units.js';
 
-export const VERSION = '0.4.5';
+export const VERSION = '0.5.0';
 
 interface GlobalOptions {
   root?: string;
@@ -183,7 +190,7 @@ ${String(problems.length)} render(s) failed`);
     .option('--dry-run', 'list what would be written, without writing it')
     .description('write an entry to disk for one agent, without an MCP client')
     .action(
-      (
+      async (
         slug: string,
         options: {
           agent: string;
@@ -196,17 +203,19 @@ ${String(problems.length)} render(s) failed`);
         // The path for agents that do not speak MCP (ADR 0013). Deliberately
         // the same code as `render`: two ways in, one answer out, so an agent
         // without a client is not served a second-class copy.
-        const root = rootOf();
-        const taxonomy = loadTaxonomy(root);
-        const agent = findAgent(loadAgentRegistry(root), options.agent);
-        if (agent === undefined) {
-          throw new Error(`No such agent: ${options.agent} — see schema/agents.yaml`);
-        }
-        const input =
-          options.expert === true
-            ? expertRenderInput(root, taxonomy, slug)
-            : blueprintRenderInput(root, taxonomy, slug);
-        const files = [...renderForAgent(agent, input)];
+        //
+        // A checkout wins when there is one, because it may hold an entry
+        // nobody has published yet and because it works offline. Outside one —
+        // which is where `npx forgeprint get` leaves you, and the audience the
+        // ADR names — the published catalog answers instead.
+        const asked = program.opts<GlobalOptions>().root;
+        const root = asked === undefined ? tryFindRepoRoot() : findRepoRoot(asked);
+        const plan =
+          root === undefined
+            ? await publishedPlan(slug, { expert: options.expert === true })
+            : localPlan(root, slug, { expert: options.expert === true });
+        const agent = agentOrThrow(plan, options.agent);
+        const files = [...renderForAgent(agent, plan.input)];
 
         // The recipe, for a blueprint. This command exists for agents with no
         // MCP client (ADR 0013), and it used to print "read setup.md and run
@@ -218,21 +227,20 @@ ${String(problems.length)} render(s) failed`);
         // half to follow. An option nobody chose stays guarded, and the
         // command says which ones those were.
         let unresolvedFields: readonly string[] = [];
-        if (options.expert !== true) {
-          const folder = readBlueprintFolder(root, slug);
-          const manifest = readManifest(taxonomy, folder);
+        const recipe = plan.recipe;
+        if (recipe !== undefined) {
           const chosen = options.options === undefined ? {} : parsePairs(options.options);
-          checkOptions(manifest, chosen);
-          const withRecipe = entryFilesWithRecipe(
-            files,
-            readBlueprintFile(folder, 'setup.md'),
-            chosen,
-          );
+          checkOptions(recipe.declares, chosen);
+          const withRecipe = entryFilesWithRecipe(files, recipe.setup, chosen);
           unresolvedFields = withRecipe.unresolved;
           files.length = 0;
           files.push(...withRecipe.files);
         }
 
+        // Which catalog answered. Over the network this is the difference
+        // between a stale answer and a current one, and the reader cannot see
+        // it any other way.
+        console.log(`read   ${plan.source}`);
         if (options.dryRun === true) {
           for (const file of files) console.log(`would write  ${file.path}`);
         } else {
@@ -240,18 +248,16 @@ ${String(problems.length)} render(s) failed`);
         }
 
         // What the recipe is for, since there is no agent here to be told.
-        if (options.expert !== true) {
-          const folder = readBlueprintFolder(root, slug);
-          const manifest = readManifest(taxonomy, folder);
+        if (recipe !== undefined) {
           console.log('');
-          console.log(`next  run setup.md step by step: ${manifest.name}`);
+          console.log(`next  run setup.md step by step: ${recipe.name}`);
           if (unresolvedFields.length > 0) {
             console.log(
               `      ${unresolvedFields.join(', ')} not chosen — those blocks are still guarded; ` +
                 'pass --options to resolve them',
             );
           }
-          for (const named of manifest.integrations ?? []) {
+          for (const named of recipe.integrations) {
             console.log(`      integration: ${named} — read its README before installing`);
           }
         }
@@ -695,34 +701,4 @@ function reportExpertSimilarity(
 
 function fileOrEmpty(folder: BlueprintFolder, file: string): string {
   return folder.files.includes(file) ? readUnitFile(folder, file) : '';
-}
-
-/** A blueprint as `render` sees it: its AGENTS.md and the skills it ships. */
-function blueprintRenderInput(root: string, taxonomy: Taxonomy, slug: string): RenderInput {
-  const folder = readBlueprintFolder(root, slug);
-  const manifest = readManifest(taxonomy, folder);
-  return {
-    slug,
-    summary: manifest.summary,
-    body: readBlueprintFile(folder, 'AGENTS.md'),
-    skills: skillsIn(folder),
-  };
-}
-
-/** An expert as `render` sees it: its SKILL.md is both the body and the skill. */
-function expertRenderInput(root: string, taxonomy: Taxonomy, slug: string): RenderInput {
-  const expert = validateUnits(root, taxonomy).experts.find((one) => one.slug === slug);
-  if (expert === undefined) throw new Error(`No such expert: ${slug}`);
-  const skill = readUnitFile(expert.folder, 'SKILL.md');
-  return { slug, summary: expert.manifest.summary, body: skill, skills: { [slug]: skill } };
-}
-
-/** Every SKILL.md a folder ships, keyed by the directory that holds it. */
-function skillsIn(folder: BlueprintFolder): Record<string, string> {
-  const skills: Record<string, string> = {};
-  for (const file of folder.files) {
-    const match = /^skills\/([^/]+)\/SKILL\.md$/.exec(file);
-    if (match?.[1] !== undefined) skills[match[1]] = readBlueprintFile(folder, file);
-  }
-  return skills;
 }

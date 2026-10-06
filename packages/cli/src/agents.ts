@@ -19,7 +19,7 @@ export const STALE_AFTER_DAYS = 90;
 /** How an agent receives a credential an integration needs. */
 const secretChannel = z.enum(['env', 'headers', 'oauth', 'ui', 'file']);
 
-const agentSchema = z
+export const agentSchema = z
   .object({
     id: z.string().regex(SLUG_PATTERN, 'must be lower kebab-case'),
     name: z.string().min(2).max(60),
