@@ -136,6 +136,39 @@ version. `npx -y forgeprint-mcp@latest` sidesteps the cache, and
 
 ---
 
+## Without an MCP client
+
+All nine registered agents speak MCP over stdio today, so the server is the
+ordinary path. The catalog does not depend on it: the same answers are
+reachable over plain HTTP and from the CLI, because it is the same code behind
+both doors ([ADR 0013](decisions/0013-agent-agnostic.md)). That matters for a
+client nobody has registered yet, for a user who would rather not add a server,
+and for a script or a CI job that wants the files and nothing else.
+
+| What you want                    | Where it is                                                                                                                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The whole catalog, as data       | <https://forgeprint.github.io/forgeprint/index.json> — every entry with its manifest fields                                                                                                     |
+| The catalog, as a model reads it | <https://forgeprint.github.io/forgeprint/llms.txt> — one line per entry, and how to connect                                                                                                     |
+| One entry's files                | `https://github.com/forgeprint/forgeprint/tree/main/<blueprints\|experts\|crews\|integrations>/<slug>`                                                                                          |
+| What each agent reads            | [`schema/agents.yaml`](https://github.com/forgeprint/forgeprint/blob/main/schema/agents.yaml) — context files, MCP support, how it takes secrets, and the date the vendor's docs were last read |
+
+From a checkout, the CLI writes an entry straight into a project, for the agent
+you name:
+
+```bash
+pnpm forgeprint get ts-http-service --agent cursor --options framework=hono --out ../my-service
+pnpm forgeprint get code-reviewer --agent cursor --expert --out ../my-service
+```
+
+`--dry-run` lists what it would write without writing it. The command needs a
+Forgeprint checkout, because it reads the catalog from disk: it looks for
+`schema/taxonomy.yaml` at or above the working directory, or takes
+`--root <path>`.
+What the resolver does — asking the questions, then choosing — is the one thing
+it does not do. That is `resolve`, and it needs the server.
+
+---
+
 ## Configuration
 
 | Variable               | Default                                                                   | What it does                                                                                                                |
