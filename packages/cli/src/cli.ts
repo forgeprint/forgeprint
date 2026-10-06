@@ -37,7 +37,7 @@ import { renderForAgent, writeRendered, type RenderInput } from './render.js';
 import { validateCatalog } from './validate.js';
 import { validateUnits } from './validate-units.js';
 
-export const VERSION = '0.4.2';
+export const VERSION = '0.4.3';
 
 interface GlobalOptions {
   root?: string;
@@ -473,11 +473,11 @@ ${String(problems.length)} render(s) failed`);
     .description('cut a release: check, tag, GitHub release, npm publish')
     .argument('<version>', 'the version every published package is at, e.g. 0.3.0')
     .option('--skip-check', 'do not run pnpm run check (CI ran it)')
-    .option('--skip-ci', 'do not ask GitHub whether CI is green on HEAD')
+    .option('--skip-ci', 'release without asking GitHub; you are saying you verified HEAD')
     .option('--no-wait', 'do not wait for a workflow that is still running')
     .option('--dry-run', 'print the plan and stop')
     .option('--skip-npm', 'tag and release only; the release workflow publishes to npm')
-    .option('-y, --yes', 'do not ask for confirmation')
+    .option('-y, --yes', 'do not ask for confirmation; it cannot answer for an unverifiable CI')
     .action(
       async (
         version: string,

@@ -5,6 +5,7 @@ import {
   checkDistributionVersions,
   checkVersions,
   classifyPublishError,
+  decideCi,
   draftNotes,
   failureLines,
   hasChangelogEntry,
@@ -467,5 +468,26 @@ describe('classifyPublishError, the registry declining the exchange', () => {
 
   it('still reads a bare ENEEDAUTH as having no credentials', () => {
     assert.equal(classifyPublishError('npm error code ENEEDAUTH').kind, 'no-auth');
+  });
+});
+
+describe('decideCi', () => {
+  // The distinction 0.4.1 did not have: a check that could not run is not a
+  // check that passed, and --yes answers a different question than this one.
+  it('refuses a red CI whatever else is set', () => {
+    assert.equal(decideCi({ known: true, green: false }), 'red');
+    assert.equal(decideCi({ known: true, green: false, skipCi: true }), 'red');
+  });
+
+  it('passes a green CI', () => {
+    assert.equal(decideCi({ known: true, green: true }), 'green');
+  });
+
+  it('treats --skip-ci as the maintainer having said so', () => {
+    assert.equal(decideCi({ known: false, green: false, skipCi: true }), 'declared');
+  });
+
+  it('calls an unreachable gh unverified rather than green', () => {
+    assert.equal(decideCi({ known: false, green: false }), 'unverified');
   });
 });

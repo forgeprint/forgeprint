@@ -209,6 +209,38 @@ export function checkVersions(
  * and reading it literally is what turns a finished release into an attempt to
  * skip a version number that was never stuck.
  */
+/**
+ * What a release does about CI, as a decision rather than a side effect.
+ *
+ * Four outcomes, because three states collapse into one too easily:
+ *
+ * - `red` — CI ran and failed. Never releasable.
+ * - `green` — CI ran and passed.
+ * - `declared` — `--skip-ci`. The maintainer has said they verified it, and
+ *   passing the flag is that statement; nothing further to ask.
+ * - `unverified` — gh could not answer, or no run exists for this commit.
+ *   Releasing anyway has to stay possible (§4 — Actions is optional), so this
+ *   asks. It is the one that used to be printed as a note and walked past.
+ *
+ * `--yes` suppresses the standard confirmation, which is a different question
+ * from this one: it means "do not ask me whether I meant it", not "an
+ * unverifiable check counts as verified". So `unverified` with `--yes` and no
+ * `--skip-ci` is refused and says which flag answers it. 0.4.1 was tagged
+ * while setup-test was still running because that distinction did not exist.
+ */
+export type CiDecision = 'red' | 'green' | 'declared' | 'unverified';
+
+export function decideCi(input: {
+  skipCi?: boolean | undefined;
+  known: boolean;
+  green: boolean;
+}): CiDecision {
+  if (input.known && !input.green) return 'red';
+  if (input.skipCi === true) return 'declared';
+  if (input.known) return 'green';
+  return 'unverified';
+}
+
 export function classifyPublishError(output: string): PublishOutcome {
   const text = flattenReport(output);
   // "Cannot publish over previously staged version" is npm's phrasing for
