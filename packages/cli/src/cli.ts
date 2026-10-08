@@ -22,7 +22,14 @@ import { checkOptions, resolveSetupOptions } from './options.js';
 import { parseRecipe } from './recipe.js';
 import { publish, release } from './release-run.js';
 import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
-import { checkTools, runDirectoryName, runRecipe, type StepOutcome } from './test-setup.js';
+import {
+  checkTools,
+  runDirectoryName,
+  runRecipe,
+  sweepFlagProblem,
+  toolVerdict,
+  type StepOutcome,
+} from './test-setup.js';
 import {
   compareBlueprints,
   compareDocuments,
@@ -360,6 +367,10 @@ ${String(problems.length)} render(s) failed`);
     .option('--all-options', 'run every combination of the declared options')
     .option('--changed-since <ref>', 'only the blueprints changed since this git reference')
     .option('--keep', 'keep the working directory instead of deleting it')
+    .option(
+      '--skip-unsupported',
+      'with --all: report a blueprint this machine has no toolchain for as a skip, not a failure',
+    )
     .description('run a setup recipe in a fresh directory and verify every step')
     .action(
       async (
@@ -370,11 +381,19 @@ ${String(problems.length)} render(s) failed`);
           allOptions?: boolean;
           changedSince?: string;
           keep?: boolean;
+          skipUnsupported?: boolean;
         },
       ) => {
         const root = rootOf();
         const taxonomy = loadTaxonomy(root);
         let failures = 0;
+        const skipped: string[] = [];
+
+        // `--skip-unsupported` only makes sense for a sweep. Asked for one
+        // blueprint by name, the answer to "this machine cannot run it" is the
+        // refusal, because nothing else was going to run it instead.
+        const flagProblem = sweepFlagProblem(flags);
+        if (flagProblem !== undefined) throw new Error(flagProblem);
 
         let selected = targets(root, slug, flags.all === true);
         if (flags.changedSince !== undefined) {
@@ -398,6 +417,16 @@ ${String(problems.length)} render(s) failed`);
           // different toolchain (ADR 0005).
           const missing = await checkTools(manifest.requires_tools ?? []);
           if (missing.length > 0) {
+            // A sweep across a matrix has one job per toolchain, and a
+            // blueprint another job owns is not this job's failure. The skip is
+            // printed and counted, because a blueprint every job skips is one
+            // nothing tests — which is worse than the refusal this replaces.
+            const verdict = toolVerdict(missing, flags.skipUnsupported === true);
+            if (verdict.kind === 'skip') {
+              console.log(`skip   ${target}: no ${verdict.tools} on this machine`);
+              skipped.push(target);
+              continue;
+            }
             for (const problem of missing) console.error(`error  ${target}: ${problem.message}`);
             console.error(`\n${target} cannot be tested on this machine. Nothing was installed.`);
             failures += 1;
@@ -448,6 +477,14 @@ ${String(problems.length)} render(s) failed`);
               failures += 1;
             }
           }
+        }
+
+        // Said at the end as well as at the point of the skip: the per-target
+        // line scrolls past in a sweep of forty-five, and what a reader needs
+        // to know is which blueprints this job did not test at all.
+        if (skipped.length > 0) {
+          console.log(`\nskipped ${String(skipped.length)}: ${skipped.join(', ')}`);
+          console.log('Another job in the matrix has to run these, or nothing does.');
         }
 
         if (failures > 0) process.exitCode = 1;

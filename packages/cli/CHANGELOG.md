@@ -30,6 +30,20 @@ inside a Forgeprint repository`: every command resolved the catalog by
   network both satisfy them. That deleted an `as unknown as` cast in the MCP
   server.
 
+## 0.5.0 — 2026-10-08
+
+- **`test-setup --skip-unsupported`.** A missing toolchain is a refusal
+  (ADR 0005), and that is right for one machine and wrong for a matrix: a
+  blueprint another job owns is not this job's failure. With `--all`, the flag
+  turns the refusal into a reported skip — `skip   <slug>: no swift on this
+machine` — and the run ends with the list and one sentence: "Another job in
+  the matrix has to run these, or nothing does." Silence would make a blueprint
+  nothing tests look like one everything passes.
+- It needs `--all`. Asked for a blueprint by name, "this machine cannot run it"
+  is the answer, because no other job was going to run it instead.
+- The decision is `toolVerdict` and the flag check is `sweepFlagProblem`, both
+  pure and both tested, so the behaviour is not buried in a command body.
+
 ## 0.4.5 — 2026-10-06
 
 - **`get` writes the recipe it tells you to run.** It printed "read setup.md

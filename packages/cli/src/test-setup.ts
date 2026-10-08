@@ -217,6 +217,44 @@ const REQUIREMENT_PATTERN =
   /^([a-z0-9][a-z0-9.+-]*)\s*(>=|<=|==|>|<|~|\^)?\s*([0-9][0-9a-z.-]*)?$/i;
 
 /**
+ * What to do about a blueprint whose toolchain is not on this machine.
+ *
+ * The default is a refusal (ADR 0005): a run that quietly used a different
+ * toolchain is worse than no run. A sweep across a matrix is the one case where
+ * that is wrong, because another job owns the toolchain and this job declining
+ * is correct — so `--skip-unsupported` turns the refusal into a reported skip.
+ * Reported, not silent: a blueprint every job skips is one nothing tests.
+ */
+export type ToolVerdict =
+  | { readonly kind: 'run' }
+  | { readonly kind: 'skip'; readonly tools: string }
+  | { readonly kind: 'refuse' };
+
+export function toolVerdict(
+  missing: readonly ToolProblem[],
+  skipUnsupported: boolean,
+): ToolVerdict {
+  if (missing.length === 0) return { kind: 'run' };
+  if (!skipUnsupported) return { kind: 'refuse' };
+  return { kind: 'skip', tools: missing.map((problem) => problem.tool).join(', ') };
+}
+
+/**
+ * Why a flag combination makes no sense, or `undefined`. `--skip-unsupported`
+ * is a sweep flag: asked for one blueprint by name, "this machine cannot run
+ * it" is the answer rather than something to skip past.
+ */
+export function sweepFlagProblem(flags: {
+  readonly all?: boolean | undefined;
+  readonly skipUnsupported?: boolean | undefined;
+}): string | undefined {
+  if (flags.skipUnsupported === true && flags.all !== true) {
+    return '--skip-unsupported needs --all: a named blueprint is never skipped';
+  }
+  return undefined;
+}
+
+/**
  * Check the tools a blueprint declares. Nothing is installed: a missing tool is
  * a refusal naming the tool and the version, because a run that quietly used a
  * different toolchain would be worse than no run at all.
