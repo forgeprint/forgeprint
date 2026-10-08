@@ -6202,6 +6202,40 @@
     },
     {
       "schema": 1,
+      "slug": "flutter-app-crew",
+      "name": "Flutter App Crew",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A Flutter app whose layers are packages in a pub workspace, whose analyzer gate is strict and whose heavy work leaves the UI isolate, audited on a device and gated by journeys that cannot flake.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "byline": "Assembled by @aliosmanmho",
+      "members": [
+        "dart-senior-architect",
+        "flutter-mobile-engineer",
+        "accessibility-specialist",
+        "qa-automation-lead"
+      ],
+      "integrations": [
+        "mobile-mcp"
+      ],
+      "for_what": "Building a Flutter app of more than one screen: package boundaries written into pubspec before the code, a strict analyzer gate, rebuilds that stay local and heavy work off the UI isolate, a screen-reader audit on a device, and journeys on an emulator that a flaky result fails.",
+      "not_for": "A React Native app (mobile-app-crew) or a native Android one (android-app-crew). Not the release: no member writes a version, a changelog or a withdrawal plan, which is release-crew. Not backend work, and not one screen — same-file work for the engineer alone.",
+      "files": [
+        "CHANGELOG.md",
+        "README.md",
+        "manifest.yaml"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "incident-response-crew",
       "name": "Incident Response Crew",
       "version": "1.0.0",
