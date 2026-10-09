@@ -106,6 +106,7 @@ Blueprints answer what is being built, experts how the agent should work, integr
 
 ## Crews
 
+- [Android App Crew](https://forgeprint.github.io/forgeprint/c/android-app-crew.html): A native Android app whose Gradle modules are the boundaries and whose public API is checked, with hoisted state and tested migrations, audited on a device and gated on the build that ships.
 - [API Hardening Crew](https://forgeprint.github.io/forgeprint/c/api-hardening-crew.html): Three specialists for an API that already has users, where the job is finding what is wrong rather than deciding what to build.
 - [AppSec Audit Crew](https://forgeprint.github.io/forgeprint/c/appsec-audit-crew.html): A whole-application security and privacy audit: threat model and ASVS requirements first, a deletion path for every personal field, and a test for every control.
 - [Code Review Crew](https://forgeprint.github.io/forgeprint/c/code-review-crew.html): Four reviewers, one lens each, whose findings end as one list with one verdict: correctness, security, performance and the tests in the change.

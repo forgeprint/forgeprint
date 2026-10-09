@@ -1,0 +1,21 @@
+schema: 1
+slug: android-app-crew
+name: 'Android App Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'A native Android app whose Gradle modules are the boundaries and whose public API is checked, with hoisted state and tested migrations, audited on a device and gated on the build that ships.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - kotlin-senior-architect
+  - android-mobile-engineer
+  - accessibility-specialist
+  - qa-automation-lead
+integrations:
+  - mobile-mcp
+for_what: 'Building a native Android app in Kotlin and Compose: Gradle modules as boundaries with a checked public API, state hoisted and flows that stop with the lifecycle, tested Room migrations, keys in the Keystore, a TalkBack audit on a device, and instrumentation journeys gated on the R8 build.'
+not_for: 'A Flutter app (flutter-app-crew) or a React Native one (mobile-app-crew). Not the release: no member writes a version, a changelog or a withdrawal plan, which is release-crew. Not backend work, and not one screen — same-file work for the engineer alone.'
+agents: [claude-code]
+deprecated: false
+supersedes: null
