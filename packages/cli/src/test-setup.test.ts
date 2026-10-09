@@ -4,7 +4,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { after, describe, it } from 'node:test';
 import { parseRecipe } from './recipe.js';
-import { checkTools, resolveShell, runDirectoryName, runRecipe, satisfies } from './test-setup.js';
+import {
+  checkTools,
+  resolveShell,
+  runDirectoryName,
+  runRecipe,
+  satisfies,
+  sweepFlagProblem,
+  toolVerdict,
+} from './test-setup.js';
 
 const directories: string[] = [];
 
@@ -226,6 +234,48 @@ describe('resolveShell', () => {
         throw new Error('should not probe the filesystem');
       }),
       'bash',
+    );
+  });
+});
+
+describe('toolVerdict', () => {
+  const missing = [
+    { tool: 'swift', message: 'swift is required' },
+    { tool: 'xcodebuild', message: 'xcodebuild is required' },
+  ];
+
+  it('runs when nothing is missing, whatever the flag says', () => {
+    assert.deepEqual(toolVerdict([], false), { kind: 'run' });
+    assert.deepEqual(toolVerdict([], true), { kind: 'run' });
+  });
+
+  // ADR 0005: a run that quietly used a different toolchain is worse than no
+  // run, so this is the default and stays the default.
+  it('refuses a missing toolchain by default', () => {
+    assert.deepEqual(toolVerdict(missing, false), { kind: 'refuse' });
+  });
+
+  it('skips in a sweep, naming every tool that is absent', () => {
+    assert.deepEqual(toolVerdict(missing, true), { kind: 'skip', tools: 'swift, xcodebuild' });
+  });
+});
+
+describe('sweepFlagProblem', () => {
+  it('allows --skip-unsupported with --all', () => {
+    assert.equal(sweepFlagProblem({ all: true, skipUnsupported: true }), undefined);
+  });
+
+  it('allows a sweep without the flag, and a named blueprint without it', () => {
+    assert.equal(sweepFlagProblem({ all: true }), undefined);
+    assert.equal(sweepFlagProblem({}), undefined);
+  });
+
+  // A named blueprint has no other job to fall back on, so "cannot run it" is
+  // the answer rather than something to skip past.
+  it('refuses the flag for a named blueprint', () => {
+    assert.match(
+      sweepFlagProblem({ skipUnsupported: true }) ?? '',
+      /--skip-unsupported needs --all/,
     );
   });
 });
