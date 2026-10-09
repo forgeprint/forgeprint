@@ -141,14 +141,73 @@ jobs:
       # the first value of every option, deterministically. The full matrix is
       # slow enough that making it the default would mean nobody waits for it,
       # so it runs on Mondays and on demand.
+      # `--skip-unsupported`: a blueprint whose toolchain this runner does not
+      # have is reported as a skip rather than failing the job, because the
+      # macOS job below owns it. The skip is printed and listed at the end, so
+      # a blueprint nothing runs does not look like one everything passes.
       - name: Run the recipes this pull request changes
         if: github.event_name == 'pull_request'
         env:
           # Through the environment rather than into the command line: the base
           # branch is a name from the repository, and this keeps it a value.
           BASE_REF: ${{ github.base_ref }}
-        run: pnpm forgeprint test-setup --all --changed-since "origin/$BASE_REF"
+        run: pnpm forgeprint test-setup --all --skip-unsupported --changed-since "origin/$BASE_REF"
 
       - name: Run every option combination
         if: github.event_name != 'pull_request'
-        run: pnpm forgeprint test-setup --all --all-options
+        run: pnpm forgeprint test-setup --all --skip-unsupported --all-options
+
+  # The other half of the matrix. Swift and Xcode exist on no Linux runner, so
+  # a recipe that builds for an Apple platform can only be run here — which is
+  # the check D21 of the expansion plan was waiting for.
+  #
+  # Symmetric to the job above on purpose: the same sweep with the same
+  # `--skip-unsupported`, so between the two jobs every blueprint is run by
+  # whichever runner has its toolchain, and neither job needs a list of slugs
+  # that somebody has to remember to update.
+  #
+  # What this runner has, read from the image readme on 2026-10-08
+  # (actions/runner-images, macos-26-arm64, image 20260907.0351.1, macOS
+  # 26.6.2): Xcode 26.6 as the default, which carries Swift 6.3. Xcode 27 and
+  # Swift 6.4 exist only in a preview image, so a recipe here declares
+  # `swift>=6.2` and no higher — and the job prints the versions it got, so a
+  # mismatch is a line in the log rather than a mystery.
+  #
+  # Docker is not available on a macOS runner, so every recipe that declares it
+  # is skipped here and run above. That is the mechanism working.
+  setup-test-macos:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Say which toolchain this runner gave us
+        run: |
+          xcodebuild -version
+          swift --version
+          xcrun --sdk iphonesimulator --show-sdk-version
+
+      - name: Install pnpm
+        run: npm install --global pnpm@12.5.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the tooling
+        run: pnpm run build
+
+      - name: Run the recipes this pull request changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: pnpm forgeprint test-setup --all --skip-unsupported --changed-since "origin/$BASE_REF"
+
+      - name: Run every option combination
+        if: github.event_name != 'pull_request'
+        run: pnpm forgeprint test-setup --all --skip-unsupported --all-options
