@@ -73,13 +73,13 @@ something. Every step was run before this was committed.
   from the Swift sources the two Swift experts cite, not from a codebase
   somebody ships. ADR 0011 says what that is worth. What it does have is a
   recipe that ran: **12 of 12 steps, 22.1 s**, on Xcode 27.0 with Swift 6.4.
-- **`requires_tools` carries no Swift version, and it should.** `swift
---version` leads with the swift-driver version — `1.168.6` on the machine
-  this was built on — and the tool check reads the first number it finds, so
-  `swift>=6.2` is evaluated as `1.168.6 >= 6.2` and refuses a toolchain that
-  satisfies it. Until that is fixed the floor is enforced where it actually
-  belongs: `swift-tools-version: 6.2` in `Package.swift`, which refuses an
-  older toolchain with a readable message.
+- **The floor is stated twice, and both say 6.2.** `requires_tools` refuses a
+  machine whose Swift is older before the recipe starts, and
+  `swift-tools-version: 6.2` in `Package.swift` refuses it again at the first
+  build. Two statements of one number is usually a thing to worry about; here
+  it is deliberate, because the first gives a readable refusal before anything
+  runs and the second is what a reader of the package sees long after the
+  recipe did.
 - **The CI runner is one version behind the machine this was built on.**
   GitHub's `macos-latest` carried Xcode 26.6 and Swift 6.3 when this was
   written; the recipe needs 6.2 and was run on 6.4, so both sides of the floor

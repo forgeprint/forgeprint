@@ -2870,7 +2870,7 @@
     {
       "slug": "swiftui-feature-package",
       "name": "SwiftUI Feature Package",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"
@@ -2908,7 +2908,7 @@
         "skills": []
       },
       "requires_tools": [
-        "swift",
+        "swift>=6.2",
         "xcrun"
       ],
       "provenance": "generated",
