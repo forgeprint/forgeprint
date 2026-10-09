@@ -207,6 +207,34 @@ export interface ToolProblem {
   readonly message: string;
 }
 
+/**
+ * How to read a tool's version, when the first number it prints is not it.
+ *
+ * The default is the first number in the output, which is right for every
+ * toolchain the catalog declares but one:
+ *
+ *     $ swift --version
+ *     swift-driver version: 1.168.6 Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+ *
+ * The driver's version comes first, so `swift>=6.2` was read as
+ * `1.168.6 >= 6.2` and refused a toolchain that satisfies it — which is why
+ * `swiftui-feature-package` 1.0.0 could not declare a Swift version at all.
+ *
+ * A pattern that does not match is not a silent fall back to the default: the
+ * caller reports "could not read a version", because output that changed shape
+ * is a thing to look at rather than to guess past.
+ *
+ * One other trap is known and deliberately left here: `sha256sum (Darwin) 1.0`
+ * has a number in the tool's own name, so the default reads `256`. No
+ * blueprint constrains that tool's version, so the wrong answer is never
+ * compared against anything — and the fix, when one does, is an entry here
+ * rather than a cleverer default. `readVersion`'s tests pin the current
+ * reading so that stays a decision rather than a surprise.
+ */
+const VERSION_PATTERN: Readonly<Record<string, RegExp>> = {
+  swift: /Swift version (\d+(?:\.\d+)*)/,
+};
+
 /** How to ask a tool for its version, when `--version` is not what it takes. */
 const VERSION_FLAG: Readonly<Record<string, string>> = {
   go: 'version',
@@ -289,7 +317,7 @@ export async function checkTools(requires: readonly string[]): Promise<ToolProbl
     }
     if (wanted === undefined || operator === undefined) continue;
 
-    const found = firstVersion(reported);
+    const found = readVersion(tool, reported);
     if (found === undefined) {
       problems.push({ tool, message: `could not read a version from "${reported.trim()}"` });
       continue;
@@ -330,6 +358,12 @@ async function probe(tool: string, flag: string): Promise<string | undefined> {
 
 function firstVersion(text: string): string | undefined {
   return /(\d+(?:\.\d+)*)/.exec(text)?.[1];
+}
+
+/** The version a tool reported, by its own pattern where it needs one. */
+export function readVersion(tool: string, text: string): string | undefined {
+  const pattern = VERSION_PATTERN[tool];
+  return pattern === undefined ? firstVersion(text) : pattern.exec(text)?.[1];
 }
 
 /** Numeric comparison, part by part. Enough for the constraints a tool takes. */

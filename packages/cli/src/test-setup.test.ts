@@ -6,6 +6,7 @@ import { after, describe, it } from 'node:test';
 import { parseRecipe } from './recipe.js';
 import {
   checkTools,
+  readVersion,
   resolveShell,
   runDirectoryName,
   runRecipe,
@@ -277,5 +278,55 @@ describe('sweepFlagProblem', () => {
       sweepFlagProblem({ skipUnsupported: true }) ?? '',
       /--skip-unsupported needs --all/,
     );
+  });
+});
+
+describe('readVersion', () => {
+  // Every string below is what the tool actually printed on 2026-10-08 or
+  // 2026-10-09, not a reconstruction.
+  it('reads the first number for the tools whose output leads with it', () => {
+    const cases: [string, string, string][] = [
+      ['node', 'v22.23.3', '22.23.3'],
+      ['npm', '10.9.9', '10.9.9'],
+      ['dotnet', '9.0.100', '9.0.100'],
+      ['python', 'Python 3.9.6', '3.9.6'],
+      ['docker', 'Docker version 29.8.1, build 4a63305', '29.8.1'],
+      ['git', 'git version 2.54.0 (Apple Git-157)', '2.54.0'],
+      ['xcrun', 'xcrun version 72.', '72'],
+      ['dart', 'Dart SDK version: 3.13.4 (stable) (Tue Sep 15 01:01:15 2026 -0700)', '3.13.4'],
+      ['ruby', 'ruby 2.6.10p210 (2022-04-12 revision 67958) [universal.arm64e-darwin26]', '2.6.10'],
+      ['curl', 'curl 8.7.1 (x86_64-apple-darwin26.0) libcurl/8.7.1 (SecureTransport)', '8.7.1'],
+      ['go', 'go version go1.27.1 darwin/arm64', '1.27.1'],
+    ];
+    for (const [tool, reported, wanted] of cases) {
+      assert.equal(readVersion(tool, reported), wanted, tool);
+    }
+  });
+
+  // The case this exists for: the driver's version comes first, so the default
+  // read `1.168.6` and `swift>=6.2` refused a toolchain that satisfies it.
+  it('reads the Swift version rather than the swift-driver version', () => {
+    const reported =
+      'swift-driver version: 1.168.6 Apple Swift version 6.4 ' +
+      '(swiftlang-6.4.0.34.1 clang-2100.3.34.1)\n';
+    assert.equal(readVersion('swift', reported), '6.4');
+    assert.ok(satisfies(readVersion('swift', reported) ?? '', '>=', '6.2'));
+  });
+
+  it('reads a Swift toolchain that reports only its own version', () => {
+    assert.equal(readVersion('swift', 'Swift version 6.1.2 (swift-6.1.2-RELEASE)'), '6.1.2');
+  });
+
+  // Output that changed shape is something to look at, not to guess past: the
+  // caller turns `undefined` into "could not read a version from …".
+  it('gives up rather than falling back when a declared pattern misses', () => {
+    assert.equal(readVersion('swift', 'swift-driver version: 1.168.6'), undefined);
+  });
+
+  // A latent trap, pinned rather than fixed: the number is in the tool's own
+  // name, and no blueprint constrains this tool's version. The day one does,
+  // the fix is an entry in VERSION_PATTERN.
+  it('still reads 256 out of sha256sum, which is why the table exists', () => {
+    assert.equal(readVersion('sha256sum', 'sha256sum (Darwin) 1.0'), '256');
   });
 });
