@@ -1,0 +1,20 @@
+schema: 1
+slug: swiftui-feature-package
+name: 'SwiftUI Feature Package'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'A SwiftPM package of SwiftUI feature modules for an Apple app: UI isolated to the main actor, domain code that is not, swift-testing, a swift-format gate and a build against the iOS Simulator SDK.'
+stack: [swiftui]
+languages: [swift]
+platforms: [ios, macos]
+distribution: [open-source, internal]
+project_type: lib
+audience: [intermediate]
+requirements: [accessibility, testing, ci]
+agents: [claude-code]
+recommended_experts: [swift-mobile-engineer, swift-senior-architect]
+requires_tools: [swift, xcrun]
+deprecated: false
+supersedes: null
