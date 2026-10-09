@@ -2868,6 +2868,68 @@
       "i18n": []
     },
     {
+      "slug": "swiftui-feature-package",
+      "name": "SwiftUI Feature Package",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "A SwiftPM package of SwiftUI feature modules for an Apple app: UI isolated to the main actor, domain code that is not, swift-testing, a swift-format gate and a build against the iOS Simulator SDK.",
+      "stack": [
+        "swiftui"
+      ],
+      "languages": [
+        "swift"
+      ],
+      "platforms": [
+        "ios",
+        "macos"
+      ],
+      "distribution": [
+        "open-source",
+        "internal"
+      ],
+      "project_type": "lib",
+      "audience": [
+        "intermediate"
+      ],
+      "requirements": [
+        "accessibility",
+        "testing",
+        "ci"
+      ],
+      "agents": [
+        "claude-code"
+      ],
+      "options": {},
+      "provides": {
+        "mcp": [],
+        "skills": []
+      },
+      "requires_tools": [
+        "swift",
+        "xcrun"
+      ],
+      "provenance": "generated",
+      "recommended_experts": [
+        "swift-mobile-engineer",
+        "swift-senior-architect"
+      ],
+      "recommended_crew": null,
+      "integrations": [],
+      "deprecated": false,
+      "supersedes": null,
+      "files": [
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "manifest.yaml",
+        "overview.md",
+        "setup.md"
+      ],
+      "i18n": []
+    },
+    {
       "slug": "tanstack-start-app",
       "name": "TanStack Start App",
       "version": "1.0.0",
