@@ -313,6 +313,39 @@ describe('recommend_experts', () => {
     assert.equal(payload.crew?.slug, 'sample-crew');
   });
 
+  it('does not put an expert who speaks none of the asked languages first', async () => {
+    // The caller named a language. An expert that declares languages and
+    // shares none of them is evidence against, not a tie on wording: two
+    // mobile experts describe themselves almost identically, and the language
+    // is the only thing that separates them.
+    //
+    // No crews in this index: the question here is the ranking, and a crew
+    // would answer before the ranking ran.
+    const payload: { experts: { slug: string; why: string }[] } = await call(
+      await connect({
+        ...INDEX,
+        crews: [],
+        experts: [
+          EXPERT,
+          {
+            ...EXPERT,
+            slug: 'other-language-architect',
+            name: 'Other Language Architect',
+            summary: 'A sample expert used by the test suite, for layering.',
+            languages: ['rust'],
+          },
+        ],
+      }),
+      'recommend_experts',
+      { task: 'a sample expert used by the test suite for layering', languages: ['csharp'] },
+    );
+    const [first, second] = payload.experts;
+    assert.ok(first);
+    assert.equal(first.slug, 'sample-architect');
+    assert.ok(second);
+    assert.match(second.why, /not what you named/);
+  });
+
   it('does not reach for a crew on a narrow question', async () => {
     // Recommending a whole crew for a one-expert question is how a single
     // answer turns into a catalog dump.

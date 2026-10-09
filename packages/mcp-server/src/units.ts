@@ -409,10 +409,22 @@ function rankExperts(
         score += 4;
         reasons.push(`works in ${entry.domain}`);
       }
-      const spoken = (entry.languages ?? []).filter((one) => wantedLanguages.has(one));
+      const declared = entry.languages ?? [];
+      const spoken = declared.filter((one) => wantedLanguages.has(one));
       if (spoken.length > 0) {
         score += 3;
         reasons.push(`fluent in ${spoken.join(', ')}`);
+      } else if (declared.length > 0 && wantedLanguages.size > 0) {
+        // The caller named languages and this expert works in none of them.
+        // Weighed as heavily against as speaking one is for, because the
+        // wording of two mobile experts is nearly identical and the language
+        // is the only thing that separates them: without this, a Swift expert
+        // wins a Dart question on the words every mobile expert uses.
+        //
+        // Only when the expert declares languages at all. A stack-neutral
+        // expert names none on purpose (ADR 0015) and is not being evasive.
+        score -= 3;
+        reasons.push(`works in ${declared.join(', ')}, not what you named`);
       }
 
       const text = words(
