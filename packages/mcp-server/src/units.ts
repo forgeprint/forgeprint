@@ -346,11 +346,27 @@ function words(text: string): Set<string> {
   );
 }
 
+/** How many of the asked words appear in a piece of catalog text. */
+function hitsIn(asked: ReadonlySet<string>, text: string): number {
+  const target = words(text);
+  let hits = 0;
+  for (const word of asked) if (target.has(word)) hits += 1;
+  return hits;
+}
+
 /**
- * A crew wins only when the task is plainly the whole job it is assembled for.
+ * A crew wins only when the task is plainly the whole job it is assembled for,
+ * and only when the crew does not say this is somebody else's job.
  *
  * Deliberately hard to trigger: recommending a four-expert crew for a
  * one-expert question is how a single answer becomes a catalog dump.
+ *
+ * `not_for` is read, not just published. Every crew names the neighbouring
+ * jobs it is wrong for, and those neighbours share most of their vocabulary —
+ * a React Native crew and a Flutter one are both "building and shipping a
+ * mobile app". Counting only `for_what` let the wrong one win on the words
+ * the two have in common, and handed the reader a recommendation that the
+ * crew's own catalog entry contradicts.
  */
 function bestCrew(
   index: IndexWithUnits,
@@ -359,9 +375,12 @@ function bestCrew(
   const asked = words(task);
   let best: { entry: CrewEntry; hits: number } | undefined;
   for (const entry of index.crews ?? []) {
-    const target = words(`${entry.name} ${entry.summary} ${entry.for_what}`);
-    let hits = 0;
-    for (const word of asked) if (target.has(word)) hits += 1;
+    const hits = hitsIn(asked, `${entry.name} ${entry.summary} ${entry.for_what}`);
+    // A task that matches what the crew excludes at least as strongly as what
+    // it is for is a task for one of its neighbours. Said this way round so
+    // that a `not_for` which merely shares a word or two with a plainly
+    // matching task does not veto it.
+    if (hits <= hitsIn(asked, entry.not_for)) continue;
     if (best === undefined || hits > best.hits) best = { entry, hits };
   }
   if (best === undefined || best.hits < 3) return undefined;
@@ -390,10 +409,22 @@ function rankExperts(
         score += 4;
         reasons.push(`works in ${entry.domain}`);
       }
-      const spoken = (entry.languages ?? []).filter((one) => wantedLanguages.has(one));
+      const declared = entry.languages ?? [];
+      const spoken = declared.filter((one) => wantedLanguages.has(one));
       if (spoken.length > 0) {
         score += 3;
         reasons.push(`fluent in ${spoken.join(', ')}`);
+      } else if (declared.length > 0 && wantedLanguages.size > 0) {
+        // The caller named languages and this expert works in none of them.
+        // Weighed as heavily against as speaking one is for, because the
+        // wording of two mobile experts is nearly identical and the language
+        // is the only thing that separates them: without this, a Swift expert
+        // wins a Dart question on the words every mobile expert uses.
+        //
+        // Only when the expert declares languages at all. A stack-neutral
+        // expert names none on purpose (ADR 0015) and is not being evasive.
+        score -= 3;
+        reasons.push(`works in ${declared.join(', ')}, not what you named`);
       }
 
       const text = words(

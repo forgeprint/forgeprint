@@ -111,6 +111,13 @@ Then the part no command does. Read your own `not_for` and ask whether you
 would have written it if you were trying to make the crew look good. If the
 answer is no, it is not finished.
 
+`not_for` is read by the resolver, not only by people: `recommend_experts`
+skips a crew when the task matches its `not_for` at least as strongly as its
+`for_what`. Name the neighbouring job in the words somebody asking for it
+would use — "a React Native app", not "other runtimes" — because that is what
+keeps your crew out of a question it would answer badly, and what keeps the
+neighbour out of yours.
+
 Two more things a reviewer will look for:
 
 - **The byline is yours.** A crew published under the catalog's name rather

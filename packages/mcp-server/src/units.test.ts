@@ -61,6 +61,25 @@ const CREW = {
   files: ['README.md', 'CHANGELOG.md'],
 };
 
+/**
+ * A crew whose `for_what` is generic and whose `not_for` names the
+ * neighbouring job outright — the shape that made the catalog recommend a
+ * React Native crew for a Flutter task.
+ */
+const NEIGHBOUR_CREW = {
+  slug: 'neighbour-crew',
+  name: 'Neighbour Crew',
+  summary: 'Assembling a team for the test suite on the neighbouring runtime.',
+  byline: "Octocat's Neighbour Crew",
+  members: ['sample-architect'],
+  for_what: 'Assembling a team for the test suite on a runtime, with layering.',
+  not_for:
+    'The sample runtime: assembling a team for the test suite there, with layering, is sample-crew.',
+  tier: 'community',
+  maintainers: ['octocat'],
+  files: ['README.md', 'CHANGELOG.md'],
+};
+
 const INTEGRATION = {
   slug: 'sample-mcp',
   name: 'Sample MCP',
@@ -120,7 +139,7 @@ const INDEX = {
   blueprints: [],
   agents: AGENTS,
   experts: [EXPERT, REVIEWER],
-  crews: [CREW],
+  crews: [CREW, NEIGHBOUR_CREW],
   integrations: [INTEGRATION],
 };
 
@@ -280,6 +299,51 @@ describe('recommend_experts', () => {
     );
     assert.equal(payload.crew?.slug, 'sample-crew');
     assert.equal(payload.experts, undefined);
+  });
+
+  it('refuses a crew whose "not for" names the task', async () => {
+    // A crew publishes where it is wrong. The neighbour matches this task on
+    // more of its `for_what` than the right crew does — and says, in the same
+    // entry, that this runtime is the other crew's job. Recommending it
+    // anyway hands the reader a contradiction to notice for themselves.
+    const payload: { crew?: { slug: string } } = await call(await connect(), 'recommend_experts', {
+      task: 'assembling a team for the test suite on the sample runtime with layering',
+    });
+    assert.notEqual(payload.crew?.slug, 'neighbour-crew');
+    assert.equal(payload.crew?.slug, 'sample-crew');
+  });
+
+  it('does not put an expert who speaks none of the asked languages first', async () => {
+    // The caller named a language. An expert that declares languages and
+    // shares none of them is evidence against, not a tie on wording: two
+    // mobile experts describe themselves almost identically, and the language
+    // is the only thing that separates them.
+    //
+    // No crews in this index: the question here is the ranking, and a crew
+    // would answer before the ranking ran.
+    const payload: { experts: { slug: string; why: string }[] } = await call(
+      await connect({
+        ...INDEX,
+        crews: [],
+        experts: [
+          EXPERT,
+          {
+            ...EXPERT,
+            slug: 'other-language-architect',
+            name: 'Other Language Architect',
+            summary: 'A sample expert used by the test suite, for layering.',
+            languages: ['rust'],
+          },
+        ],
+      }),
+      'recommend_experts',
+      { task: 'a sample expert used by the test suite for layering', languages: ['csharp'] },
+    );
+    const [first, second] = payload.experts;
+    assert.ok(first);
+    assert.equal(first.slug, 'sample-architect');
+    assert.ok(second);
+    assert.match(second.why, /not what you named/);
   });
 
   it('does not reach for a crew on a narrow question', async () => {
