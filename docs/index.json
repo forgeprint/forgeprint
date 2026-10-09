@@ -5671,6 +5671,64 @@
     },
     {
       "schema": 1,
+      "slug": "swift-mobile-engineer",
+      "name": "Swift Senior Mobile Engineer",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Build SwiftUI apps where a module declares its default isolation, observation drives the view, every migration stage has a test, secrets live in the Keychain, and the accessibility audit runs in CI.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "mobile-engineer",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "swift"
+      ],
+      "stack": [
+        "swiftui"
+      ],
+      "deliverables": [
+        "code-review",
+        "test-suite",
+        "accessibility-audit",
+        "performance-report"
+      ],
+      "checklists": [
+        "actor-isolation",
+        "observation-and-state",
+        "accessibility-audit",
+        "secure-storage",
+        "data-migrations",
+        "build-gates"
+      ],
+      "pairs_with": [
+        "security-reviewer",
+        "qa-automation-lead",
+        "performance-engineer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/accessibility-audit.md",
+        "checklists/actor-isolation.md",
+        "checklists/build-gates.md",
+        "checklists/data-migrations.md",
+        "checklists/observation-and-state.md",
+        "checklists/secure-storage.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "technical-program-manager",
       "name": "Technical Program Manager",
       "version": "1.0.1",
