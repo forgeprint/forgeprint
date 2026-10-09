@@ -5729,6 +5729,65 @@
     },
     {
       "schema": 1,
+      "slug": "swift-senior-architect",
+      "name": "Swift Senior Software Architect",
+      "version": "1.0.0",
+      "tier": "community",
+      "maintainers": [
+        "aliosmanmho"
+      ],
+      "summary": "Modules are the boundaries and internal is the wall, package widens access rather than public, the public API is diffed in CI, every target states its default isolation, and evolution mode stays off.",
+      "agents": [
+        "claude-code"
+      ],
+      "provenance": "generated",
+      "deprecated": false,
+      "supersedes": null,
+      "role": "software-architect",
+      "domain": "software",
+      "seniority": "senior",
+      "languages": [
+        "swift"
+      ],
+      "stack": [
+        "swiftui"
+      ],
+      "deliverables": [
+        "adr",
+        "architecture-review",
+        "api-design-review",
+        "migration-plan",
+        "dependency-audit"
+      ],
+      "checklists": [
+        "module-boundaries",
+        "api-surface",
+        "isolation-ownership",
+        "dependency-policy",
+        "platform-scope",
+        "warning-policy"
+      ],
+      "pairs_with": [
+        "swift-mobile-engineer",
+        "api-designer",
+        "security-reviewer"
+      ],
+      "files": [
+        "CHANGELOG.md",
+        "SKILL.md",
+        "checklists/api-surface.md",
+        "checklists/dependency-policy.md",
+        "checklists/isolation-ownership.md",
+        "checklists/module-boundaries.md",
+        "checklists/platform-scope.md",
+        "checklists/warning-policy.md",
+        "manifest.yaml",
+        "overview.md",
+        "references.md"
+      ]
+    },
+    {
+      "schema": 1,
       "slug": "technical-program-manager",
       "name": "Technical Program Manager",
       "version": "1.0.1",
