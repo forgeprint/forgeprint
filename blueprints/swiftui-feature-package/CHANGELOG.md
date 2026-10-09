@@ -1,5 +1,20 @@
 # Changelog — swiftui-feature-package
 
+## 1.0.1 — 2026-10-09
+
+Fix: `requires_tools` says the Swift floor out loud.
+
+- `requires_tools: [swift>=6.2, xcrun]`. 1.0.0 could not say this: the tool
+  check read the first number in `swift --version`, which is the swift-driver
+  version, so `swift>=6.2` was evaluated as `1.168.6 >= 6.2` and refused a
+  toolchain that satisfies it. `forgeprint` 0.5.0 reads the Swift version
+  instead, and `overview.md`'s paragraph about the workaround goes with it.
+- The floor is now stated in both the places it belongs — before the recipe
+  starts and at the first build — and `overview.md` says why that repetition is
+  deliberate rather than an oversight.
+- Verified with the constraint in place: 12 of 12 steps, and the refusal path
+  checked by asking for a version this machine does not have.
+
 ## 1.0.0 — 2026-10-08
 
 The catalog's first Apple-platform blueprint. D21 of the

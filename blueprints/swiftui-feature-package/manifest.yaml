@@ -1,7 +1,7 @@
 schema: 1
 slug: swiftui-feature-package
 name: 'SwiftUI Feature Package'
-version: 1.0.0
+version: 1.0.1
 tier: community
 provenance: generated
 maintainers: [aliosmanmho]
@@ -15,6 +15,6 @@ audience: [intermediate]
 requirements: [accessibility, testing, ci]
 agents: [claude-code]
 recommended_experts: [swift-mobile-engineer, swift-senior-architect]
-requires_tools: [swift, xcrun]
+requires_tools: [swift>=6.2, xcrun]
 deprecated: false
 supersedes: null
