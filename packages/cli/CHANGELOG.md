@@ -3,7 +3,7 @@
 The catalog tooling. Every pipeline step is a command here, so a contributor
 gets the same answer locally that a pull request gets in CI (ADR 0002).
 
-## 0.5.0 — 2026-10-06
+## 0.5.0 — 2026-10-09
 
 - **`get` works outside a checkout.** ADR 0013 point 7 promises an agent with
   no MCP client the same answer through the CLI, and names
@@ -29,9 +29,6 @@ inside a Forgeprint repository`: every command resolved the catalog by
   the declared options — so a manifest from disk and an index entry from the
   network both satisfy them. That deleted an `as unknown as` cast in the MCP
   server.
-
-## 0.5.0 — 2026-10-08
-
 - **`test-setup --skip-unsupported`.** A missing toolchain is a refusal
   (ADR 0005), and that is right for one machine and wrong for a matrix: a
   blueprint another job owns is not this job's failure. With `--all`, the flag
@@ -43,6 +40,22 @@ machine` — and the run ends with the list and one sentence: "Another job in
   is the answer, because no other job was going to run it instead.
 - The decision is `toolVerdict` and the flag check is `sweepFlagProblem`, both
   pure and both tested, so the behaviour is not buried in a command body.
+- **A tool's version is not always the first number it prints.** `swift
+--version` leads with the swift-driver version, so `swift>=6.2` was read as
+  `1.168.6 >= 6.2` and refused a toolchain that satisfies it — which is why
+  `swiftui-feature-package` 1.0.0 had to leave its Swift floor out of
+  `requires_tools` and put it in `swift-tools-version` instead. There is a
+  `VERSION_PATTERN` table beside the `VERSION_FLAG` one now, with the one entry
+  today's catalog needs.
+- A declared pattern that does not match reports "could not read a version"
+  rather than falling back to the default: output that changed shape is
+  something to look at.
+- `readVersion` is exported and tested against the real output of eleven tools,
+  captured rather than reconstructed. One of those tests pins a latent trap
+  instead of fixing it: `sha256sum (Darwin) 1.0` has a number in the tool's own
+  name, and no blueprint constrains that tool's version, so the wrong reading is
+  never compared against anything. The day one does, the fix is an entry in the
+  table.
 
 ## 0.4.5 — 2026-10-06
 
