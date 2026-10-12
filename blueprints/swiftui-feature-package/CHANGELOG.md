@@ -1,5 +1,26 @@
 # Changelog — swiftui-feature-package
 
+## 1.1.0 — 2026-10-12
+
+Update: the crew it should be worked on with now exists.
+
+- `recommended_crew: ios-app-crew`. 1.0.0 named the two Swift experts and no
+  crew, because the catalog had none for this stack: the generic
+  `mobile-app-crew` carries a React Native engineer, and its own `not_for`
+  already said so. The per-stack crew merged in
+  [#258](https://github.com/forgeprint/forgeprint/pull/258), which is why this
+  field can be filled at all
+  ([ADR 0016](../../docs/decisions/0016-cross-unit-changes-land-in-order.md) in
+  the waiting direction).
+- The crew is not the two experts with a title. It adds an accessibility
+  specialist and a QA automation lead, and `overview.md` now says which
+  disagreement that resolves: an automated accessibility audit needs a running
+  app, this package has no app target, and the crew's README puts the app shell
+  with the UI test target on the QA lead. A package that skipped this can be
+  green having never been audited anywhere.
+- No recipe change, so no re-run: the twelve steps verified at 1.0.1 are
+  untouched.
+
 ## 1.0.1 — 2026-10-09
 
 Fix: `requires_tools` says the Swift floor out loud.
