@@ -6557,7 +6557,7 @@
       "schema": 1,
       "slug": "mobile-app-crew",
       "name": "Mobile App Crew",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"
@@ -6580,7 +6580,7 @@
         "mobile-mcp"
       ],
       "for_what": "Building and shipping a React Native app on Expo: SDK-aligned dependencies and secure storage, a screen-reader audit on a device, end-to-end journeys on an emulator, and a release and OTA plan that says how it is withdrawn.",
-      "not_for": "A Flutter or native Android app, backend work, store listing copy, or a change to one screen. One screen is small, same-file work for the mobile engineer alone.",
+      "not_for": "A Flutter app (flutter-app-crew) or a native Android one (android-app-crew), backend work, store listing copy, or a change to one screen. One screen is small, same-file work for the mobile engineer alone.",
       "files": [
         "CHANGELOG.md",
         "README.md",

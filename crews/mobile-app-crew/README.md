@@ -77,9 +77,11 @@ They disagree in two places, and the disagreement is useful:
 
 ## Where this crew is wrong
 
-- **A Flutter or native Android app.** The shape transfers; the mobile
-  engineer does not. Load `flutter-mobile-engineer` or
-  `android-mobile-engineer` directly.
+- **A Flutter app.** That is
+  [`flutter-app-crew`](../flutter-app-crew/README.md), which this crew's
+  `not_for` asked for before it existed.
+- **A native Android app.** That is
+  [`android-app-crew`](../android-app-crew/README.md).
 - **Backend work.** Nothing here writes a server.
 - **Store listing copy.** No member writes marketing text.
 - **A change to one screen.** Small, same-file work for the mobile engineer
