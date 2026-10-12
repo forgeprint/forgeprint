@@ -5852,7 +5852,7 @@
       "schema": 1,
       "slug": "technical-program-manager",
       "name": "Technical Program Manager",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "tier": "community",
       "maintainers": [
         "aliosmanmho"

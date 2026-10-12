@@ -118,3 +118,16 @@ where the report links them.
 
 The last row is why **round 2's numbers are not comparable to round 1's**.
 Comparisons run inside a round, between D1, D2 and D3.
+
+### Round 2's result
+
+Ran 2026-10-12, nine runs:
+[the report](research/2026-10-12-scenario-d-round-2.md). **Two runs split the
+work** — the first in eighteen — and both gave each shared file a single owner
+before the parallel part began, so the collisions ADR 0014 asks to observe did
+not occur by construction rather than by luck. ADR 0014 stays deferred, this
+time because the evidence points away from it. Splitting cost 5.5× a run
+without the expert; the configuration costs 4.5× whether it splits or not.
+
+A third round is worth running only for a task whose partition **cannot** be
+made disjoint. The report's last section says what that means.

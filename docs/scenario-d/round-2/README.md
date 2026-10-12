@@ -222,3 +222,11 @@ That it is being measured, how it is being measured, or that there are other
 runs. That `src/body.ts` will have to grow a number field. Which of the five
 open decisions in [`reply.md`](reply.md) anybody cares about. The prompt is the
 whole instruction.
+
+## The result
+
+All nine runs are in [`runs/`](runs), and the round's report is
+[2026-10-12](../../research/2026-10-12-scenario-d-round-2.md). Two runs split
+the work, both made the shared files single-owner before fanning out, and the
+one red check in nine runs — `check 1b` on D3c — was a false positive, recorded
+as one rather than repaired mid-round.

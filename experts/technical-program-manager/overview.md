@@ -94,7 +94,32 @@ about — a boolean field accepting `null`, an unvalidated key echoed back in an
 error, and a missing content-type check. Two were fixed before the run
 finished. That is one run, on a task too small to need splitting at all.
 
-So: it changes what an agent does, in the direction claimed here, and the
-measurable part of that change is one reviewer on one run. If it changes nothing
-about what your agent does, say so in an issue — that is still the evidence it
-most needs.
+[Round 2 ran on 2026-10-12](../../docs/research/2026-10-12-scenario-d-round-2.md),
+nine runs on a task four times as wide, and it moved three of those sentences.
+
+- **It is the only configuration that splits work.** Two of its three runs used
+  three workers each; six runs that were merely permitted to, across two
+  rounds, declined. Both splitting runs gave every shared file a single owner
+  before fanning out, and collisions and rejected work were zero again — by
+  construction this time, not for want of a split.
+- **It is the only configuration that stops for approval**, 3 of 3 against 0 of
+  6, separating decisions that need a decision from defaults it proceeds on.
+- **It is the only configuration that tested its own tests.** One run injected
+  eight defects into a copy and confirmed each was caught, discarding its own
+  first attempt as an equivalent mutant; another injected one at the
+  authorisation boundary. Seven of nine runs shipped tests whose power nobody
+  checked.
+- **The cost is 4.5× a run without it, and 5.5× when it splits** — $1.49 when
+  it declined to split, $3.06–3.22 when it did, against $0.52–0.62. On the
+  protocol's measures it is still not better: twelve of twelve everywhere, zero
+  false completions everywhere.
+- **And it missed what two runs without it found.** All three of its runs
+  deliberately extended the blueprint's body validator and none noticed that
+  the two membership tests beside their new code let prototype keys through.
+  The run with the mutation suite missed it too, because the mutations tested
+  the behaviour it had written.
+
+So: it changes what an agent does, in the direction claimed here, at a cost
+worth paying for work where a wrong assumption forces a redo and not otherwise.
+If it changes nothing about what your agent does, say so in an issue — that is
+still the evidence it most needs.
