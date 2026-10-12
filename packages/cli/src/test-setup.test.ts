@@ -6,6 +6,7 @@ import { after, describe, it } from 'node:test';
 import { parseRecipe } from './recipe.js';
 import {
   checkTools,
+  declaresTool,
   readVersion,
   resolveShell,
   runDirectoryName,
@@ -328,5 +329,31 @@ describe('readVersion', () => {
   // the fix is an entry in VERSION_PATTERN.
   it('still reads 256 out of sha256sum, which is why the table exists', () => {
     assert.equal(readVersion('sha256sum', 'sha256sum (Darwin) 1.0'), '256');
+  });
+});
+
+describe('declaresTool', () => {
+  it('matches by name, ignoring the version constraint', () => {
+    assert.equal(declaresTool(['swift>=6.2', 'xcrun'], 'swift'), true);
+    assert.equal(declaresTool(['swift>=6.2', 'xcrun'], 'xcrun'), true);
+  });
+
+  it('does not match a prefix of another tool', () => {
+    assert.equal(declaresTool(['dotnet>=10', 'curl'], 'dot'), false);
+    assert.equal(declaresTool(['cargo-clippy'], 'cargo'), false);
+  });
+
+  it('ignores case, because a manifest is written by hand', () => {
+    assert.equal(declaresTool(['Node>=22'], 'node'), true);
+  });
+
+  it('is false for a blueprint that declares nothing', () => {
+    assert.equal(declaresTool([], 'swift'), false);
+  });
+
+  // A requirement the pattern cannot read is a problem `checkTools` reports;
+  // this filter is not the place to throw about it.
+  it('skips a requirement it cannot parse rather than failing', () => {
+    assert.equal(declaresTool(['>=6.2', 'xcrun'], 'xcrun'), true);
   });
 });

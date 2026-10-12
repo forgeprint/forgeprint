@@ -24,6 +24,7 @@ import { publish, release } from './release-run.js';
 import { fetchRequests, hasGitHubCli, renderRequests } from './requests.js';
 import {
   checkTools,
+  declaresTool,
   runDirectoryName,
   runRecipe,
   sweepFlagProblem,
@@ -371,6 +372,7 @@ ${String(problems.length)} render(s) failed`);
       '--skip-unsupported',
       'with --all: report a blueprint this machine has no toolchain for as a skip, not a failure',
     )
+    .option('--requires <tool>', 'only the blueprints that declare this tool in requires_tools')
     .description('run a setup recipe in a fresh directory and verify every step')
     .action(
       async (
@@ -382,6 +384,7 @@ ${String(problems.length)} render(s) failed`);
           changedSince?: string;
           keep?: boolean;
           skipUnsupported?: boolean;
+          requires?: string;
         },
       ) => {
         const root = rootOf();
@@ -407,6 +410,26 @@ ${String(problems.length)} render(s) failed`);
             return;
           }
           console.log(`Changed since ${ref}: ${selected.join(', ')}`);
+        }
+
+        // Which half of the catalog this job owns, read from the manifests
+        // rather than from a list somebody maintains. A filter that selects
+        // nothing is not a failure: a pull request that touches no Apple
+        // recipe has nothing for the macOS job to do, and a required check has
+        // to say that out loud.
+        const requiredTool = flags.requires;
+        if (requiredTool !== undefined) {
+          selected = selected.filter((target) =>
+            declaresTool(
+              readManifest(taxonomy, readBlueprintFolder(root, target)).requires_tools ?? [],
+              requiredTool,
+            ),
+          );
+          if (selected.length === 0) {
+            console.log(`ok  no blueprint requires ${requiredTool}; no recipe to run`);
+            return;
+          }
+          console.log(`Requires ${requiredTool}: ${selected.join(', ')}`);
         }
 
         for (const target of selected) {

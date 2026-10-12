@@ -168,11 +168,17 @@ matrix finds will arrive by this email and by no other route.
 Since 2026-10-08 the matrix has **two jobs rather than one**: `ubuntu-latest`
 and `macos-latest`. Swift and Xcode exist on no Linux runner, so a recipe that
 builds for an Apple platform can only run on the second — which is the check
-D21 of the expansion plan was waiting for. Both jobs sweep the whole catalog
-with `--skip-unsupported`, so each runs what its runner has a toolchain for and
-reports the rest as a skip; between them every blueprint is run, and neither
-job carries a list of slugs somebody has to remember. The macOS runner has no
-Docker, so every recipe declaring it is skipped there and run on Linux.
+D21 of the expansion plan was waiting for. The Linux job sweeps the whole
+catalog with `--skip-unsupported`, so a recipe whose toolchain it does not have
+is reported as a skip rather than failing it. The macOS job takes the other
+side with `--requires xcrun`: only the recipes that declare Apple's command
+line tools, read from the manifests rather than from a list of slugs.
+
+It was a symmetric sweep first, and the first real run said why that was wrong:
+thirty-five minutes to run forty-odd recipes a Mac has no business with, and a
+red job over `blazor-web-app`'s NuGet pins. The cross-check that nothing falls
+between the two jobs is the Linux job's own output — it prints `skipped N:` and
+names them.
 
 The macOS image is GitHub's `macos-26-arm64`, which on 2026-10-08 carried Xcode
 26.6 and therefore Swift 6.3; Xcode 27 and Swift 6.4 exist only in a preview

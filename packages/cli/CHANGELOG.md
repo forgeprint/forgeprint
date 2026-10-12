@@ -40,6 +40,12 @@ machine` — and the run ends with the list and one sentence: "Another job in
   is the answer, because no other job was going to run it instead.
 - The decision is `toolVerdict` and the flag check is `sweepFlagProblem`, both
   pure and both tested, so the behaviour is not buried in a command body.
+- **`test-setup --requires <tool>`.** A matrix job says which half of the
+  catalog it owns by naming a tool, and the selection comes from the manifests'
+  `requires_tools` rather than from a list of slugs in a workflow. A filter that
+  selects nothing passes and says so, because a pull request that touches no
+  Apple recipe has nothing for the macOS job to do and a required check has to
+  report that out loud.
 - **A tool's version is not always the first number it prints.** `swift
 --version` leads with the swift-driver version, so `swift>=6.2` was read as
   `1.168.6 >= 6.2` and refused a toolchain that satisfies it — which is why
