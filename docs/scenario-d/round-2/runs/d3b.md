@@ -170,8 +170,8 @@ a lie to the type checker and the 201 is still a decision nobody asked for —
 but the isolation A2 promised holds, and the run proved it on itself as M3, M7
 and M8 of the mutation set.
 
-**Nine runs, nine different answers to one question the task never asks**, and
-all nine pass twelve of twelve.
+**Eight runs, three distinct patterns** on a question the task never asks —
+refuse, accept, or answer 500 — and all eight pass twelve of twelve.
 
 ## What it did not find
 
