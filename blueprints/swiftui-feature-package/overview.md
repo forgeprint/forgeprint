@@ -90,3 +90,10 @@ something. Every step was run before this was committed.
   observation rules and the format gate that this recipe sets up, and
   `swift-senior-architect` owns the question this package deliberately does not
   answer — what happens when a second module arrives.
+- **`ios-app-crew` is named as the crew**, and it is not the two experts with a
+  title: it adds an accessibility specialist and a QA automation lead, and its
+  README resolves the one disagreement this blueprint creates. An automated
+  accessibility audit needs a running app; this package has no app target, so
+  the crew assigns the app shell that hosts the UI test target to the QA lead.
+  Without that, a package here can stay green having never been audited
+  anywhere.
