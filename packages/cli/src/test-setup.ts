@@ -245,6 +245,21 @@ const REQUIREMENT_PATTERN =
   /^([a-z0-9][a-z0-9.+-]*)\s*(>=|<=|==|>|<|~|\^)?\s*([0-9][0-9a-z.-]*)?$/i;
 
 /**
+ * Whether a blueprint declares a tool, by name, ignoring any version.
+ *
+ * This is how a matrix job says which half of the catalog it owns:
+ * `--requires xcrun` selects the recipes that need Apple's command line tools
+ * and nothing else. The alternative was a list of slugs in the workflow, and a
+ * list is a thing somebody has to remember — the manifests already say it.
+ */
+export function declaresTool(requires: readonly string[], tool: string): boolean {
+  return requires.some((requirement) => {
+    const parsed = REQUIREMENT_PATTERN.exec(requirement.trim());
+    return parsed?.[1]?.toLowerCase() === tool.toLowerCase();
+  });
+}
+
+/**
  * What to do about a blueprint whose toolchain is not on this machine.
  *
  * The default is a refusal (ADR 0005): a run that quietly used a different
