@@ -255,6 +255,13 @@ days old. The beta cadence has paused for four days — which says nothing about
 a stable release either way, and is recorded so the next reader does not read
 it as one. D16 asks for a non-prerelease version and there is not one.
 
+Re-checked 2026-10-12: `latest` is `3.0.0-beta.50`, published 2026-10-06, and
+the registry's `modified` is that same timestamp — so the pause that was four
+days long is now six, and what it paused on is still a prerelease. 2.0.5 is 94
+days old and still the newest non-prerelease. **D16 stands**, and it has not
+moved in three re-checks: what would move it is a non-prerelease on the 3.x
+line, not a quieter beta cadence.
+
 ---
 
 ## After the last phase
