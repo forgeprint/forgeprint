@@ -1,5 +1,23 @@
 # Changelog — blazor-web-app
 
+## 1.0.1 — 2026-10-12
+
+Fix: the recipe no longer depends on which .NET SDK patch the machine has.
+
+- A new step moves `Microsoft.EntityFrameworkCore.Design` to 10.0.12, beside
+  the four EF packages the recipe already moved. The template pins what it adds
+  to the installed SDK and step 1 rolls the SDK forward by feature band, so on a
+  machine whose template pinned `Design` 10.0.11 the next step asked for tools
+  that need 10.0.12 and NuGet refused the downgrade:
+
+      error NU1605: Detected package downgrade: Microsoft.EntityFrameworkCore.Design
+        from 10.0.12 to 10.0.11
+
+- Found by CI rather than by review: the recipe passed on the Linux runner,
+  whose SDK template already pinned 10.0.12, and failed on the macOS one in run 37870635595. The asymmetry was the finding — a recipe that depends on the
+  machine's SDK patch is not deterministic, which is the whole claim a
+  `setup.md` makes.
+
 ## 1.0.0 — 2026-09-25
 
 First version.
