@@ -258,6 +258,28 @@ a copy at the root would drift from them. Two things to keep in mind:
 Security reports go through private vulnerability reporting, never a public
 issue.
 
+### A security update does not update the lockfile
+
+A grouped Dependabot security update edits `package.json` and nothing else.
+This is a pnpm workspace, so `pnpm-lock.yaml` still names the old version, and
+every job starts with `pnpm install --frozen-lockfile` — which is the point of
+that flag. The pull request's own checks pass, because they ran before the
+merge commit existed; `main` turns red immediately afterwards with
+`ERR_PNPM_OUTDATED_LOCKFILE`, and the error names the dependency and both
+versions. It happened on 2026-10-09 with `@modelcontextprotocol/sdk` 1.30.0 to
+1.31.0 and cost a second pull request.
+
+The fix is one command and its own commit, and it is worth running **before**
+merging the bump rather than after:
+
+```bash
+pnpm install --lockfile-only
+```
+
+Leaving version updates off (above) keeps this rare: only a security update
+arrives this way, and a red `main` announces itself through the notification
+settings above.
+
 ---
 
 ## Sign-off
