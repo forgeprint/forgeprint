@@ -35,10 +35,18 @@ Requires the .NET SDK 10 and curl.
 8. Move the database error page to the same servicing release: `dotnet add src/BlazorApp package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore --version 10.0.12`
    Verify: `dotnet restore src/BlazorApp`
 
-9. Move the EF Core command-line tools to the same servicing release: `dotnet add src/BlazorApp package Microsoft.EntityFrameworkCore.Tools --version 10.0.12`
-   Verify: `dotnet build src/BlazorApp`
+9. Move EF Core's design-time package to the same servicing release. The
+   template pins the EF packages it adds to whatever SDK is installed, and
+   step 1 rolls the SDK forward by feature band — so on a machine whose
+   template pinned 10.0.11, moving the tools in the next step asks for a
+   `Design` NuGet refuses to downgrade (NU1605). Moving it explicitly is what
+   makes the recipe independent of the machine's SDK patch: `dotnet add src/BlazorApp package Microsoft.EntityFrameworkCore.Design --version 10.0.12`
+   Verify: `dotnet restore src/BlazorApp`
 
-10. Create `Directory.Build.props`, which every project in the solution inherits:
+10. Move the EF Core command-line tools to the same servicing release: `dotnet add src/BlazorApp package Microsoft.EntityFrameworkCore.Tools --version 10.0.12`
+    Verify: `dotnet build src/BlazorApp`
+
+11. Create `Directory.Build.props`, which every project in the solution inherits:
 
     ```xml
     <Project>
@@ -58,7 +66,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build src/BlazorApp`
 
-11. Create `src/BlazorApp/Components/Account/LockoutSignInManager.cs` with:
+12. Create `src/BlazorApp/Components/Account/LockoutSignInManager.cs` with:
 
     ```csharp
     using BlazorApp.Data;
@@ -93,7 +101,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build src/BlazorApp`
 
-12. Replace `src/BlazorApp/Program.cs` with:
+13. Replace `src/BlazorApp/Program.cs` with:
 
     ```csharp
     using BlazorApp.Components;
@@ -223,22 +231,22 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build src/BlazorApp`
 
-13. Create the test project: `dotnet new xunit -o tests/BlazorApp.Tests -f net10.0`
+14. Create the test project: `dotnet new xunit -o tests/BlazorApp.Tests -f net10.0`
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-14. Add the test project to the solution: `dotnet sln add tests/BlazorApp.Tests`
+15. Add the test project to the solution: `dotnet sln add tests/BlazorApp.Tests`
     Verify: `dotnet sln list`
 
-15. Reference the application from the tests: `dotnet add tests/BlazorApp.Tests reference src/BlazorApp`
+16. Reference the application from the tests: `dotnet add tests/BlazorApp.Tests reference src/BlazorApp`
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-16. Add bUnit, which renders a component in memory without a browser: `dotnet add tests/BlazorApp.Tests package bunit --version 2.11.3`
+17. Add bUnit, which renders a component in memory without a browser: `dotnet add tests/BlazorApp.Tests package bunit --version 2.11.3`
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-17. Add the in-memory test host, so a test can make a real request through the whole pipeline: `dotnet add tests/BlazorApp.Tests package Microsoft.AspNetCore.Mvc.Testing --version 10.0.12`
+18. Add the in-memory test host, so a test can make a real request through the whole pipeline: `dotnet add tests/BlazorApp.Tests package Microsoft.AspNetCore.Mvc.Testing --version 10.0.12`
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-18. Create `tests/BlazorApp.Tests/AppFactory.cs` with:
+19. Create `tests/BlazorApp.Tests/AppFactory.cs` with:
 
     ```csharp
     using BlazorApp.Data;
@@ -297,7 +305,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-19. Create `tests/BlazorApp.Tests/ComponentTests.cs` with:
+20. Create `tests/BlazorApp.Tests/ComponentTests.cs` with:
 
     ```csharp
     using BlazorApp.Components.Pages;
@@ -335,7 +343,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-20. Create `tests/BlazorApp.Tests/AccountTests.cs` with:
+21. Create `tests/BlazorApp.Tests/AccountTests.cs` with:
 
     ```csharp
     using System.Net;
@@ -447,7 +455,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-21. Create `tests/BlazorApp.Tests/PasswordTests.cs` with:
+22. Create `tests/BlazorApp.Tests/PasswordTests.cs` with:
 
     ```csharp
     using BlazorApp.Data;
@@ -514,7 +522,7 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-22. Create `tests/BlazorApp.Tests/TransportTests.cs` with:
+23. Create `tests/BlazorApp.Tests/TransportTests.cs` with:
 
     ```csharp
     using Microsoft.AspNetCore.Authentication.Cookies;
@@ -563,10 +571,10 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `dotnet build tests/BlazorApp.Tests`
 
-23. Remove the template's placeholder test: `rm tests/BlazorApp.Tests/UnitTest1.cs`
+24. Remove the template's placeholder test: `rm tests/BlazorApp.Tests/UnitTest1.cs`
     Verify: `test ! -f tests/BlazorApp.Tests/UnitTest1.cs`
 
-24. Create `.github/workflows/ci.yml` with:
+25. Create `.github/workflows/ci.yml` with:
 
     ```yaml
     name: CI
@@ -595,34 +603,34 @@ Requires the .NET SDK 10 and curl.
 
     Verify: `test -f .github/workflows/ci.yml`
 
-25. Check that the code is formatted the way `dotnet format` would write it: `dotnet format --verify-no-changes`
+26. Check that the code is formatted the way `dotnet format` would write it: `dotnet format --verify-no-changes`
     Verify: `dotnet format --verify-no-changes`
 
-26. Build the solution: `dotnet build`
+27. Build the solution: `dotnet build`
     Verify: `dotnet build --configuration Release`
 
-27. Run the tests, which is where the protected page, the antiforgery check, the cookies and the password rules are proved: `dotnet test`
+28. Run the tests, which is where the protected page, the antiforgery check, the cookies and the password rules are proved: `dotnet test`
     Verify: `dotnet test`
 
-28. Start the built application on a port the operating system chooses, and keep its process id. A fixed port can already be taken, and then the check either fails or answers from somebody else's server. Development, because outside it the application refuses to start until a real email sender is registered; the content root is the project directory, written relative to the assembly because that is what a relative content root is resolved against: `dotnet src/BlazorApp/bin/Debug/net10.0/BlazorApp.dll --contentRoot ../../.. --environment Development --urls http://127.0.0.1:0 > app.log 2>&1 & echo $! > app.pid`
+29. Start the built application on a port the operating system chooses, and keep its process id. A fixed port can already be taken, and then the check either fails or answers from somebody else's server. Development, because outside it the application refuses to start until a real email sender is registered; the content root is the project directory, written relative to the assembly because that is what a relative content root is resolved against: `dotnet src/BlazorApp/bin/Debug/net10.0/BlazorApp.dll --contentRoot ../../.. --environment Development --urls http://127.0.0.1:0 > app.log 2>&1 & echo $! > app.pid`
     Verify: `test -s app.pid`
 
-29. Read the address it chose out of its own log: `for attempt in $(seq 60); do grep -oE "http://127\.0\.0\.1:[0-9]+" app.log | head -1 > app.url && test -s app.url && break; sleep 1; done`
+30. Read the address it chose out of its own log: `for attempt in $(seq 60); do grep -oE "http://127\.0\.0\.1:[0-9]+" app.log | head -1 > app.url && test -s app.url && break; sleep 1; done`
     Verify: `test -s app.url`
 
-30. Fetch the home page, and keep it: `curl -fsS -o home.html "$(cat app.url)/"`
+31. Fetch the home page, and keep it: `curl -fsS -o home.html "$(cat app.url)/"`
     Verify: `grep -q "_framework/blazor.web.js" home.html`
 
-31. Fetch the script the home page names, which is what makes an interactive component interactive; without it every page still renders and no button does anything: `curl -fsS -o blazor.web.js "$(cat app.url)/_framework/blazor.web.js"`
+32. Fetch the script the home page names, which is what makes an interactive component interactive; without it every page still renders and no button does anything: `curl -fsS -o blazor.web.js "$(cat app.url)/_framework/blazor.web.js"`
     Verify: `test -s blazor.web.js`
 
-32. Ask for the protected page without signing in, and keep the status and where it redirects: `curl -sS -o /dev/null -w "%{http_code} %{redirect_url}" "$(cat app.url)/auth" > auth.txt`
+33. Ask for the protected page without signing in, and keep the status and where it redirects: `curl -sS -o /dev/null -w "%{http_code} %{redirect_url}" "$(cat app.url)/auth" > auth.txt`
     Verify: `grep -qE "^302 .*/Account/Login\?ReturnUrl=%2Fauth" auth.txt`
 
-33. Stop the application: `kill "$(cat app.pid)"`
+34. Stop the application: `kill "$(cat app.pid)"`
     Verify: `sleep 2; ! kill -0 "$(cat app.pid)" 2>/dev/null`
 
-34. Remove the files the check left behind: `rm app.log app.pid app.url home.html blazor.web.js auth.txt`
+35. Remove the files the check left behind: `rm app.log app.pid app.url home.html blazor.web.js auth.txt`
     Verify: `test ! -f app.pid`
 
 ## After setup
