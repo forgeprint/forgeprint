@@ -95,6 +95,24 @@ Any of these, recorded in a dated report under `docs/research/` or
   deterministic, neither needing a runtime, a workspace or a crew command. That
   is an argument for writing those two checks and nothing more, which is what
   this bullet says to do with them.
+
+  **Ran again 2026-10-12, nine runs
+  ([report](../research/2026-10-12-scenario-d-round-2.md)): still no.** This
+  time the task was wide enough and **two runs did split**, both with the
+  expert and both with three workers. Conflicts, rejected work and false
+  completions were zero again — and the reason is the one this bullet cannot
+  use: each run gave every shared file a single owner before fanning out, one
+  of them recording the change in writing to keep `app.ts` single-owner. The
+  practice that makes a split work is what removes the symptoms a runtime would
+  treat, so this bullet now needs a task whose partition *cannot* be made
+  disjoint. Splitting cost 5.5× a run without the expert and roughly doubled
+  the bill inside its own configuration.
+
+  The two checks the paragraph above asked for were written and passed in all
+  nine runs, against defects round 2 never reproduced. The gate's one red was a
+  false positive, and the next check it needs tests that `npm test` reaches
+  every test file rather than that no file sits below `src/` — to be written
+  when a run has actually hidden a test, not before.
 - **The expert is used and the same failure keeps coming back.** An issue trail
   showing agents that read P2 and still mark their own work verified is the
   argument for a command that will not let them.

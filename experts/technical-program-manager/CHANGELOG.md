@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.2 — 2026-10-12
+
+- **The overview says what round 2 measured, including the part that does not
+  flatter it** ([report](../../docs/research/2026-10-12-scenario-d-round-2.md)).
+  Nine runs on a task four times as wide: this is the only configuration that
+  splits work (2 of 3, against 0 of 6 merely permitted across two rounds), the
+  only one that stops for approval (3 of 3 against 0 of 6), and the only one
+  that mutation-tested its own tests. It costs 4.5× a run without it and 5.5×
+  when it splits.
+- The part that does not flatter it: all three runs extended the blueprint's
+  body validator and none spotted the prototype-key defect three lines above
+  their own code — which two runs **without** this expert found and fixed.
+- No content changed. The claim the overview makes for itself did.
+
 ## 1.0.1 — 2026-10-06
 
 - **The overview says what Scenario D measured, including the part that does not
