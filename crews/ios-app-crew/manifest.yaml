@@ -1,0 +1,21 @@
+schema: 1
+slug: ios-app-crew
+name: 'iOS App Crew'
+version: 1.0.0
+tier: community
+provenance: generated
+maintainers: [aliosmanmho]
+summary: 'A SwiftUI app whose modules keep internal as the wall and declare their own actor isolation, with observation-driven views, secrets in the Keychain, audited on a device and gated on release.'
+byline: 'Assembled by @aliosmanmho'
+members:
+  - swift-senior-architect
+  - swift-mobile-engineer
+  - accessibility-specialist
+  - qa-automation-lead
+integrations:
+  - mobile-mcp
+for_what: 'Building a SwiftUI app of more than one screen: module boundaries with package rather than public, a default actor isolation chosen per target, observation-driven views, tested SwiftData migrations, secrets in the Keychain, a VoiceOver audit on a device, and journeys gated on the release build.'
+not_for: 'A Flutter app (flutter-app-crew), a React Native one (mobile-app-crew) or native Android (android-app-crew). Not the release: no member writes a version, a changelog or a withdrawal plan, which is release-crew. Not server-side Swift, and not one screen.'
+agents: [claude-code]
+deprecated: false
+supersedes: null
